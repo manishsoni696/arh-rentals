@@ -1,1 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ARH Rentals • Hisar</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body>
 
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"></div>
+      <div>
+        <h1>ARH Rentals <small>by Anjani Real Heights</small></h1>
+      </div>
+    </a>
+    <nav class="menu">
+      <a href="listings.html">Rentals</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="legal.html">Legal</a>
+      <a class="btn btn-primary" href="post.html">Post Property</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="kicker">
+          <span class="badge good">HISAR (Starting City)</span>
+          <span class="badge">Owner-first • No agents (phase 1)</span>
+          <span class="badge">Pay-to-unlock contacts</span>
+        </div>
+        <h2>Find rentals in Hisar—fast, clean, and premium.</h2>
+        <p>
+          Browse verified-format listings (self-declared owners). 
+          Contact details and exact address are available after paid unlock.
+        </p>
+      </div>
+      <a class="btn btn-accent" href="post.html">+ Post your property</a>
+    </div>
+
+    <div class="searchbar">
+      <input class="input" id="pincode" placeholder="Enter PIN code (e.g., 125001)"/>
+      <select id="ptype">
+        <option value="">Property type (any)</option>
+        <option>House</option>
+        <option>Shop</option>
+        <option>Office</option>
+      </select>
+      <input class="input" id="maxrent" placeholder="Max rent (e.g., 15000)"/>
+      <input class="input" value="HISAR" disabled />
+      <button class="btn btn-primary" id="searchBtn">Search</button>
+    </div>
+
+    <div style="margin-top:10px">
+      <span id="pinMsg" class="badge">PIN check uses your backend (Cloudflare Worker).</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>Why ARH Rentals</h3>
+    <div class="grid-3">
+      <div class="card"><div class="card-body">
+        <h3>Owner-first marketplace</h3>
+        <p>Phase 1 में सिर्फ owners listings. Agents बाद में optional होंगे.</p>
+      </div></div>
+      <div class="card"><div class="card-body">
+        <h3>Premium experience</h3>
+        <p>SquareYards-style clean UI, less spam, serious renters & owners.</p>
+      </div></div>
+      <div class="card"><div class="card-body">
+        <h3>Zero responsibility</h3>
+        <p>Platform सिर्फ advertisement & information access देता है. Deal user-to-user.</p>
+      </div></div>
+    </div>
+    <p class="sub">Tip: “Post Property” से PIN check करके आगे बढ़ो.</p>
+  </section>
+
+  <footer class="footer">
+    © ARH Rentals • Hisar • <a href="legal.html">Disclaimers & Terms</a>
+  </footer>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
