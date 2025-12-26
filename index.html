@@ -1,90 +1,324 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ARH Rentals • Hisar</title>
-  <link rel="stylesheet" href="assets/styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARH Rentals — Hisar</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="index.html">
-      <div class="logo"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">ARH</div>
       <div>
-        <h1>ARH Rentals <small>by Anjani Real Heights</small></h1>
+        <div class="brand-title">ARH Rentals</div>
+        <div class="brand-sub">Rental Classifieds • Hisar (Phase 1)</div>
       </div>
-    </a>
-    <nav class="menu">
-      <a href="listings.html">Rentals</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="legal.html">Legal</a>
-      <a class="btn btn-primary" href="post.html">Post Property</a>
+    </div>
+
+    <nav class="nav">
+      <a href="#listings">Listings</a>
+      <a href="#how">How it works</a>
+      <a href="./legal.html" target="_blank">Legal</a>
     </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container">
-  <section class="hero">
-    <div class="hero-top">
-      <div>
-        <div class="kicker">
-          <span class="badge good">HISAR (Starting City)</span>
-          <span class="badge">Owner-first • No agents (phase 1)</span>
-          <span class="badge">Pay-to-unlock contacts</span>
-        </div>
-        <h2>Find rentals in Hisar—fast, clean, and premium.</h2>
-        <p>
-          Browse verified-format listings (self-declared owners). 
-          Contact details and exact address are available after paid unlock.
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Find Rentals in Hisar — quickly, safely, and self-service.</h1>
+        <p class="muted">
+          ARH Rentals is an information-access platform. Owners post listings. Tenants unlock details after OTP.
+          No brokerage. No deal responsibility.
         </p>
+
+        <!-- PINCODE CHECK -->
+        <div class="card">
+          <div class="card-title">Check service availability</div>
+          <div class="row">
+            <input id="pincode" type="text" inputmode="numeric" maxlength="6" placeholder="Enter Pincode (125001 / 125005)" />
+            <button id="btnCheckPin" class="btn primary">Check</button>
+          </div>
+          <div id="pinResult" class="hint"></div>
+        </div>
+
+        <!-- OTP BOX -->
+        <div id="otpCard" class="card hidden">
+          <div class="card-title">Verify mobile (OTP)</div>
+
+          <div class="row">
+            <input id="mobile" type="text" inputmode="numeric" maxlength="10" placeholder="Mobile number (10 digits)" />
+            <button id="btnSendOtp" class="btn">Send OTP</button>
+          </div>
+
+          <div class="row">
+            <input id="otp" type="text" inputmode="numeric" maxlength="8" placeholder="Enter OTP" />
+            <button id="btnVerifyOtp" class="btn primary">Verify</button>
+          </div>
+
+          <div id="otpResult" class="hint"></div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+          <button id="btnBrowse" class="btn outline" disabled>Browse listings</button>
+          <button id="btnPost" class="btn outline" disabled>Post property (owner)</button>
+        </div>
       </div>
-      <a class="btn btn-accent" href="post.html">+ Post your property</a>
-    </div>
 
-    <div class="searchbar">
-      <input class="input" id="pincode" placeholder="Enter PIN code (e.g., 125001)"/>
-      <select id="ptype">
-        <option value="">Property type (any)</option>
-        <option>House</option>
-        <option>Shop</option>
-        <option>Office</option>
-      </select>
-      <input class="input" id="maxrent" placeholder="Max rent (e.g., 15000)"/>
-      <input class="input" value="HISAR" disabled />
-      <button class="btn btn-primary" id="searchBtn">Search</button>
-    </div>
+      <div class="hero-right">
+        <div class="mock">
+          <div class="mock-top">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-line w80"></div>
+            <div class="mock-line w60"></div>
+            <div class="mock-line w90"></div>
+            <div class="mock-card">
+              <div class="mock-line w70"></div>
+              <div class="mock-line w40"></div>
+              <div class="mock-line w50"></div>
+              <div class="mock-badge">OTP Verified</div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-line w80"></div>
+              <div class="mock-line w30"></div>
+              <div class="mock-line w60"></div>
+              <div class="mock-badge gray">Details Locked</div>
+            </div>
+          </div>
+        </div>
 
-    <div style="margin-top:10px">
-      <span id="pinMsg" class="badge">PIN check uses your backend (Cloudflare Worker).</span>
-    </div>
-  </section>
+        <div class="mini-note">
+          <b>Phase 1:</b> Hisar only (125001, 125005). <br/>
+          Next: Listings, unlock plans, payments.
+        </div>
+      </div>
+    </section>
 
-  <section class="section">
-    <h3>Why ARH Rentals</h3>
-    <div class="grid-3">
-      <div class="card"><div class="card-body">
-        <h3>Owner-first marketplace</h3>
-        <p>Phase 1 में सिर्फ owners listings. Agents बाद में optional होंगे.</p>
-      </div></div>
-      <div class="card"><div class="card-body">
-        <h3>Premium experience</h3>
-        <p>SquareYards-style clean UI, less spam, serious renters & owners.</p>
-      </div></div>
-      <div class="card"><div class="card-body">
-        <h3>Zero responsibility</h3>
-        <p>Platform सिर्फ advertisement & information access देता है. Deal user-to-user.</p>
-      </div></div>
-    </div>
-    <p class="sub">Tip: “Post Property” से PIN check करके आगे बढ़ो.</p>
-  </section>
+    <!-- LISTINGS (DEMO UI) -->
+    <section id="listings" class="section">
+      <div class="section-head">
+        <h2>Rental Listings (Demo UI)</h2>
+        <p class="muted">Right now this is demo. Next step: connect real listings database.</p>
+      </div>
 
-  <footer class="footer">
-    © ARH Rentals • Hisar • <a href="legal.html">Disclaimers & Terms</a>
-  </footer>
-</main>
+      <div class="grid">
+        <div class="listing">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div class="title">2BHK • Sector 14 • Hisar</div>
+            <div class="sub">₹12,000 / month • Family preferred</div>
+            <div class="locked">📵 Phone & exact address locked</div>
+          </div>
+          <button class="btn small">Unlock</button>
+        </div>
 
-<script src="assets/app.js"></script>
+        <div class="listing">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div class="title">Shop • Pocket A • Sector 14</div>
+            <div class="sub">₹18,000 / month • Main road</div>
+            <div class="locked">📵 Phone & exact address locked</div>
+          </div>
+          <button class="btn small">Unlock</button>
+        </div>
+
+        <div class="listing">
+          <div class="thumb"></div>
+          <div class="meta">
+            <div class="title">1RK • Near Income Tax Office</div>
+            <div class="sub">₹6,500 / month • Single person</div>
+            <div class="locked">📵 Phone & exact address locked</div>
+          </div>
+          <button class="btn small">Unlock</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section">
+      <div class="section-head">
+        <h2>How it works</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-no">1</div>
+          <div>
+            <b>Enter Pincode</b>
+            <div class="muted">We only operate in selected areas in phase 1.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-no">2</div>
+          <div>
+            <b>Verify Mobile (OTP)</b>
+            <div class="muted">OTP is for account access only — not police verification.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-no">3</div>
+          <div>
+            <b>Browse & Unlock Details</b>
+            <div class="muted">Phone/address/photos unlocked only after plan/payment (next step).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <b>ARH Rentals</b> • by Anjani Real Heights
+      </div>
+      <div class="muted">
+        Independent platform. Not affiliated with any other real estate company.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ===== CONFIG =====
+    const API_BASE = "https://arh-backend.manishsoni696.workers.dev";
+
+    // ===== ELEMENTS =====
+    const pincode = document.getElementById("pincode");
+    const btnCheckPin = document.getElementById("btnCheckPin");
+    const pinResult = document.getElementById("pinResult");
+
+    const otpCard = document.getElementById("otpCard");
+    const mobile = document.getElementById("mobile");
+    const otp = document.getElementById("otp");
+    const btnSendOtp = document.getElementById("btnSendOtp");
+    const btnVerifyOtp = document.getElementById("btnVerifyOtp");
+    const otpResult = document.getElementById("otpResult");
+
+    const btnBrowse = document.getElementById("btnBrowse");
+    const btnPost = document.getElementById("btnPost");
+
+    let pinAllowed = false;
+    let otpVerified = false;
+
+    function setHint(el, msg, ok=false){
+      el.textContent = msg;
+      el.classList.toggle("ok", ok);
+      el.classList.toggle("bad", !ok);
+    }
+
+    function refreshActions(){
+      const enabled = pinAllowed && otpVerified;
+      btnBrowse.disabled = !enabled;
+      btnPost.disabled = !enabled;
+    }
+
+    // ===== PIN CHECK =====
+    btnCheckPin.addEventListener("click", async () => {
+      const pin = (pincode.value || "").trim();
+      if(pin.length !== 6){
+        setHint(pinResult, "Enter valid 6-digit pincode", false);
+        return;
+      }
+      setHint(pinResult, "Checking...", true);
+
+      try{
+        const res = await fetch(`${API_BASE}/check-pincode?pincode=${encodeURIComponent(pin)}`);
+        const data = await res.json();
+
+        if(data.success && data.allowed){
+          pinAllowed = true;
+          setHint(pinResult, "Service available ✅ Now verify OTP", true);
+          otpCard.classList.remove("hidden");
+        } else {
+          pinAllowed = false;
+          otpVerified = false;
+          otpCard.classList.add("hidden");
+          setHint(pinResult, "Service not available in this pincode ❌", false);
+        }
+        refreshActions();
+      }catch(e){
+        setHint(pinResult, "Error connecting to server", false);
+      }
+    });
+
+    // ===== SEND OTP =====
+    btnSendOtp.addEventListener("click", async () => {
+      const m = (mobile.value || "").trim();
+      if(!/^[6-9]\d{9}$/.test(m)){
+        setHint(otpResult, "Enter valid 10-digit mobile number", false);
+        return;
+      }
+
+      btnSendOtp.disabled = true;
+      setHint(otpResult, "Sending OTP...", true);
+
+      try{
+        const res = await fetch(`${API_BASE}/send-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mobile: m })
+        });
+        const data = await res.json();
+        if(data.success){
+          setHint(otpResult, "OTP sent ✅ Please enter OTP", true);
+        } else {
+          setHint(otpResult, data.message || "OTP send failed", false);
+        }
+      }catch(e){
+        setHint(otpResult, "Network error while sending OTP", false);
+      } finally {
+        btnSendOtp.disabled = false;
+      }
+    });
+
+    // ===== VERIFY OTP =====
+    btnVerifyOtp.addEventListener("click", async () => {
+      const m = (mobile.value || "").trim();
+      const o = (otp.value || "").trim();
+
+      if(!/^[6-9]\d{9}$/.test(m)){
+        setHint(otpResult, "Enter valid mobile first", false);
+        return;
+      }
+      if(o.length < 4){
+        setHint(otpResult, "Enter OTP", false);
+        return;
+      }
+
+      btnVerifyOtp.disabled = true;
+      setHint(otpResult, "Verifying OTP...", true);
+
+      try{
+        const res = await fetch(`${API_BASE}/verify-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mobile: m, otp: o })
+        });
+        const data = await res.json();
+
+        if(data.success && data.verified){
+          otpVerified = true;
+          setHint(otpResult, "OTP verified ✅ Access unlocked", true);
+        } else {
+          otpVerified = false;
+          setHint(otpResult, data.message || "OTP invalid", false);
+        }
+        refreshActions();
+      }catch(e){
+        otpVerified = false;
+        setHint(otpResult, "Network error while verifying OTP", false);
+        refreshActions();
+      } finally {
+        btnVerifyOtp.disabled = false;
+      }
+    });
+
+    // Placeholder actions
+    btnBrowse.addEventListener("click", () => alert("Next step: Real listings + Unlock plans"));
+    btnPost.addEventListener("click", () => alert("Next step: Owner listing form + save to DB"));
+  </script>
 </body>
 </html>
