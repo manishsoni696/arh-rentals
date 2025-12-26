@@ -1,1 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Property • ARH Rentals</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body>
 
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"></div>
+      <div>
+        <h1>ARH Rentals <small>by Anjani Real Heights</small></h1>
+      </div>
+    </a>
+    <nav class="menu">
+      <a href="listings.html">Rentals</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="legal.html">Legal</a>
+      <a class="btn btn-primary" href="post.html">Post Property</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="kicker">
+      <span class="badge good">Self-Declared Owner</span>
+      <span class="badge">Hisar</span>
+    </div>
+    <h2 id="propTitle" style="margin-top:10px">Property</h2>
+    <p style="color:var(--muted);margin-top:8px">Preview information. Unlock contact & exact location with a paid plan.</p>
+  </section>
+
+  <div class="detail" id="propBox">
+    <div class="card detail-left">
+      <div class="gallery"></div>
+      <div class="pad">
+        <div class="row">
+          <div class="price" id="propPrice">₹ 0 /mo</div>
+          <div class="badge">Preview</div>
+        </div>
+        <div class="prop-meta" style="margin-top:12px">
+          <span class="badge" id="propArea"></span>
+          <span class="badge" id="propPin"></span>
+          <span class="badge" id="propType"></span>
+          <span class="badge" id="propSize"></span>
+          <span class="badge" id="propFurnish"></span>
+        </div>
+
+        <div class="hr"></div>
+        <h3>Description</h3>
+        <p class="sub">
+          Full photos, phone number and exact address are shown only after unlock.
+          This is an advertisement portal only; users must verify details independently.
+        </p>
+      </div>
+    </div>
+
+    <div class="card detail-right">
+      <div class="pad">
+        <h3 style="margin-top:0">Unlock Details</h3>
+        <p class="sub">Unlock phone number, full photos & address based on your selected plan.</p>
+        <a class="btn btn-primary" href="pricing.html">Unlock Now</a>
+        <div class="hr"></div>
+        <div class="badge warn">No verification. No deal guarantee.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © ARH Rentals • <a href="legal.html">Legal</a>
+  </footer>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
