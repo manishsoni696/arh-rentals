@@ -129,6 +129,20 @@
     }
   }
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get("plan");
+
+  if (!plan) return;
+
+  const el = document.querySelector(`[data-plan="${plan}"]`);
+  if (el) {
+    el.classList.add("selected");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+});
+</script>
 </body>
 </html>
 
