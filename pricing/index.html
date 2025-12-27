@@ -1,169 +1,130 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pricing • ARH Rentals</title>
-  <link rel="stylesheet" href="/assets/styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pricing</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
 
-<header class="site-header">
-  <div class="container navbar">
-    <a class="brand" href="/">
-      <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
-      <div class="brand-title">
-        <strong>ARH Rentals</strong>
-        <span>by Anjani Real Heights</span>
+  <header class="site-header">
+    <div class="container">
+      <div class="navbar">
+        <a class="brand" href="./index.html">
+          <img class="brand-logo" src="./assets/arh-logo.png" alt="ARH Logo" />
+          <div class="brand-title">
+            <strong>Anjani Real Heights</strong>
+            <span>Trusted Property Consultants</span>
+          </div>
+        </a>
+
+        <nav class="menu">
+          <a href="./index.html">Home</a>
+          <a href="./pricing.html">Pricing</a>
+          <a href="./contact.html">Contact</a>
+        </nav>
+
+        <a class="btn btn-primary" href="./contact.html">Get Quote</a>
       </div>
-    </a>
-
-    <nav class="menu">
-      <a href="/">Home</a>
-      <a href="/listings">Listings</a>
-      <a href="/pricing">Plans</a>
-      <a href="/legal">Legal</a>
-      <a class="btn btn-primary" href="/post">Post Property</a>
-    </nav>
-  </div>
-</header>
-
-<main class="container">
-  <div style="height:16px"></div>
-
-  <section class="hero">
-    <h2 style="margin:0">Pricing (Hisar • Phase 1)</h2>
-    <p style="color:var(--muted);margin-top:8px">
-      Pricing ensures serious owners & tenants, reduces spam, and keeps the platform premium.
-    </p>
-  </section>
-
-  <div class="notice" style="margin-top:14px">
-    ✅ 100% Secure Checkout • ✅ Verified Support • ✅ Clear Refund/Policy Mentioned in Legal
-  </div>
-
-  <div class="trust-strip">
-    <span>🔒 Secure Payments</span>
-    <span>✔ Verified Listings</span>
-    <span>📞 Local Support (Hisar)</span>
-  </div>
-
-  <!-- OWNER PLANS -->
-  <section class="section">
-    <h3>Owner Listing Plans</h3>
-    <div class="grid-3">
-
-      <div class="card" data-plan="standard">
-        <div class="card-body">
-          <h3>Standard (15 days)</h3>
-          <div class="price">₹ 199</div>
-          <p>1 listing • Visible for 15 days • Auto-hide after expiry.</p>
-          <a href="/post?plan=standard" class="btn">Choose Standard</a>
-        </div>
-      </div>
-
-      <!-- Most Popular Owner Plan -->
-      <div class="card featured" data-plan="premium">
-        <div class="card-body">
-          <span class="tag">Most Popular</span>
-          <h3>Premium ⭐ (30 days)</h3>
-          <div class="price">₹ 349</div>
-          <p>1 listing • Higher visibility • Faster responses.</p>
-          <a href="/post?plan=premium" class="btn btn-primary">Go Premium</a>
-        </div>
-      </div>
-
-      <div class="card" data-plan="extended">
-        <div class="card-body">
-          <h3>Extended (60 days)</h3>
-          <div class="price">₹ 599</div>
-          <p>1 listing • Long exposure • Ideal for patient owners.</p>
-          <a href="/post?plan=extended" class="btn">Choose Extended</a>
-        </div>
-      </div>
-
     </div>
-  </section>
+  </header>
 
-  <!-- TENANT PLANS -->
-  <section class="section">
-    <h3>Tenant Unlock Plans</h3>
-    <div class="grid-3">
+  <main class="container">
+    <section class="hero">
+      <h1>Pricing Plans</h1>
+      <p class="muted">Choose a plan that fits your needs. Click any plan to select.</p>
 
-      <div class="card">
-        <div class="card-body">
-          <h3>5 Listings Unlock</h3>
-          <div class="price">₹ 199</div>
-          <p>7 days • Unlock phone & address.</p>
-        </div>
+      <div class="trust-strip">
+        <span>✅ Transparent Pricing</span>
+        <span>✅ Local Expertise</span>
+        <span>✅ Fast Deal Support</span>
       </div>
 
-      <div class="card featured">
-        <div class="card-body">
-          <span class="tag">Most Popular</span>
-          <h3>10 Listings Unlock ⭐</h3>
-          <div class="price">₹ 349</div>
-          <p>10 days • Best value plan.</p>
-        </div>
+      <div class="notice">
+        Tip: <b>Premium</b> is marked as <b>Most Popular</b>. Click any card to highlight as <b>Selected</b>.
       </div>
+    </section>
 
-      <div class="card">
+    <section class="grid-3" id="pricingGrid">
+
+      <!-- BASIC -->
+      <article class="card" data-plan="basic">
         <div class="card-body">
-          <h3>Important</h3>
-          <p class="sub">Fees are for information access only. No deal guarantee.</p>
-        </div>
-      </div>
+          <h2>Basic</h2>
+          <div class="price">₹4,999</div>
+          <p class="muted">For quick consultation & guidance.</p>
 
-    </div>
-  </section>
+          <div class="hr"></div>
+
+          <p class="small">Includes:</p>
+          <div class="pills">
+            <span class="pill">Call Support</span>
+            <span class="pill">Market Guidance</span>
+            <span class="pill">Deal Check</span>
+          </div>
+
+          <div class="hr"></div>
+
+          <button class="btn btn-primary select-btn" type="button">Select Plan</button>
+        </div>
+      </article>
+
+      <!-- PREMIUM (MOST POPULAR) -->
+      <article class="card featured selected" data-plan="premium">
+        <span class="tag">Most Popular</span>
+        <div class="card-body">
+          <h2>Premium</h2>
+          <div class="price">₹14,999</div>
+          <p class="muted">Best value for buyers & sellers.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">Includes:</p>
+          <div class="pills">
+            <span class="pill">Site Visit</span>
+            <span class="pill">Negotiation Help</span>
+            <span class="pill">Documentation</span>
+            <span class="pill">Priority Support</span>
+          </div>
+
+          <div class="hr"></div>
+
+          <button class="btn btn-primary select-btn" type="button">Selected</button>
+        </div>
+      </article>
+
+      <!-- PRO -->
+      <article class="card" data-plan="pro">
+        <div class="card-body">
+          <h2>Pro</h2>
+          <div class="price">₹29,999</div>
+          <p class="muted">For serious investors & complex deals.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">Includes:</p>
+          <div class="pills">
+            <span class="pill">Multiple Visits</span>
+            <span class="pill">Legal Coordination</span>
+            <span class="pill">End-to-End Support</span>
+          </div>
+
+          <div class="hr"></div>
+
+          <button class="btn btn-primary select-btn" type="button">Select Plan</button>
+        </div>
+      </article>
+
+    </section>
+  </main>
 
   <footer class="footer">
-    © 2025 ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
-    <div style="margin-top:8px">
-      Disclaimer: We do not guarantee or assure 100% lead generation.
+    <div class="container">
+      © <span id="year"></span> Anjani Real Heights • <a href="./contact.html">Contact</a>
     </div>
   </footer>
-</main>
 
-<!-- ✅ FINAL JS (NO CONFLICTS) -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
-  const plan = params.get("plan");
-
-  function selectCard(el, shouldScroll = false) {
-    if (!el) return;
-
-    document.querySelectorAll(".card.selected")
-      .forEach(c => c.classList.remove("selected"));
-
-    el.classList.add("selected");
-
-    if (shouldScroll) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }
-
-  // Case 1: plan param present → highlight + scroll
-  if (plan) {
-    const el = document.querySelector(`[data-plan="${plan}"]`);
-    if (el) {
-      selectCard(el, true);
-      return;
-    }
-  }
-
-  // Case 2: default → highlight Most Popular owner plan (NO scroll)
-  const defaultPopular =
-    document.querySelector('.card.featured[data-plan="premium"]') ||
-    document.querySelector('.card.featured[data-plan]') ||
-    document.querySelector('.card.featured');
-
-  if (defaultPopular) {
-    selectCard(defaultPopular, false);
-  }
-});
-</script>
-
+  <script src="./script.js"></script>
 </body>
 </html>
