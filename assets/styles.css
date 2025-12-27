@@ -90,7 +90,7 @@ a:hover{color:var(--blue2)}
 }
 .trust-strip span{display:inline-flex; align-items:center; gap:6px}
 
-/* ✅ PRICING GRID (tumhari pricing page me grid-3 hai) */
+/* ✅ PRICING GRID */
 .grid-3{
   display:grid;
   grid-template-columns:1fr;
@@ -104,6 +104,18 @@ a:hover{color:var(--blue2)}
 .price{font-size:28px; font-weight:700; margin:10px 0; color:#fff}
 .small{font-size:12px; color:var(--muted)}
 .muted,.sub{color:var(--muted)}
+
+/* ✅ ADD: hr + pills (missing earlier) */
+.hr{height:1px; background:var(--line); margin:14px 0}
+.pills{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.pill{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.03);
+  color:var(--muted);
+}
 
 /* CARD */
 .card{
@@ -139,7 +151,7 @@ a:hover{color:var(--blue2)}
   background: linear-gradient(180deg, rgba(29,161,242,.12), rgba(15,23,32,.86));
 }
 
-/* ✅ Most Popular tag (HTML wala <span class="tag">) */
+/* ✅ Most Popular tag */
 .tag{
   position:absolute;
   top:12px;
@@ -157,7 +169,7 @@ a:hover{color:var(--blue2)}
   color:#eaf7ff;
 }
 
-/* ✅ SELECTED (JS adds .selected) */
+/* ✅ SELECTED */
 .card.selected{
   border:3px solid rgba(29,161,242,.95) !important;
   box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
@@ -165,7 +177,7 @@ a:hover{color:var(--blue2)}
   background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
 }
 
-/* Selected badge top-left (tag top-right, no overlap) */
+/* Selected badge top-left */
 .card.selected::before{
   content:"SELECTED";
   position:absolute;
