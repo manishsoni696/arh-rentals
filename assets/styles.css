@@ -127,7 +127,8 @@ a:hover{color:var(--blue2)}
   position:relative;
   transition: transform .2s ease, box-shadow .2s ease;
 }
-.card-body{padding:18px}
+.card-body{padding:46px 18px 18px;
+}
 .card h2,.card h3{margin:0 0 8px}
 
 .card:hover{
