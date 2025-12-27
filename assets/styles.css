@@ -212,3 +212,20 @@ a:hover{color:var(--blue2)}
   background: rgba(29,161,242,.08);
   color:var(--text);
 }
+.trust-strip{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:14px 0 22px;
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  color:var(--muted);
+  font-size:13px;
+}
+.trust-strip span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
