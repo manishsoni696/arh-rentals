@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // add selected
     el.classList.add("selected");
-    if (plan) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (plan) if (plan) {   el.scrollIntoView({ behavior: "smooth", block: "center" }); }
 
     // ensure Most Popular tag exists (only for featured cards)
     if (el.classList.contains("featured")) {
