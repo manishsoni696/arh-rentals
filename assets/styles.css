@@ -362,3 +362,25 @@ a:hover{color:var(--blue2)}
   z-index: 2;
   white-space: nowrap;
 }
+/* ===== Selected Plan Highlight (STRONG) ===== */
+.card.selected{
+  border-color: rgba(29,161,242,.95) !important;
+  box-shadow: 0 0 0 3px rgba(29,161,242,.25), 0 18px 50px rgba(0,0,0,.45) !important;
+  transform: translateY(-2px);
+}
+
+.card.selected::before{
+  content:"SELECTED";
+  position:absolute;
+  top:12px; right:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.8px;
+  background: rgba(29,161,242,.22);
+  border: 1px solid rgba(29,161,242,.55);
+  color: #eaf7ff;
+}
+
+/* ensure card can hold ::before */
+.card{ position: relative; }
