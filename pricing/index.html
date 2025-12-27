@@ -62,6 +62,7 @@
         </div>
       </div>
 
+      <!-- Most Popular Owner Plan -->
       <div class="card featured" data-plan="premium">
         <div class="card-body">
           <span class="tag">Most Popular</span>
@@ -152,8 +153,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Case 2: default → highlight Most Popular only (NO scroll)
+  // Case 2: default → highlight Most Popular owner plan (NO scroll)
   const defaultPopular =
+    document.querySelector('.card.featured[data-plan="premium"]') ||
     document.querySelector('.card.featured[data-plan]') ||
     document.querySelector('.card.featured');
 
