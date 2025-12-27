@@ -229,3 +229,22 @@ a:hover{color:var(--blue2)}
   align-items:center;
   gap:6px;
 }
+.trust-strip{
+  margin: 16px 0 24px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px dashed rgba(29,161,242,.45);
+  border-radius: 12px;
+  background: rgba(29,161,242,.08);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.trust-strip span{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
