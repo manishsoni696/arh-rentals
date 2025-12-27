@@ -48,128 +48,117 @@
     <span>📞 Local Support (Hisar)</span>
   </div>
 
+  <!-- OWNER PLANS -->
   <section class="section">
     <h3>Owner Listing Plans</h3>
     <div class="grid-3">
-      <div class="card" data-plan="standard"><div class="card-body">
-        <h3>Standard (15 days)</h3>
-        <div class="price">₹ 199</div>
-        <p>1 listing • Visible for 15 days • Auto-hide after expiry (not deleted).</p>
-        <a href="/post?plan=standard" class="btn">Choose Standard</a>
-      </div></div>
 
-      <div class="card featured" data-plan="premium"><div class="card-body">
-        <span class="tag">Most Popular</span>
-        <h3>Premium ⭐ (30 days)</h3>
-        <div class="price">₹ 349</div>
-        <p>1 listing • Higher visibility • Best for faster responses.</p>
-        <a href="/post?plan=premium" class="btn btn-primary">Go Premium</a>
-      </div></div>
+      <div class="card" data-plan="standard">
+        <div class="card-body">
+          <h3>Standard (15 days)</h3>
+          <div class="price">₹ 199</div>
+          <p>1 listing • Visible for 15 days • Auto-hide after expiry.</p>
+          <a href="/post?plan=standard" class="btn">Choose Standard</a>
+        </div>
+      </div>
 
-      <div class="card" data-plan="extended"><div class="card-body">
-        <h3>Extended (60 days)</h3>
-        <div class="price">₹ 599</div>
-        <p>1 listing • Long exposure • Ideal if you can wait for right tenant.</p>
-        <a href="/post?plan=extended" class="btn">Choose Extended</a>
-      </div></div>
+      <div class="card featured" data-plan="premium">
+        <div class="card-body">
+          <span class="tag">Most Popular</span>
+          <h3>Premium ⭐ (30 days)</h3>
+          <div class="price">₹ 349</div>
+          <p>1 listing • Higher visibility • Faster responses.</p>
+          <a href="/post?plan=premium" class="btn btn-primary">Go Premium</a>
+        </div>
+      </div>
+
+      <div class="card" data-plan="extended">
+        <div class="card-body">
+          <h3>Extended (60 days)</h3>
+          <div class="price">₹ 599</div>
+          <p>1 listing • Long exposure • Ideal for patient owners.</p>
+          <a href="/post?plan=extended" class="btn">Choose Extended</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
+  <!-- TENANT PLANS -->
   <section class="section">
-    <h3>Owner Promotions (Optional)</h3>
+    <h3>Tenant Unlock Plans</h3>
     <div class="grid-3">
-      <div class="card"><div class="card-body">
-        <h3>Featured Listing</h3>
-        <div class="small">7d: ₹399 • 15d: ₹699 • 30d: ₹1,099</div>
-        <p>Limited slots • Rotation-based placement.</p>
-      </div></div>
-      <div class="card"><div class="card-body">
-        <h3>Owner Priority Boost</h3>
-        <div class="small">7d: ₹249 • 15d: ₹399</div>
-        <p>Display preference only • No verification claim.</p>
-      </div></div>
-      <div class="card"><div class="card-body">
-        <h3>Fresh Push (24h)</h3>
-        <div class="small">₹79</div>
-        <p>One-time visibility boost.</p>
-      </div></div>
-    </div>
-  </section>
 
-  <section class="section">
-    <h3>Tenant Unlock Plans (Information Access)</h3>
-    <div class="grid-3">
-      <div class="card"><div class="card-body">
-        <h3>5 Listings Unlock</h3>
-        <div class="price">₹ 199</div>
-        <p>Validity: 7 days • Unlock 5 listing details (phone/photos/address).</p>
-      </div></div>
+      <div class="card">
+        <div class="card-body">
+          <h3>5 Listings Unlock</h3>
+          <div class="price">₹ 199</div>
+          <p>7 days • Unlock phone & address.</p>
+        </div>
+      </div>
 
-      <div class="card featured"><div class="card-body">
-        <span class="tag">Most Popular</span>
-        <h3>10 Listings Unlock ⭐</h3>
-        <div class="price">₹ 349</div>
-        <p>Validity: 10 days • Unlock 10 listing details.</p>
-      </div></div>
+      <div class="card featured">
+        <div class="card-body">
+          <span class="tag">Most Popular</span>
+          <h3>10 Listings Unlock ⭐</h3>
+          <div class="price">₹ 349</div>
+          <p>10 days • Best value plan.</p>
+        </div>
+      </div>
 
-      <div class="card"><div class="card-body">
-        <h3>Important</h3>
-        <p class="sub">Fees are for digital services (visibility/info access) only. No outcome guarantee.</p>
-      </div></div>
+      <div class="card">
+        <div class="card-body">
+          <h3>Important</h3>
+          <p class="sub">Fees are for information access only. No deal guarantee.</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <footer class="footer">
     © 2025 ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
     <div style="margin-top:8px">
-      Disclaimer: We do not guarantee or assure 100% lead generation. ARH Rentals is an information-access platform only and is not responsible for any deal/transaction.
+      Disclaimer: We do not guarantee or assure 100% lead generation.
     </div>
   </footer>
 </main>
 
+<!-- ✅ FINAL JS (NO CONFLICTS) -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan");
 
-  // Helper: select + scroll (optional)
-  function selectCard(el) {
+  function selectCard(el, shouldScroll = false) {
     if (!el) return;
 
-    // remove selected from all cards
-    document.querySelectorAll(".card.selected").forEach(c => c.classList.remove("selected"));
+    document.querySelectorAll(".card.selected")
+      .forEach(c => c.classList.remove("selected"));
 
-    // add selected
     el.classList.add("selected");
-    if (plan) if (plan) {   if (plan) {   el.scrollIntoView({ behavior: "smooth", block: "center" }); } }
 
-    // ensure Most Popular tag exists (only for featured cards)
-    if (el.classList.contains("featured")) {
-      const body = el.querySelector(".card-body");
-      if (body && !body.querySelector(".tag")) {
-        const tag = document.createElement("span");
-        tag.className = "tag";
-        tag.textContent = "Most Popular";
-        body.insertBefore(tag, body.firstChild);
-      }
+    if (shouldScroll) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
 
-  // 1) If plan param exists, select that plan
+  // Case 1: plan param present → highlight + scroll
   if (plan) {
     const el = document.querySelector(`[data-plan="${plan}"]`);
     if (el) {
-      selectCard(el);
+      selectCard(el, true);
       return;
     }
   }
 
-  // 2) Default: highlight the first "Most Popular" (featured) plan with data-plan
-  const defaultMostPopular = document.querySelector('.card.featured[data-plan]') 
-                          || document.querySelector('.card.featured');
+  // Case 2: default → highlight Most Popular only (NO scroll)
+  const defaultPopular =
+    document.querySelector('.card.featured[data-plan]') ||
+    document.querySelector('.card.featured');
 
-  if (defaultMostPopular) {
-    selectCard(defaultMostPopular);
+  if (defaultPopular) {
+    selectCard(defaultPopular, false);
   }
 });
 </script>
