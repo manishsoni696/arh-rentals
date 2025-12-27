@@ -1,65 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<header class="site-header">
-  <div class="header-left">
-    <div class="logo">
-      <strong>ARH</strong><span>Rentals</span>
-    </div>
-  </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARH Rentals — Hisar</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
 
-  <nav class="header-right">
-    <a href="/" class="nav-link">Home</a>
-    <a href="#listings" class="nav-link">Listings</a>
-    <a href="#how-it-works" class="nav-link">How it works</a>
-    <a href="/legal" class="nav-link legal-link">Legal & Disclaimer</a>
-  </nav>
-</header>
 <body>
 
-  <header>
-    <div class="logo">ARH Rentals</div>
-  </header>
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="logo">
+    <strong>ARH</strong><span>Rentals</span>
+  </div>
 
-  <section class="hero">
-    <h1>Find Rental Properties in Hisar (LIVE)</h1>
-    <p>Flats • Houses • Shops</p>
+  <nav>
+    <a href="/">Home</a>
+    <a href="#listings">Listings</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="/legal">Legal & Disclaimer</a>
+  </nav>
+</header>
 
-    <div class="pincode-box">
-      <input type="number" id="pincode" placeholder="Enter Pincode" />
-      <button onclick="checkPincode()">Check</button>
-    </div>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <h1>Find Rental Properties in Hisar (LIVE)</h1>
+  <p class="subtitle">Flats • Houses • Shops</p>
 
-    <p id="pin-result"></p>
-  </section>
+  <div class="pincode-box">
+    <input type="text" id="pincode" placeholder="Enter Pincode" />
+    <button onclick="checkPincode()">Check</button>
+  </div>
+</section>
 
-  <section class="listings">
-    <h2>Available Rentals</h2>
+<!-- ===== LISTINGS ===== -->
+<section id="listings" class="listings">
+  <h2>Available Rentals</h2>
 
-    <div class="card blurred">
-      <h3>2 BHK House</h3>
-      <p>Sector 14, Hisar</p>
-      <button>Unlock Details</button>
-    </div>
+  <div class="card">
+    <h3>2 BHK House</h3>
+    <p>Sector 14, Hisar</p>
+    <button onclick="unlock()">Unlock Details</button>
+  </div>
 
-    <div class="card blurred">
-      <h3>Shop for Rent</h3>
-      <p>Main Market Area</p>
-      <button>Unlock Details</button>
-    </div>
-  </section>
+  <div class="card">
+    <h3>Shop for Rent</h3>
+    <p>Main Market Area</p>
+    <button onclick="unlock()">Unlock Details</button>
+  </div>
+</section>
 
-  <footer>
-    <p>
-      © 2025 ARH Rentals |
-      <a href="legal.html">Legal & Disclaimer</a>
-    </p>
-    <p style="font-size: 12px; color: #777;">
-      Disclaimer: We do not guarantee or assure 100% lead generation.
-    </p>
-  </footer>
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how-it-works" class="how">
+  <h2>How it works</h2>
+  <ol>
+    <li>Enter your pincode (Hisar only)</li>
+    <li>Browse available rentals</li>
+    <li>Unlock details (OTP + plans coming soon)</li>
+  </ol>
+</section>
 
-  <!-- JS -->
-  <script src="assets/app.js"></script>
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>© 2025 ARH Rentals</p>
+  <p class="disclaimer">
+    Disclaimer: We do not guarantee or assure 100% lead generation.
+    ARH Rentals is not a broker and holds no responsibility for deals.
+  </p>
+</footer>
 
+<script src="./assets/app.js"></script>
 </body>
 </html>
