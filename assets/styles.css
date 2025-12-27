@@ -348,3 +348,7 @@ a:hover{color:var(--blue2)}
 .card.selected .tag{
   display:none;
 }
+.card.selected{
+  border: 2px solid #2ea8ff;
+  box-shadow: 0 0 0 2px rgba(46,168,255,.25);
+}
