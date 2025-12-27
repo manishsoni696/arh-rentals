@@ -3,95 +3,132 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Rentals • ARH Rentals</title>
-
-  <!-- Global styles (same family as index) -->
-  <link rel="stylesheet" href="/assets/style.css"/>
+  <title>Listings • ARH Rentals</title>
+  <link rel="stylesheet" href="/assets/styles.css"/>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="site-header">
-  <div class="logo">
-    <strong>ARH</strong><span>Rentals</span>
-  </div>
+  <div class="container navbar">
+    <a class="brand" href="/">
+      <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
+      <div class="brand-title">
+        <strong>ARH Rentals</strong>
+        <span>by Anjani Real Heights</span>
+      </div>
+    </a>
 
-  <nav>
-    <a href="/">Home</a>
-    <a href="/listings.html">Rentals</a>
-    <a href="/pricing.html">Pricing</a>
-    <a href="/legal">Legal</a>
-    <a class="btn-primary" href="/post.html">Post Property</a>
-  </nav>
+    <nav class="menu">
+      <a href="/">Home</a>
+      <a href="/listings">Listings</a>
+      <a href="/pricing">Plans</a>
+      <a href="/legal">Legal</a>
+      <a class="btn btn-primary" href="/post">Post Property</a>
+    </nav>
+  </div>
 </header>
 
 <main class="container">
-
-  <!-- HERO -->
-  <section class="hero" style="padding:24px 0">
-    <h2 style="margin:0">Hisar Rentals</h2>
-    <p class="subtitle">
-      Premium listings with clean filters. Contact details are available after paid unlock.
-    </p>
+  <section class="hero">
+    <h1>Hisar Rentals</h1>
+    <p>Premium listings with clean filters + sorting. Contact details unlock via plans (coming soon).</p>
   </section>
 
-  <!-- LAYOUT -->
-  <div class="layout">
-
-    <!-- FILTERS -->
-    <aside class="card filters">
+  <div class="grid">
+    <aside class="card">
       <div class="card-body">
-        <h3 style="margin:0">Filters</h3>
+        <h2>Filters</h2>
         <div class="hr"></div>
 
-        <label class="small">PIN Code</label>
-        <input id="fPin" class="input filter-input" placeholder="125001"/>
+        <div class="small">PIN Code</div>
+        <input class="input" id="fPin" placeholder="125001"/>
 
-        <label class="small">Type</label>
-        <select id="fType" class="filter-input">
+        <div style="height:10px"></div>
+
+        <div class="small">Type</div>
+        <select class="input" id="fType">
           <option value="">Any</option>
-          <option>House</option>
-          <option>Shop</option>
-          <option>Office</option>
+          <option value="House">House</option>
+          <option value="Shop">Shop</option>
+          <option value="Office">Office</option>
         </select>
 
-        <label class="small">Max Rent</label>
-        <input id="fMax" class="input filter-input" placeholder="15000"/>
+        <div style="height:10px"></div>
+
+        <div class="small">Max Rent</div>
+        <input class="input" id="fMax" placeholder="15000"/>
+
+        <div style="height:10px"></div>
+
+        <div class="small">Sort</div>
+        <select class="input" id="sortBy">
+          <option value="default">Recommended</option>
+          <option value="rent-asc">Rent: Low → High</option>
+          <option value="rent-desc">Rent: High → Low</option>
+        </select>
 
         <div class="hr"></div>
-        <a class="btn" href="/pricing.html">See Pricing</a>
+        <a class="btn btn-primary" href="/pricing">See Plans</a>
       </div>
     </aside>
 
-    <!-- LISTINGS -->
-    <section>
-      <div id="listingWrap" class="listings">
-        <!-- Demo cards (future: JS render) -->
-        <div class="card">
-          <h3>2 BHK House</h3>
-          <p>Sector 14, Hisar • ₹12,000</p>
-          <button data-action="unlock">Unlock Details</button>
+    <section class="card">
+      <div class="card-body">
+        <h2>Listings</h2>
+        <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
+
+        <div id="listingWrap" class="listings" style="margin-top:12px">
+          <div class="listing" data-rent="12000">
+            <div>
+              <h3>2 BHK House</h3>
+              <p>Sector 14 • Hisar</p>
+              <div class="pills">
+                <span class="pill">House</span>
+                <span class="pill">₹12,000</span>
+                <span class="pill">125001</span>
+              </div>
+            </div>
+            <button class="btn">Unlock Details</button>
+          </div>
+
+          <div class="listing" data-rent="18000">
+            <div>
+              <h3>Shop for Rent</h3>
+              <p>Main Market Area</p>
+              <div class="pills">
+                <span class="pill">Shop</span>
+                <span class="pill">₹18,000</span>
+                <span class="pill">125001</span>
+              </div>
+            </div>
+            <button class="btn">Unlock Details</button>
+          </div>
+
+          <div class="listing" data-rent="6500">
+            <div>
+              <h3>1 RK</h3>
+              <p>Near Income Tax Office</p>
+              <div class="pills">
+                <span class="pill">House</span>
+                <span class="pill">₹6,500</span>
+                <span class="pill">125005</span>
+              </div>
+            </div>
+            <button class="btn">Unlock Details</button>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Shop for Rent</h3>
-          <p>Main Market Area • ₹18,000</p>
-          <button data-action="unlock">Unlock Details</button>
-        </div>
-
-        <div class="card">
-          <h3>1 RK / Studio</h3>
-          <p>Railway Road • ₹6,500</p>
-          <button data-action="unlock">Unlock Details</button>
+        <div class="hr"></div>
+        <div class="notice">
+          Filters + sorting UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
         </div>
       </div>
-
-      <footer class="footer">
-        © 2025 ARH Rentals • <a href="/legal">Legal</a>
-      </footer>
     </section>
-
   </div>
+
+  <footer class="footer">
+    © 2025 ARH Rentals • <a href="/legal">Legal</a>
+  </footer>
 </main>
 
 <script src="/assets/app.js"></script>
