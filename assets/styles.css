@@ -485,3 +485,76 @@ a:hover{color:var(--blue2)}
   background: rgba(29,161,242,.18);
   border-color: rgba(29,161,242,.55);
 }
+/* =========================
+   FINAL CLEAN: TAG + SELECTED
+   (keep only this active at end)
+========================= */
+
+/* kill any pseudo MOST POPULAR badges if present */
+.card.featured::before,
+.card.featured::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* use only the HTML <span class="tag"> */
+.card{ position: relative; }
+
+.tag{
+  position:absolute !important;
+  top:12px !important;
+  right:12px !important;
+  z-index:10 !important;
+  margin:0 !important;
+
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  white-space:nowrap;
+
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(5,15,25,.55);
+  color: rgba(255,255,255,.92);
+}
+
+/* super visible selected state (JS adds .selected) */
+.card.selected{
+  border:2px solid rgba(29,161,242,.95) !important;
+  box-shadow:
+    0 0 0 4px rgba(29,161,242,.28),
+    0 22px 55px rgba(0,0,0,.55) !important;
+  transform: translateY(-3px) scale(1.01) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(29,161,242,.14),
+    rgba(15,23,32,.90)
+  ) !important;
+}
+
+/* selected badge on top-left so it never overlaps tag */
+.card.selected::before{
+  content:"SELECTED";
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:11;
+
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.7px;
+
+  background: rgba(29,161,242,.22);
+  border:1px solid rgba(29,161,242,.55);
+  color:#eaf7ff;
+}
+
+/* button inside selected looks premium */
+.card.selected .btn{
+  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
+  border-color: transparent !important;
+  color:#fff !important;
+  font-weight:600;
+}
