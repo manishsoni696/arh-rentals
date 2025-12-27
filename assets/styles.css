@@ -1,8 +1,6 @@
 :root{
   --bg:#0b0f14;
   --bg2:#09121b;
-  --card:#111a24;
-  --card2:#0f1720;
   --text:#f5f7fa;
   --muted:#b0b6bc;
   --line:rgba(255,255,255,.10);
@@ -18,18 +16,17 @@ html,body{height:100%}
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 55% 15%, rgba(10,116,184,.35), transparent 60%),
-              radial-gradient(900px 500px at 25% 35%, rgba(29,161,242,.18), transparent 65%),
-              linear-gradient(180deg, var(--bg), var(--bg2));
+  background:
+    radial-gradient(1200px 600px at 55% 15%, rgba(10,116,184,.35), transparent 60%),
+    radial-gradient(900px 500px at 25% 35%, rgba(29,161,242,.18), transparent 65%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
   color:var(--text);
 }
 
 a{color:inherit; text-decoration:none}
 a:hover{color:var(--blue2)}
 .container{max-width:1100px; margin:0 auto; padding:0 18px}
-.hr{height:1px; background:var(--line); margin:14px 0}
 
-/* HEADER */
 .site-header{
   position:sticky; top:0; z-index:50;
   backdrop-filter: blur(10px);
@@ -41,26 +38,20 @@ a:hover{color:var(--blue2)}
   gap:16px; padding:12px 0;
 }
 .brand{display:flex; align-items:center; gap:10px}
-
 .brand-logo{
   height:36px;
   width:auto;
   max-width:140px;
   object-fit:contain;
 }
-
 .brand-title{display:flex; flex-direction:column; line-height:1.1}
 .brand-title strong{font-size:15px; letter-spacing:.2px}
 .brand-title span{font-size:12px; color:var(--muted)}
 
-.menu{
-  display:flex; align-items:center; gap:14px;
-  font-size:13px; color:var(--muted);
-}
+.menu{display:flex; align-items:center; gap:14px; font-size:13px; color:var(--muted)}
 .menu a{padding:8px 10px; border-radius:10px}
 .menu a:hover{background: rgba(255,255,255,.06); color:var(--text)}
 
-/* BUTTONS */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   border:1px solid var(--line);
@@ -78,24 +69,9 @@ a:hover{color:var(--blue2)}
 }
 .btn-primary:hover{box-shadow: 0 0 0 3px rgba(29,161,242,.20)}
 
-/* HERO */
 .hero{padding:54px 0 26px}
 .hero h1{margin:0; font-size:34px; letter-spacing:.2px}
 .hero p{margin:10px 0 0; color:var(--muted)}
-
-.input{
-  width:260px; max-width:100%;
-  padding:12px 12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.03);
-  color:var(--text);
-  outline:none;
-}
-.input:focus{
-  border-color: rgba(29,161,242,.55);
-  box-shadow: 0 0 0 3px rgba(29,161,242,.18);
-}
 
 .notice{
   padding:12px 14px;
@@ -120,27 +96,27 @@ a:hover{color:var(--blue2)}
 }
 .trust-strip span{display:inline-flex; align-items:center; gap:6px}
 
-/* PRICING GRID (IMPORTANT) */
+/* ✅ PRICING GRID */
 .grid-3{
   display:grid;
-  grid-template-columns: 1fr;
+  grid-template-columns:1fr;
   gap:14px;
   padding:12px 0 28px;
 }
 @media(min-width:860px){
-  .grid-3{ grid-template-columns: repeat(3, 1fr); }
+  .grid-3{grid-template-columns:repeat(3,1fr)}
 }
 
-.small{font-size:12px; color:var(--muted)}
-.muted{color:var(--muted)}
 .price{font-size:28px; font-weight:700; margin:10px 0; color:#fff}
+.small{font-size:12px; color:var(--muted)}
+.sub, .muted{color:var(--muted)}
 
-/* CARD BASE */
+/* ✅ CARD */
 .card{
   border:1px solid var(--line);
   background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
   overflow:hidden;
   position:relative;
   transition: transform .2s ease, box-shadow .2s ease;
@@ -163,19 +139,18 @@ a:hover{color:var(--blue2)}
   opacity:.6;
 }
 
-/* FEATURED */
+/* ✅ FEATURED (Most Popular) */
 .card.featured{
-  border: 1px solid rgba(29,161,242,.55);
+  border:1px solid rgba(29,161,242,.55);
   background: linear-gradient(180deg, rgba(29,161,242,.12), rgba(15,23,32,.86));
 }
 
-/* MOST POPULAR TAG (ONLY HTML <span class="tag">) */
+/* ✅ Most Popular tag (ONLY this, no pseudo tags) */
 .tag{
   position:absolute;
   top:12px;
   right:12px;
   z-index:10;
-  margin:0;
   padding:6px 10px;
   border-radius:999px;
   font-size:11px;
@@ -187,7 +162,7 @@ a:hover{color:var(--blue2)}
   color:#eaf7ff;
 }
 
-/* SELECTED (JS adds .selected) */
+/* ✅ SELECTED (JS adds .selected) */
 .card.selected{
   border:3px solid rgba(29,161,242,.95) !important;
   box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
@@ -195,7 +170,7 @@ a:hover{color:var(--blue2)}
   background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
 }
 
-/* SELECTED badge (top-left) */
+/* selected badge (top-left, never overlaps tag) */
 .card.selected::before{
   content:"SELECTED";
   position:absolute;
@@ -212,6 +187,7 @@ a:hover{color:var(--blue2)}
   color:#fff;
 }
 
+/* button pop inside selected */
 .card.selected .btn{
   background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
   border-color: transparent !important;
