@@ -42,10 +42,12 @@ a:hover{color:var(--blue2)}
 .brand{
   display:flex; align-items:center; gap:10px;
 }
+/* === Brand Logo Fix (GLOBAL) === */
 .brand-logo{
-  height:34px; width:auto;
-  display:block;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,.35));
+  height:36px;
+  width:auto;
+  max-width:140px;
+  object-fit:contain;
 }
 .brand-title{
   display:flex; flex-direction:column; line-height:1.1;
