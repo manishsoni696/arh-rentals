@@ -384,3 +384,24 @@ a:hover{color:var(--blue2)}
 
 /* ensure card can hold ::before */
 .card{ position: relative; }
+/* ===== Selected Plan Highlight ===== */
+.card.selected {
+  border: 2px solid #1da1f2;
+  box-shadow:
+    0 0 0 3px rgba(29,161,242,0.25),
+    0 20px 50px rgba(0,0,0,0.6);
+  transform: scale(1.02);
+  background: linear-gradient(
+    180deg,
+    rgba(29,161,242,0.12),
+    rgba(15,23,32,0.9)
+  );
+}
+
+/* Button inside selected card */
+.card.selected .btn {
+  background: linear-gradient(180deg,#1da1f2,#0a74b8);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+}
