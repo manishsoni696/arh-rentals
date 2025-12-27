@@ -341,3 +341,7 @@ a:hover{color:var(--blue2)}
   border-radius: 999px;
   letter-spacing: .3px;
 }
+.card.selected::after{
+  top: 12px;
+  right: 12px;
+}
