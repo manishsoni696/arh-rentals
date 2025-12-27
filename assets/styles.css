@@ -558,3 +558,63 @@ a:hover{color:var(--blue2)}
   color:#fff !important;
   font-weight:600;
 }
+/* ===== FINAL FIX (paste at END of styles.css) ===== */
+
+/* Make cards able to hold badges */
+.card{ position: relative; }
+
+/* ---------------- MOST POPULAR (only ONE) ---------------- */
+/* Disable any extra pseudo badges if they exist somewhere */
+.card.featured::after{ content:none !important; }
+.card.featured::before{
+  content:"MOST POPULAR";
+  position:absolute;
+  top:12px; right:12px;
+  z-index:6;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(5,15,25,.55);
+  color: rgba(255,255,255,.92);
+  white-space:nowrap;
+}
+
+/* If you still have <span class="tag"> in HTML, hide it to avoid overlap */
+.card.featured .tag{ display:none !important; }
+
+/* ---------------- SELECTED PLAN (SUPER VISIBLE) ---------------- */
+.card.selected{
+  border: 2px solid rgba(29,161,242,.95) !important;
+  box-shadow:
+    0 0 0 4px rgba(29,161,242,.25),
+    0 22px 55px rgba(0,0,0,.55) !important;
+  transform: scale(1.02);
+  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.92)) !important;
+}
+
+/* Selected badge (top-left so it never clashes with MOST POPULAR on right) */
+.card.selected::after{
+  content:"SELECTED";
+  position:absolute;
+  top:12px; left:12px;
+  z-index:7;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  border:1px solid rgba(29,161,242,.55);
+  background: rgba(29,161,242,.22);
+  color:#eaf7ff;
+}
+
+/* Button inside selected card */
+.card.selected .btn{
+  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
+  border-color: transparent !important;
+  color:#fff !important;
+  font-weight:700;
+}
