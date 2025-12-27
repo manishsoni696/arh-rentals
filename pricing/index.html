@@ -27,23 +27,26 @@
     </nav>
   </div>
 </header>
-  
+
 <main class="container">
   <div style="height:16px"></div>
+
   <section class="hero">
     <h2 style="margin:0">Pricing (Hisar • Phase 1)</h2>
     <p style="color:var(--muted);margin-top:8px">
       Pricing ensures serious owners & tenants, reduces spam, and keeps the platform premium.
     </p>
   </section>
+
   <div class="notice" style="margin-top:14px">
-  ✅ 100% Secure Checkout • ✅ Verified Support • ✅ Clear Refund/Policy Mentioned in Legal
-</div>
+    ✅ 100% Secure Checkout • ✅ Verified Support • ✅ Clear Refund/Policy Mentioned in Legal
+  </div>
+
   <div class="trust-strip">
-  <span>🔒 Secure Payments</span>
-  <span>✔ Verified Listings</span>
-  <span>📞 Local Support (Hisar)</span>
-</div>
+    <span>🔒 Secure Payments</span>
+    <span>✔ Verified Listings</span>
+    <span>📞 Local Support (Hisar)</span>
+  </div>
 
   <section class="section">
     <h3>Owner Listing Plans</h3>
@@ -54,12 +57,15 @@
         <p>1 listing • Visible for 15 days • Auto-hide after expiry (not deleted).</p>
         <a href="/post?plan=standard" class="btn">Choose Standard</a>
       </div></div>
+
       <div class="card featured" data-plan="premium"><div class="card-body">
+        <span class="tag">Most Popular</span>
         <h3>Premium ⭐ (30 days)</h3>
         <div class="price">₹ 349</div>
         <p>1 listing • Higher visibility • Best for faster responses.</p>
         <a href="/post?plan=premium" class="btn btn-primary">Go Premium</a>
       </div></div>
+
       <div class="card" data-plan="extended"><div class="card-body">
         <h3>Extended (60 days)</h3>
         <div class="price">₹ 599</div>
@@ -98,11 +104,14 @@
         <div class="price">₹ 199</div>
         <p>Validity: 7 days • Unlock 5 listing details (phone/photos/address).</p>
       </div></div>
-      <div class="card"><div class="card-body">
+
+      <div class="card featured"><div class="card-body">
+        <span class="tag">Most Popular</span>
         <h3>10 Listings Unlock ⭐</h3>
         <div class="price">₹ 349</div>
         <p>Validity: 10 days • Unlock 10 listing details.</p>
       </div></div>
+
       <div class="card"><div class="card-body">
         <h3>Important</h3>
         <p class="sub">Fees are for digital services (visibility/info access) only. No outcome guarantee.</p>
@@ -111,29 +120,17 @@
   </section>
 
   <footer class="footer">
-  © 2025 ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
-  <div style="margin-top:8px">
-    Disclaimer: We do not guarantee or assure 100% lead generation. ARH Rentals is an information-access platform only and is not responsible for any deal/transaction.
-  </div>
-</footer>
+    © 2025 ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
+    <div style="margin-top:8px">
+      Disclaimer: We do not guarantee or assure 100% lead generation. ARH Rentals is an information-access platform only and is not responsible for any deal/transaction.
+    </div>
+  </footer>
 </main>
-  <script>
-  const params = new URLSearchParams(window.location.search);
-  const plan = params.get("plan");
 
-  if (plan) {
-    const el = document.querySelector(`[data-plan="${plan}"]`);
-    if (el) {
-      el.classList.add("selected");
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }
-</script>
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan");
-
   if (!plan) return;
 
   const el = document.querySelector(`[data-plan="${plan}"]`);
@@ -143,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+
 </body>
 </html>
-
+```0
