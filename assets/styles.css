@@ -418,6 +418,39 @@ a:hover{color:var(--blue2)}
   color: #fff;
   font-weight: 600;
 }
+/* ===== Fix: "Most Popular" overlap + Make selected plan SUPER visible ===== */
+
+.card{ position:relative; }
+
+/* If your CSS is also adding a 2nd badge via ::after, kill it */
+.card.featured::after{ content:none !important; display:none !important; }
+
+/* Keep only the <span class="tag"> badge and place it properly */
+.tag{
+  position:absolute;
+  top:14px;
+  right:14px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.4px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(10,116,184,.25);
+  color: #eaf1ff;
+}
+
+/* Selection highlight (this is what your JS adds: .selected) */
+.card.selected{
+  border-color: rgba(29,161,242,.90) !important;
+  box-shadow: 0 0 0 3px rgba(29,161,242,.22), 0 18px 45px rgba(0,0,0,.45) !important;
+  transform: translateY(-2px);
+}
+
+/* Make selected badge stronger */
+.card.selected .tag{
+  background: rgba(29,161,242,.35);
+  border-color: rgba(29,161,242,.85);
+}
 
 /* Button inside selected card */
 .card.selected .btn {
