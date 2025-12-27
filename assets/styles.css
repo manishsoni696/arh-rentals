@@ -290,3 +290,14 @@ a:hover{color:var(--blue2)}
   background: rgba(29,161,242,.15);
   color:#fff;
 }
+/* Most Popular tag */
+.tag{
+  display:inline-block;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(29,161,242,.45);
+  background: rgba(29,161,242,.12);
+  color: var(--text);
+  margin-bottom:10px;
+}
