@@ -82,7 +82,19 @@
 </footer>
 </main>
 
-<script src="assets/app.js"></script>
+<script src="/assets/app.js"></script>
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get("plan");
+
+  if (plan) {
+    const el = document.querySelector(`[data-plan="${plan}"]`);
+    if (el) {
+      el.classList.add("selected");
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+</script>
 </body>
 </html>
 
