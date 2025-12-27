@@ -131,12 +131,45 @@
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan");
-  if (!plan) return;
 
-  const el = document.querySelector(`[data-plan="${plan}"]`);
-  if (el) {
+  // Helper: select + scroll (optional)
+  function selectCard(el) {
+    if (!el) return;
+
+    // remove selected from all cards
+    document.querySelectorAll(".card.selected").forEach(c => c.classList.remove("selected"));
+
+    // add selected
     el.classList.add("selected");
     el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // ensure Most Popular tag exists (only for featured cards)
+    if (el.classList.contains("featured")) {
+      const body = el.querySelector(".card-body");
+      if (body && !body.querySelector(".tag")) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "Most Popular";
+        body.insertBefore(tag, body.firstChild);
+      }
+    }
+  }
+
+  // 1) If plan param exists, select that plan
+  if (plan) {
+    const el = document.querySelector(`[data-plan="${plan}"]`);
+    if (el) {
+      selectCard(el);
+      return;
+    }
+  }
+
+  // 2) Default: highlight the first "Most Popular" (featured) plan with data-plan
+  const defaultMostPopular = document.querySelector('.card.featured[data-plan]') 
+                          || document.querySelector('.card.featured');
+
+  if (defaultMostPopular) {
+    selectCard(defaultMostPopular);
   }
 });
 </script>
