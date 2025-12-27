@@ -4,35 +4,42 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Rentals • ARH Rentals</title>
-  <link rel="stylesheet" href="assets/styles.css"/>
+
+  <!-- Global styles (same family as index) -->
+  <link rel="stylesheet" href="/assets/style.css"/>
 </head>
 <body>
 
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="index.html">
-      <div class="logo"></div>
-      <div>
-        <h1>ARH Rentals <small>by Anjani Real Heights</small></h1>
-      </div>
-    </a>
-    <nav class="menu">
-      <a href="listings.html">Rentals</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="legal.html">Legal</a>
-      <a class="btn btn-primary" href="post.html">Post Property</a>
-    </nav>
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="logo">
+    <strong>ARH</strong><span>Rentals</span>
   </div>
+
+  <nav>
+    <a href="/">Home</a>
+    <a href="/listings.html">Rentals</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="/legal">Legal</a>
+    <a class="btn-primary" href="/post.html">Post Property</a>
+  </nav>
 </header>
 
 <main class="container">
-  <section class="hero">
+
+  <!-- HERO -->
+  <section class="hero" style="padding:24px 0">
     <h2 style="margin:0">Hisar Rentals</h2>
-    <p style="margin-top:8px;color:var(--muted)">Premium listings with clean filters. Contact details are available after paid unlock.</p>
+    <p class="subtitle">
+      Premium listings with clean filters. Contact details are available after paid unlock.
+    </p>
   </section>
 
+  <!-- LAYOUT -->
   <div class="layout">
-    <aside class="filters card">
+
+    <!-- FILTERS -->
+    <aside class="card filters">
       <div class="card-body">
         <h3 style="margin:0">Filters</h3>
         <div class="hr"></div>
@@ -52,19 +59,41 @@
         <input id="fMax" class="input filter-input" placeholder="15000"/>
 
         <div class="hr"></div>
-        <a class="btn" href="pricing.html">See Pricing</a>
+        <a class="btn" href="/pricing.html">See Pricing</a>
       </div>
     </aside>
 
+    <!-- LISTINGS -->
     <section>
-      <div id="listingWrap" class="listings"></div>
+      <div id="listingWrap" class="listings">
+        <!-- Demo cards (future: JS render) -->
+        <div class="card">
+          <h3>2 BHK House</h3>
+          <p>Sector 14, Hisar • ₹12,000</p>
+          <button data-action="unlock">Unlock Details</button>
+        </div>
+
+        <div class="card">
+          <h3>Shop for Rent</h3>
+          <p>Main Market Area • ₹18,000</p>
+          <button data-action="unlock">Unlock Details</button>
+        </div>
+
+        <div class="card">
+          <h3>1 RK / Studio</h3>
+          <p>Railway Road • ₹6,500</p>
+          <button data-action="unlock">Unlock Details</button>
+        </div>
+      </div>
+
       <footer class="footer">
-        © ARH Rentals • <a href="legal.html">Legal</a>
+        © 2025 ARH Rentals • <a href="/legal">Legal</a>
       </footer>
     </section>
+
   </div>
 </main>
 
-<script src="assets/app.js"></script>
+<script src="/assets/app.js"></script>
 </body>
 </html>
