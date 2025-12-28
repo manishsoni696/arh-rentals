@@ -9,6 +9,7 @@
 /* ===============================
    Footer year (works on any page if #year exists)
 =============================== */
+const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
