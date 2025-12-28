@@ -250,3 +250,42 @@ if (pinBtn) {
     }
   });
 }
+// ===============================
+// POST PAGE: OTP - Send OTP
+// ===============================
+const sendOtpBtn = document.getElementById("sendOtpBtn");
+if (sendOtpBtn) {
+  sendOtpBtn.addEventListener("click", async () => {
+    const mobileEl = document.getElementById("mobileInput");
+    const msgEl = document.getElementById("otpMsg");
+
+    const mobile = String(mobileEl?.value || "").replace(/\D/g, "");
+
+    if (mobile.length !== 10) {
+      msgEl.textContent = "❌ Enter valid 10-digit mobile number";
+      return;
+    }
+
+    msgEl.textContent = "⏳ Sending OTP...";
+
+    try {
+      const res = await fetch(`${BACKEND}/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile })
+      });
+
+      const data = await res.json();
+
+      if (data?.success) {
+        msgEl.textContent = "✅ OTP sent successfully";
+        sessionStorage.setItem("arh_mobile", mobile);
+      } else {
+        msgEl.textContent = "❌ Failed to send OTP";
+      }
+    } catch (e) {
+      console.error(e);
+      msgEl.textContent = "❌ Backend error while sending OTP";
+    }
+  });
+}
