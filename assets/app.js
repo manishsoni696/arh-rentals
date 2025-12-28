@@ -1,4 +1,63 @@
 // ===============================
+// Image Compress (no crop) to ~500KB
+// ===============================
+const TARGET_BYTES = 500 * 1024; // 500KB
+const MAX_DIM = 1600;           // keep aspect ratio, no crop
+const START_QUALITY = 0.78;
+const MIN_QUALITY = 0.55;
+
+function loadImageFromFile(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function calcResize(w, h, maxDim) {
+  if (w <= maxDim && h <= maxDim) return { w, h };
+  const ratio = w / h;
+  if (w > h) return { w: maxDim, h: Math.round(maxDim / ratio) };
+  return { w: Math.round(maxDim * ratio), h: maxDim };
+}
+
+function canvasToBlob(canvas, quality) {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality);
+  });
+}
+
+/**
+ * Compress file to <= 500KB (best-effort), without crop.
+ * Returns: { blob, width, height, quality, size }
+ */
+async function compressImageTo500KB(file) {
+  const img = await loadImageFromFile(file);
+
+  const { w, h } = calcResize(img.naturalWidth, img.naturalHeight, MAX_DIM);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, w, h);
+
+  let q = START_QUALITY;
+  let blob = await canvasToBlob(canvas, q);
+
+  // If still bigger than 500KB, reduce quality step-by-step
+  while (blob && blob.size > TARGET_BYTES && q > MIN_QUALITY) {
+    q = Math.max(MIN_QUALITY, q - 0.06);
+    blob = await canvasToBlob(canvas, q);
+  }
+
+  // Cleanup object URL
+  URL.revokeObjectURL(img.src);
+
+  return { blob, width: w, height: h, quality: q, size: blob?.size || 0 };
+}
+// ===============================
 // PINCODE GATE (MUST before payment)
 // ===============================
 
