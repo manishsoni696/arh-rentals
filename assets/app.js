@@ -66,7 +66,7 @@ let PINCODES = { allowed: [], publicAllowed: [] };
 async function loadPincodes() {
   try {
     // pricing/ page se ../assets/app.js load hota hai, isliye json ka path relative same folder:
-    const res = await fetch("../assets/allowed_pincodes.json", { cache: "no-store" });
+    const res = await fetch("/assets/allowed_pincodes.json", { cache: "no-store" });
     if (!res.ok) throw new Error("pincode json not found");
     PINCODES = await res.json();
   } catch (e) {
