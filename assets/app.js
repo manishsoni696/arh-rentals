@@ -125,6 +125,8 @@ const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // pricing selection
+const pricingGrid = document.getElementById("pricingGrid");
+if (pricingGrid) {
 const cards = document.querySelectorAll(".card");
 const buttons = document.querySelectorAll(".select-btn");
 
@@ -166,3 +168,29 @@ buttons.forEach(btn => {
     alert(`Pincode verified: ${gate.pincode}\nPlan selected: ${card.dataset.plan}`);
   });
 });
+// ===============================
+// Auto compress on photo select
+// ===============================
+const photoInput = document.getElementById("propertyPhotos");
+
+if (photoInput) {
+  photoInput.addEventListener("change", async (e) => {
+    const files = Array.from(e.target.files || []);
+    const compressedFiles = [];
+
+    for (const file of files) {
+      const { blob } = await compressImageTo500KB(file);
+      compressedFiles.push(
+        new File([blob], file.name, { type: "image/jpeg" })
+      );
+    }
+
+    // replace original files with compressed ones
+    const dt = new DataTransfer();
+    compressedFiles.forEach(f => dt.items.add(f));
+    photoInput.files = dt.files;
+
+    alert("Photos optimized (≈500KB each) ✔");
+  });
+} 
+}
