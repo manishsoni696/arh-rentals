@@ -85,10 +85,25 @@ cards.forEach(card => {
 });
 
 buttons.forEach(btn => {
-  btn.addEventListener("click", (e) => {
+  btn.addEventListener("click", async (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // 1) pincode check FIRST
+    const gate = await askAndValidatePincode();
+    if (!gate.ok) return;
+
+    // 2) then select plan
     const card = btn.closest(".card");
-    if (card) setSelected(card);
+    if (!card) return;
+
+    // save pincode for next steps (payment/property form)
+    sessionStorage.setItem("arh_pincode", gate.pincode);
+    sessionStorage.setItem("arh_selected_plan", card.dataset.plan || "");
+
+    setSelected(card);
+
+    // ✅ next step me yahi se Razorpay open karenge
+    alert(`Pincode verified: ${gate.pincode}\nPlan selected: ${card.dataset.plan}`);
   });
 });
