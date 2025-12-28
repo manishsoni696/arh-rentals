@@ -211,4 +211,3 @@ if (photoInput) {
     alert("Photos optimized (≈500KB each) ✔");
   });
 }
-```0
