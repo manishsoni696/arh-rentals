@@ -4,8 +4,9 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Post Property • ARH Rentals</title>
-  <link rel="stylesheet" href="assets/styles.css"/>
+  <link rel="stylesheet" href="/assets/styles.css"/>
 </head>
+
 <body>
 
 <header class="site-header">
@@ -27,31 +28,37 @@
     </nav>
   </div>
 </header>
-  
+
 <main class="container">
   <section class="hero">
     <h2 style="margin:0">Post Property (Owner)</h2>
     <p style="color:var(--muted);margin-top:8px">
-      Step 1: Enter PIN → service availability check.  
-      OTP & payment steps will be enabled next.
+      Step 1: Enter PIN → service availability check. <br/>
+      Step 2: OTP Login → verified token.
     </p>
   </section>
 
+  <!-- STEP 1: PIN -->
   <div class="card" style="margin-top:16px">
     <div class="card-body">
       <h3 style="margin:0">Step 1: PIN Code Check</h3>
+
       <div style="display:grid;grid-template-columns: 1fr auto;gap:10px;margin-top:12px">
-        <input id="postPin" class="input" placeholder="Enter PIN (125001 / 125005)"/>
-        <button id="pinCheckBtn" class="btn btn-primary">Check</button>
+        <input id="postPin" class="input" placeholder="Enter PIN (125001 / 125005)" inputmode="numeric"/>
+        <button id="pinCheckBtn" class="btn btn-primary" type="button">Check</button>
       </div>
+
       <div style="margin-top:10px">
         <span id="postPinMsg" class="badge">Backend check will run here.</span>
       </div>
 
+      <!-- STEP 2 unlock area -->
       <div id="step2" style="display:none;margin-top:16px">
         <div class="hr"></div>
+
         <h3 style="margin:0">Step 2: Property Basics (MVP)</h3>
-        <p class="sub">In the next step we will add OTP + save listing to database.</p>
+        <p class="sub">OTP & payment steps are enabled below.</p>
+
         <input id="propertyPhotos" class="input" type="file" accept="image/*" multiple>
 
         <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;margin-top:12px">
@@ -68,26 +75,49 @@
         </div>
 
         <div class="actions" style="margin-top:14px">
-          <a class="btn btn-primary" href="pricing.html">Choose Plan (Next)</a>
-          <a class="btn" href="listings.html">View Listings</a>
+          <a class="btn btn-primary" href="/pricing">Choose Plan (Next)</a>
+          <a class="btn" href="/listings">View Listings</a>
         </div>
+
+        <!-- ===============================
+             STEP 2: OTP Login (UI)
+        =============================== -->
+        <section id="otpBox" style="margin-top:18px">
+          <div class="hr"></div>
+          <h3 style="margin:0">Step 3: Login via OTP</h3>
+          <p style="opacity:.8;margin:6px 0 12px">
+            Enter mobile → Send OTP → Verify OTP
+          </p>
+
+          <div style="display:grid;grid-template-columns:1fr;gap:10px;max-width:360px">
+            <input id="mobileInput" class="input" placeholder="Mobile (10 digits)" inputmode="numeric" />
+            <button id="sendOtpBtn" class="btn btn-primary" type="button">Send OTP</button>
+
+            <input id="otpInput" class="input" placeholder="Enter OTP" inputmode="numeric" />
+            <button id="verifyOtpBtn" class="btn btn-primary" type="button">Verify OTP</button>
+
+            <div id="otpMsg" style="font-size:14px;opacity:.85">OTP status will show here.</div>
+          </div>
+        </section>
+
       </div>
     </div>
   </div>
 
   <footer class="footer">
-  © 2025 ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
-  <div style="margin-top:8px">
-    Disclaimer: We do not guarantee or assure 100% lead generation. ARH Rentals is an information-access platform only and is not responsible for any deal/transaction.
-  </div>
-</footer>
+    © <span id="year"></span> ARH Rentals • <a href="/legal">Legal</a> • <a href="/pricing">Plans</a>
+    <div style="margin-top:8px">
+      Disclaimer: We do not guarantee or assure 100% lead generation. ARH Rentals is an information-access platform only and is not responsible for any deal/transaction.
+    </div>
+  </footer>
 </main>
 
 <script src="/assets/app.js"></script>
-  <script>
+
+<!-- Optional: highlight plan if coming with ?plan= -->
+<script>
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan");
-
   if (plan) {
     const el = document.querySelector(`[data-plan="${plan}"]`);
     if (el) {
@@ -96,6 +126,6 @@
     }
   }
 </script>
+
 </body>
 </html>
-
