@@ -212,3 +212,41 @@ if (photoInput) {
     alert("Photos optimized (≈500KB each) ✔");
   });
 }
+// ===============================
+// POST PAGE: PIN check (backend)
+// ===============================
+const pinBtn = document.getElementById("pinCheckBtn");
+if (pinBtn) {
+  pinBtn.addEventListener("click", async () => {
+    const pinEl = document.getElementById("postPin");
+    const msgEl = document.getElementById("postPinMsg");
+    const step2El = document.getElementById("step2");
+
+    const pincode = normalizePincode(pinEl?.value);
+
+    if (!pincode || pincode.length !== 6) {
+      if (msgEl) msgEl.textContent = "❌ Enter valid 6-digit PIN";
+      if (step2El) step2El.style.display = "none";
+      return;
+    }
+
+    if (msgEl) msgEl.textContent = "⏳ Checking...";
+    if (step2El) step2El.style.display = "none";
+
+    try {
+      const res = await fetch(`${BACKEND}/check-pincode?pincode=${pincode}`);
+      const data = await res.json();
+
+      if (data?.success && data?.allowed) {
+        if (msgEl) msgEl.textContent = `✅ Service available for ${pincode}`;
+        if (step2El) step2El.style.display = "block";
+        sessionStorage.setItem("arh_pincode", pincode);
+      } else {
+        if (msgEl) msgEl.textContent = `❌ Service not available for ${pincode}`;
+      }
+    } catch (e) {
+      console.error(e);
+      if (msgEl) msgEl.textContent = "❌ Backend not reachable";
+    }
+  });
+}
