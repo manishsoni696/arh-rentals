@@ -1,3 +1,27 @@
+// Firebase imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "chating-ff6e8.firebaseapp.com",
+  projectId: "chating-ff6e8",
+  storageBucket: "chating-ff6e8.appspot.com",
+  messagingSenderId: "75656721928",
+  appId: "1:75656721928:web:21738167baa5d03aef273d"
+};
+
+// Init Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// reCAPTCHA
+window.recaptchaVerifier = new RecaptchaVerifier(
+  'recaptcha-container',
+  { size: 'invisible' },
+  auth
+);
 /* =========================================================
    ARH Rentals - assets/app.js (COMPLETE)
    - Footer year
