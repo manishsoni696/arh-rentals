@@ -58,7 +58,7 @@ if (pinBtn) {
     if (step2El) step2El.style.display = "none";
 
     try {
-      const res = await fetch(`${BACKEND}/check-pincode?pincode=${pincode}`);
+      const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
       const data = await res.json();
 
       if (data?.success && data?.allowed) {
