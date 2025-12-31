@@ -252,6 +252,36 @@ a:hover{color:var(--blue2)}
   color: #666;
   font-size: 13px;
 }
+/* === Pricing: Selected plan highlight (FINAL) === */
+#pricingGrid .card.selected{
+  border: 3px solid rgba(29,161,242,.95) !important;
+  box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
+}
+
+#pricingGrid .card.selected::before{
+  content:"SELECTED";
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:11;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  border:1px solid rgba(29,161,242,.55);
+  background: rgba(29,161,242,.30);
+  color:#fff;
+}
+
+#pricingGrid .card.selected .select-btn{
+  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
+  border-color: transparent !important;
+  color:#fff !important;
+  font-weight:700;
+}
 
 .footer-brand{
   color: #0A2A43; /* same as your --blue */
