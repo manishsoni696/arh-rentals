@@ -144,5 +144,52 @@
 
   <!-- ✅ pricing/ folder se assets/app.js -->
   <script src="../assets/app.js"></script>
+  <script>
+  (function () {
+    const grid = document.getElementById("pricingGrid");
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
+
+    function setSelectedCard(card) {
+      // 1) remove selected from all
+      cards.forEach(c => {
+        c.classList.remove("selected");
+        const btn = c.querySelector(".select-btn");
+        if (btn) btn.textContent = "Select Plan";
+      });
+
+      // 2) set selected on clicked
+      card.classList.add("selected");
+      const btn = card.querySelector(".select-btn");
+      if (btn) btn.textContent = "Selected";
+    }
+
+    // Card click
+    cards.forEach(card => {
+      card.style.cursor = "pointer";
+
+      card.addEventListener("click", (e) => {
+        // agar link pe click ho to ignore (future safe)
+        if (e.target && e.target.closest("a")) return;
+        setSelectedCard(card);
+      });
+
+      // Button click (same behavior)
+      const btn = card.querySelector(".select-btn");
+      if (btn) {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedCard(card);
+        });
+      }
+    });
+
+    // Page load: jo already selected hai usko button "Selected" kara do
+    const already = grid.querySelector(".card.selected") || cards[0];
+    if (already) setSelectedCard(already);
+  })();
+</script>
 </body>
 </html>
