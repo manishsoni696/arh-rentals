@@ -233,3 +233,35 @@ We must implement:
 - Session issues:
   - check localStorage arh_token
   - call /me to validate token
+ 
+  - ---
+
+## 11) Payments + Posting (Owner) — Expected Rules (LOCKED)
+### Rule A: Payment is per Property (NOT per user)
+- 1 successful payment => **1 property listing credit**
+- Same phone number:
+  - Property #1 post => payment required
+  - Property #2 post => **new payment required**
+  - Property #3 post => **new payment required**
+
+### Rule B: Plan is property-level
+- Every listing will store:
+  - plan_type = basic/premium/pro
+  - plan_days = 15/30/60
+  - starts_at = payment_time (or publish_time — final decide later)
+  - expires_at = starts_at + plan_days
+
+### Rule C: Expiry / Delete policy
+- expires_at cross होने पर listing:
+  - hidden = true (user visible = NO)
+  - deleted_at set (soft delete)
+  - after N days => hard delete + media cleanup
+
+### Rule D: Posting allowed only when credit exists
+- Owner must be logged in (arh_token required)
+- System checks:
+  - Does this phone have an **unused credit**?
+    - YES => allow posting + mark credit USED
+    - NO => redirect to pricing + payment
+
+> NOTE: अभी payment/credits वाला code implemented नहीं है — यह “business rules lock” है।
