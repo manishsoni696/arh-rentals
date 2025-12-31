@@ -119,6 +119,13 @@ if (pinBtn) {
    SEND OTP (BACKEND - HISAR SMS)
 ========================================================= */
 const sendOtpBtn = document.getElementById("sendOtpBtn");
+const cd = Number(localStorage.getItem("arh_otp_cooldown_until") || 0);
+if (sendOtpBtn && cd > Date.now()) {
+  startSendBtnCountdown(sendOtpBtn, cd, "Send OTP");
+}
+if (sendOtpBtn && cd && cd <= Date.now()) {
+  localStorage.removeItem("arh_otp_cooldown_until");
+}
 if (sendOtpBtn) {
   // ✅ page load पर अगर lock चल रहा है तो button को lock mode में दिखाओ (optional but useful)
   const mobileElOnLoad = document.getElementById("mobileInput");
@@ -175,21 +182,10 @@ if (sendOtpBtn) {
       }
 
       // ✅ SUCCESS → ab 60 sec cooldown start karo (FIX 1)
-      sendOtpBtn.disabled = true;
-      let s = 60;
-      const originalText = sendOtpBtn.textContent || "Send OTP";
-      sendOtpBtn.textContent = `Resend in ${s}s`;
-
-      const timer = setInterval(() => {
-        s--;
-        sendOtpBtn.textContent = `Resend in ${s}s`;
-        if (s <= 0) {
-          clearInterval(timer);
-          sendOtpBtn.disabled = false;
-          sendOtpBtn.textContent = originalText;
-        }
-      }, 1000);
-
+       // ✅ save 60s cooldown (survives refresh)
+const until = Date.now() + 60 * 1000; // 60 seconds
+localStorage.setItem("arh_otp_cooldown_until", String(until));
+startSendBtnCountdown(sendOtpBtn, until, "Send OTP");
       // store mobile for verify step
       sessionStorage.setItem("arh_mobile", mobile);
 
