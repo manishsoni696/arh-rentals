@@ -3,8 +3,52 @@
    - PIN check via backend:  GET /check-pincode?pincode=xxxxxx
    - OTP send via backend:   POST /send-otp  { mobile, pincode }
    - OTP verify via backend: POST /verify-otp { mobile, otp }
-   - Session token stored in sessionStorage as "arh_token"
+   - Session token stored in localStorage as "arh_token"
 ========================================================= */
+
+// === OTP UI LOCK (4 hours) helpers ===
+const OTP_LOCK_KEY = "arh_otp_lock_until"; // stored in localStorage
+
+function getLockMap() {
+  try { return JSON.parse(localStorage.getItem(OTP_LOCK_KEY) || "{}"); }
+  catch { return {}; }
+}
+function setLockUntil(mobile, untilMs) {
+  const map = getLockMap();
+  map[mobile] = untilMs;
+  localStorage.setItem(OTP_LOCK_KEY, JSON.stringify(map));
+}
+function getLockUntil(mobile) {
+  const map = getLockMap();
+  const v = map[mobile];
+  return typeof v === "number" ? v : 0;
+}
+function clearLock(mobile) {
+  const map = getLockMap();
+  delete map[mobile];
+  localStorage.setItem(OTP_LOCK_KEY, JSON.stringify(map));
+}
+function formatHMS(ms) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return `${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+}
+function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText="Send OTP") {
+  sendOtpBtn.disabled = true;
+  const tick = () => {
+    const left = lockUntilMs - Date.now();
+    if (left <= 0) {
+      sendOtpBtn.disabled = false;
+      sendOtpBtn.textContent = baseText;
+      return;
+    }
+    sendOtpBtn.textContent = `Try after ${formatHMS(left)}`;
+    setTimeout(tick, 1000);
+  };
+  tick();
+}
 
 /* ===============================
    COMMON
@@ -33,11 +77,6 @@ function setText(el, txt) {
 
 /* =========================================================
    POST PAGE : PIN CHECK (backend)
-   Needs:
-   - input#postPin
-   - button#pinCheckBtn
-   - div/span#postPinMsg
-   - container#step2 (shows after allowed pin)
 ========================================================= */
 const pinBtn = document.getElementById("pinCheckBtn");
 if (pinBtn) {
@@ -78,14 +117,15 @@ if (pinBtn) {
 
 /* =========================================================
    SEND OTP (BACKEND - HISAR SMS)
-   Needs:
-   - input#mobileInput
-   - button#sendOtpBtn
-   - div/span#otpMsg
-   - container#otpVerifyBox (optional: show after send)
 ========================================================= */
 const sendOtpBtn = document.getElementById("sendOtpBtn");
 if (sendOtpBtn) {
+  // ✅ page load पर अगर lock चल रहा है तो button को lock mode में दिखाओ (optional but useful)
+  const mobileElOnLoad = document.getElementById("mobileInput");
+  const m0 = normalizeMobile(mobileElOnLoad?.value);
+  const l0 = m0 ? getLockUntil(m0) : 0;
+  if (m0 && l0 && Date.now() < l0) startSendBtnCountdown(sendOtpBtn, l0, "Send OTP");
+
   sendOtpBtn.addEventListener("click", async () => {
     const mobileEl = document.getElementById("mobileInput");
     const msgEl = document.getElementById("otpMsg");
@@ -103,21 +143,13 @@ if (sendOtpBtn) {
       return;
     }
 
-    // ✅ UI cooldown 60s (server also enforces)
-    sendOtpBtn.disabled = true;
-    let s = 60;
-    const originalText = sendOtpBtn.textContent || "Send OTP";
-    sendOtpBtn.textContent = `Resend in ${s}s`;
-
-    const timer = setInterval(() => {
-      s--;
-      sendOtpBtn.textContent = `Resend in ${s}s`;
-      if (s <= 0) {
-        clearInterval(timer);
-        sendOtpBtn.disabled = false;
-        sendOtpBtn.textContent = originalText;
-      }
-    }, 1000);
+    // ✅ 4-hour UI lock check
+    const lockUntil = getLockUntil(mobile);
+    if (lockUntil && Date.now() < lockUntil) {
+      setText(msgEl, `❌ OTP limit reached. Try after ${formatHMS(lockUntil - Date.now())}`);
+      startSendBtnCountdown(sendOtpBtn, lockUntil, "Send OTP");
+      return;
+    }
 
     setText(msgEl, "⏳ Sending OTP...");
 
@@ -130,10 +162,33 @@ if (sendOtpBtn) {
 
       const data = await res.json().catch(() => ({}));
 
+      // ❌ FAIL / BLOCK
       if (!res.ok || !data.success) {
+        // ✅ 4-hour UI lock jab backend 429 de aur message me hour/4 hour ho
+        if (res.status === 429 && (data.message || "").toLowerCase().includes("hour")) {
+          const until = Date.now() + 4 * 60 * 60 * 1000; // 4 hours
+          setLockUntil(mobile, until);
+          startSendBtnCountdown(sendOtpBtn, until, "Send OTP");
+        }
         setText(msgEl, `❌ ${data.message || "OTP failed"}`);
         return;
       }
+
+      // ✅ SUCCESS → ab 60 sec cooldown start karo (FIX 1)
+      sendOtpBtn.disabled = true;
+      let s = 60;
+      const originalText = sendOtpBtn.textContent || "Send OTP";
+      sendOtpBtn.textContent = `Resend in ${s}s`;
+
+      const timer = setInterval(() => {
+        s--;
+        sendOtpBtn.textContent = `Resend in ${s}s`;
+        if (s <= 0) {
+          clearInterval(timer);
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = originalText;
+        }
+      }, 1000);
 
       // store mobile for verify step
       sessionStorage.setItem("arh_mobile", mobile);
@@ -149,11 +204,6 @@ if (sendOtpBtn) {
 
 /* =========================================================
    VERIFY OTP (BACKEND)
-   Needs:
-   - input#otpInput
-   - button#verifyOtpBtn
-   - div/span#otpMsg  (same)
-   - container#afterLoginBox (optional)
 ========================================================= */
 const verifyOtpBtn = document.getElementById("verifyOtpBtn");
 if (verifyOtpBtn) {
@@ -190,8 +240,11 @@ if (verifyOtpBtn) {
         return;
       }
 
-      // ✅ store session token returned by backend
-      sessionStorage.setItem("arh_token", data.token);
+      // ✅ store session token returned by backend (persistent)
+      localStorage.setItem("arh_token", data.token);
+
+      // ✅ optional: successful login पर OTP lock clear कर दो
+      clearLock(mobile);
 
       setText(msgEl, "✅ Verified & Logged in");
       if (afterLoginBox) afterLoginBox.style.display = "block";
@@ -203,16 +256,19 @@ if (verifyOtpBtn) {
 }
 
 /* =========================================================
-   OPTIONAL: LOGOUT
-   Needs:
-   - button#logoutBtn (optional)
+   OPTIONAL: LOGOUT (FIX 2)
 ========================================================= */
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
-    sessionStorage.removeItem("arh_token");
+    const m = sessionStorage.getItem("arh_mobile") || ""; // ✅ पहले mobile ले लो
+
+    localStorage.removeItem("arh_token");
     sessionStorage.removeItem("arh_mobile");
-    // keep pincode if you want: sessionStorage.removeItem("arh_pincode");
+    // sessionStorage.removeItem("arh_pincode"); // optional
+
+    if (m) clearLock(m); // ✅ lock clear
+
     setText(document.getElementById("otpMsg"), "Logged out");
   });
 }
