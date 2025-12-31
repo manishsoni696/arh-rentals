@@ -265,3 +265,289 @@ We must implement:
     - NO => redirect to pricing + payment
 
 > NOTE: अभी payment/credits वाला code implemented नहीं है — यह “business rules lock” है।
+
+# ARH Rentals — Reference (OTP + Auth + Plans + Payments + Listings)
+_Last updated: 31-Dec-2025_
+
+## 0) Project Goal (Business Model)
+ARH Rentals एक rental portal है जहाँ 2 types users हैं:
+
+### A) Owner (Property Post)
+- Owner अपनी property post करने के लिए **plan + payment** करेगा.
+- **1 payment = 1 property listing credit** (per property charges).
+- Same phone number से दूसरी property post करनी हो → **नई payment/plan** लगेगा (new credit).
+
+### B) Seeker (Property Unlock)
+- Seeker listings search करेगा.
+- किसी listing की full details/owner number unlock करने के लिए **plan + payment** करेगा.
+- (Seeker side plans अभी future में implement होंगे)
+
+---
+
+## 1) Frontend Files Map (Static Site)
+### Core JS
+- **/assets/app.js**
+  - PIN check UI logic (post page)
+  - OTP send/verify UI logic (post page)
+  - UI cooldown + lock handling (localStorage)
+  - Token store: localStorage `arh_token`
+
+### Pages
+- **/** `index.html`
+  - Home page (demo listings)
+- **/post/index.html**
+  - Owner flow: PIN → (Step2 unlocked) → OTP login UI
+- **/pricing/index.html**
+  - Owner plans UI (Basic/Premium/Pro) (currently UI only)
+- **/listings/index.html**
+  - Listings + filters UI (demo)
+- **/legal/index.html**
+  - Legal page
+
+### Styles / Assets
+- **/assets/styles.css** (UI styling)
+- **/assets/arh-logo.png** (logo)
+- **/assets/allowed_pincodes.json** (optional future use, currently Worker has hardcoded list)
+
+---
+
+## 2) Backend (Cloudflare Worker) — What It Does
+Backend Worker URL:
+- `https://arh-backend.manishsoni696.workers.dev`
+
+Worker responsibilities currently:
+✅ PIN allowed check  
+✅ OTP send (via Hisar SMS gateway)  
+✅ OTP verify  
+✅ Session token create + `/me` endpoint
+
+---
+
+## 3) OTP Flow — Frontend vs Backend Responsibility
+
+### Step A: PIN Check (Owner Post Page)
+**Frontend**
+- File: `/assets/app.js`
+- Trigger: `#pinCheckBtn` click (post page)
+- Calls:
+  - `GET /check-pincode?pincode=XXXXXX`
+- If allowed:
+  - `sessionStorage.setItem("arh_pincode", pincode)`
+  - UI shows Step2 block (`#step2` visible)
+
+**Backend**
+- Route: `GET /check-pincode`
+- Allowed PINs (hardcoded array in worker):
+  - ["125001","125004","125005","125033"]
+
+---
+
+### Step B: Send OTP
+**Frontend** (`/assets/app.js`)
+- Button: `#sendOtpBtn`
+- Validations:
+  - mobile must be 10 digits
+  - `arh_pincode` must exist (PIN verified)
+  - 4-hour UI lock check per mobile (localStorage map)
+- Calls:
+  - `POST /send-otp` body `{ mobile, pincode }`
+
+#### Frontend Cooldowns / Locks
+1) **60 sec cooldown** (after successful send)
+- Key: `localStorage["arh_otp_cooldown_until"] = epoch_ms`
+- On page load if cooldown active → button disabled + countdown shown.
+
+2) **4-hour UI lock** (when backend returns OTP limit error)
+- Key: `localStorage["arh_otp_lock_until"] = { "<mobile>": epoch_ms }`
+- If locked → button shows `Try after Xh Xm Xs`
+
+3) **Send vs Resend Button Text (per mobile)**
+- Key: `localStorage["arh_otp_sent_once_<mobile>"] = "1"`
+- First time: button base text "Send OTP"
+- Next time same mobile: base text "Resend OTP"
+- Helper:
+  - `otpBtnBaseTextForMobile(mobile)`
+  - `markOtpSentOnce(mobile)` (called on OTP success)
+
+**Backend** (`/send-otp`)
+- Validations:
+  - mobile: /^[6-9]\d{9}$/
+  - pincode must be allowed
+- Rate limits:
+  1) **No OTP within last 60 seconds**
+     - checks `otps` table created_at > now-60s
+     - returns 429 if violated
+  2) **Max 3 OTP per 4 hours**
+     - count from `otps` where created_at > now-4h
+     - returns 429 with message "OTP limit reached. Try again after 4 hours."
+- OTP rules:
+  - OTP is 6-digit random
+  - Validity: 5 minutes
+- Storage:
+  - `otps` table stores `otp_hash`, `created_at`, `expires_at`, `tries`
+
+---
+
+### Step C: Verify OTP
+**Frontend** (`/assets/app.js`)
+- Button: `#verifyOtpBtn`
+- Uses:
+  - mobile from `sessionStorage["arh_mobile"]`
+- Calls:
+  - `POST /verify-otp` body `{ mobile, otp }`
+- On success:
+  - stores token: `localStorage["arh_token"]=token`
+  - clears UI lock: `clearLock(mobile)`
+  - shows success msg
+
+**Backend** (`/verify-otp`)
+- Validations:
+  - mobile: /^[6-9]\d{9}$/
+  - otp: 4-6 digits
+- Checks `otps` table:
+  - mobile + otp_hash match
+  - created_at within last 5 minutes
+- Creates:
+  - user row in `users` (INSERT OR IGNORE)
+  - session token in `sessions` table (token_hash + phone + created_at)
+- Returns:
+  - `{ success:true, verified:true, token }`
+
+---
+
+### Step D: Session Check
+**Backend**
+- Route: `GET /me`
+- Header:
+  - `Authorization: Bearer <token>`
+- Validates token_hash exists in `sessions`
+
+**Frontend**
+- Currently token stored but `/me` usage अभी implement नहीं (future)
+
+---
+
+## 4) DB Tables (Cloudflare D1)
+Confirmed existing tables:
+- `otps`
+- `users`
+- `sessions`
+- `listings`
+- `payments` ✅ (created)
+- `credits` ✅ (created)
+
+### Current meaning (intended)
+#### payments
+- One payment attempt/order info
+- Fields (typical):
+  - id, phone, role(owner/seeker), plan_id, amount_inr
+  - status: created/paid/failed/refunded
+  - provider: razorpay
+  - provider_order_id / provider_payment_id / provider_signature
+  - created_at / paid_at
+
+#### credits
+- 1 paid payment => 1 credit
+- credit status:
+  - unused / used / expired
+- used_for_listing_id: (owner flow) which listing consumed this credit
+
+#### listings
+- listing per property
+- must store:
+  - owner_phone
+  - plan_id (Q1 locked: plan per property)
+  - status: draft/published/expired/deleted
+  - published_at, expires_at, deleted_at
+- Expiry rule:
+  - Basic: 15 days
+  - Premium: 30 days
+  - Pro: 60 days
+- Q2 locked:
+  - Expired/delete => storage saving (soft delete OR hard delete decision later)
+
+---
+
+## 5) Pricing Plans (Owner)
+UI file:
+- `/pricing/index.html`
+
+Plans:
+- Basic ₹199 → listing visible 15 days
+- Premium ₹349 → listing visible 30 days
+- Pro ₹599 → listing visible 60 days
+
+Rule Q1 (locked):
+- 1 property can have 1 plan
+- Same owner phone can choose different plan for next property
+- plan tied to that particular listing (not global to owner)
+
+---
+
+## 6) Current Status Summary (What is Done vs Pending)
+### DONE
+✅ PIN check backend + frontend  
+✅ OTP send/verify backend + frontend  
+✅ Session token stored in frontend  
+✅ D1 tables exist: otps/users/sessions/listings/payments/credits  
+
+### PENDING (Future Work)
+- Payment integration (Razorpay):
+  - Create order
+  - Verify payment signature
+  - Mark payments as paid
+  - Issue credits after payment success
+- Owner listing creation:
+  - After payment success, allow submit listing form
+  - Consume 1 credit per listing publish
+  - Save listing into `listings`
+- Auto-expiry job:
+  - Mark listings expired after expires_at
+- Seeker unlock flow:
+  - Payment => credits => unlock contact details
+- Token-based protected routes:
+  - Only logged-in user can create payment / publish listing
+
+---
+
+## 7) Keys / Storage Keys Used (Frontend)
+### localStorage
+- `arh_token` → session token (login success)
+- `arh_otp_cooldown_until` → resend cooldown epoch ms (global)
+- `arh_otp_lock_until` → per mobile lock map `{ mobile: epoch_ms }`
+- `arh_otp_sent_once_<mobile>` → "1" means show Resend OTP
+
+### sessionStorage
+- `arh_pincode` → verified PIN (post page)
+- `arh_mobile` → mobile for OTP verify step
+
+---
+
+## 8) Worker Routes (Backend)
+- `GET /health` or `/` → status OK
+- `GET /check-pincode?pincode=...`
+- `POST /send-otp` `{ mobile, pincode }`
+- `POST /verify-otp` `{ mobile, otp }`
+- `GET /me` (Bearer token)
+
+---
+
+## 9) Notes / Decisions Locked
+- Q1 locked: plan per property listing
+- Q2 locked: expired/deleted listings should be removed/hidden to save storage (final delete strategy later)
+- Owner flow desired:
+  - PIN check → Plan choose + payment → listing details form → publish
+
+---
+
+## 10) Next Step Reminder (Tomorrow)
+- Decide exact workflow pages:
+  - `/pricing` से plan select करके `/post?plan=premium` redirect?
+  - payment success के बाद `/post` में form unlock?
+- Backend endpoints needed:
+  - create payment order
+  - verify payment webhook/signature
+  - create credit on paid
+  - create listing (requires unused credit)
+  - list/search listings
+  - expire listings job
