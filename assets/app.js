@@ -74,6 +74,14 @@ function normalizeOtp(o) {
 function setText(el, txt) {
   if (el) el.textContent = txt;
 }
+// ✅ STEP 1 helper: per-mobile "Send" vs "Resend" memory
+function otpBtnBaseTextForMobile(mobile) {
+  const k = `arh_otp_sent_once_${mobile}`;
+  return localStorage.getItem(k) === "1" ? "Resend OTP" : "Send OTP";
+}
+function markOtpSentOnce(mobile) {
+  localStorage.setItem(`arh_otp_sent_once_${mobile}`, "1");
+}
 
 /* =========================================================
    POST PAGE : PIN CHECK (backend)
@@ -121,7 +129,8 @@ if (pinBtn) {
 const sendOtpBtn = document.getElementById("sendOtpBtn");
 const cd = Number(localStorage.getItem("arh_otp_cooldown_until") || 0);
 if (sendOtpBtn && cd > Date.now()) {
-  startSendBtnCountdown(sendOtpBtn, cd, "Send OTP");
+  const mNow = normalizeMobile(document.getElementById("mobileInput")?.value);
+  startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
 }
 if (sendOtpBtn && cd && cd <= Date.now()) {
   localStorage.removeItem("arh_otp_cooldown_until");
@@ -185,7 +194,10 @@ if (sendOtpBtn) {
        // ✅ save 60s cooldown (survives refresh)
 const until = Date.now() + 60 * 1000; // 60 seconds
 localStorage.setItem("arh_otp_cooldown_until", String(until));
-startSendBtnCountdown(sendOtpBtn, until, "Send OTP");
+       // ✅ mark: this mobile has received OTP at least once
+markOtpSentOnce(mobile);
+       
+startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
       // store mobile for verify step
       sessionStorage.setItem("arh_mobile", mobile);
 
