@@ -211,5 +211,51 @@ a:hover{color:var(--blue2)}
   color:var(--muted);
   font-size:12px;
 }
+/* ===== Footer (ARH Rentals) ===== */
+.site-footer{
+  margin-top: 28px;
+  border-top: 1px solid #e9eef5;
+  background: #fff;
+}
+
+.site-footer .container{
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-links{
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-links a{
+  color: #444;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.footer-links a:hover{
+  background: #f5f7fa;
+}
+
+.footer-copy{
+  color: #666;
+  font-size: 13px;
+}
+
+.footer-brand{
+  color: #0A2A43; /* same as your --blue */
+  font-weight: 800;
+}
 .footer a{color:var(--text)}
 .footer a:hover{color:var(--blue2)}
