@@ -187,5 +187,52 @@ document.addEventListener("DOMContentLoaded", () => {
   if (already) setSelectedCard(already);
 });
 </script>
+  <script src="../assets/app.js"></script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("pricingGrid");
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
+
+    function setSelectedCard(card) {
+      cards.forEach(c => {
+        c.classList.remove("selected");
+        const btn = c.querySelector(".select-btn");
+        if (btn) btn.textContent = "Select Plan";
+      });
+
+      card.classList.add("selected");
+      const btn = card.querySelector(".select-btn");
+      if (btn) btn.textContent = "Selected";
+    }
+
+    cards.forEach(card => {
+      card.style.cursor = "pointer";
+
+      card.addEventListener("click", (e) => {
+        if (e.target && e.target.closest("a")) return;
+        setSelectedCard(card);
+      });
+
+      const btn = card.querySelector(".select-btn");
+      if (btn) {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedCard(card);
+        });
+      }
+    });
+
+    // default selected
+    const defaultCard =
+      grid.querySelector('.card[data-plan="premium"]') || cards[0];
+    if (defaultCard) setSelectedCard(defaultCard);
+  });
+  </script>
+</body>
+</html>
 </body>
 </html>
