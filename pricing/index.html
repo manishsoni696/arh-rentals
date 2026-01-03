@@ -194,6 +194,8 @@
       } else {
         initPricingSelection();
       }
+
+      window.addEventListener("pageshow", initPricingSelection, { once: true });
     })();
   </script>
 
