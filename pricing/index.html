@@ -49,7 +49,7 @@
 
     <section class="grid-3" id="pricingGrid">
 
-      <article class="card" data-plan="basic" aria-selected="false">
+      <article class="card" data-plan="basic">
         <div class="card-body">
           <h2>Basic</h2>
           <div class="price">₹199</div>
@@ -75,7 +75,7 @@
         </div>
       </article>
 
-      <article class="card featured" data-plan="premium" aria-selected="false">
+      <article class="card featured" data-plan="premium">
         <span class="tag">Most Popular</span>
         <div class="card-body">
           <h2>Premium</h2>
@@ -106,7 +106,7 @@
         </div>
       </article>
 
-      <article class="card" data-plan="pro" aria-selected="false">
+      <article class="card" data-plan="pro">
         <div class="card-body">
           <h2>Pro</h2>
           <div class="price">₹599</div>
@@ -149,46 +149,43 @@
   <script>
     (function () {
       function initPricingSelection() {
-        var grid = document.getElementById("pricingGrid");
+        const grid = document.getElementById("pricingGrid");
         if (!grid) return;
 
-        var cards = Array.prototype.slice.call(grid.querySelectorAll(".card[data-plan]"));
+        const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
         if (!cards.length) return;
 
         function setSelected(card) {
-          for (var i = 0; i < cards.length; i++) {
-            cards[i].classList.remove("selected");
-            cards[i].setAttribute("aria-selected", "false");
-            var b1 = cards[i].querySelector(".select-btn");
-            if (b1) b1.textContent = "Select Plan";
-          }
+          cards.forEach(c => {
+            c.classList.remove("selected");
+            const b = c.querySelector(".select-btn");
+            if (b) b.textContent = "Select Plan";
+          });
 
           card.classList.add("selected");
-          card.setAttribute("aria-selected", "true");
-          var b2 = card.querySelector(".select-btn");
-          if (b2) b2.textContent = "Selected";
+          const btn = card.querySelector(".select-btn");
+          if (btn) btn.textContent = "Selected";
 
-          var plan = card.getAttribute("data-plan") || "";
+          const plan = card.getAttribute("data-plan") || "";
           if (plan) sessionStorage.setItem("arh_selected_plan", plan);
         }
 
-        document.addEventListener("click", function (e) {
-          var card = e.target && e.target.closest ? e.target.closest(".card[data-plan]") : null;
-          if (!card) return;
-          if (!grid.contains(card)) return;
+        grid.addEventListener("click", (e) => {
+          const card = e.target.closest(".card[data-plan]");
+          if (!card || !grid.contains(card)) return;
 
-          if (e.target && e.target.closest && e.target.closest("a")) return;
-
-          e.preventDefault();
-          e.stopPropagation();
-          if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+          const btn = e.target.closest(".select-btn");
+          if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
 
           setSelected(card);
         }, true);
 
-        var savedPlan = sessionStorage.getItem("arh_selected_plan");
-        var savedCard = savedPlan ? grid.querySelector('.card[data-plan="' + savedPlan + '"]') : null;
-        var premium = grid.querySelector('.card[data-plan="premium"]');
+        const savedPlan = sessionStorage.getItem("arh_selected_plan");
+        const savedCard = savedPlan ? grid.querySelector('.card[data-plan="' + savedPlan + '"]') : null;
+        const premium = grid.querySelector('.card[data-plan="premium"]');
         setSelected(savedCard || premium || cards[0]);
       }
 
