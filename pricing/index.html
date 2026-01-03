@@ -149,7 +149,10 @@
   <script>
     (function () {
       function initPricingSelection() {
-        const grid = document.getElementById("pricingGrid");
+        const grid =
+          document.getElementById("pricingGrid") ||
+          document.querySelector(".grid-3");
+
         if (!grid) return;
 
         const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
@@ -171,19 +174,23 @@
         }
 
         grid.addEventListener("click", (e) => {
-          const btn = e.target.closest(".select-btn");
           const card = e.target.closest(".card[data-plan]");
           if (!card || !grid.contains(card)) return;
 
+          const btn = e.target.closest(".select-btn");
           if (btn) {
             e.preventDefault();
             e.stopPropagation();
           }
+
           setSelected(card);
         }, true);
 
         const savedPlan = sessionStorage.getItem("arh_selected_plan");
-        const savedCard = savedPlan ? grid.querySelector('.card[data-plan="' + savedPlan + '"]') : null;
+        const savedCard = savedPlan
+          ? grid.querySelector('.card[data-plan="' + savedPlan + '"]')
+          : null;
+
         const premium = grid.querySelector('.card[data-plan="premium"]');
         setSelected(savedCard || premium || cards[0]);
       }
