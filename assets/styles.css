@@ -289,3 +289,9 @@ a:hover{color:var(--blue2)}
 }
 .footer a{color:var(--text)}
 .footer a:hover{color:var(--blue2)}
+
+/* === FIX: allow clicks on pricing cards === */
+#pricingGrid .card::before,
+#pricingGrid .card::after{
+  pointer-events: none;
+}
