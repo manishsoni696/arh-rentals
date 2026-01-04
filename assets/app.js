@@ -353,46 +353,4 @@ if (logoutBtn) {
   }
 })();
 
-  // initial state sync
-  setExpanded(menu.classList.contains("is-open"));
-
-  // toggle button click
-  toggleBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    toggleMenu();
-  });
-
-  // close on menu link click (mobile)
-  menu.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    const link = e.target.closest("a[href]");
-    if (!link) return;
-    closeMenu();
-  });
-
-  // close on ESC (mobile)
-  document.addEventListener("keydown", (e) => {
-    if (!isMobile()) return;
-    if (e.key === "Escape" && menu.classList.contains("is-open")) {
-      closeMenu();
-    }
-  });
-
-  // close on outside click (mobile)
-  document.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    if (!menu.classList.contains("is-open")) return;
-
-    const insideMenu = e.target.closest("#primary-navigation");
-    const onToggle = e.target.closest(".nav-toggle");
-    if (insideMenu || onToggle) return;
-
-    closeMenu();
-  });
-
-  // reset on desktop resize
-  window.addEventListener("resize", () => {
-    if (!isMobile()) closeMenu();
-  });
-})();
-
+  
