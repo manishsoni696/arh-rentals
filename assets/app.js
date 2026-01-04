@@ -802,3 +802,78 @@ document.addEventListener("DOMContentLoaded", () => {
     initArhNav();
   }
 })();
+(function () {
+  function ready(fn){
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+
+  ready(function () {
+    var MOBILE_MAX = 859;
+
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+
+    var toggle = header.querySelector(".nav-toggle");
+    var nav =
+      header.querySelector("#primary-navigation") ||
+      header.querySelector("nav.menu") ||
+      header.querySelector(".menu");
+
+    if (!toggle || !nav) return;
+
+    if (!nav.id) nav.id = "primary-navigation";
+
+    function isMobile(){
+      return window.matchMedia("(max-width:" + MOBILE_MAX + "px)").matches;
+    }
+
+    function openNav(){
+      nav.classList.add("is-open");
+      document.body.classList.add("nav-open");
+      nav.removeAttribute("hidden");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+
+    function closeNav(){
+      nav.classList.remove("is-open");
+      document.body.classList.remove("nav-open");
+      nav.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    function sync(){
+      if (isMobile()) {
+        closeNav();
+      } else {
+        nav.classList.remove("is-open");
+        nav.removeAttribute("hidden");
+        document.body.classList.remove("nav-open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    toggle.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isMobile()) return;
+      if (nav.classList.contains("is-open")) closeNav();
+      else openNav();
+    });
+
+    document.addEventListener("click", function(e){
+      if (!isMobile()) return;
+      if (!nav.classList.contains("is-open")) return;
+      if (toggle.contains(e.target) || nav.contains(e.target)) return;
+      closeNav();
+    });
+
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape" && isMobile()) closeNav();
+    });
+
+    window.addEventListener("resize", sync);
+
+    sync();
+  });
+})();
