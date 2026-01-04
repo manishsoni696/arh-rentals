@@ -1,141 +1,225 @@
-# ARH RENTALS — PENDING TASKS & NEXT STEPS MASTER
+ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v2)
 
-This document defines **what is DONE**, **what is PENDING**, and **what MUST be done next**, in strict execution order.
+This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.
 
----
+✅ COMPLETED / LOCKED (DO NOT TOUCH)
+1) Working Rules & Process
 
-## ✅ COMPLETED / LOCKED (DO NOT TOUCH)
+Rules Master finalized (how Manish works)
 
-### 1. Working Rules & Process
+Code delivery format locked (paste-box only)
 
-* Rules Master finalized (how Manish works)
-* Code delivery format locked (paste-box only)
-* Add-only policy enforced
-* Mobile + Tablet + Desktop mandatory
-* Single-chat workflow accepted
+Add-only policy enforced
 
-### 2. Core UI Foundation
+Mobile + Tablet + Desktop mandatory
 
-* Dark SaaS-style theme locked
-* Header structure finalized (brand | nav | CTA)
-* Hero section hierarchy refined
-* Button system standardized
-* Card system finalized
+Single-chat workflow accepted
 
-### 3. Authentication Philosophy
+2) Core UI Foundation
 
-* OTP logic finalized (session-based)
-* PIN login allowed
-* OTP limits & blocks defined
+Dark SaaS-style theme locked
 
----
+Header structure finalized (brand | nav | CTA)
 
-## ⏳ PENDING TASKS (PRIORITY ORDER)
+Hero section hierarchy refined
 
-### 🔴 PRIORITY 1 — STABILITY & SAFETY
+Button system standardized
 
-1. **Freeze CSS Base**
+Card system finalized
 
-   * Current styles.css must be treated as BASE
-   * Only scoped additions allowed
+3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
 
-2. **Session & OTP Backend Validation**
+Mobile hamburger now appears and opens on:
 
-   * Verify backend respects OTP rules
-   * Confirm same-device session bypass
+Home ✅
 
-3. **Pricing Selection Bug (JS)**
+Pricing ✅
 
-   * Pricing card selection not persisting
-   * JS logic audit required
+Listings ✅ (not perfect, but acceptable)
 
----
+Legal ✅ (for now)
 
-### 🟠 PRIORITY 2 — CORE BUSINESS PAGES
+Strategy remains:
 
-4. **Contact Page Audit**
+❌ No HTML restructure
 
-   * Form validation
-   * Submission feedback
-   * Mobile spacing check
+❌ No new JS toggle scripts
 
-5. **Legal Page Final Hookup**
+✅ CSS is the single source of truth
 
-   * Privacy Policy
-   * Terms & Conditions
-   * Disclaimer linking
+JS only toggles: body.nav-open + .menu.is-open
 
-6. **Plans / Pricing Page UX**
+4) Authentication Philosophy
 
-   * Copy clarity
-   * CTA intent
-   * Selection flow
+OTP logic finalized (session-based)
 
----
+PIN login allowed
 
-### 🟡 PRIORITY 3 — SEO & DISCOVERABILITY
+OTP limits & blocks defined (reference locked)
 
-7. **Google Search Console Review**
+🧾 WHAT CHANGES WERE MADE (LATEST)
+A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
-   * Coverage errors
-   * Sitemap verification
-   * Query opportunities
+Added end-of-file mobile menu CSS that supports BOTH nav markup variants:
 
-8. **On-page SEO Audit**
+Variant A: .menu > .container > .nav-inner > a
 
-   * H1 / H2 hierarchy
-   * Meta descriptions
-   * Internal linking
+Variant B: .menu > a direct children
 
----
+Menu visibility standardized using:
 
-### 🔵 PRIORITY 4 — USER EXPERIENCE BOOSTERS
+body.nav-open and/or .menu.is-open
 
-9. **WhatsApp / Call CTA Logic**
+Dropdown positioning enforced under header (mobile)
 
-   * Context-aware buttons
-   * Mobile-first behavior
+Full-width stacked links enforced (mobile)
 
-10. **Micro UX Improvements**
+B) LISTINGS PAGE ONLY — HAMBURGER ALIGNMENT (CSS)
 
-    * Hover feedback
-    * Loading states
-    * Disabled button clarity
+Added a Listings-scoped mobile override (CSS-only, add-only) to:
 
----
+Reserve header space for hamburger
 
-### ⚪ PRIORITY 5 — FUTURE (DO NOT START YET)
+Pin hamburger position more consistently
 
-11. **Customer Dashboard**
-12. **AI Listing Assistant**
-13. **Subscription Automation**
-14. **Analytics & Event Tracking**
+Reduce collision with brand text
 
----
+Result: “Not perfect, but OK” accepted.
 
-## ▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
+⚠️ IMPORTANT:
 
-**START WITH:**
+These changes are ADD-ONLY CSS and must remain at the VERY END of styles.css.
 
-### ➤ Pricing Selection Bug (JS)
+⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
+🔴 PRIORITY 1 — STABILITY & SAFETY
+
+Freeze CSS Base (NOW LOCKED)
+
+Treat current /assets/styles.css as BASE
+
+New CSS allowed only as:
+
+scoped additions
+
+minimal overrides
+
+No “cleanup / consolidation” yet
+
+Pricing Selection Bug (JS) — START HERE
+
+Selection not persisting / click not selecting in some cases
+
+Revenue-impacting: blocks plan conversion
+
+Requires /assets/app.js audit + safe add-only patch
+
+Session & OTP Backend Validation
+
+Confirm backend respects:
+
+same-device session bypass
+
+OTP validity window
+
+max sends in time window
+
+block conditions
+
+Verify edge cases (refresh, multi-tab, new browser)
+
+🟠 PRIORITY 2 — CORE BUSINESS PAGES
+
+Plans / Pricing Page UX (Copy + Flow)
+
+Clarify plan benefits + what “unlock” means
+
+Strengthen CTA intent (what happens after selection)
+
+Reduce confusion: “No broker / no deal guarantee” messaging placement
+
+Legal Page Final Hookup
+
+Ensure correct internal linking:
+
+Privacy Policy
+
+Terms & Conditions
+
+Disclaimer
+
+Verify footer links are correct paths (no relative mistakes)
+
+Post Property Page Audit
+
+Field validation
+
+Submission feedback
+
+Mobile spacing check
+
+🟡 PRIORITY 3 — SEO & DISCOVERABILITY
+
+Google Search Console Review
+
+Coverage errors
+
+Sitemap verification
+
+Query opportunities
+
+On-page SEO Audit
+
+H1/H2 hierarchy (each page)
+
+Meta titles/descriptions
+
+Internal linking consistency
+
+🔵 PRIORITY 4 — USER EXPERIENCE BOOSTERS
+
+WhatsApp / Call CTA Logic
+
+Context-aware buttons (listing cards + header)
+
+Mobile-first behavior
+
+Micro UX Improvements
+
+Hover feedback consistency
+
+Loading states
+
+Disabled button clarity
+
+⚪ PRIORITY 5 — FUTURE (DO NOT START YET)
+
+Customer Dashboard
+
+AI Listing Assistant
+
+Subscription Automation
+
+Analytics & Event Tracking
+
+▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
+➤ START WITH: TASK 2 — Pricing Selection Bug (JS)
 
 Reason:
 
-* Direct revenue impact
-* Already identified
-* Blocks plan conversion
+Direct revenue impact
 
----
+Already identified previously
 
-## 🧠 EXECUTION RULE
+Blocks plan conversion
 
-* ONE task at a time
-* Use MASTER-CONTROL to assign task
-* Expert chat only acts when instructed
-* No parallel changes
+🧠 EXECUTION RULE
 
----
+ONE task at a time
 
-**STATUS:** READY TO EXECUTE
+No parallel changes
 
-Say: `START TASK <number>` to proceed.
+Only add-only safe patches
+
+Never restructure HTML for nav/menu
+
+If a task requires code: follow paste-box format strictly
