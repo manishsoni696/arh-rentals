@@ -1328,3 +1328,25 @@ body{
     margin-top: 10px;
   }
 }
+
+/* =========================================
+   FINAL FIX — MOBILE HEADER OVERLAP (LOCK)
+   ========================================= */
+
+/* Force correct offset for fixed header */
+body{
+  padding-top: 100px !important;
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 600px){
+  body{
+    padding-top: 112px !important;
+  }
+
+  /* Extra safety for hero */
+  .hero,
+  .home-hero{
+    margin-top: 8px !important;
+  }
+}
