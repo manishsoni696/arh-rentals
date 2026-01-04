@@ -640,5 +640,18 @@ if (logoutBtn) {
     initMobileNav();
   }
 })();
+/* MOBILE NAV TOGGLE — FINAL */
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("primary-navigation");
+
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("is-open");
+    document.body.classList.toggle("nav-open", isOpen);
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+});
 
 
