@@ -1170,8 +1170,7 @@ body{
   .menu,
   nav.menu,
   #primary-navigation{
-    display:none !important;
-  }
+    display:none !important;}
 
   /* open state */
   .menu.is-open,
@@ -1294,3 +1293,4 @@ body{
     display:block !important;
   }
 }
+  
