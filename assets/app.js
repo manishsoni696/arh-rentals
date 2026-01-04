@@ -542,5 +542,51 @@ if (logoutBtn) {
   // Back/forward cache + SPA-like behavior safety
   window.addEventListener("pageshow", applyActive);
 })();
+/* ============ MOBILE MENU TOGGLE (ARH RENTALS) — ADD-ONLY ============ */
+(function () {
+  function initMobileMenu() {
+    const toggle = document.querySelector(".nav-toggle");
+    const menu = document.querySelector(".menu");
+    if (!toggle || !menu) return;
+
+    // Ensure button has aria-expanded
+    if (!toggle.hasAttribute("aria-expanded")) toggle.setAttribute("aria-expanded", "false");
+
+    function setOpen(open) {
+      menu.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      const open = !menu.classList.contains("is-open");
+      setOpen(open);
+    });
+
+    // Close menu when any link inside menu is clicked (mobile UX)
+    menu.addEventListener("click", function (e) {
+      const a = e.target.closest("a");
+      if (!a) return;
+      setOpen(false);
+    });
+
+    // Close on outside click
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".menu") || e.target.closest(".nav-toggle")) return;
+      setOpen(false);
+    });
+
+    // Reset state on resize to desktop
+    window.addEventListener("resize", function () {
+      if (window.innerWidth >= 860) setOpen(false);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+})();
 
 
