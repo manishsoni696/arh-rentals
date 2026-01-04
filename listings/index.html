@@ -9,23 +9,41 @@
 <body>
 
 <header class="site-header">
-  <div class="container navbar">
-    <a class="brand" href="/">
-      <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
-      <div class="brand-title">
-        <strong>ARH Rentals</strong>
-        <span>by Anjani Real Heights</span>
-      </div>
-    </a>
+  <div class="container">
+    <div class="navbar">
+      <a class="brand" href="/">
+        <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo" />
+        <div class="brand-title">
+          <strong>ARH Rentals</strong>
+          <span>by Anjani Real Heights</span>
+        </div>
+      </a>
 
-    <nav class="menu">
-      <a href="/">Home</a>
-      <a href="/listings">Listings</a>
-      <a href="/pricing">Plans</a>
-      <a href="/legal">Legal</a>
-      <a class="btn btn-primary" href="/post">Post Property</a>
-    </nav>
+      <button class="nav-toggle"
+              type="button"
+              aria-label="Menu"
+              aria-controls="primary-navigation"
+              aria-expanded="false">
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
+      </button>
+
+      <div class="header-actions">
+        <a class="btn btn-primary header-cta" href="/post">Post Property</a>
+      </div>
+    </div>
   </div>
+
+  <nav class="menu" id="primary-navigation" aria-label="Primary">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/">Home</a>
+        <a class="active" href="/listings">Listings</a>
+        <a href="/pricing">Plans</a>
+        <a href="/legal">Legal</a>
+        <a class="btn btn-primary menu-cta" href="/post">Post Property</a>
+      </div>
+    </div>
+  </nav>
 </header>
   
 <main class="container">
