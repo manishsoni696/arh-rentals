@@ -451,5 +451,75 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth >= 860) closeMenu();
   });
 });
+/* =========================================================
+   FIX: MOBILE HAMBURGER MENU TOGGLE (ARH Rentals)
+   ========================================================= */
+(function () {
+  function ready(fn){ if(document.readyState !== "loading"){ fn(); } else { document.addEventListener("DOMContentLoaded", fn); } }
+
+  ready(function () {
+    var btn = document.querySelector(".nav-toggle");
+    var nav = document.getElementById("primary-navigation");
+
+    if (!btn || !nav) return;
+
+    // Ensure initial state (mobile)
+    if (window.matchMedia("(max-width: 859px)").matches) {
+      nav.classList.remove("is-open");
+      nav.setAttribute("hidden", "");
+      btn.setAttribute("aria-expanded", "false");
+    }
+
+    function openNav() {
+      nav.classList.add("is-open");
+      nav.removeAttribute("hidden");
+      btn.setAttribute("aria-expanded", "true");
+    }
+
+    function closeNav() {
+      nav.classList.remove("is-open");
+      nav.setAttribute("hidden", "");
+      btn.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleNav() {
+      var isOpen = btn.getAttribute("aria-expanded") === "true";
+      if (isOpen) closeNav();
+      else openNav();
+    }
+
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      toggleNav();
+    });
+
+    // Close when clicking any nav link (mobile)
+    nav.addEventListener("click", function (e) {
+      var a = e.target.closest("a");
+      if (!a) return;
+      if (window.matchMedia("(max-width: 859px)").matches) closeNav();
+    });
+
+    // Close on outside click (mobile)
+    document.addEventListener("click", function (e) {
+      if (!window.matchMedia("(max-width: 859px)").matches) return;
+      if (e.target.closest("#primary-navigation") || e.target.closest(".nav-toggle")) return;
+      closeNav();
+    });
+
+    // On resize: keep desktop open, mobile closed by default
+    window.addEventListener("resize", function () {
+      if (window.matchMedia("(min-width: 860px)").matches) {
+        nav.classList.remove("is-open");
+        nav.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        nav.classList.remove("is-open");
+        nav.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+})();
 
   
