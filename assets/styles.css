@@ -1044,6 +1044,19 @@ button.btn-primary:hover{
 #pricingGrid .card.featured.selected::before{
   top: 48px !important;
 }
+/* ============ PRICING FIX — REMOVE OVERLAP (SELECTED vs PREMIUM TITLE) ============ */
+/* Paste at VERY END so it overrides your earlier "featured.selected::before { top:48px }" */
+
+#pricingGrid .card.selected::before{
+  top: 14px !important;
+  left: 14px !important;
+  z-index: 75 !important;
+}
+
+/* IMPORTANT: premium (featured) par SELECTED ko down mat karo (title pe aa raha hai) */
+#pricingGrid .card.featured.selected::before{
+  top: 14px !important;
+}
 
 
 
