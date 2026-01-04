@@ -270,3 +270,85 @@ a:hover{color:var(--blue2)}
   .hero-actions .btn{width:100%}
   .home-intro{padding:22px}
 }
+
+/* ================================
+   HOME: LISTINGS SECTION POLISH
+   (Latest Rental Listings in Hisar)
+   Mobile + Tablet + Desktop
+================================ */
+
+.listings{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:14px;
+}
+
+.listing{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background: rgba(255,255,255,.03);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.listing:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.045);
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+
+.listing h3{
+  margin:0 0 6px;
+  font-size:18px;
+  line-height:1.25;
+}
+
+.listing p{
+  margin:0 0 10px;
+  color:var(--muted);
+}
+
+.listing .pills{
+  margin-top:8px;
+  gap:8px;
+}
+
+.listing .pill{
+  background: rgba(255,255,255,.04);
+}
+
+.listing .btn{
+  white-space:nowrap;
+  min-height:42px;
+  padding:10px 14px;
+}
+
+/* Keep the CTA button vertically aligned */
+.listing > .btn{
+  margin-top:4px;
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+  .listing{
+    padding:14px;
+  }
+}
+
+/* Mobile: stack button below content */
+@media (max-width: 600px){
+  .listing{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .listing > .btn{
+    width:100%;
+    margin-top:6px;
+  }
+}
+
