@@ -1088,6 +1088,21 @@ button.btn-primary:hover{
   top: 0 !important;
   z-index: 999 !important;
 }
+/* ============ GLOBAL HEADER STICKY FIX (ROBUST) — ADD-ONLY ============ */
+/* Reason: Home page header class likely .nav (not .site-header), so sticky rule not applying */
+
+header.site-header,
+header.nav,
+.nav{
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+}
+
+/* Safety: if any parent is clipping sticky, this prevents header from getting hidden */
+body{
+  overflow-x: hidden;
+}
 
 
 
