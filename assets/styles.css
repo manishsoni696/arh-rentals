@@ -1057,6 +1057,29 @@ button.btn-primary:hover{
 #pricingGrid .card.featured.selected::before{
   top: 14px !important;
 }
+/* ============ PRICING FOOTNOTE CONSISTENCY FIX (ADD-ONLY) ============ */
+/* Goal: “Fees are for listing visibility only. No deal guarantee.” 
+   sabhi plans (Basic, Premium, Pro) me SAME jagah dikhni chahiye */
+
+/* Agar kisi card me ye line missing ho to pseudo-element se inject karo */
+#pricingGrid .card:not(:has(.pricing-footnote)) .card-body::after{
+  content: "Fees are for listing visibility only. No deal guarantee.";
+  display: block;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
+
+/* Optional: agar future me manual span add ho */
+.pricing-footnote{
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
 
 
 
