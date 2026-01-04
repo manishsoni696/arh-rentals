@@ -1012,6 +1012,38 @@ button.btn-primary:hover{
   color: #ffffff !important;
   font-weight: 700 !important;
 }
+/* ============ PRICING TAGS FIX — MOST POPULAR + SELECTED NO OVERLAP (ADD-ONLY) ============ */
+/* Purpose: Fix overlap + corner alignment for Most Popular & Selected */
+
+#pricingGrid .card .tag{
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  left: auto !important;
+  z-index: 70 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 7px 10px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  letter-spacing: .4px !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: rgba(255,255,255,.88) !important;
+  white-space: nowrap !important;
+}
+
+/* SELECTED badge default position (top-left) */
+#pricingGrid .card.selected::before{
+  top: 14px !important;
+  left: 14px !important;
+  z-index: 75 !important;
+}
+
+/* If card is BOTH featured + selected → push SELECTED down */
+#pricingGrid .card.featured.selected::before{
+  top: 48px !important;
+}
 
 
 
