@@ -1,7 +1,8 @@
 🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5)
 
+This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.
 Last Updated: Jan 2026
-Status: 🔒 CORE STABLE + 🟢 PRICING UX (PARTIAL) COMPLETED
+Status: 🔒 CORE STABLE + ✅ OTP HARDENING APPLIED + ✅ PRICING UX DONE
 
 ✅ COMPLETED / LOCKED (DO NOT TOUCH)
 1) Working Rules & Process
@@ -60,7 +61,7 @@ OTP limits & blocks defined (reference locked)
 
 5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
 
-Pricing card selection works
+Pricing card selection now works
 
 Default Premium selected on load
 
@@ -74,7 +75,7 @@ Final winning CSS override locked at END of styles.css
 
 6) Session & OTP Backend Validation — ✅ COMPLETED
 
-Backend (Cloudflare Worker) validated:
+Backend (Cloudflare Worker) validated against locked rules:
 
 60 sec resend cooldown enforced ✅
 
@@ -86,83 +87,66 @@ PIN restriction enforced ✅
 
 /me protected via Bearer token ✅
 
-Same-device session logic supported ✅
+Same-device session logic supported (frontend + token) ✅
 
 7) OTP Security Hardening (Backend) — ✅ DONE
 
-Production-grade protections applied:
+Implemented production-grade protections:
 
-OTP single-use enforcement (delete after verify) ✅
+OTP single-use enforcement
 
-Wrong OTP tries limit using tries column ✅
+Wrong OTP tries limit using tries
 
-Proper lock message on max attempts ✅
+Replay protection
 
-/me endpoint restored & working ✅
+/me endpoint confirmed working
 
-🧾 WHAT CHANGES WERE MADE (LATEST)
+Session expiry / revocation → optional, deferred
+
+8) Plans / Pricing Page UX (Copy + Flow) — ✅ COMPLETED (LATEST)
+
+Plan copy clarified (who each plan is for)
+
+Clear explanation: 1 Plan = 1 Property
+
+“No broker / no deal guarantee” messaging placed correctly
+
+“Next Step” guidance added (Select → Post Property)
+
+Mobile + Tablet + Desktop verified
+
+Legal-safe, conversion-clear, rule-compliant
+
+🚫 Do not revisit unless business model changes
+
+🧾 WHAT CHANGES WERE MADE (SUMMARY)
 A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
-Supports BOTH nav markup variants:
+Supports both nav markup variants
 
-Variant A: .menu > .container > .nav-inner > a
+Uses body.nav-open / .menu.is-open
 
-Variant B: .menu > a
+Mobile dropdown positioned correctly
 
-Visibility via body.nav-open / .menu.is-open
+Full-width stacked links on mobile
 
-Dropdown positioned under header (mobile)
+B) LISTINGS PAGE — HAMBURGER ALIGNMENT
 
-Full-width stacked links (mobile)
+Listings-scoped CSS override
 
-B) LISTINGS PAGE — HAMBURGER ALIGNMENT (CSS)
-
-Header space reserved
-
-Hamburger pinned consistently
+Space reserved for hamburger
 
 Brand collision reduced
+Result: Accepted (not perfect, OK)
 
-Result: “Not perfect, but OK” → ACCEPTED
-⚠️ Add-only CSS at VERY END of styles.css
-
-🟢 PARTIALLY COMPLETED TASKS
-8) Plans / Pricing Page UX (Copy + Flow) — 🟡 PARTIAL
-
-COMPLETED:
-
-Hero section copy clarified:
-
-Owner-posted platform messaging
-
-No broker / no guarantee clarity
-
-“1 Plan = 1 Property” made explicit
-
-“Next Step” guidance added below pricing grid
-
-Mobile / Tablet / Desktop safe (no layout break)
-
-PENDING (STILL TO DO IN THIS TASK):
-
-Pricing card subtext polish (Basic / Premium / Pro descriptions)
-
-Clarify “Select / Selected” → what happens next (inside card area)
-
-Improve placement/emphasis of disclaimer inside cards (without duplication)
+⚠️ All CSS changes are ADD-ONLY and must remain at end of styles.css
 
 ⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
-🟠 PRIORITY 1 — CORE BUSINESS PAGES
+🟠 PRIORITY 1 — CORE BUSINESS PAGES (NEXT)
 
-Continue: Plans / Pricing Page UX (Remaining items)
+1) Legal Page Final Hookup (NEXT TASK)
 
-Card-level copy polish
-
-CTA intent clarity (post-selection expectation)
-
-Legal Page Final Hookup
-
-Verify internal links:
+Verify internal linking:
 
 Privacy Policy
 
@@ -170,15 +154,21 @@ Terms & Conditions
 
 Disclaimer
 
-Footer path correctness (relative vs absolute)
+Check footer links:
 
-Post Property Page Audit
+Absolute vs relative paths
+
+Mobile tap accuracy
+
+Ensure disclaimer text matches locked business model
+
+2) Post Property Page Audit
 
 Field validation
 
 Submission feedback
 
-Mobile spacing & UX
+Mobile spacing & UX check
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY
 
@@ -202,26 +192,30 @@ Subscription Automation
 
 Analytics & Event Tracking
 
-▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
+▶️ NEXT IMMEDIATE STEP (CONFIRMED)
 
-➤ CONTINUE TASK 8 — Plans / Pricing Page UX (Remaining)
+➤ START WITH: Legal Page Final Hookup
 
 Reason:
 
-Flow already started
+Pricing UX complete
 
-No backend risk
+Legal correctness protects business
 
-Direct conversion improvement
+Low risk, high importance
+
+No backend dependency
 
 🧠 EXECUTION RULE (REMINDER)
 
-ONE step at a time
-
-Exact location + paste-box only
+ONE task at a time
 
 No parallel changes
 
-No nav/menu restructuring
+Only add-only safe patches
 
-STATUS: ✅ Stable • 🟡 UX polish in progress
+Never restructure HTML for nav/menu
+
+If a task requires code → paste-box format strictly
+
+END — v5 LOCKED
