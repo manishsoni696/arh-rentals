@@ -1255,3 +1255,42 @@ body{
 
  /* optional: hide CTA on mobile for clean header */
   .site-header .header-actions{ display:none !important; }
+/* ================================
+   MOBILE NAV — VISIBILITY HOTFIX
+   PURPOSE:
+   - Force hamburger to SHOW on mobile
+   - Ensure menu can appear when JS toggles .is-open / body.nav-open
+   - ADD-ONLY, does NOT delete existing rules
+================================ */
+
+/* MOBILE: force hamburger visible */
+@media (max-width: 859px){
+  .nav-toggle{
+    display:inline-flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    z-index:100000 !important;
+  }
+}
+
+/* MOBILE: menu hidden by default */
+@media (max-width: 859px){
+  #primary-navigation,
+  nav.menu,
+  .menu{
+    display:none !important;
+  }
+}
+
+/* MOBILE: menu visible ONLY when opened */
+@media (max-width: 859px){
+  body.nav-open #primary-navigation,
+  body.nav-open nav.menu,
+  body.nav-open .menu,
+  #primary-navigation.is-open,
+  nav.menu.is-open,
+  .menu.is-open{
+    display:block !important;
+  }
+}
