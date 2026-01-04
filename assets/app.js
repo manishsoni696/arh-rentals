@@ -545,5 +545,100 @@ if (logoutBtn) {
 
   if (!isMobile()) closeMenu();
 })();
+(() => {
+  function initMobileNav() {
+    const toggleBtn =
+      document.querySelector(".nav-toggle") ||
+      document.querySelector("[data-nav-toggle]") ||
+      document.getElementById("navToggle");
+
+    const menu =
+      document.getElementById("primary-navigation") ||
+      document.querySelector("nav.menu") ||
+      document.querySelector(".menu");
+
+    if (!toggleBtn || !menu) return;
+
+    const MOBILE_MAX = 859;
+    const isMobile = () => window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
+
+    function setExpanded(open) {
+      toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function openMenu() {
+      menu.classList.add("is-open");
+      document.body.classList.add("nav-open");
+      setExpanded(true);
+    }
+
+    function closeMenu() {
+      menu.classList.remove("is-open");
+      document.body.classList.remove("nav-open");
+      setExpanded(false);
+    }
+
+    function toggleMenu() {
+      const open =
+        menu.classList.contains("is-open") ||
+        document.body.classList.contains("nav-open") ||
+        toggleBtn.getAttribute("aria-expanded") === "true";
+      if (open) closeMenu();
+      else openMenu();
+    }
+
+    // Ensure button behaves like a real button
+    try { toggleBtn.type = "button"; } catch (_) {}
+
+    // Set aria-controls if missing
+    if (menu.id) toggleBtn.setAttribute("aria-controls", menu.id);
+    if (!toggleBtn.hasAttribute("aria-expanded")) setExpanded(false);
+
+    // Remove any previous handlers (safe if script injected multiple times)
+    toggleBtn.onclick = null;
+
+    toggleBtn.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+      },
+      true
+    );
+
+    // Close on outside click (mobile only)
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (!isMobile()) return;
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        if (toggleBtn.contains(target) || menu.contains(target)) return;
+        closeMenu();
+      },
+      true
+    );
+
+    // Close on ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+
+    // On resize: desktop => force closed; mobile => keep state
+    window.addEventListener("resize", () => {
+      if (!isMobile()) closeMenu();
+    });
+
+    // Initial state
+    if (!isMobile()) closeMenu();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNav);
+  } else {
+    initMobileNav();
+  }
+})();
 
 
