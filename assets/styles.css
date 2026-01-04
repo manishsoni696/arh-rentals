@@ -417,6 +417,58 @@ a:hover{color:var(--blue2)}
   padding: 6px 12px;
   opacity: .9;
 }
+/* ================================
+   RESPONSIVE FIX: HERO + INTRO
+   Mobile + Tablet + Desktop
+================================ */
+
+/* Default (desktop) already ok, just ensure safe widths */
+.home-hero{
+  width: 100%;
+  max-width: 960px;
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+  .home-hero{
+    padding: 44px 26px !important;
+    max-width: 100% !important;
+  }
+  .home-intro{
+    padding: 30px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px){
+  .hero{padding: 34px 0 18px}
+  .home-hero{
+    padding: 28px 16px !important;
+    border-radius: 16px !important;
+  }
+  .home-hero h1{
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+  }
+  .home-hero .sub{
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+  }
+  .hero-actions{
+    gap: 10px !important;
+  }
+  .hero-actions .btn{
+    width: 100%;
+  }
+  .hero-trust span{
+    font-size: 12px !important;
+  }
+  .home-intro{
+    padding: 22px !important;
+    border-radius: 16px !important;
+  }
+}
+
 
 
 
