@@ -1,6 +1,8 @@
-ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v2)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v3)
 
 This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.
+Last Updated: Jan 2026
+Status: 🔒 CORE STABLE
 
 ✅ COMPLETED / LOCKED (DO NOT TOUCH)
 1) Working Rules & Process
@@ -39,7 +41,7 @@ Listings ✅ (not perfect, but acceptable)
 
 Legal ✅ (for now)
 
-Strategy remains:
+Strategy locked:
 
 ❌ No HTML restructure
 
@@ -49,7 +51,7 @@ Strategy remains:
 
 JS only toggles: body.nav-open + .menu.is-open
 
-4) Authentication Philosophy
+4) Authentication Philosophy (LOCKED)
 
 OTP logic finalized (session-based)
 
@@ -57,89 +59,100 @@ PIN login allowed
 
 OTP limits & blocks defined (reference locked)
 
+5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
+
+Pricing card selection now works
+
+Default Premium selected on load
+
+Card click + button click both work
+
+Selected visual highlight visible
+
+Final winning CSS override locked at END of styles.css
+
+🚫 Do not revisit unless broken again
+
+6) Session & OTP Backend Validation — ✅ COMPLETED
+
+Backend (Cloudflare Worker) validated against locked rules:
+
+60 sec resend cooldown enforced ✅
+
+Max 3 OTP in 4 hours enforced ✅
+
+OTP validity (5 minutes) enforced ✅
+
+PIN restriction enforced ✅
+
+/me protected via Bearer token ✅
+
+Same-device session logic supported (frontend + token) ✅
+
+⚠️ Security hardening items noted separately (not part of locked rules)
+
 🧾 WHAT CHANGES WERE MADE (LATEST)
 A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
-Added end-of-file mobile menu CSS that supports BOTH nav markup variants:
+Added end-of-file mobile menu CSS supporting BOTH nav markup variants:
 
 Variant A: .menu > .container > .nav-inner > a
 
-Variant B: .menu > a direct children
+Variant B: .menu > a (direct children)
 
 Menu visibility standardized using:
 
 body.nav-open and/or .menu.is-open
 
-Dropdown positioning enforced under header (mobile)
+Dropdown positioned under header (mobile)
 
 Full-width stacked links enforced (mobile)
 
 B) LISTINGS PAGE ONLY — HAMBURGER ALIGNMENT (CSS)
 
-Added a Listings-scoped mobile override (CSS-only, add-only) to:
+Added Listings-scoped mobile override (CSS-only, add-only) to:
 
 Reserve header space for hamburger
 
-Pin hamburger position more consistently
+Pin hamburger position consistently
 
 Reduce collision with brand text
 
-Result: “Not perfect, but OK” accepted.
+Result:
+“Not perfect, but OK” → ACCEPTED
 
-⚠️ IMPORTANT:
-
+⚠️ IMPORTANT
 These changes are ADD-ONLY CSS and must remain at the VERY END of styles.css.
 
 ⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
-🔴 PRIORITY 1 — STABILITY & SAFETY
+🔴 PRIORITY 1 — STABILITY & SECURITY (NEXT)
 
-Freeze CSS Base (NOW LOCKED)
+OTP Security Hardening (Backend)
 
-Treat current /assets/styles.css as BASE
+OTP single-use enforcement (delete / mark-used after verify)
 
-New CSS allowed only as:
+Use tries column to limit wrong OTP attempts
 
-scoped additions
+Optional: session expiry / revocation strategy
 
-minimal overrides
-
-No “cleanup / consolidation” yet
-
-Pricing Selection Bug (JS) — START HERE
-
-Selection not persisting / click not selecting in some cases
-
-Revenue-impacting: blocks plan conversion
-
-Requires /assets/app.js audit + safe add-only patch
-
-Session & OTP Backend Validation
-
-Confirm backend respects:
-
-same-device session bypass
-
-OTP validity window
-
-max sends in time window
-
-block conditions
-
-Verify edge cases (refresh, multi-tab, new browser)
+⚠️ These are security improvements, not bug fixes.
+Core rules already pass.
 
 🟠 PRIORITY 2 — CORE BUSINESS PAGES
 
 Plans / Pricing Page UX (Copy + Flow)
 
-Clarify plan benefits + what “unlock” means
+Clarify plan benefits
 
-Strengthen CTA intent (what happens after selection)
+Clarify what “Select / Selected” leads to
 
-Reduce confusion: “No broker / no deal guarantee” messaging placement
+Improve placement of:
+
+“No broker / no deal guarantee” messaging
 
 Legal Page Final Hookup
 
-Ensure correct internal linking:
+Verify internal linking:
 
 Privacy Policy
 
@@ -147,7 +160,7 @@ Terms & Conditions
 
 Disclaimer
 
-Verify footer links are correct paths (no relative mistakes)
+Check footer paths (absolute vs relative)
 
 Post Property Page Audit
 
@@ -155,7 +168,7 @@ Field validation
 
 Submission feedback
 
-Mobile spacing check
+Mobile spacing & UX check
 
 🟡 PRIORITY 3 — SEO & DISCOVERABILITY
 
@@ -169,9 +182,9 @@ Query opportunities
 
 On-page SEO Audit
 
-H1/H2 hierarchy (each page)
+H1 / H2 hierarchy
 
-Meta titles/descriptions
+Meta titles & descriptions
 
 Internal linking consistency
 
@@ -179,7 +192,7 @@ Internal linking consistency
 
 WhatsApp / Call CTA Logic
 
-Context-aware buttons (listing cards + header)
+Context-aware buttons (header + listings)
 
 Mobile-first behavior
 
@@ -202,17 +215,17 @@ Subscription Automation
 Analytics & Event Tracking
 
 ▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
-➤ START WITH: TASK 2 — Pricing Selection Bug (JS)
+➤ START WITH: OTP Security Hardening (Backend)
 
 Reason:
 
-Direct revenue impact
+Core business already stable
 
-Already identified previously
+Revenue path unblocked
 
-Blocks plan conversion
+This improves production-grade security before scale
 
-🧠 EXECUTION RULE
+🧠 EXECUTION RULE (REMINDER)
 
 ONE task at a time
 
@@ -222,4 +235,4 @@ Only add-only safe patches
 
 Never restructure HTML for nav/menu
 
-If a task requires code: follow paste-box format strictly
+If a task requires code → paste-box format strictly
