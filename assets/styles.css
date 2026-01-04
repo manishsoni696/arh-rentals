@@ -1206,6 +1206,33 @@ body{
     word-break: break-word !important;
   }
 }
+@media (max-width: 859px){
+  .menu{
+    display: block !important;
+  }
+
+  body:not(.nav-open) .menu .nav-inner a:not(.menu-cta){
+    display: none !important;
+  }
+
+  body.nav-open .menu .nav-inner a:not(.menu-cta){
+    display: inline-flex !important;
+  }
+
+  .menu .nav-inner{
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 0 !important;
+    flex-wrap: wrap !important;
+  }
+
+  .menu-cta{
+    display: inline-flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    margin-top: 10px !important;
+  }
+}
 
 
 
