@@ -27,30 +27,61 @@ a{color:inherit; text-decoration:none}
 a:hover{color:var(--blue2)}
 .container{max-width:1100px; margin:0 auto; padding:0 18px}
 
-/* HEADER */
+/* ================= HEADER ================= */
 .site-header{
-  position:sticky; top:0; z-index:50;
+  position:sticky;
+  top:0;
+  z-index:50;
   backdrop-filter: blur(10px);
   background: rgba(11,15,20,.72);
   border-bottom:1px solid var(--line);
 }
+
 .navbar{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:16px; padding:12px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px 0;
 }
+
 .brand{display:flex; align-items:center; gap:10px}
-.brand-logo{height:36px; width:auto; max-width:140px; object-fit:contain}
-.brand-title{display:flex; flex-direction:column; line-height:1.1}
-.brand-title strong{font-size:15px; letter-spacing:.2px}
-.brand-title span{font-size:12px; color:var(--muted)}
+.brand-logo{height:36px; max-width:140px; object-fit:contain}
 
-.menu{display:flex; align-items:center; gap:14px; font-size:13px; color:var(--muted)}
-.menu a{padding:8px 10px; border-radius:10px}
-.menu a:hover{background: rgba(255,255,255,.06); color:var(--text)}
+.brand-title{
+  display:flex;
+  flex-direction:column;
+  line-height:1.1;
+}
+.brand-title strong{font-size:15px}
+.brand-title span{font-size:12px;color:var(--muted)}
 
-/* BUTTONS */
+.menu{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:13px;
+  color:var(--muted);
+}
+.menu a{
+  padding:8px 10px;
+  border-radius:10px;
+}
+.menu a:hover{
+  background: rgba(255,255,255,.06);
+  color:var(--text);
+}
+
+/* Desktop: hide mobile toggle */
+@media(min-width:860px){
+  .nav-toggle{display:none!important}
+}
+
+/* ================= BUTTONS ================= */
 .btn{
-  display:inline-flex; align-items:center; justify-content:center;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   border:1px solid var(--line);
   padding:10px 14px;
   border-radius:12px;
@@ -58,56 +89,131 @@ a:hover{color:var(--blue2)}
   color:var(--text);
   cursor:pointer;
   transition:.2s ease;
+  min-height:44px;
 }
-.btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
+
+.btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.06);
+}
+
 .btn-primary{
   border-color: rgba(10,116,184,.55);
   background: linear-gradient(180deg, rgba(10,116,184,.95), rgba(10,116,184,.75));
 }
-.btn-primary:hover{box-shadow: 0 0 0 3px rgba(29,161,242,.20)}
 
-/* HERO + INFO */
-.hero{padding:54px 0 26px}
-.hero h1{margin:0; font-size:34px; letter-spacing:.2px}
-.hero p{margin:10px 0 0; color:var(--muted)}
-
-.notice{
-  padding:12px 14px;
-  border:1px dashed rgba(29,161,242,.45);
-  border-radius:12px;
-  background: rgba(29,161,242,.08);
-  color:var(--text);
+.btn-primary:hover{
+  box-shadow: 0 0 0 3px rgba(29,161,242,.20);
 }
-.trust-strip{
-  margin:16px 0 24px;
-  padding:12px 14px;
-  display:flex; gap:14px; flex-wrap:wrap; align-items:center;
-  border:1px dashed rgba(29,161,242,.45);
-  border-radius:12px;
-  background: rgba(29,161,242,.08);
-  color:var(--text);
-  font-size:13px;
-}
-.trust-strip span{display:inline-flex; align-items:center; gap:6px}
 
-/* ✅ PRICING GRID */
+/* ================= HERO ================= */
+.hero{
+  padding:54px 0 26px;
+}
+
+.home-hero{
+  width:100%;
+  max-width:960px;
+  margin:0 auto;
+  padding:56px 48px;
+  border-radius:18px;
+  background:
+    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+}
+
+.home-hero h1{
+  font-size:34px;
+  line-height:1.25;
+  margin:0 0 18px;
+  max-width:760px;
+}
+
+.home-hero .sub{
+  max-width:720px;
+  font-size:16px;
+  line-height:1.75;
+  margin-bottom:26px;
+  color:var(--muted);
+}
+
+.hero-actions{
+  display:flex;
+  gap:14px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.hero-trust{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.hero-trust span{
+  background: rgba(255,255,255,.06);
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  opacity:.9;
+}
+
+/* ================= INTRO ================= */
+.home-intro{
+  padding:40px;
+  margin-top:32px;
+  border-radius:18px;
+  background: rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+/* ================= GRID & CARDS ================= */
+.grid{
+  margin-top:40px;
+}
+
 .grid-3{
   display:grid;
   grid-template-columns:1fr;
   gap:14px;
-  padding:12px 0 28px;
 }
+
 @media(min-width:860px){
   .grid-3{grid-template-columns:repeat(3,1fr)}
 }
 
-.price{font-size:28px; font-weight:700; margin:10px 0; color:#fff}
-.small{font-size:12px; color:var(--muted)}
-.muted,.sub{color:var(--muted)}
+.card{
+  border:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  position:relative;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
 
-/* ✅ ADD: hr + pills (missing earlier) */
-.hr{height:1px; background:var(--line); margin:14px 0}
-.pills{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.45);
+}
+
+.card-body{
+  padding:46px 18px 18px;
+}
+
+.card h2,.card h3{margin:0 0 8px}
+
+.hr{
+  height:1px;
+  background:var(--line);
+  margin:14px 0;
+}
+
+.pills{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
 .pill{
   font-size:12px;
   padding:6px 10px;
@@ -117,93 +223,29 @@ a:hover{color:var(--blue2)}
   color:var(--muted);
 }
 
-/* CARD */
-.card{
-  border:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  position:relative;
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.card-body{padding:46px 18px 18px;
-}
-.card h2,.card h3{margin:0 0 8px}
-
-.card:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.45);
+/* ================= PRICING ================= */
+#pricingGrid .card{
+  overflow:visible;
 }
 
-/* bottom glow line */
-.card::after{
-  content:"";
-  position:absolute;
-  inset:auto 0 0 0;
-  height:2px;
-  background: linear-gradient(90deg, transparent, var(--blue2), transparent);
-  opacity:.6;
+#pricingGrid .card.selected{
+  border:3px solid rgba(29,161,242,.95);
+  box-shadow:0 0 0 4px rgba(29,161,242,.22),0 22px 60px rgba(0,0,0,.55);
 }
 
-/* FEATURED */
-.card.featured{
-  border:1px solid rgba(29,161,242,.55);
-  background: linear-gradient(180deg, rgba(29,161,242,.12), rgba(15,23,32,.86));
-}
-
-/* ✅ Most Popular tag */
-.tag{
-  position:absolute;
-  top:12px;
-  right:12px;
-  z-index:10;
-  margin:0;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  letter-spacing:.6px;
-  text-transform:uppercase;
-  white-space:nowrap;
-  border:1px solid rgba(29,161,242,.45);
-  background: rgba(29,161,242,.18);
-  color:#eaf7ff;
-}
-
-/* ✅ SELECTED */
-.card.selected{
-  border:3px solid rgba(29,161,242,.95) !important;
-  box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
-}
-
-/* Selected badge top-left */
-.card.selected::before{
+#pricingGrid .card.selected::before{
   content:"SELECTED";
   position:absolute;
   top:12px;
   left:12px;
-  z-index:11;
   padding:6px 10px;
-  border-radius:999px;
   font-size:11px;
-  letter-spacing:.8px;
-  text-transform:uppercase;
-  border:1px solid rgba(29,161,242,.55);
+  border-radius:999px;
   background: rgba(29,161,242,.30);
-  color:#fff;
+  border:1px solid rgba(29,161,242,.55);
 }
 
-/* Button inside selected */
-.card.selected .btn{
-  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
-  border-color: transparent !important;
-  color:#fff !important;
-  font-weight:700;
-}
-
-/* FOOTER */
+/* ================= FOOTER ================= */
 .footer{
   margin-top:26px;
   padding:18px 0 30px;
@@ -211,386 +253,20 @@ a:hover{color:var(--blue2)}
   color:var(--muted);
   font-size:12px;
 }
-/* ===== Footer (ARH Rentals) ===== */
-.site-footer{
-  margin-top: 28px;
-  border-top: 1px solid #e9eef5;
-  background: #fff;
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1024px){
+  .home-hero{padding:44px 26px}
+  .home-intro{padding:30px}
 }
 
-.site-footer .container{
-  max-width: 1200px;
-  margin: auto;
-  padding: 18px 20px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.footer-links{
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-links a{
-  color: #444;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 8px 10px;
-  border-radius: 10px;
-}
-
-.footer-links a:hover{
-  background: #f5f7fa;
-}
-
-.footer-copy{
-  color: #666;
-  font-size: 13px;
-}
-/* === Pricing: Selected plan highlight (FINAL) === */
-#pricingGrid .card.selected{
-  border: 3px solid rgba(29,161,242,.95) !important;
-  box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
-}
-
-#pricingGrid .card.selected::before{
-  content:"SELECTED";
-  position:absolute;
-  top:12px;
-  left:12px;
-  z-index:11;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  letter-spacing:.8px;
-  text-transform:uppercase;
-  border:1px solid rgba(29,161,242,.55);
-  background: rgba(29,161,242,.30);
-  color:#fff;
-}
-
-#pricingGrid .card.selected .select-btn{
-  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
-  border-color: transparent !important;
-  color:#fff !important;
-  font-weight:700;
-}
-
-.footer-brand{
-  color: #0A2A43; /* same as your --blue */
-  font-weight: 800;
-}
-.footer a{color:var(--text)}
-.footer a:hover{color:var(--blue2)}
-
-/* === FIX: allow clicks on pricing cards === */
-#pricingGrid .card::before,
-#pricingGrid .card::after{
-  pointer-events: none;
-}
-/* === FIX: Pricing Selected highlight always visible === */
-#pricingGrid .card{
-  overflow: visible;
-}
-
-#pricingGrid .card::after{
-  pointer-events: none;
-  z-index: 1;
-}
-
-#pricingGrid .card.selected{
-  position: relative;
-  z-index: 5;
-}
-
-#pricingGrid .card.selected::before{
-  z-index: 6;
-}
-/* === FIX: Remove stray dash next to Post Property (desktop) === */
-
-/* Hide mobile nav toggle completely on desktop */
-@media (min-width: 860px) {
-  .nav-toggle {
-    display: none !important;
-  }
-}
-
-/* Safety: disable any pseudo lines */
-.nav-toggle::before,
-.nav-toggle::after,
-.nav-toggle span::before,
-.nav-toggle span::after {
-  content: none !important;
-}
-/* ================================
-   HOME PAGE INTERACTIVE POLISH
-================================ */
-
-/* 1. Hero visual separation */
-.home-hero{
-  border-radius: 18px;
-  padding: 56px 48px;
-  background:
-    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-}
-
-/* Make hero text more readable */
-.home-hero h1{
-  max-width: 760px;
-}
-.home-hero .sub{
-  max-width: 720px;
-  line-height: 1.65;
-}
-
-/* Trust bullets as chips */
-.hero-trust{
-  gap: 10px;
-}
-.hero-trust span{
-  background: rgba(255,255,255,.06);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-
-/* 2. Highlight intro section */
-/* 2. Highlight intro section */
-.home-intro{
-  padding: 40px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-}
-
-/* ================================
-   HERO DE-CONGESTION FIX
-================================ */
-
-/* Limit hero content width */
-.home-hero{
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Headline breathing room */
-.home-hero h1{
-  line-height: 1.25;
-  margin-bottom: 18px;
-}
-
-/* Paragraph spacing + readability */
-.home-hero .sub{
-  font-size: 16px;
-  line-height: 1.75;
-  margin-bottom: 26px;
-}
-
-/* Buttons spacing */
-.hero-actions{
-  display: flex;
-  gap: 14px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-/* Trust chips spacing */
-.hero-trust{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-/* Chips lighter & smaller */
-.hero-trust span{
-  font-size: 12px;
-  padding: 6px 12px;
-  opacity: .9;
-}
-/* ================================
-   RESPONSIVE FIX: HERO + INTRO
-   Mobile + Tablet + Desktop
-================================ */
-
-/* Default (desktop) already ok, just ensure safe widths */
-.home-hero{
-  width: 100%;
-  max-width: 960px;
-}
-
-/* Tablet */
-@media (max-width: 1024px){
+@media(max-width:600px){
   .home-hero{
-    padding: 44px 26px !important;
-    max-width: 100% !important;
+    padding:28px 16px;
+    border-radius:16px;
   }
-  .home-intro{
-    padding: 30px !important;
-  }
+  .home-hero h1{font-size:28px}
+  .home-hero .sub{font-size:15px}
+  .hero-actions .btn{width:100%}
+  .home-intro{padding:22px}
 }
-
-/* Mobile */
-@media (max-width: 600px){
-  .hero{padding: 34px 0 18px}
-  .home-hero{
-    padding: 28px 16px !important;
-    border-radius: 16px !important;
-  }
-  .home-hero h1{
-    font-size: 28px !important;
-    line-height: 1.2 !important;
-  }
-  .home-hero .sub{
-    font-size: 15px !important;
-    line-height: 1.7 !important;
-  }
-  .hero-actions{
-    gap: 10px !important;
-  }
-  .hero-actions .btn{
-    width: 100%;
-  }
-  .hero-trust span{
-    font-size: 12px !important;
-  }
-  .home-intro{
-    padding: 22px !important;
-    border-radius: 16px !important;
-  }
-}
-/* ================================
-   HOME PAGE: POLISH + DECONGEST + RESPONSIVE
-   Mobile + Tablet + Desktop
-================================ */
-
-.home-hero{
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  border-radius: 18px;
-  padding: 56px 48px;
-  background:
-    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-}
-
-.home-hero h1{
-  max-width: 760px;
-  line-height: 1.25;
-  margin-bottom: 18px;
-}
-
-.home-hero .sub{
-  max-width: 720px;
-  font-size: 16px;
-  line-height: 1.75;
-  margin-bottom: 26px;
-}
-
-.hero-actions{
-  display: flex;
-  gap: 14px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.hero-trust{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.hero-trust span{
-  background: rgba(255,255,255,.06);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  opacity: .9;
-}
-
-/* Intro section highlight */
-.home-intro{
-  padding: 40px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-}
-
-/* Hover polish */
-.home-intro .card,
-.grid .card{
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.home-intro .card:hover,
-.grid .card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.45);
-}
-
-.grid{
-  margin-top: 40px;
-}
-
-.btn{
-  min-height: 44px;
-}
-
-/* Tablet */
-@media (max-width: 1024px){
-  .home-hero{
-    padding: 44px 26px;
-    max-width: 100%;
-  }
-  .home-intro{
-    padding: 30px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px){
-  .hero{padding: 34px 0 18px}
-
-  .home-hero{
-    padding: 28px 16px;
-    border-radius: 16px;
-  }
-
-  .home-hero h1{
-    font-size: 28px;
-    line-height: 1.2;
-  }
-
-  .home-hero .sub{
-    font-size: 15px;
-    line-height: 1.7;
-  }
-
-  .hero-actions{
-    gap: 10px;
-  }
-
-  .hero-actions .btn{
-    width: 100%;
-  }
-
-  .home-intro{
-    padding: 22px;
-    border-radius: 16px;
-  }
-}
-
-
-
-
