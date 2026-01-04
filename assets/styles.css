@@ -468,6 +468,128 @@ a:hover{color:var(--blue2)}
     border-radius: 16px !important;
   }
 }
+/* ================================
+   HOME PAGE: POLISH + DECONGEST + RESPONSIVE
+   Mobile + Tablet + Desktop
+================================ */
+
+.home-hero{
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 18px;
+  padding: 56px 48px;
+  background:
+    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+}
+
+.home-hero h1{
+  max-width: 760px;
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+
+.home-hero .sub{
+  max-width: 720px;
+  font-size: 16px;
+  line-height: 1.75;
+  margin-bottom: 26px;
+}
+
+.hero-actions{
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-trust{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.hero-trust span{
+  background: rgba(255,255,255,.06);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  opacity: .9;
+}
+
+/* Intro section highlight */
+.home-intro{
+  padding: 40px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+/* Hover polish */
+.home-intro .card,
+.grid .card{
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.home-intro .card:hover,
+.grid .card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.45);
+}
+
+.grid{
+  margin-top: 40px;
+}
+
+.btn{
+  min-height: 44px;
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+  .home-hero{
+    padding: 44px 26px;
+    max-width: 100%;
+  }
+  .home-intro{
+    padding: 30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px){
+  .hero{padding: 34px 0 18px}
+
+  .home-hero{
+    padding: 28px 16px;
+    border-radius: 16px;
+  }
+
+  .home-hero h1{
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .home-hero .sub{
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .hero-actions{
+    gap: 10px;
+  }
+
+  .hero-actions .btn{
+    width: 100%;
+  }
+
+  .home-intro{
+    padding: 22px;
+    border-radius: 16px;
+  }
+}
 
 
 
