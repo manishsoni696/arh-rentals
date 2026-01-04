@@ -1253,3 +1253,14 @@ body{
     display: block !important;
   }
 }
+/* ============ MOBILE NAV VISIBILITY (LOCK) — ADD-ONLY ============ */
+/* Default mobile: menu hidden. Open only when .is-open OR body.nav-open */
+@media (max-width: 859px){
+  .menu{
+    display: none !important;
+  }
+  .menu.is-open,
+  body.nav-open .menu{
+    display: block !important;
+  }
+}
