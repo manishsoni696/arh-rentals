@@ -427,5 +427,35 @@ if (logoutBtn) {
     if (!isMobile()) closeMenu();
   });
 })();
+/* ============ GLOBAL NAV ACTIVE STATE (ADD-ONLY) ============ */
+/* Purpose: Automatically highlight active menu item on ALL pages */
+
+(function () {
+  const links = document.querySelectorAll(".menu a[href]");
+  if (!links.length) return;
+
+  const currentPath = window.location.pathname
+    .replace(/\/$/, "")
+    .toLowerCase();
+
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    // Normalize href to path only
+    const linkPath = new URL(href, window.location.origin)
+      .pathname.replace(/\/$/, "")
+      .toLowerCase();
+
+    if (
+      currentPath === linkPath ||
+      (currentPath === "" && linkPath === "/index.html")
+    ) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+})();
 
 
