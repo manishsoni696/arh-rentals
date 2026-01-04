@@ -514,4 +514,30 @@ button.btn-primary:hover{
     padding: 8px 10px;
   }
 }
+/* ============ STEP 1.1 — HERO HEADING REFINEMENT (ADD-ONLY) ============ */
+/* Purpose: Reduce oversized feel, add elegance & balance */
+
+.home-hero h1{
+  font-weight: 800;               /* was 900 → softer premium */
+  letter-spacing: 0;              /* remove heaviness */
+  line-height: 1.18;              /* more breathing room */
+  font-size: clamp(26px, 2.8vw, 38px); /* controlled scale */
+  max-width: 880px;               /* tighter text block */
+}
+
+/* Tablet tuning */
+@media (max-width: 900px){
+  .home-hero h1{
+    font-size: clamp(26px, 4vw, 34px);
+  }
+}
+
+/* Mobile tuning */
+@media (max-width: 600px){
+  .home-hero h1{
+    font-size: 26px;
+    line-height: 1.22;
+  }
+}
+
 
