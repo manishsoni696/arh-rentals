@@ -1147,6 +1147,23 @@ body{
     justify-content: center;
   }
 }
+/* 2) MOBILE HOME ONLY — HIDE NAV LINKS ROW, KEEP HAMBURGER, KEEP "POST PROPERTY" CTA */
+@media (max-width: 859px){
+  body.home .menu .nav-inner a:not(.menu-cta){
+    display: none !important;
+  }
+
+  body.home .menu .nav-inner{
+    justify-content: center !important;
+    gap: 0 !important;
+  }
+
+  body.home .menu-cta{
+    display: inline-flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
 
 
 
