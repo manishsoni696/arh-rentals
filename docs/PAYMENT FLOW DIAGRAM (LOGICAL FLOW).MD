@@ -24,3 +24,12 @@
 [Visibility until Plan Expiry]
         ↓
 [Auto-hide on Expiry]
+
+
+Payment Rules (Locked)
+
+Payment ≠ Tenant guarantee
+
+Payment ≠ Lead assurance
+
+Payment = visibility for limited time only
