@@ -1,5 +1,6 @@
 🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.2)
 
+This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.
 Last Updated: Jan 2026
 Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING UX + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED
 
@@ -28,15 +29,15 @@ Button system standardized
 
 Card system finalized
 
-3) Mobile Menu (NAV) — STATUS LOCKED
+3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
 
-Mobile hamburger works on:
+Mobile hamburger now appears and opens on:
 
 Home ✅
 
 Pricing ✅
 
-Listings ✅ (acceptable)
+Listings ✅ (not perfect, but acceptable)
 
 Legal ✅
 
@@ -60,128 +61,127 @@ PIN login allowed
 
 OTP limits & blocks defined (reference locked)
 
-5) Pricing Selection Bug — ✅ FIXED
+5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
 
-Pricing card selection works
+Pricing card selection now works
 
-Default Premium selected
+Default Premium selected on load
 
-Card click + button click supported
+Card click + button click both work
 
-Visual highlight visible
+Selected visual highlight visible
 
-Final CSS override locked at END of styles.css
+Final winning CSS override locked at END of styles.css
 
-🚫 Do not revisit unless broken
+🚫 Do not revisit unless broken again
 
 6) Session & OTP Backend Validation — ✅ COMPLETED
 
-Resend cooldown enforced (60s) ✅
+Backend (Cloudflare Worker) validated against locked rules:
 
-Max OTP limit enforced (3 / 4 hours) ✅
+60 sec resend cooldown enforced ✅
 
-OTP validity (5 min) ✅
+Max 3 OTP in 4 hours enforced ✅
+
+OTP validity (5 minutes) enforced ✅
 
 PIN restriction enforced ✅
 
-/me protected with Bearer token ✅
+/me protected via Bearer token ✅
 
-Same-device session supported ✅
+Same-device session logic supported (frontend + token) ✅
 
-7) OTP Security Hardening — ✅ DONE
+7) OTP Security Hardening (Backend) — ✅ DONE
 
-OTP single-use enforced ✅
+Implemented production-grade protections:
 
-Wrong OTP tries limited (tries) ✅
+OTP single-use enforcement ✅
 
-Replay protection active ✅
+Wrong OTP tries limit using tries ✅
 
-/me endpoint verified ✅
+Replay protection ✅
 
-Session expiry → deferred (future)
+/me endpoint confirmed working ✅
 
-8) Plans / Pricing Page UX — ✅ COMPLETED
+Session expiry / revocation → optional, deferred
 
-Clear plan intent copy
+8) Plans / Pricing Page UX (Copy + Flow) — ✅ COMPLETED
 
-1 Plan = 1 Property explained
+Plan copy clarified (who each plan is for)
 
-No broker / no guarantee messaging placed
+Clear explanation: 1 Plan = 1 Property
 
-“Next Step” guidance added
+“No broker / no deal guarantee” messaging placed correctly
+
+“Next Step” guidance added (Select → Post Property)
 
 Mobile + Tablet + Desktop verified
 
-🚫 Locked unless business model changes
+Legal-safe, conversion-clear, rule-compliant
+
+🚫 Do not revisit unless business model changes
 
 9) Legal Page Final Hookup — ✅ COMPLETED
 
-Footer links absolute & correct
+Footer links fixed to correct absolute paths ✅
 
-Disclaimer matches locked business model
+Disclaimer updated to match locked business model ✅
 
-No banned words
+No banned words used ✅
 
-Mobile + Tablet + Desktop safe
+Mobile + Tablet + Desktop safe ✅
 
-🚫 Locked unless legal text changes
+🚫 Do not revisit unless legal text changes
 
 10) Post Property Page Audit — ✅ COMPLETED (LATEST)
 
 File: /post/index.html
 
-Verified & fixed:
+Flow clarity verified (PIN → OTP → Property → Plan)
 
-Flow clarity (PIN → OTP → Property → Plan)
+No misleading verification wording
 
-Removed misleading verification language
+Frontend validation safety applied
 
-Frontend input validation safety added
+Footer links & disclaimer aligned
 
-Footer links corrected
+Mobile + Tablet + Desktop UX verified
 
-Mandatory disclaimer aligned with master
+No OTP / pricing / CSS logic touched
 
-Mobile + Tablet + Desktop spacing verified
-
-No OTP / pricing / CSS logic disturbed
-
-🚫 Status: LOCKED unless new posting features added
+🚫 Locked unless posting features change
 
 🧾 WHAT CHANGES WERE MADE (SUMMARY)
-A) GLOBAL MOBILE MENU (CSS)
+A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
-Supports multiple nav variants
+Supports both nav markup variants
 
-Controlled via body.nav-open + .menu.is-open
+Uses body.nav-open / .menu.is-open
 
-Full-width mobile dropdown
+Mobile dropdown positioned correctly
 
-Locked
+Full-width stacked links on mobile
 
-B) LISTINGS PAGE NAV ADJUSTMENT
+B) LISTINGS PAGE — HAMBURGER ALIGNMENT
 
-Scoped CSS override
+Listings-scoped CSS override
 
-Hamburger spacing acceptable
+Space reserved for hamburger
 
-Locked
+Brand collision reduced
+Result: Accepted (not perfect, OK)
 
-C) PRICING PAGE UX
+C) PRICING PAGE UX (HTML COPY)
 
-Copy clarity
+Improved hero + plan copy clarity
 
-Conversion-safe flow
+Added “Next step” guidance section
 
-Locked
+D) LEGAL PAGE FOOTER HOOKUP (HTML)
 
-D) LEGAL PAGE FOOTER
+Footer internal links corrected
 
-Absolute paths
-
-Correct disclaimer
-
-Locked
+Disclaimer text aligned with locked model
 
 E) POST PROPERTY FLOW
 
@@ -193,38 +193,34 @@ Validation safety
 
 Conversion-safe
 
-Locked
-
-⚠️ All CSS remains ADD-ONLY at end of styles.css
+⚠️ All CSS changes are ADD-ONLY and must remain at end of styles.css
 
 ⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
-🟡 PRIORITY 1 — SEO & DISCOVERABILITY (NEXT)
+🟠 PRIORITY 1 — WEBSITE READINESS / POLISH (NEXT)
 
-Google Search Console Review
+Micro UX Improvements
 
-Coverage
+Button disabled/loading states
 
-Indexing
+Feedback message consistency
 
-Sitemap
-
-Errors / warnings
-
-On-page SEO Audit
-
-Titles & meta descriptions
-
-H1/H2 structure
-
-Internal linking
-
-No keyword stuffing
-
-🔵 PRIORITY 2 — USER EXPERIENCE BOOSTERS
+Minor spacing refinements (safe-only)
 
 WhatsApp / Call CTA Logic
 
-Micro UX Improvements (loading, disabled states, hover consistency)
+Click behavior
+
+Mobile-first handling
+
+Legal-safe wording
+
+🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
+
+Google Search Console Review
+
+On-page SEO Audit
+
+⚠️ Explicitly postponed until website structure is frozen.
 
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
 
@@ -238,15 +234,15 @@ Analytics & Event Tracking
 
 ▶️ NEXT IMMEDIATE STEP (CONFIRMED)
 
-➤ START WITH: Google Search Console Review
+➤ START WITH: Micro UX Improvements
 
 Reason:
 
-Core business flow is stable
+Core business flow is now stable
 
-Conversion path secured
+Posting path audited and safe
 
-SEO visibility is next growth lever
+Small UX polish improves perceived quality before SEO
 
 🧠 EXECUTION RULE (REMINDER)
 
@@ -254,10 +250,10 @@ ONE task at a time
 
 No parallel changes
 
-Add-only safe patches
+Only add-only safe patches
 
-Never restructure nav/menu HTML
+Never restructure HTML for nav/menu
 
-Code only via paste-box format
+If a task requires code → paste-box format strictly
 
 END — v5.2 LOCKED
