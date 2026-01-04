@@ -457,5 +457,41 @@ if (logoutBtn) {
     }
   });
 })();
+/* ============ GLOBAL NAV ACTIVE HIGHLIGHT (WORKS WITH /pricing/ AND /pricing/index.html) ============ */
+(function () {
+  const links = document.querySelectorAll(".menu a[href]");
+  if (!links.length) return;
+
+  function norm(path) {
+    if (!path) return "/";
+    path = String(path).split("?")[0].split("#")[0];
+    path = path.toLowerCase();
+    path = path.replace(/\/index\.html$/, "");
+    path = path.replace(/\/$/, "");
+    return path || "/";
+  }
+
+  const current = norm(window.location.pathname);
+
+  links.forEach((a) => {
+    const href = a.getAttribute("href");
+    if (!href) return;
+
+    let p = "/";
+    try {
+      p = new URL(href, window.location.origin).pathname;
+    } catch (e) {
+      p = href;
+    }
+
+    const linkPath = norm(p);
+
+    if (current === linkPath) {
+      a.classList.add("active");
+    } else {
+      a.classList.remove("active");
+    }
+  });
+})();
 
 
