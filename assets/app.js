@@ -493,5 +493,54 @@ if (logoutBtn) {
     }
   });
 })();
+/* ============ GLOBAL NAV ACTIVE HIGHLIGHT (ROBUST) ============ */
+/* Works with: /pricing/ , /pricing/index.html , ../contact.html , ./index.html */
+
+(function () {
+  function norm(p) {
+    p = String(p || "");
+    p = p.split("?")[0].split("#")[0];
+    p = p.toLowerCase();
+    p = p.replace(/\/index\.html$/, "");
+    p = p.replace(/\/$/, "");
+    return p || "/";
+  }
+
+  function resolvePath(href) {
+    // Robust resolver (no URL() dependency)
+    const a = document.createElement("a");
+    a.href = href;
+    return a.pathname || href;
+  }
+
+  function applyActive() {
+    const links = document.querySelectorAll(".menu a[href]");
+    if (!links.length) return;
+
+    const current = norm(window.location.pathname);
+
+    links.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (!href) return;
+
+      const linkPath = norm(resolvePath(href));
+
+      // Exact match (normalized)
+      const isActive = current === linkPath;
+
+      if (isActive) link.classList.add("active");
+      else link.classList.remove("active");
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyActive);
+  } else {
+    applyActive();
+  }
+
+  // Back/forward cache + SPA-like behavior safety
+  window.addEventListener("pageshow", applyActive);
+})();
 
 
