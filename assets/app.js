@@ -409,5 +409,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isMobile()) setOpen(false);
   });
 });
+/* ================================
+   MOBILE NAV TOGGLE (FIX) — ADD-ONLY
+   ================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.querySelector(".nav-toggle");
+  const menu =
+    document.getElementById("primary-navigation") ||
+    document.querySelector(".menu");
+
+  if (!toggleBtn || !menu) return;
+
+  // Ensure correct initial state (mobile)
+  toggleBtn.setAttribute("aria-expanded", "false");
+  menu.classList.remove("is-open");
+
+  const closeMenu = () => {
+    toggleBtn.setAttribute("aria-expanded", "false");
+    menu.classList.remove("is-open");
+  };
+
+  const openMenu = () => {
+    toggleBtn.setAttribute("aria-expanded", "true");
+    menu.classList.add("is-open");
+  };
+
+  toggleBtn.addEventListener("click", () => {
+    const isOpen = menu.classList.contains("is-open");
+    if (isOpen) closeMenu();
+    else openMenu();
+  });
+
+  // Close when any menu link is clicked (mobile UX)
+  menu.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (a && window.innerWidth <= 859) closeMenu();
+  });
+
+  // On desktop resize, force menu visible via desktop CSS (and remove mobile open state)
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 860) closeMenu();
+  });
+});
 
   
