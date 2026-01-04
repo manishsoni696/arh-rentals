@@ -53,40 +53,44 @@
 
   <div class="grid">
     <aside class="card">
-      <div class="card-body">
-        <h2>Filters</h2>
-        <div class="hr"></div>
+      <h2>Filters</h2>
+<div class="hr"></div>
 
-        <div class="small">PIN Code</div>
-        <input class="input" id="fPin" placeholder="125001"/>
+<div class="small">City</div>
+<select class="input" id="fCity">
+  <option value="hisar">Hisar</option>
+</select>
 
-        <div style="height:10px"></div>
+<div style="height:10px"></div>
 
-        <div class="small">Type</div>
-        <select class="input" id="fType">
-          <option value="">Any</option>
-          <option value="House">House</option>
-          <option value="Shop">Shop</option>
-          <option value="Office">Office</option>
-        </select>
+<div class="small">Area / Sector</div>
+<input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town"/>
 
-        <div style="height:10px"></div>
+<div style="height:10px"></div>
 
-        <div class="small">Max Rent</div>
-        <input class="input" id="fMax" placeholder="15000"/>
+<div class="small">Property Type</div>
+<select class="input" id="fType">
+  <option value="">Any</option>
+  <option value="House">House</option>
+  <option value="Shop">Shop</option>
+  <option value="Office">Office</option>
+</select>
 
-        <div style="height:10px"></div>
+<div style="height:10px"></div>
 
-        <div class="small">Sort</div>
-        <select class="input" id="sortBy">
-          <option value="default">Recommended</option>
-          <option value="rent-asc">Rent: Low → High</option>
-          <option value="rent-desc">Rent: High → Low</option>
-        </select>
+<div class="small">Max Rent (₹)</div>
+<input class="input" id="fMax" placeholder="e.g. 15000"/>
 
-        <div class="hr"></div>
-        <a class="btn btn-primary" href="/pricing">See Plans</a>
-      </div>
+<div class="hr"></div>
+
+<button class="btn btn-primary" type="button">
+  Search Properties
+</button>
+
+<div class="small muted" style="margin-top:8px">
+  Filters are UI-ready. Live search will be enabled in a future update.
+</div>
+
     </aside>
 
     <section class="card">
