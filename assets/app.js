@@ -427,93 +427,27 @@ if (logoutBtn) {
     if (!isMobile()) closeMenu();
   });
 })();
-/* ============ GLOBAL NAV ACTIVE STATE (ADD-ONLY) ============ */
-/* Purpose: Automatically highlight active menu item on ALL pages */
-
-(function () {
-  const links = document.querySelectorAll(".menu a[href]");
-  if (!links.length) return;
-
-  const currentPath = window.location.pathname
-    .replace(/\/$/, "")
-    .toLowerCase();
-
-  links.forEach(link => {
-    const href = link.getAttribute("href");
-    if (!href) return;
-
-    // Normalize href to path only
-    const linkPath = new URL(href, window.location.origin)
-      .pathname.replace(/\/$/, "")
-      .toLowerCase();
-
-    if (
-      currentPath === linkPath ||
-      (currentPath === "" && linkPath === "/index.html")
-    ) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
-})();
-/* ============ GLOBAL NAV ACTIVE HIGHLIGHT (WORKS WITH /pricing/ AND /pricing/index.html) ============ */
-(function () {
-  const links = document.querySelectorAll(".menu a[href]");
-  if (!links.length) return;
-
-  function norm(path) {
-    if (!path) return "/";
-    path = String(path).split("?")[0].split("#")[0];
-    path = path.toLowerCase();
-    path = path.replace(/\/index\.html$/, "");
-    path = path.replace(/\/$/, "");
-    return path || "/";
-  }
-
-  const current = norm(window.location.pathname);
-
-  links.forEach((a) => {
-    const href = a.getAttribute("href");
-    if (!href) return;
-
-    let p = "/";
-    try {
-      p = new URL(href, window.location.origin).pathname;
-    } catch (e) {
-      p = href;
-    }
-
-    const linkPath = norm(p);
-
-    if (current === linkPath) {
-      a.classList.add("active");
-    } else {
-      a.classList.remove("active");
-    }
-  });
-})();
-/* ============ GLOBAL NAV ACTIVE HIGHLIGHT (ROBUST) ============ */
-/* Works with: /pricing/ , /pricing/index.html , ../contact.html , ./index.html */
-
+/* =========================================================
+   NAV + MOBILE MENU (CLEAN SINGLE VERSION) ✅
+   - Active menu highlight (all pages)
+   - Mobile hamburger toggle (open/close)
+   - Uses: body.nav-open + .menu.is-open
+========================================================= */
 (function () {
   function norm(p) {
-    p = String(p || "");
-    p = p.split("?")[0].split("#")[0];
-    p = p.toLowerCase();
+    p = String(p || "").split("?")[0].split("#")[0].toLowerCase();
     p = p.replace(/\/index\.html$/, "");
     p = p.replace(/\/$/, "");
     return p || "/";
   }
 
   function resolvePath(href) {
-    // Robust resolver (no URL() dependency)
     const a = document.createElement("a");
     a.href = href;
     return a.pathname || href;
   }
 
-  function applyActive() {
+  function applyActiveNav() {
     const links = document.querySelectorAll(".menu a[href]");
     if (!links.length) return;
 
@@ -524,87 +458,20 @@ if (logoutBtn) {
       if (!href) return;
 
       const linkPath = norm(resolvePath(href));
-
-      // Exact match (normalized)
       const isActive = current === linkPath;
 
-      if (isActive) link.classList.add("active");
-      else link.classList.remove("active");
+      link.classList.toggle("active", isActive);
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyActive);
-  } else {
-    applyActive();
-  }
-
-  // Back/forward cache + SPA-like behavior safety
-  window.addEventListener("pageshow", applyActive);
-})();
-/* ============ MOBILE MENU TOGGLE (ARH RENTALS) — ADD-ONLY ============ */
-(function () {
   function initMobileMenu() {
     const toggle = document.querySelector(".nav-toggle");
     const menu = document.querySelector(".menu");
+
     if (!toggle || !menu) return;
 
-    // Ensure button has aria-expanded
+    toggle.setAttribute("type", "button");
     if (!toggle.hasAttribute("aria-expanded")) toggle.setAttribute("aria-expanded", "false");
-
-    function setOpen(open) {
-      menu.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
-    toggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      const open = !menu.classList.contains("is-open");
-      setOpen(open);
-    });
-
-    // Close menu when any link inside menu is clicked (mobile UX)
-    menu.addEventListener("click", function (e) {
-      const a = e.target.closest("a");
-      if (!a) return;
-      setOpen(false);
-    });
-
-    // Close on outside click
-    document.addEventListener("click", function (e) {
-      if (e.target.closest(".menu") || e.target.closest(".nav-toggle")) return;
-      setOpen(false);
-    });
-
-    // Reset state on resize to desktop
-    window.addEventListener("resize", function () {
-      if (window.innerWidth >= 860) setOpen(false);
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileMenu);
-  } else {
-    initMobileMenu();
-  }
-})();
-(function () {
-  function isHomePage() {
-    const p = (location.pathname || "").toLowerCase();
-    return p === "/" || p.endsWith("/index.html") || p.endsWith("/index.htm");
-  }
-
-  function initNavToggle() {
-    if (!isHomePage()) return;
-
-    const toggle =
-      document.querySelector(".nav-toggle") ||
-      document.querySelector("[data-nav-toggle]") ||
-      document.querySelector('button[aria-label*="menu" i]') ||
-      document.querySelector('button[aria-label*="navigation" i]');
-
-    const menu = document.querySelector(".menu");
-    if (!toggle || !menu) return;
 
     function setOpen(open) {
       document.body.classList.toggle("nav-open", open);
@@ -612,17 +479,20 @@ if (logoutBtn) {
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
     }
 
-    if (!toggle.hasAttribute("aria-expanded")) toggle.setAttribute("aria-expanded", "false");
-
     toggle.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      const open = !document.body.classList.contains("nav-open");
-      setOpen(open);
+      setOpen(!document.body.classList.contains("nav-open"));
+    });
+
+    menu.addEventListener("click", function (e) {
+      const link = e.target.closest("a[href]");
+      if (!link) return;
+      if (window.matchMedia("(max-width: 859px)").matches) setOpen(false);
     });
 
     document.addEventListener("click", function (e) {
-      if (e.target.closest(".menu") || e.target.closest(".nav-toggle") || e.target.closest("[data-nav-toggle]")) return;
+      if (e.target.closest(".menu") || e.target.closest(".nav-toggle")) return;
       setOpen(false);
     });
 
@@ -631,56 +501,22 @@ if (logoutBtn) {
     });
 
     window.addEventListener("resize", function () {
-      if (window.innerWidth >= 860) setOpen(false);
+      if (!window.matchMedia("(max-width: 859px)").matches) setOpen(false);
     });
+  }
+
+  function boot() {
+    applyActiveNav();
+    initMobileMenu();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initNavToggle);
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    initNavToggle();
-  }
-})();
-(function () {
-  function initMobileNavToggle() {
-    const toggle = document.querySelector(".nav-toggle");
-    const menu = document.querySelector(".menu");
-    if (!toggle || !menu) return;
-
-    toggle.setAttribute("type", "button");
-    toggle.setAttribute("aria-expanded", "false");
-
-    function setState(open) {
-      document.body.classList.toggle("nav-open", open);
-      menu.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
-    toggle.addEventListener("click", function () {
-      const open = !document.body.classList.contains("nav-open");
-      setState(open);
-    });
-
-    menu.addEventListener("click", function (e) {
-      const link = e.target.closest("a");
-      if (!link) return;
-      if (window.matchMedia("(max-width: 859px)").matches) {
-        setState(false);
-      }
-    });
-
-    window.addEventListener("resize", function () {
-      if (!window.matchMedia("(max-width: 859px)").matches) {
-        setState(false);
-      }
-    });
+    boot();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileNavToggle);
-  } else {
-    initMobileNavToggle();
-  }
+  window.addEventListener("pageshow", applyActiveNav);
 })();
 
 
