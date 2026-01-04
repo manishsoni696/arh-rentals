@@ -1264,3 +1264,31 @@ body{
     display: block !important;
   }
 }
+/* =========================================
+   FIX: Pricing page mobile menu alignment
+   (ADD-ONLY, no deletion)
+========================================= */
+
+/* Normalize menu structure ONLY for pricing page */
+@media (max-width: 859px) {
+
+  /* pricing page menu container fix */
+  .menu > .container {
+    padding: 0;
+  }
+
+  /* ensure nav-inner behaves same as other pages */
+  .menu .container .nav-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* prevent floating / detached menu */
+  .menu {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+}
