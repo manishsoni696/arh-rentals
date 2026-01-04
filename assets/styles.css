@@ -152,7 +152,26 @@ a:hover{color:var(--blue2)}
 /* CTA inside menu */
 .menu-cta{margin-left:auto}
 
-Desktop (>=860px)
+/* Desktop (>=860px) */
+@media (min-width:860px){
+  .nav-toggle{display:none !important;}
+
+  .menu{
+    border-top:none;
+    background:transparent;
+  }
+
+  /* Center menu on desktop (HOME page fix) */
+  .nav-inner{
+    padding:0;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .header-cta{display:inline-flex !important;}
+  .menu-cta{display:none !important;}
+}
+
 /* Mobile/Tablet (<860px) */
 @media (max-width:859px){
   /* Mobile CTA only inside menu */
