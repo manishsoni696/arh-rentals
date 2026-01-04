@@ -1324,5 +1324,30 @@ body{
     z-index:100000 !important;
   }
 }
+/* ================================
+   GLOBAL MOBILE HEADER ACTIONS FIX
+   Fixes pages where .nav-toggle is inside .header-actions
+   (listings / legal etc.)
+   ================================ */
+@media (max-width: 859px){
+  .site-header .header-actions{
+    display:flex !important;
+    align-items:center !important;
+    gap:12px !important;
+  }
+
+  .site-header .header-actions .header-cta{
+    display:none !important;
+  }
+
+  .site-header .nav-toggle{
+    display:inline-flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    z-index:100000 !important;
+  }
+}
+
 
   
