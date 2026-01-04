@@ -1378,6 +1378,38 @@ body{
     z-index:100000 !important;
   }
 }
+/* ================================
+   MOBILE MENU VISIBILITY FIX (GLOBAL)
+   If JS sets: body.nav-open + #primary-navigation.is-open
+   but menu still not visible, this forces it above content.
+================================ */
+@media (max-width: 859px){
+  body.nav-open #primary-navigation,
+  #primary-navigation.is-open{
+    position: fixed !important;
+    top: var(--arh-header-h, 78px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    display: block !important;
+    z-index: 999999 !important;
+    background: rgba(11,15,20,.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-top: 1px solid var(--line) !important;
+    box-shadow: 0 18px 40px rgba(0,0,0,.45) !important;
+    max-height: calc(100vh - var(--arh-header-h, 78px)) !important;
+    overflow: auto !important;
+  }
+
+  body.nav-open #primary-navigation .nav-inner,
+  #primary-navigation.is-open .nav-inner{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 12px 0 !important;
+    flex-wrap: nowrap !important;
+  }
+}
 
 
   
