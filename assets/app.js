@@ -280,3 +280,76 @@ if (logoutBtn) {
     setText(document.getElementById("otpMsg"), "Logged out");
   });
 }
+/* === PRICING (ARH Rentals): Card Select + Default Premium (OVERRIDE-SAFE) === */
+(function () {
+  function initPricingSelect() {
+    const grid = document.querySelector("#pricingGrid");
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
+    if (!cards.length) return;
+
+    function getBtn(card) {
+      return (
+        card.querySelector(".select-btn") ||
+        card.querySelector("button") ||
+        card.querySelector(".btn")
+      );
+    }
+
+    function applySelected(plan) {
+      cards.forEach((card) => {
+        const isSelected = card.dataset.plan === plan;
+        card.classList.toggle("selected", isSelected);
+
+        const btn = getBtn(card);
+        if (btn) {
+          btn.textContent = isSelected ? "Selected" : "Select Plan";
+          btn.setAttribute("aria-pressed", isSelected ? "true" : "false");
+        }
+      });
+
+      try {
+        sessionStorage.setItem("arh_selected_plan", plan);
+      } catch (_) {}
+    }
+
+    function resolvePlanFromTarget(target) {
+      const card = target.closest(".card[data-plan]");
+      return card ? card.dataset.plan : null;
+    }
+
+    // Default selection (Premium), but respect saved plan
+    let startPlan = "premium";
+    try {
+      const saved = sessionStorage.getItem("arh_selected_plan");
+      if (saved && cards.some((c) => c.dataset.plan === saved)) startPlan = saved;
+    } catch (_) {}
+    applySelected(startPlan);
+
+    // Event delegation (works for card + button clicks)
+    grid.addEventListener(
+      "click",
+      (e) => {
+        const plan = resolvePlanFromTarget(e.target);
+        if (!plan) return;
+
+        // Stop accidental navigation if any nested <a> exists
+        const link = e.target.closest("a[href]");
+        if (link) {
+          e.preventDefault();
+        }
+
+        applySelected(plan);
+      },
+      true
+    );
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPricingSelect);
+  } else {
+    initPricingSelect();
+  }
+})();
+
