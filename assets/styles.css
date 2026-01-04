@@ -363,10 +363,60 @@ a:hover{color:var(--blue2)}
 }
 
 /* 2. Highlight intro section */
+/* 2. Highlight intro section */
 .home-intro{
   padding: 40px;
   border-radius: 18px;
   background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+/* ================================
+   HERO DE-CONGESTION FIX
+================================ */
+
+/* Limit hero content width */
+.home-hero{
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Headline breathing room */
+.home-hero h1{
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+
+/* Paragraph spacing + readability */
+.home-hero .sub{
+  font-size: 16px;
+  line-height: 1.75;
+  margin-bottom: 26px;
+}
+
+/* Buttons spacing */
+.hero-actions{
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Trust chips spacing */
+.hero-trust{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* Chips lighter & smaller */
+.hero-trust span{
+  font-size: 12px;
+  padding: 6px 12px;
+  opacity: .9;
+}
+
 
 
