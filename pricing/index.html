@@ -1,4 +1,3 @@
-PASTE THIS CODE:
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,6 +13,7 @@ PASTE THIS CODE:
   <header class="site-header">
     <div class="container">
       <div class="navbar">
+
         <a class="brand" href="../index.html">
           <img class="brand-logo" src="../assets/arh-logo.png" alt="ARH Logo" />
           <div class="brand-title">
@@ -29,14 +29,19 @@ PASTE THIS CODE:
         <div class="header-actions">
           <a class="btn btn-primary header-cta" href="../contact.html">Get Quote</a>
         </div>
+
       </div>
     </div>
 
     <nav class="menu" id="primary-navigation" aria-label="Primary">
-      <div class="container nav-inner">
-        <a href="../index.html">Home</a>
-        <a class="active" href="./index.html">Pricing</a>
-        <a href="../contact.html">Contact</a>
+      <div class="container">
+        <div class="nav-inner">
+          <a href="../index.html">Home</a>
+          <a class="active" href="./index.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+
+          <a class="btn btn-primary menu-cta" href="../contact.html">Get Quote</a>
+        </div>
       </div>
     </nav>
   </header>
@@ -174,59 +179,6 @@ PASTE THIS CODE:
   </footer>
 
   <script src="../assets/app.js"></script>
-
-  <script>
-    (function () {
-      function initPricingSelection() {
-        const grid = document.getElementById("pricingGrid");
-        if (!grid) return;
-
-        const cards = Array.from(grid.querySelectorAll(".card[data-plan]"));
-        if (!cards.length) return;
-
-        function setSelected(card) {
-          cards.forEach(c => {
-            c.classList.remove("selected");
-            const b = c.querySelector(".select-btn");
-            if (b) b.textContent = "Select Plan";
-          });
-
-          card.classList.add("selected");
-          const btn = card.querySelector(".select-btn");
-          if (btn) btn.textContent = "Selected";
-
-          const plan = card.getAttribute("data-plan") || "";
-          if (plan) sessionStorage.setItem("arh_selected_plan", plan);
-        }
-
-        grid.addEventListener("click", (e) => {
-          const card = e.target.closest(".card[data-plan]");
-          if (!card || !grid.contains(card)) return;
-
-          const btn = e.target.closest(".select-btn");
-          if (btn) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-
-          setSelected(card);
-        }, true);
-
-        const savedPlan = sessionStorage.getItem("arh_selected_plan");
-        const savedCard = savedPlan ? grid.querySelector('.card[data-plan="' + savedPlan + '"]') : null;
-        const premium = grid.querySelector('.card[data-plan="premium"]');
-        setSelected(savedCard || premium || cards[0]);
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initPricingSelection);
-      } else {
-        initPricingSelection();
-      }
-
-      window.addEventListener("pageshow", initPricingSelection, { once: true });
-    })();
-  </script>
 
 </body>
 </html>
