@@ -295,3 +295,22 @@ a:hover{color:var(--blue2)}
 #pricingGrid .card::after{
   pointer-events: none;
 }
+/* === FIX: Pricing Selected highlight always visible === */
+#pricingGrid .card{
+  overflow: visible;
+}
+
+#pricingGrid .card::after{
+  pointer-events: none;
+  z-index: 1;
+}
+
+#pricingGrid .card.selected{
+  position: relative;
+  z-index: 5;
+}
+
+#pricingGrid .card.selected::before{
+  z-index: 6;
+}
+
