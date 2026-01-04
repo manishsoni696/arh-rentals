@@ -251,39 +251,4 @@ a:hover{color:var(--blue2)}
 .menu a:active{
   background: rgba(255,255,255,.10);
 }
-// === Mobile menu: lock body scroll when open (optional premium) ===
-(function () {
-  const toggleBtn = document.querySelector(".nav-toggle");
-  const menu = document.getElementById("primary-navigation");
-  if (!toggleBtn || !menu) return;
-
-  const MOBILE_MAX = 859;
-  const isMobile = () => window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
-
-  const _openMenu = () => {
-    menu.classList.add("is-open");
-    toggleBtn.setAttribute("aria-expanded", "true");
-    if (isMobile()) document.body.style.overflow = "hidden";
-  };
-
-  const _closeMenu = () => {
-    menu.classList.remove("is-open");
-    toggleBtn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-  };
-
-  // patch existing behavior safely
-  toggleBtn.addEventListener("click", () => {
-    const open = menu.classList.contains("is-open");
-    open ? _closeMenu() : _openMenu();
-  });
-
-  window.addEventListener("resize", () => {
-    if (!isMobile()) {
-      _closeMenu();
-      document.body.style.overflow = "";
-    }
-  });
-})();
-
 
