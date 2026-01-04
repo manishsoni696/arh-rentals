@@ -352,5 +352,62 @@ if (logoutBtn) {
     initPricingSelect();
   }
 })();
+/* =========================================================
+   MOBILE NAV TOGGLE — FINAL (SINGLE SOURCE OF TRUTH) ✅
+   - Works only on mobile
+   - Uses: .nav-toggle + #primary-navigation
+   - Toggles: body.nav-open + .menu.is-open
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("primary-navigation");
+
+  if (!toggle || !menu) return;
+
+  const MOBILE_MAX = 859;
+  const isMobile = () =>
+    window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
+
+  function setOpen(open) {
+    document.body.classList.toggle("nav-open", open);
+    menu.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  // Toggle on hamburger click
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isMobile()) return;
+
+    const open = document.body.classList.contains("nav-open");
+    setOpen(!open);
+  });
+
+  // Close when clicking a menu link (mobile only)
+  menu.addEventListener("click", (e) => {
+    if (!isMobile()) return;
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+    setOpen(false);
+  });
+
+  // Close on outside click
+  document.addEventListener("click", (e) => {
+    if (!isMobile()) return;
+    if (toggle.contains(e.target) || menu.contains(e.target)) return;
+    setOpen(false);
+  });
+
+  // Close on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+
+  // Reset on desktop resize
+  window.addEventListener("resize", () => {
+    if (!isMobile()) setOpen(false);
+  });
+});
 
   
