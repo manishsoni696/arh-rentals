@@ -152,26 +152,7 @@ a:hover{color:var(--blue2)}
 /* CTA inside menu */
 .menu-cta{margin-left:auto}
 
-/* Desktop (>=860px) */
-@media (min-width:860px){
-  .nav-toggle{display:none !important;}
-
-  /* Keep nav visually integrated with header (no "bar" look) */
-  .menu{
-    border-top:none;
-    background:transparent;
-  }
-  .nav-inner{
-    padding:0;
-    justify-content:flex-end;
-    flex-wrap:wrap;
-  }
-
-  /* Desktop CTA only in header */
-  .header-cta{display:inline-flex !important;}
-  .menu-cta{display:none !important;}
-}
-
+Desktop (>=860px)
 /* Mobile/Tablet (<860px) */
 @media (max-width:859px){
   /* Mobile CTA only inside menu */
