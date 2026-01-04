@@ -1292,3 +1292,78 @@ body{
     left: 0;
   }
 }
+/* ============ MOBILE MENU DROPDOWN (FIX) — ADD-ONLY (PASTE AT VERY END) ============ */
+/* Goal: Mobile par menu default hidden rahe, hamburger pe clean dropdown open ho
+   Works with: .menu.is-open (your app.js toggle)
+*/
+
+@media (max-width: 859px){
+
+  /* Header ke under dropdown overlay (content push nahi karega) */
+  .site-header{
+    overflow: visible !important;
+  }
+
+  /* Menu: hidden by default on mobile */
+  .site-header .menu{
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    display: none !important;
+    border-top: 1px solid var(--line);
+    background: rgba(11,15,20,.92);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+
+  /* When opened by JS */
+  .site-header .menu.is-open{
+    display: block !important;
+  }
+
+  /* Mobile menu layout: vertical, full width */
+  .site-header .menu .nav-inner{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 12px 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Links: full-width buttons like */
+  .site-header .menu a:not(.btn){
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+
+    color: var(--text) !important;
+    background: rgba(255,255,255,.03) !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+  .site-header .menu a:not(.btn):hover{
+    background: rgba(255,255,255,.06) !important;
+  }
+
+  .site-header .menu a.active:not(.btn){
+    background: rgba(29,161,242,.14) !important;
+    border-color: rgba(29,161,242,.35) !important;
+    box-shadow: 0 0 0 3px rgba(29,161,242,.10) !important;
+  }
+}
+
+/* Desktop safety: menu always visible, never “display:none” */
+@media (min-width: 860px){
+  .site-header .menu{
+    position: static !important;
+    display: block !important;
+    box-shadow: none !important;
+  }
+}
