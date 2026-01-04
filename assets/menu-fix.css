@@ -1,0 +1,93 @@
+/* =========================================================
+   ARH Rentals — assets/menu-fix.css (ADD-ONLY) ✅
+   PURPOSE:
+   - Mobile menu links not visible / menu looks "empty"
+   - Forces dropdown to appear ON TOP with correct z-index
+   - Does NOT delete/modify your existing styles.css
+========================================================= */
+
+/* MOBILE ONLY */
+@media (max-width: 859px){
+
+  /* Make sure header can show dropdown */
+  .site-header{
+    overflow: visible !important;
+  }
+
+  /* Force menu to overlay on top of page content */
+  #primary-navigation,
+  .site-header .menu{
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: var(--arh-header-h, 72px) !important;
+    z-index: 999999 !important;
+
+    max-height: calc(100vh - var(--arh-header-h, 72px)) !important;
+    overflow: auto !important;
+
+    background: rgba(11,15,20,.96) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 18px 50px rgba(0,0,0,.55) !important;
+    border-top: 1px solid rgba(255,255,255,.10) !important;
+
+    display: none !important;
+  }
+
+  /* Show menu when JS opens it */
+  body.nav-open #primary-navigation,
+  body.nav-open .site-header .menu,
+  #primary-navigation.is-open,
+  .site-header .menu.is-open{
+    display: block !important;
+  }
+
+  /* If any code adds [hidden], keep it hidden unless opened */
+  #primary-navigation[hidden],
+  .site-header .menu[hidden]{
+    display: none !important;
+  }
+
+  /* Menu items vertical + full width */
+  #primary-navigation .nav-inner,
+  .site-header .menu .nav-inner{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 14px 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Links full width */
+  #primary-navigation a:not(.btn),
+  .site-header .menu a:not(.btn){
+    display: block !important;
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    background: rgba(255,255,255,.03) !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    color: rgba(245,247,250,.95) !important;
+  }
+
+  #primary-navigation a.active:not(.btn),
+  .site-header .menu a.active:not(.btn){
+    background: rgba(29,161,242,.14) !important;
+    border-color: rgba(29,161,242,.35) !important;
+    box-shadow: 0 0 0 3px rgba(29,161,242,.10) !important;
+    color: #fff !important;
+  }
+}
+
+/* DESKTOP SAFETY */
+@media (min-width: 860px){
+  #primary-navigation,
+  .site-header .menu{
+    position: static !important;
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+}
