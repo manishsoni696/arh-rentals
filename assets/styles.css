@@ -651,6 +651,82 @@ button.btn-primary:hover{
     margin-bottom: 16px;
   }
 }
+/* ============ STEP 2 — HEADER PREMIUM POLISH (ADD-ONLY) ============ */
+/* Goal: Brand bigger, CTA balanced, nav alignment more SaaS-like (no HTML change) */
+
+/* Brand: make logo/title slightly stronger */
+.brand{
+  gap: 14px;
+}
+
+.brand-logo{
+  height: 46px;              /* was ~40 */
+  max-width: 200px;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.35));
+}
+
+.brand-title strong{
+  font-size: 17px;
+  letter-spacing: .2px;
+}
+
+.brand-title span{
+  font-size: 12.5px;
+  opacity: .9;
+}
+
+/* Header CTA: reduce oversized feel */
+.header-cta{
+  min-height: 44px;          /* keep touch safe */
+  padding: 10px 14px;        /* smaller than before */
+  border-radius: 13px;
+  font-weight: 650;
+  letter-spacing: .15px;
+}
+
+/* Desktop nav alignment: not “floating center”, more natural */
+@media (min-width: 860px){
+  .navbar{
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* brand | nav | actions */
+    align-items: center;
+  }
+
+  .brand{ justify-self: start; }
+  .header-actions{ justify-self: end; }
+
+  /* Pull nav slightly towards brand (less empty space) */
+  .nav-inner{
+    justify-content: start !important;  /* override previous center */
+    gap: 14px;
+    padding: 8px 0;
+  }
+
+  /* Nav links: bolder + cleaner */
+  .menu a:not(.btn){
+    font-weight: 650;
+    letter-spacing: .15px;
+    padding: 10px 12px;
+  }
+
+  /* Active state: refined */
+  .menu a.active:not(.btn){
+    box-shadow: 0 0 0 3px rgba(29,161,242,.10);
+    border-color: rgba(29,161,242,.28);
+  }
+}
+
+/* Tablet: keep CTA balanced */
+@media (max-width: 1024px){
+  .brand-logo{ height: 42px; }
+  .header-cta{ padding: 10px 13px; }
+}
+
+/* Mobile: keep brand compact but readable */
+@media (max-width: 600px){
+  .brand-logo{ height: 36px; }
+  .brand-title strong{ font-size: 16px; }
+}
 
 
 
