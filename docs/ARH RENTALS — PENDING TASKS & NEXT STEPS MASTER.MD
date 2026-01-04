@@ -1,9 +1,7 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.3)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.4)
 
 Last Updated: Jan 2026
-Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING CARD SELECTION FIXED
-
-✅ PRICING CLARITY SECTION ADDED + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED
+Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING CARD SELECTION FIXED + ✅ PRICING CLARITY SECTION + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED + ✅ LISTINGS UI STABLE
 
 ✅ COMPLETED / LOCKED (DO NOT TOUCH)
 1) Working Rules & Process
@@ -30,7 +28,7 @@ Button system standardized
 
 Card system finalized
 
-3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
+3) Mobile Menu (NAV) — STATUS LOCKED
 
 Mobile hamburger appears & works on:
 
@@ -54,7 +52,7 @@ Strategy locked
 
 JS toggles only: body.nav-open + .menu.is-open
 
-4) Authentication Philosophy (LOCKED)
+4) Authentication Philosophy — LOCKED
 
 OTP logic finalized (session-based)
 
@@ -62,7 +60,7 @@ PIN login allowed
 
 OTP limits & blocks defined (reference locked)
 
-5) Pricing Page — Card Click Selection (JS/CSS) — ✅ FIXED & LOCKED
+5) Pricing Page — Card Click Selection — ✅ FIXED & LOCKED
 
 Pricing cards clickable (card + button)
 
@@ -72,40 +70,40 @@ Default Premium selected on load
 
 Selected visual highlight stable
 
-Final winning CSS override locked at END of /assets/styles.css
+Final CSS override locked at END of /assets/styles.css
 
 Mobile + Tablet + Desktop verified
 🚫 Do not revisit unless broken
 
 6) Session & OTP Backend Validation — ✅ COMPLETED
 
-60 sec resend cooldown enforced ✅
+60 sec resend cooldown enforced
 
-Max 3 OTP in 4 hours enforced ✅
+Max 3 OTP in 4 hours enforced
 
-OTP validity (5 minutes) enforced ✅
+OTP validity (5 minutes) enforced
 
-PIN restriction enforced ✅
+PIN restriction enforced
 
-/me protected via Bearer token ✅
+/me protected via Bearer token
 
-Same-device session supported ✅
+Same-device session supported
 
 7) OTP Security Hardening (Backend) — ✅ DONE
 
-OTP single-use enforcement ✅
+OTP single-use enforcement
 
-Wrong OTP tries limit (tries) ✅
+Wrong OTP tries limit
 
-Replay protection ✅
+Replay protection
 
-/me endpoint confirmed working ✅
+/me endpoint confirmed working
 
-Session expiry/revocation deferred
+Session expiry / revocation deferred
 
 8) Plans / Pricing Page UX — ✅ COMPLETED & STABLE
 
-(Includes latest updates)
+Includes latest updates:
 
 Plan copy clarified (who each plan is for)
 
@@ -117,9 +115,9 @@ Clear rule: 1 Plan = 1 Property
 
 Pricing Clarity Section added (Option 2 + 3 merged):
 
-“Which plan is right for you?” (Basic / Premium / Pro guidance)
+“Which plan is right for you?”
 
-“Important before you select” (legal-safe expectations)
+“Important before you select”
 
 Pricing selection + UX flow stable
 
@@ -130,13 +128,13 @@ Legal-safe, conversion-clear, rule-compliant
 
 9) Legal Page Final Hookup — ✅ COMPLETED
 
-Footer links fixed (absolute paths) ✅
+Footer links fixed (absolute paths)
 
-Disclaimer aligned with locked business model ✅
+Disclaimer aligned with locked business model
 
-No banned words used ✅
+No banned words used
 
-Mobile + Tablet + Desktop safe ✅
+Mobile + Tablet + Desktop safe
 🚫 Locked unless legal text changes
 
 10) Post Property Page Audit — ✅ COMPLETED
@@ -165,8 +163,30 @@ Hero + CTA hierarchy stable
 Mobile + Tablet + Desktop verified
 🚫 Locked unless brand direction changes
 
-🧾 WHAT CHANGES WERE MADE (SUMMARY)
+12) Listings Page UI — ✅ STABLE & FUTURE-READY (NEW)
 
+Filters updated to City / Area / Property Type / Max Rent
+
+Sorting intentionally removed (future feature)
+
+“Search Properties” CTA added (UI-only)
+
+Clear messaging: filters are UI-ready, backend coming later
+
+“Unlock Details” controlled with future-safe note
+
+Mobile + Tablet + Desktop balanced
+
+No false promises / no misleading claims
+
+🚫 Listings Page UI is now FROZEN
+Further changes only when:
+
+Real listings API is connected
+
+Unlock logic is actually implemented
+
+🧾 WHAT CHANGES WERE MADE (SUMMARY)
 A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
 Supports multiple nav markup variants
@@ -196,13 +216,9 @@ Default Premium auto-selected
 
 Visual highlight stable
 
-D) PRICING PAGE — CLARITY SECTION (NEW)
+D) PRICING PAGE — CLARITY SECTION
 
-Option 2 + 3 merged:
-
-“Which plan is right for you?”
-
-“Important before you select”
+Option 2 + 3 merged
 
 Improves decision clarity without changing logic
 
@@ -222,25 +238,39 @@ Validation safety
 
 Conversion-safe
 
+G) LISTINGS PAGE FILTER UX (NEW)
+
+City / Area / Type / Rent based filters
+
+Search CTA added
+
+Future-safe messaging
+
+Sorting removed intentionally
+
 ⚠️ All CSS changes are ADD-ONLY and must remain at the end of styles.css.
 
 ⏳ PENDING TASKS (UPDATED PRIORITY)
-🟠 PRIORITY 1 — UI POLISH (ONGOING)
+🟠 PRIORITY 1 — UI POLISH (OPTIONAL, VERY LIMITED)
 
-Minor visual refinements only (if needed)
+Minor spacing / alignment refinements only if needed
 
-Spacing / alignment / clarity
+❌ No logic changes
 
-❌ No logic or flow changes
+❌ No new features
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
 
 Google Search Console review
 
 On-page SEO audit
-⚠️ Deferred until UI is fully frozen
+⚠️ Deferred until UI is fully frozen (almost there)
 
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
+
+Listings API integration
+
+Contact unlock logic
 
 Customer Dashboard
 
@@ -250,10 +280,15 @@ Subscription Automation
 
 Analytics & Event Tracking
 
-▶️ NEXT IMMEDIATE STEP
+▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
 
-Continue UI changes where needed
-(Pricing is now stable; next focus already chosen: Listings Page UI)
+👉 UI FREEZE CONFIRMATION
+After this, move to:
+
+SEO (GSC + on-page)
+OR
+
+Backend integration planning
 
 🧠 EXECUTION RULE (REMINDER)
 
@@ -267,4 +302,4 @@ Never restructure HTML for nav/menu
 
 If code is required → paste-box format only
 
-END — v5.3 LOCKED
+END — v5.4 LOCKED
