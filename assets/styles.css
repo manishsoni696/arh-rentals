@@ -1224,3 +1224,32 @@ body{
     display: none !important;
   }
 }
+/* =========================================================
+   FIX 1 — MOBILE MENU VISIBILITY (ADD-ONLY)
+   Goal:
+   - Desktop (>=860px): menu ALWAYS visible
+   - Mobile (<=859px): menu HIDDEN by default, shows only when .is-open
+   - Works for: nav.menu OR .menu
+========================================================= */
+
+@media (max-width: 859px){
+  /* Hide menu by default on mobile */
+  nav.menu,
+  .menu{
+    display: none !important;
+  }
+
+  /* Show only when JS adds .is-open */
+  nav.menu.is-open,
+  .menu.is-open{
+    display: block !important;
+  }
+}
+
+@media (min-width: 860px){
+  /* Always show menu on desktop */
+  nav.menu,
+  .menu{
+    display: block !important;
+  }
+}
