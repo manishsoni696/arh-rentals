@@ -1258,6 +1258,57 @@ body{
     overflow: visible !important;
   }
 }
+/* ============ FINAL MOBILE MENU OVERRIDE (LOCK) — ADD THIS AT VERY END ============ */
+/* Purpose:
+   1) Mobile hamburger menu ALWAYS opens/closes reliably
+   2) Links are hidden by default on mobile, shown only when nav-open
+   3) CTA (Post Property button) stays visible on mobile */
 
+@media (max-width: 859px){
+
+  /* Ensure menu container is always present */
+  .menu{ display:block !important; }
+
+  /* Default: hide links */
+  .menu .nav-inner a:not(.menu-cta){
+    display:none !important;
+  }
+
+  /* When open: show links */
+  body.nav-open .menu .nav-inner a:not(.menu-cta),
+  .menu.is-open .nav-inner a:not(.menu-cta){
+    display:inline-flex !important;
+  }
+
+  /* Keep layout clean */
+  .menu .nav-inner{
+    justify-content:flex-start !important;
+    gap:10px !important;
+    padding:10px 0 !important;
+    flex-wrap:wrap !important;
+  }
+
+  /* CTA always visible (Post Property) */
+  .menu-cta{
+    display:inline-flex !important;
+    width:100% !important;
+    justify-content:center !important;
+    margin-top:10px !important;
+  }
+
+  /* Safety: prevent text clipping in hero/title on mobile */
+  .hero,
+  .home-hero,
+  .container{ overflow:visible !important; }
+
+  .hero h1,
+  .home-hero h1{
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+}
 
 
