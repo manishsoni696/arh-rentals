@@ -1177,3 +1177,50 @@ body{
     display: block;
   }
 }
+/* =========================================================
+   FIX: PRICING PAGE MENU + HAMBURGER TOGGLE (CSS + JS SUPPORT)
+   ========================================================= */
+
+/* 1) MOBILE: hamburger ALWAYS visible */
+@media (max-width: 859px){
+  .nav-toggle{
+    display: inline-flex !important;
+  }
+}
+
+/* 2) DESKTOP: menu ALWAYS visible, hamburger hidden */
+@media (min-width: 860px){
+  .nav-toggle{
+    display: none !important;
+  }
+
+  .menu,
+  #primary-navigation{
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #primary-navigation[hidden]{
+    display: block !important;
+  }
+}
+
+/* 3) MOBILE: menu hidden until JS opens it */
+@media (max-width: 859px){
+  .menu,
+  #primary-navigation{
+    display: none !important;
+  }
+
+  .menu.is-open,
+  #primary-navigation.is-open{
+    display: block !important;
+  }
+
+  #primary-navigation[hidden]{
+    display: none !important;
+  }
+}
