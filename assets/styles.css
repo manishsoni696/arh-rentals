@@ -1410,6 +1410,35 @@ body{
     flex-wrap: nowrap !important;
   }
 }
+/* ================================
+MOBILE HAMBURGER POSITION FIX (ADD-ONLY)
+Fixes pages where .nav-toggle is NOT inside .navbar row
+(example: listings / legal markup variants)
+================================ */
+@media (max-width: 859px){
+
+/* If nav-toggle is a direct child of header (not in navbar), pin it top-right */
+.site-header > .nav-toggle,
+.site-header .menu + .nav-toggle{
+position: absolute !important;
+top: 12px !important;
+right: 18px !important;
+margin: 0 !important;
+z-index: 1000000 !important;
+}
+
+/* Give space so brand text doesn't collide with the pinned button (modern browsers) */
+.site-header:has(> .nav-toggle) .navbar,
+.site-header:has(.menu + .nav-toggle) .navbar{
+padding-right: 70px !important;
+}
+
+/* Ensure header can host absolutely-positioned toggle safely */
+.site-header{
+position: fixed !important;
+overflow: visible !important;
+}
+}
 
 
   
