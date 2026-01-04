@@ -1131,3 +1131,16 @@ body{
     overflow: visible !important;
   }
 }
+/* ================================
+   MOBILE NAV TOGGLE (FIX) — ADD-ONLY
+   ================================ */
+
+/* Mobile/Tablet: menu hidden by default */
+@media (max-width: 859px){
+  .menu{
+    display: none;
+  }
+  .menu.is-open{
+    display: block;
+  }
+}
