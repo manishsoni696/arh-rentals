@@ -1233,6 +1233,31 @@ body{
     margin-top: 10px !important;
   }
 }
+/* ============ MOBILE TEXT CUT FIX (HOME) — ADD-ONLY ============ */
+/* Fix: heading/hero text getting clipped on mobile */
+
+@media (max-width: 600px){
+  .hero,
+  .home-hero{
+    overflow: visible !important;
+  }
+
+  .hero h1,
+  .hero h2,
+  .home-hero h1{
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.22 !important;
+  }
+
+  /* Extra safety if any wrapper is clipping */
+  .container{
+    overflow: visible !important;
+  }
+}
 
 
 
