@@ -27,45 +27,52 @@ a{color:inherit; text-decoration:none}
 a:hover{color:var(--blue2)}
 .container{max-width:1100px; margin:0 auto; padding:0 18px}
 
-/* ================= HEADER ================= */
+/* ================= HEADER (FINAL - CONSOLIDATED) ================= */
 .site-header{
   position:sticky;
   top:0;
   z-index:50;
   backdrop-filter: blur(10px);
-  background: rgba(11,15,20,.72);
+  background: rgba(11,15,20,.76);
   border-bottom:1px solid var(--line);
 }
 
+/* Top row: brand + actions */
 .navbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:16px;
-  padding:12px 0;
+  padding:14px 0;
 }
 
-.brand{display:flex; align-items:center; gap:10px}
-.brand-logo{height:36px; width:auto; max-width:140px; object-fit:contain}
+.brand{display:flex; align-items:center; gap:12px}
+.brand-logo{height:44px; width:auto; max-width:170px; object-fit:contain}
 
 .brand-title{
   display:flex;
   flex-direction:column;
   line-height:1.1;
 }
-.brand-title strong{font-size:15px; letter-spacing:.2px}
-.brand-title span{font-size:12px; color:var(--muted)}
+.brand-title strong{font-size:16px; letter-spacing:.3px}
+.brand-title span{font-size:12.5px; color:var(--muted); opacity:.92}
 
-/* ===== Header actions (CTA + toggle) ===== */
+/* Actions */
 .header-actions{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
 }
 
-.header-cta{white-space:nowrap}
+.header-cta{
+  white-space:nowrap;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+  letter-spacing:.2px;
+}
 
-/* ===== Nav toggle (mobile) ===== */
+/* Toggle button */
 .nav-toggle{
   display:inline-flex;
   align-items:center;
@@ -79,12 +86,10 @@ a:hover{color:var(--blue2)}
   cursor:pointer;
   transition:.2s ease;
 }
-
 .nav-toggle:hover{
   transform: translateY(-1px);
   background: rgba(255,255,255,.06);
 }
-
 .nav-toggle-icon{
   width:18px;
   height:2px;
@@ -93,7 +98,6 @@ a:hover{color:var(--blue2)}
   position:relative;
   display:block;
 }
-
 .nav-toggle-icon::before,
 .nav-toggle-icon::after{
   content:"";
@@ -104,678 +108,40 @@ a:hover{color:var(--blue2)}
   background: rgba(255,255,255,.85);
   border-radius:2px;
 }
-
 .nav-toggle-icon::before{top:-6px}
 .nav-toggle-icon::after{top:6px}
-
-/* Safety: remove any stray pseudo lines */
 .nav-toggle::before,
-.nav-toggle::after{
-  content:none !important;
-}
+.nav-toggle::after{content:none !important;}
 
-/* ===== Menu ===== */
+/* Menu (nav row) */
 .menu{
   border-top:1px solid var(--line);
   background: rgba(11,15,20,.55);
 }
-
 .nav-inner{
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:10px 0;
-  flex-wrap:wrap;
-}
-
-.menu a{
-  color:var(--muted);
-  padding:8px 10px;
-  border-radius:10px;
-  font-size:13px;
-}
-
-.menu a:hover{
-  background: rgba(255,255,255,.06);
-  color:var(--text);
-}
-
-.menu-cta{margin-left:auto}
-
-/* Desktop behavior */
-@media(min-width:860px){
-  .nav-toggle{display:none!important}
-  .menu{border-top:none; background:transparent}
-  .nav-inner{justify-content:center}
-  .menu-cta{display:none}
-}
-
-/* Mobile: keep menu usable */
-@media(max-width:859px){
-  .nav-inner{justify-content:flex-start}
-  .menu-cta{width:100%; justify-content:center}
-}
-
-/* ================= BUTTONS ================= */
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid var(--line);
-  padding:10px 14px;
-  border-radius:12px;
-  background: rgba(255,255,255,.04);
-  color:var(--text);
-  cursor:pointer;
-  transition:.2s ease;
-  min-height:44px;
-}
-
-.btn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.06);
-}
-
-.btn-primary{
-  border-color: rgba(10,116,184,.55);
-  background: linear-gradient(180deg, rgba(10,116,184,.95), rgba(10,116,184,.75));
-}
-
-.btn-primary:hover{
-  box-shadow: 0 0 0 3px rgba(29,161,242,.20);
-}
-
-/* ================= TYPO / UTIL ================= */
-.muted,.sub{color:var(--muted)}
-.small{font-size:12px; color:var(--muted)}
-
-/* ================= HERO + INFO ================= */
-.hero{padding:54px 0 26px}
-.hero h1{margin:0; font-size:34px; letter-spacing:.2px}
-.hero p{margin:10px 0 0; color:var(--muted)}
-
-.notice{
-  padding:12px 14px;
-  border:1px dashed rgba(29,161,242,.45);
-  border-radius:12px;
-  background: rgba(29,161,242,.08);
-  color:var(--text);
-}
-
-.trust-strip{
-  margin:16px 0 24px;
-  padding:12px 14px;
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  align-items:center;
-  border:1px dashed rgba(29,161,242,.45);
-  border-radius:12px;
-  background: rgba(29,161,242,.08);
-  color:var(--text);
-  font-size:13px;
-}
-.trust-strip span{display:inline-flex; align-items:center; gap:6px}
-
-/* ================= HOME HERO (POLISH) ================= */
-.home-hero{
-  width:100%;
-  max-width:960px;
-  margin:0 auto;
-  padding:56px 48px;
-  border-radius:18px;
-  background:
-    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-}
-
-.home-hero h1{
-  font-size:34px;
-  line-height:1.25;
-  margin:0 0 18px;
-  max-width:760px;
-}
-
-.home-hero .sub{
-  max-width:720px;
-  font-size:16px;
-  line-height:1.75;
-  margin-bottom:26px;
-}
-
-.hero-actions{
-  display:flex;
-  gap:14px;
-  margin-bottom:20px;
-  flex-wrap:wrap;
-}
-
-.hero-trust{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-
-.hero-trust span{
-  background: rgba(255,255,255,.06);
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:12px;
-  opacity:.9;
-}
-
-/* ================= HOME INTRO ================= */
-.home-intro{
-  padding:40px;
-  margin-top:32px;
-  border-radius:18px;
-  background: rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-}
-
-/* ================= GRIDS ================= */
-.grid{margin-top:40px}
-
-.grid-3{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-  margin-top:18px;
-}
-
-@media(min-width:860px){
-  .grid-3{grid-template-columns:repeat(3,1fr)}
-}
-
-/* Pricing grid uses same class on pricing page */
-.grid-3#pricingGrid,
-#pricingGrid.grid-3{
-  padding:12px 0 28px;
-}
-
-/* ================= HR + PILLS ================= */
-.hr{height:1px; background:var(--line); margin:14px 0}
-
-.pills{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-
-.pill{
-  font-size:12px;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.03);
-  color:var(--muted);
-}
-
-/* ================= CARDS ================= */
-.card{
-  border:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  position:relative;
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.45);
-}
-
-/* bottom glow line */
-.card::after{
-  content:"";
-  position:absolute;
-  inset:auto 0 0 0;
-  height:2px;
-  background: linear-gradient(90deg, transparent, var(--blue2), transparent);
-  opacity:.6;
-  pointer-events:none;
-}
-
-.card-body{padding:46px 18px 18px}
-.card h2,.card h3{margin:0 0 8px}
-
-/* Featured pricing card */
-.card.featured{
-  border:1px solid rgba(29,161,242,.55);
-  background: linear-gradient(180deg, rgba(29,161,242,.12), rgba(15,23,32,.86));
-}
-
-/* Most popular tag */
-.tag{
-  position:absolute;
-  top:12px;
-  right:12px;
-  z-index:10;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  letter-spacing:.6px;
-  text-transform:uppercase;
-  white-space:nowrap;
-  border:1px solid rgba(29,161,242,.45);
-  background: rgba(29,161,242,.18);
-  color:#eaf7ff;
-  pointer-events:none;
-}
-
-/* Pricing price */
-.price{
-  font-size:28px;
-  font-weight:700;
-  margin:10px 0;
-  color:#fff;
-}
-
-/* ================= PRICING SELECTED ================= */
-#pricingGrid .card{
-  overflow:visible;
-  position:relative;
-}
-
-#pricingGrid .card::after{
-  pointer-events:none;
-  z-index:1;
-}
-
-#pricingGrid .card.selected{
-  border:3px solid rgba(29,161,242,.95) !important;
-  box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
-  z-index:5;
-}
-
-#pricingGrid .card.selected::before{
-  content:"SELECTED";
-  position:absolute;
-  top:12px;
-  left:12px;
-  z-index:6;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  letter-spacing:.8px;
-  text-transform:uppercase;
-  border:1px solid rgba(29,161,242,.55);
-  background: rgba(29,161,242,.30);
-  color:#fff;
-  pointer-events:none;
-}
-
-#pricingGrid .card.selected .select-btn{
-  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
-  border-color: transparent !important;
-  color:#fff !important;
-  font-weight:700;
-}
-
-/* Ensure card pseudo never blocks clicks */
-#pricingGrid .card::after{pointer-events:none}
-
-/* ================= HOME: LISTINGS SECTION POLISH ================= */
-.listings{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  margin-top:14px;
-}
-
-.listing{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background: rgba(255,255,255,.03);
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
-
-.listing:hover{
-  transform: translateY(-2px);
-  background: rgba(255,255,255,.045);
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-}
-
-.listing h3{
-  margin:0 0 6px;
-  font-size:18px;
-  line-height:1.25;
-}
-
-.listing p{
-  margin:0 0 10px;
-  color:var(--muted);
-}
-
-.listing .pills{
-  margin-top:8px;
-  gap:8px;
-}
-
-.listing .pill{
-  background: rgba(255,255,255,.04);
-}
-
-.listing .btn{
-  white-space:nowrap;
-  min-height:42px;
-  padding:10px 14px;
-}
-
-.listing > .btn{margin-top:4px}
-
-/* ================= FOOTER ================= */
-.footer{
-  margin-top:26px;
-  padding:18px 0 30px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:12px;
-}
-
-.footer a{color:var(--text)}
-.footer a:hover{color:var(--blue2)}
-
-/* ================= RESPONSIVE ================= */
-@media(max-width:1024px){
-  .home-hero{padding:44px 26px}
-  .home-intro{padding:30px}
-  .listing{padding:14px}
-}
-
-@media(max-width:600px){
-  .hero{padding:34px 0 18px}
-
-  .home-hero{
-    padding:28px 16px;
-    border-radius:16px;
-  }
-
-  .home-hero h1{
-    font-size:28px;
-    line-height:1.2;
-  }
-
-  .home-hero .sub{
-    font-size:15px;
-    line-height:1.7;
-  }
-
-  .hero-actions{gap:10px}
-  .hero-actions .btn{width:100%}
-
-  .home-intro{
-    padding:22px;
-    border-radius:16px;
-  }
-
-  .listing{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .listing > .btn{
-    width:100%;
-    margin-top:6px;
-  }
-}
-/* ================================
-   FIX: Duplicate "Post Property" button (Desktop + Mobile)
-   Desktop: show header button only
-   Mobile/Tablet: show menu button only
-================================ */
-
-/* Desktop */
-@media (min-width: 860px){
-  .header-cta{display:inline-flex !important;}
-  .menu-cta{display:none !important;}
-}
-
-/* Mobile + Tablet */
-@media (max-width: 859px){
-  .header-cta{display:none !important;}
-  .menu-cta{display:inline-flex !important;}
-}
-
-/* ================================
-   HEADER UI POLISH (PREMIUM LOOK)
-   Desktop + Tablet + Mobile SAFE
-   ================================ */
-
-/* Header container height + balance */
-.site-header{
-  padding: 6px 0;
-}
-
-/* Navbar spacing */
-.navbar{
-  padding: 14px 0;
-}
-
-/* Brand (Logo + Title) */
-.brand{
-  gap: 12px;
-}
-
-.brand-logo{
-  height: 44px;              /* Bigger logo */
-  max-width: 170px;
-}
-
-.brand-title strong{
-  font-size: 17px;
-  letter-spacing: .3px;
-}
-
-.brand-title span{
-  font-size: 13px;
-  opacity: .85;
-}
-
-/* Center navigation (Desktop) */
-.menu{
-  font-size: 14px;           /* Bigger nav text */
-  gap: 18px;
-}
-
-.menu a{
-  padding: 10px 14px;
-  font-weight: 500;
-}
-
-/* Active / hover feel */
-.menu a:hover{
-  background: rgba(255,255,255,.08);
-}
-
-/* Header CTA (Post Property) */
-.header-cta{
-  padding: 12px 20px;        /* Slightly smaller but premium */
-  font-size: 14px;
-  border-radius: 14px;
-  font-weight: 600;
-}
-
-/* Remove oversized feel */
-.header-actions{
-  gap: 10px;
-}
-
-/* Desktop alignment fix */
-@media (min-width: 860px){
-  .nav-inner{
-    justify-content: center;
-  }
-}
-
-/* Tablet tuning */
-@media (max-width: 1024px){
-  .brand-logo{
-    height: 40px;
-  }
-  .menu{
-    font-size: 13px;
-  }
-}
-
-/* Mobile tuning */
-@media (max-width: 600px){
-  .brand-logo{
-    height: 38px;
-  }
-
-  .brand-title strong{
-    font-size: 16px;
-  }
-
-  .menu a{
-    font-size: 14px;
-  }
-}
-
-/* ================================
-   NAVIGATION – ACTIVE STATE + CATCHY FEEL
-   Premium Enterprise Style
-================================ */
-
-/* Base nav link */
-.menu a{
-  position: relative;
-  font-weight: 500;
-  letter-spacing: .3px;
-  transition: color .2s ease, background .2s ease;
-}
-
-/* Hover effect */
-.menu a:hover{
-  color: #fff;
-  background: rgba(255,255,255,.08);
-}
-
-/* Active page highlight
-   Add class="active" to current page link in HTML */
-.menu a.active{
-  color: #ffffff;
-  background: linear-gradient(
-    180deg,
-    rgba(29,161,242,.25),
-    rgba(29,161,242,.10)
-  );
-  border-radius: 12px;
-  font-weight: 600;
-}
-
-/* Active underline glow */
-.menu a.active::after{
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 4px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--blue2),
-    transparent
-  );
-  border-radius: 2px;
-}
-
-/* Desktop nav spacing enhancement */
-@media (min-width: 860px){
-  .menu{
-    gap: 22px;
-  }
-}
-
-/* Mobile menu polish */
-@media (max-width: 859px){
-  .menu a{
-    width: 100%;
-    justify-content: center;
-    font-size: 15px;
-    padding: 12px 14px;
-  }
-
-  .menu a.active{
-    background: linear-gradient(
-      180deg,
-      rgba(29,161,242,.35),
-      rgba(29,161,242,.15)
-    );
-  }
-}
-/* ================================
-   HEADER POLISH (PRO LOOK)
-   - Bigger logo
-   - Better nav spacing + typography
-   - Active state (glow pill)
-   - Desktop inline menu
-   - Mobile menu slide-down
-   Mobile + Tablet + Desktop friendly
-================================ */
-
-/* Header container spacing */
-.site-header .navbar{
-  padding:14px 0;
-}
-
-/* Brand sizing */
-.brand-logo{
-  height:44px !important;
-  max-width:170px !important;
-}
-
-.brand-title strong{
-  font-size:16px !important;
-  letter-spacing:.3px !important;
-}
-
-.brand-title span{
-  font-size:12.5px !important;
-  opacity:.95;
-}
-
-/* Make nav look premium */
-.menu{
-  background: rgba(11,15,20,.55);
-  border-top:1px solid var(--line);
-}
-
-.nav-inner{
   gap:12px;
-  padding:12px 0;
+  padding:12px 0 16px;
+  flex-wrap:wrap;
 }
-
 .menu a{
-  font-size:14px;
-  font-weight:600;
-  letter-spacing:.2px;
+  position:relative;
   color:rgba(245,247,250,.82);
   padding:10px 12px;
   border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.2px;
   transition: background .2s ease, transform .2s ease, color .2s ease;
 }
-
 .menu a:hover{
   background: rgba(255,255,255,.07);
   color:var(--text);
   transform: translateY(-1px);
 }
 
-/* ACTIVE NAV */
+/* Active state (single source of truth) */
 .menu a.active{
   color:var(--text);
   background: linear-gradient(180deg, rgba(29,161,242,.22), rgba(10,116,184,.12));
@@ -783,69 +149,63 @@ a:hover{color:var(--blue2)}
   box-shadow: 0 0 0 3px rgba(29,161,242,.10);
 }
 
-/* CTA sizing (less bulky) */
-.header-cta{
-  padding:10px 14px !important;
-  border-radius:12px !important;
-  font-weight:700;
-  letter-spacing:.2px;
-}
+/* CTA inside menu */
+.menu-cta{margin-left:auto}
 
-.header-actions{
-  gap:10px;
-}
+/* Desktop (>=860px) */
+@media (min-width:860px){
+  .nav-toggle{display:none !important;}
 
-/* Desktop: turn menu into inline (right side), hide the big bar */
-@media(min-width:860px){
-  .site-header{
-    background: rgba(11,15,20,.78);
-  }
-
+  /* Keep nav visually integrated with header (no "bar" look) */
   .menu{
     border-top:none;
-    background: transparent;
+    background:transparent;
   }
-
-  .menu .nav-inner{
-    justify-content:flex-end;
+  .nav-inner{
     padding:0;
+    justify-content:flex-end;
+    flex-wrap:wrap;
   }
 
-  /* Put the menu next to header by tightening layout */
-  .site-header .navbar{
-    align-items:center;
-  }
+  /* Desktop CTA only in header */
+  .header-cta{display:inline-flex !important;}
+  .menu-cta{display:none !important;}
 }
 
-/* Mobile/Tablet: collapsible menu behavior (requires app.js toggle) */
-@media(max-width:859px){
-  .menu{
-    max-height:0;
-    overflow:hidden;
-    transition:max-height .25s ease;
-  }
-  .menu.is-open{
-    max-height:520px;
-  }
-  .menu .nav-inner{
-    padding:12px 0 16px;
-  }
+/* Mobile/Tablet (<860px) */
+@media (max-width:859px){
+  /* Mobile CTA only inside menu */
+  .header-cta{display:none !important;}
   .menu-cta{
+    display:inline-flex !important;
     width:100%;
     justify-content:center;
     margin-top:8px;
   }
 
-  /* Make logo + CTA balanced */
-  .brand-logo{height:40px !important;}
-}
+  /* Collapsible menu (opened by .is-open from app.js) */
+  .menu{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .menu.is-open{max-height:520px;}
 
-/* Mobile: nav links full width for tappability */
-@media(max-width:600px){
+  /* Tappable links */
+  .nav-inner{justify-content:flex-start;}
   .menu a{
     width:100%;
-    justify-content:flex-start;
+    justify-content:center;
+    font-size:15px;
+    padding:12px 14px;
+    transform:none;
   }
+  .menu a:hover{transform:none;}
 }
 
-
+/* Mobile small */
+@media (max-width:600px){
+  .brand-logo{height:40px; max-width:160px;}
+  .brand-title strong{font-size:16px;}
+  .menu a{justify-content:flex-start;}
+}
