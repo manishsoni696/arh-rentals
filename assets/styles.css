@@ -1144,3 +1144,36 @@ body{
     display: block;
   }
 }
+/* ================================
+   PRICING PAGE MENU VISIBILITY (FIX) — ADD-ONLY
+   Purpose: Ensure menu is ALWAYS visible on Desktop, and only toggled on Mobile
+   ================================ */
+
+/* Desktop: menu must always show (even if some page has hidden/inline states) */
+@media (min-width: 860px){
+  .menu,
+  #primary-navigation{
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* Some pages may use the boolean [hidden] attribute on nav */
+#primary-navigation[hidden]{
+  display: block !important;
+}
+
+/* Mobile/Tablet: keep your toggle behavior */
+@media (max-width: 859px){
+  .menu,
+  #primary-navigation{
+    display: none;
+  }
+  .menu.is-open,
+  #primary-navigation.is-open{
+    display: block;
+  }
+}
