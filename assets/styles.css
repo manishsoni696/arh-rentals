@@ -1164,6 +1164,48 @@ body{
     justify-content: center !important;
   }
 }
+/* ============ HOME MOBILE NAV: HIDE LINKS ROW, KEEP CTA, SHOW LINKS ONLY WHEN OPEN (ADD-ONLY) ============ */
+@media (max-width: 859px){
+  /* Keep menu container visible */
+  body.home .menu{
+    border-top: 1px solid rgba(255,255,255,.10);
+  }
+
+  /* Hide nav links by default (Home only) */
+  body.home .menu:not(.is-open) .nav-inner a:not(.menu-cta){
+    display: none !important;
+  }
+
+  /* When hamburger opens, show links */
+  body.home .menu.is-open .nav-inner a:not(.menu-cta){
+    display: inline-flex !important;
+  }
+
+  /* CTA always visible */
+  body.home .menu .menu-cta{
+    display: inline-flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    margin-top: 10px;
+  }
+
+  /* Spacing */
+  body.home .menu .nav-inner{
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 0 !important;
+  }
+}
+
+/* ============ MOBILE TEXT CUT FIX (HEADINGS WRAP) — ADD-ONLY ============ */
+@media (max-width: 600px){
+  h1, h2, h3{
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+}
 
 
 
