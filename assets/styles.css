@@ -209,3 +209,46 @@ a:hover{color:var(--blue2)}
   .brand-title strong{font-size:16px;}
   .menu a{justify-content:flex-start;}
 }
+/* ================= HEADER MICRO POLISH (STEP 3) ================= */
+
+/* Mobile menu animation (smooth) */
+@media (max-width:859px){
+  .menu{
+    opacity:0;
+    transform: translateY(-6px);
+    transition: max-height .25s ease, opacity .2s ease, transform .2s ease;
+    will-change: max-height, opacity, transform;
+  }
+  .menu.is-open{
+    opacity:1;
+    transform: translateY(0);
+  }
+}
+
+/* Hamburger -> X animation */
+.nav-toggle-icon{
+  transition: background .2s ease, transform .2s ease;
+}
+.nav-toggle-icon::before,
+.nav-toggle-icon::after{
+  transition: transform .2s ease, top .2s ease, opacity .2s ease;
+}
+
+/* When menu open, show X */
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon{
+  background: transparent;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::before{
+  top:0;
+  transform: rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::after{
+  top:0;
+  transform: rotate(-45deg);
+}
+
+/* Better tap feel */
+.menu a:active{
+  background: rgba(255,255,255,.10);
+}
+
