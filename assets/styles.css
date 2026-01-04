@@ -1580,6 +1580,56 @@ z-index: 1000000 !important;
     max-width: calc(100% - 74px) !important;
   }
 }
+/* ================================
+   MICRO UX v1 (Post + Pricing)
+   Add-only final overrides
+================================ */
+
+/* Make taps easier on mobile */
+@media (max-width: 720px){
+  .btn{ min-height:44px; padding:12px 14px; }
+  .input, select.input, textarea.input{ min-height:44px; }
+}
+
+/* Disabled button UX */
+.btn[disabled],
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  pointer-events:none;
+  filter:saturate(.9);
+}
+
+/* Subtle focus for accessibility */
+.input:focus,
+select.input:focus,
+textarea.input:focus{
+  outline:2px solid rgba(29,161,242,.35);
+  outline-offset:2px;
+}
+
+/* Clear feedback blocks (works for #otpMsg and #postPinMsg) */
+#otpMsg,
+#postPinMsg{
+  display:inline-block;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  line-height:1.35;
+}
+
+/* Ensure long messages wrap nicely */
+#otpMsg, #postPinMsg{
+  word-break:break-word;
+}
+
+/* Pricing: Selected button clarity (if any state uses disabled/Selected text) */
+.select-btn[disabled],
+.select-btn:disabled{
+  opacity:.75;
+}
+
 
 
 
