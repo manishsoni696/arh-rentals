@@ -1131,6 +1131,22 @@ body{
 @media (max-width: 600px){
   :root{ --arh-header-h: 72px; }
 }
+/* MOBILE HOME PAGE — HIDE NAV LINKS, KEEP HAMBURGER + POST PROPERTY */
+@media (max-width: 859px){
+  body.home .menu .nav-inner a:not(.menu-cta){
+    display: none !important;
+  }
+
+  body.home .menu .nav-inner{
+    justify-content: center;
+  }
+
+  body.home .menu-cta{
+    display: inline-flex !important;
+    width: 100%;
+    justify-content: center;
+  }
+}
 
 
 
