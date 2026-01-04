@@ -1550,6 +1550,37 @@ right: 18px !important;
 z-index: 1000000 !important;
 }
 }
+/* ============ LISTINGS ONLY — MOBILE HAMBURGER ALIGNMENT FIX (ADD-ONLY) ============ */
+/* Paste at VERY END of styles.css */
+
+/* Target ONLY the Listings page via active nav link */
+@media (max-width: 859px){
+
+  body:has(#primary-navigation a.active[href="/listings"]) .site-header .navbar{
+    position: relative !important;
+    padding-right: 74px !important; /* reserve space for hamburger at right */
+  }
+
+  body:has(#primary-navigation a.active[href="/listings"]) .site-header .navbar > .nav-toggle{
+    position: absolute !important;
+    right: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    z-index: 1000000 !important;
+  }
+
+  /* On listings, header-actions is only CTA; keep it out of layout on mobile */
+  body:has(#primary-navigation a.active[href="/listings"]) .site-header .header-actions{
+    display: none !important;
+  }
+
+  /* Prevent brand from colliding with the reserved hamburger space */
+  body:has(#primary-navigation a.active[href="/listings"]) .site-header .brand{
+    max-width: calc(100% - 74px) !important;
+  }
+}
+
 
 
   
