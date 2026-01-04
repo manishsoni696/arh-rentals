@@ -1,221 +1,153 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5)
+# 🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.1)
 
-This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.
-Last Updated: Jan 2026
-Status: 🔒 CORE STABLE + ✅ OTP HARDENING APPLIED + ✅ PRICING UX DONE
+This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.  
+Last Updated: Jan 2026  
+Status: 🔒 CORE STABLE + ✅ OTP HARDENING APPLIED + ✅ PRICING UX DONE + ✅ LEGAL HOOKUP DONE
 
-✅ COMPLETED / LOCKED (DO NOT TOUCH)
-1) Working Rules & Process
+---
 
-Rules Master finalized (how Manish works)
+## ✅ COMPLETED / LOCKED (DO NOT TOUCH)
 
-Code delivery format locked (paste-box only)
+### 1) Working Rules & Process
+- Rules Master finalized (how Manish works)
+- Code delivery format locked (paste-box only)
+- Add-only policy enforced
+- Mobile + Tablet + Desktop mandatory
+- Single-chat workflow accepted
 
-Add-only policy enforced
+### 2) Core UI Foundation
+- Dark SaaS-style theme locked
+- Header structure finalized (brand | nav | CTA)
+- Hero section hierarchy refined
+- Button system standardized
+- Card system finalized
 
-Mobile + Tablet + Desktop mandatory
-
-Single-chat workflow accepted
-
-2) Core UI Foundation
-
-Dark SaaS-style theme locked
-
-Header structure finalized (brand | nav | CTA)
-
-Hero section hierarchy refined
-
-Button system standardized
-
-Card system finalized
-
-3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
-
+### 3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
 Mobile hamburger now appears and opens on:
-
-Home ✅
-
-Pricing ✅
-
-Listings ✅ (not perfect, but acceptable)
-
-Legal ✅ (for now)
+- Home ✅
+- Pricing ✅
+- Listings ✅ (not perfect, but acceptable)
+- Legal ✅
 
 Strategy locked:
+- ❌ No HTML restructure
+- ❌ No new JS toggle scripts
+- ✅ CSS is the single source of truth
+- JS only toggles: `body.nav-open` + `.menu.is-open`
 
-❌ No HTML restructure
+### 4) Authentication Philosophy (LOCKED)
+- OTP logic finalized (session-based)
+- PIN login allowed
+- OTP limits & blocks defined (reference locked)
 
-❌ No new JS toggle scripts
+### 5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
+- Pricing card selection now works
+- Default Premium selected on load
+- Card click + button click both work
+- Selected visual highlight visible
+- Final winning CSS override locked at END of `styles.css`
+- 🚫 Do not revisit unless broken again
 
-✅ CSS is the single source of truth
-
-JS only toggles: body.nav-open + .menu.is-open
-
-4) Authentication Philosophy (LOCKED)
-
-OTP logic finalized (session-based)
-
-PIN login allowed
-
-OTP limits & blocks defined (reference locked)
-
-5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
-
-Pricing card selection now works
-
-Default Premium selected on load
-
-Card click + button click both work
-
-Selected visual highlight visible
-
-Final winning CSS override locked at END of styles.css
-
-🚫 Do not revisit unless broken again
-
-6) Session & OTP Backend Validation — ✅ COMPLETED
-
+### 6) Session & OTP Backend Validation — ✅ COMPLETED
 Backend (Cloudflare Worker) validated against locked rules:
+- 60 sec resend cooldown enforced ✅
+- Max 3 OTP in 4 hours enforced ✅
+- OTP validity (5 minutes) enforced ✅
+- PIN restriction enforced ✅
+- `/me` protected via Bearer token ✅
+- Same-device session logic supported (frontend + token) ✅
 
-60 sec resend cooldown enforced ✅
-
-Max 3 OTP in 4 hours enforced ✅
-
-OTP validity (5 minutes) enforced ✅
-
-PIN restriction enforced ✅
-
-/me protected via Bearer token ✅
-
-Same-device session logic supported (frontend + token) ✅
-
-7) OTP Security Hardening (Backend) — ✅ DONE
-
+### 7) OTP Security Hardening (Backend) — ✅ DONE
 Implemented production-grade protections:
+- OTP single-use enforcement ✅
+- Wrong OTP tries limit using `tries` ✅
+- Replay protection ✅
+- `/me` endpoint confirmed working ✅
+- Session expiry / revocation → optional, deferred
 
-OTP single-use enforcement
+### 8) Plans / Pricing Page UX (Copy + Flow) — ✅ COMPLETED
+- Plan copy clarified (who each plan is for)
+- Clear explanation: 1 Plan = 1 Property
+- “No broker / no deal guarantee” messaging placed correctly
+- “Next Step” guidance added (Select → Post Property)
+- Mobile + Tablet + Desktop verified
+- Legal-safe, conversion-clear, rule-compliant
+- 🚫 Do not revisit unless business model changes
 
-Wrong OTP tries limit using tries
+### 9) Legal Page Final Hookup — ✅ COMPLETED (LATEST)
+- Footer links fixed to correct absolute paths ✅
+- Disclaimer updated to match locked business model ✅
+- No banned words used ✅
+- Mobile + Tablet + Desktop safe ✅
+- 🚫 Do not revisit unless legal text changes
 
-Replay protection
+---
 
-/me endpoint confirmed working
+## 🧾 WHAT CHANGES WERE MADE (SUMMARY)
 
-Session expiry / revocation → optional, deferred
+### A) GLOBAL MOBILE MENU SUPPORT (CSS)
+- Supports both nav markup variants
+- Uses `body.nav-open` / `.menu.is-open`
+- Mobile dropdown positioned correctly
+- Full-width stacked links on mobile
 
-8) Plans / Pricing Page UX (Copy + Flow) — ✅ COMPLETED (LATEST)
-
-Plan copy clarified (who each plan is for)
-
-Clear explanation: 1 Plan = 1 Property
-
-“No broker / no deal guarantee” messaging placed correctly
-
-“Next Step” guidance added (Select → Post Property)
-
-Mobile + Tablet + Desktop verified
-
-Legal-safe, conversion-clear, rule-compliant
-
-🚫 Do not revisit unless business model changes
-
-🧾 WHAT CHANGES WERE MADE (SUMMARY)
-A) GLOBAL MOBILE MENU SUPPORT (CSS)
-
-Supports both nav markup variants
-
-Uses body.nav-open / .menu.is-open
-
-Mobile dropdown positioned correctly
-
-Full-width stacked links on mobile
-
-B) LISTINGS PAGE — HAMBURGER ALIGNMENT
-
-Listings-scoped CSS override
-
-Space reserved for hamburger
-
-Brand collision reduced
+### B) LISTINGS PAGE — HAMBURGER ALIGNMENT
+- Listings-scoped CSS override
+- Space reserved for hamburger
+- Brand collision reduced  
 Result: Accepted (not perfect, OK)
 
-⚠️ All CSS changes are ADD-ONLY and must remain at end of styles.css
+### C) PRICING PAGE UX (HTML COPY)
+- Improved hero + plan copy clarity
+- Added “Next step” guidance section
 
-⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
-🟠 PRIORITY 1 — CORE BUSINESS PAGES (NEXT)
+### D) LEGAL PAGE FOOTER HOOKUP (HTML)
+- Footer internal links corrected
+- Disclaimer text aligned with locked model
 
-1) Legal Page Final Hookup (NEXT TASK)
+⚠️ All CSS changes are ADD-ONLY and must remain at end of `styles.css`
 
-Verify internal linking:
+---
 
-Privacy Policy
+## ⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
 
-Terms & Conditions
+### 🟠 PRIORITY 1 — CORE BUSINESS PAGES (NEXT)
+1) **Post Property Page Audit**
+   - Field validation
+   - Submission feedback
+   - Mobile spacing & UX check
 
-Disclaimer
+### 🟡 PRIORITY 2 — SEO & DISCOVERABILITY
+2) Google Search Console Review  
+3) On-page SEO Audit
 
-Check footer links:
+### 🔵 PRIORITY 3 — USER EXPERIENCE BOOSTERS
+4) WhatsApp / Call CTA Logic  
+5) Micro UX Improvements
 
-Absolute vs relative paths
+### ⚪ PRIORITY 4 — FUTURE (DO NOT START YET)
+6) Customer Dashboard  
+7) AI Listing Assistant  
+8) Subscription Automation  
+9) Analytics & Event Tracking  
 
-Mobile tap accuracy
+---
 
-Ensure disclaimer text matches locked business model
-
-2) Post Property Page Audit
-
-Field validation
-
-Submission feedback
-
-Mobile spacing & UX check
-
-🟡 PRIORITY 2 — SEO & DISCOVERABILITY
-
-Google Search Console Review
-
-On-page SEO Audit
-
-🔵 PRIORITY 3 — USER EXPERIENCE BOOSTERS
-
-WhatsApp / Call CTA Logic
-
-Micro UX Improvements
-
-⚪ PRIORITY 4 — FUTURE (DO NOT START YET)
-
-Customer Dashboard
-
-AI Listing Assistant
-
-Subscription Automation
-
-Analytics & Event Tracking
-
-▶️ NEXT IMMEDIATE STEP (CONFIRMED)
-
-➤ START WITH: Legal Page Final Hookup
+## ▶️ NEXT IMMEDIATE STEP (CONFIRMED)
+➤ START WITH: **Post Property Page Audit**
 
 Reason:
+- Pricing + Legal are completed
+- Post flow is core conversion path
+- Mobile UX + validation directly impacts successful postings
 
-Pricing UX complete
+---
 
-Legal correctness protects business
+## 🧠 EXECUTION RULE (REMINDER)
+- ONE task at a time
+- No parallel changes
+- Only add-only safe patches
+- Never restructure HTML for nav/menu
+- If a task requires code → paste-box format strictly
 
-Low risk, high importance
-
-No backend dependency
-
-🧠 EXECUTION RULE (REMINDER)
-
-ONE task at a time
-
-No parallel changes
-
-Only add-only safe patches
-
-Never restructure HTML for nav/menu
-
-If a task requires code → paste-box format strictly
-
-END — v5 LOCKED
+END — v5.1 LOCKED
