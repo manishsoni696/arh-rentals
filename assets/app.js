@@ -353,38 +353,6 @@ if (logoutBtn) {
   }
 })();
 
-(() => {
-  const toggleBtn = document.querySelector(".nav-toggle");
-  const menu = document.getElementById("primary-navigation");
-
-  if (!toggleBtn || !menu) return;
-
-  const MOBILE_MAX = 859;
-  const isMobile = () =>
-    window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
-
-  function setExpanded(open) {
-    toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
-  }
-
-  function openMenu() {
-    menu.classList.add("is-open");
-    setExpanded(true);
-  }
-
-  function closeMenu() {
-    menu.classList.remove("is-open");
-    setExpanded(false);
-  }
-
-  function toggleMenu() {
-    if (menu.classList.contains("is-open")) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  }
-
   // initial state sync
   setExpanded(menu.classList.contains("is-open"));
 
