@@ -727,6 +727,40 @@ button.btn-primary:hover{
   .brand-logo{ height: 36px; }
   .brand-title strong{ font-size: 16px; }
 }
+/* ============ STEP 2.1 — NAV ALIGNMENT FIX (WORKS WITH OR WITHOUT .nav-inner) ============ */
+/* Goal: Desktop par menu "floating center" na lage; brand ke paas start ho */
+
+/* Desktop: make .menu itself align properly even if .nav-inner doesn't exist */
+@media (min-width: 860px){
+  .navbar{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 18px;
+  }
+
+  /* If nav has direct links */
+  .menu{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+  }
+
+  /* If nav uses .nav-inner wrapper */
+  .menu .nav-inner{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 14px;
+  }
+
+  /* Keep CTA on right */
+  .header-actions,
+  .header-cta{
+    justify-self: end;
+  }
+}
 
 
 
