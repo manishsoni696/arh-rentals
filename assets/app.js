@@ -641,5 +641,46 @@ if (logoutBtn) {
     initNavToggle();
   }
 })();
+(function () {
+  function initMobileNavToggle() {
+    const toggle = document.querySelector(".nav-toggle");
+    const menu = document.querySelector(".menu");
+    if (!toggle || !menu) return;
+
+    toggle.setAttribute("type", "button");
+    toggle.setAttribute("aria-expanded", "false");
+
+    function setState(open) {
+      document.body.classList.toggle("nav-open", open);
+      menu.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    toggle.addEventListener("click", function () {
+      const open = !document.body.classList.contains("nav-open");
+      setState(open);
+    });
+
+    menu.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
+      if (!link) return;
+      if (window.matchMedia("(max-width: 859px)").matches) {
+        setState(false);
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      if (!window.matchMedia("(max-width: 859px)").matches) {
+        setState(false);
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNavToggle);
+  } else {
+    initMobileNavToggle();
+  }
+})();
 
 
