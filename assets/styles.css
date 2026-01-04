@@ -329,5 +329,44 @@ a:hover{color:var(--blue2)}
 .nav-toggle span::after {
   content: none !important;
 }
+/* ================================
+   HOME PAGE INTERACTIVE POLISH
+================================ */
+
+/* 1. Hero visual separation */
+.home-hero{
+  border-radius: 18px;
+  padding: 56px 48px;
+  background:
+    radial-gradient(600px 300px at 10% 10%, rgba(29,161,242,.18), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+}
+
+/* Make hero text more readable */
+.home-hero h1{
+  max-width: 760px;
+}
+.home-hero .sub{
+  max-width: 720px;
+  line-height: 1.65;
+}
+
+/* Trust bullets as chips */
+.hero-trust{
+  gap: 10px;
+}
+.hero-trust span{
+  background: rgba(255,255,255,.06);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* 2. Highlight intro section */
+.home-intro{
+  padding: 40px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.
 
 
