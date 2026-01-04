@@ -1132,299 +1132,127 @@ body{
   }
 }
 /* ================================
-   MOBILE NAV TOGGLE (FIX) — ADD-ONLY
+   MOBILE MENU (FINAL CLEAN LOCK)
+   Fixes:
+   - Mobile: menu hidden by default, opens only with .is-open OR body.nav-open
+   - Mobile: dropdown aligns under header, full width
+   - Desktop: menu always visible, hamburger hidden
    ================================ */
 
-/* Mobile/Tablet: menu hidden by default */
-@media (max-width: 859px){
-  .menu{
-    display: none;
-  }
-  .menu.is-open{
-    display: block;
-  }
-}
-/* ================================
-   PRICING PAGE MENU VISIBILITY (FIX) — ADD-ONLY
-   Purpose: Ensure menu is ALWAYS visible on Desktop, and only toggled on Mobile
-   ================================ */
-
-/* Desktop: menu must always show (even if some page has hidden/inline states) */
+/* Desktop */
 @media (min-width: 860px){
-  .menu,
-  #primary-navigation{
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-}
-
-/* Some pages may use the boolean [hidden] attribute on nav */
-#primary-navigation[hidden]{
-  display: block !important;
-}
-
-/* Mobile/Tablet: keep your toggle behavior */
-@media (max-width: 859px){
-  .menu,
-  #primary-navigation{
-    display: none;
-  }
-  .menu.is-open,
-  #primary-navigation.is-open{
-    display: block;
-  }
-}
-/* =========================================================
-   FIX: PRICING PAGE MENU + HAMBURGER TOGGLE (CSS + JS SUPPORT)
-   ========================================================= */
-
-/* 1) MOBILE: hamburger ALWAYS visible */
-@media (max-width: 859px){
-  .nav-toggle{
-    display: inline-flex !important;
-  }
-}
-
-/* 2) DESKTOP: menu ALWAYS visible, hamburger hidden */
-@media (min-width: 860px){
-  .nav-toggle{
-    display: none !important;
-  }
+  .nav-toggle{ display:none !important; }
 
   .menu,
-  #primary-navigation{
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  #primary-navigation[hidden]{
-    display: block !important;
-  }
-}
-
-/* 3) MOBILE: menu hidden until JS opens it */
-@media (max-width: 859px){
-  .menu,
-  #primary-navigation{
-    display: none !important;
-  }
-
-  .menu.is-open,
-  #primary-navigation.is-open{
-    display: block !important;
-  }
-
-  #primary-navigation[hidden]{
-    display: none !important;
-  }
-}
-/* =========================================================
-   FIX 1 — MOBILE MENU VISIBILITY (ADD-ONLY)
-   Goal:
-   - Desktop (>=860px): menu ALWAYS visible
-   - Mobile (<=859px): menu HIDDEN by default, shows only when .is-open
-   - Works for: nav.menu OR .menu
-========================================================= */
-
-@media (max-width: 859px){
-  /* Hide menu by default on mobile */
   nav.menu,
-  .menu{
-    display: none !important;
+  #primary-navigation{
+    display:block !important;
+    position:static !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    height:auto !important;
+    overflow:visible !important;
+    box-shadow:none !important;
   }
 
-  /* Show only when JS adds .is-open */
+  #primary-navigation[hidden]{ display:block !important; }
+}
+
+/* Mobile / Tablet */
+@media (max-width: 859px){
+  /* hamburger visible */
+  .nav-toggle{ display:inline-flex !important; }
+
+  /* header dropdown container */
+  .site-header{ overflow:visible !important; }
+
+  /* menu hidden by default */
+  .menu,
+  nav.menu,
+  #primary-navigation{
+    display:none !important;
+  }
+
+  /* open state */
+  .menu.is-open,
   nav.menu.is-open,
-  .menu.is-open{
-    display: block !important;
-  }
-}
-
-@media (min-width: 860px){
-  /* Always show menu on desktop */
-  nav.menu,
-  .menu{
-    display: block !important;
-  }
-}
-/* ============ MOBILE NAV VISIBILITY (LOCK) — ADD-ONLY ============ */
-/* Default mobile: menu hidden. Open only when .is-open OR body.nav-open */
-@media (max-width: 859px){
-  .menu{
-    display: none !important;
-  }
-  .menu.is-open,
-  body.nav-open .menu{
-    display: block !important;
-  }
-}
-/* =========================================
-   FIX: Pricing page mobile menu alignment
-   (ADD-ONLY, no deletion)
-========================================= */
-
-/* Normalize menu structure ONLY for pricing page */
-@media (max-width: 859px) {
-
-  /* pricing page menu container fix */
-  .menu > .container {
-    padding: 0;
+  #primary-navigation.is-open,
+  body.nav-open .menu,
+  body.nav-open nav.menu,
+  body.nav-open #primary-navigation{
+    display:block !important;
   }
 
-  /* ensure nav-inner behaves same as other pages */
-  .menu .container .nav-inner {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  /* dropdown positioning under header */
+  .site-header .menu,
+  .site-header nav.menu,
+  .site-header #primary-navigation{
+    position:absolute !important;
+    top:100% !important;
+    left:0 !important;
+    right:0 !important;
+    border-top:1px solid var(--line);
+    background:rgba(11,15,20,.92);
+    backdrop-filter:blur(10px);
+    box-shadow:0 18px 40px rgba(0,0,0,.45);
+    z-index:999999 !important;
   }
 
-  /* prevent floating / detached menu */
-  .menu {
-    position: relative;
-    top: 0;
-    left: 0;
-  }
-}
-/* ============ MOBILE MENU DROPDOWN (FIX) — ADD-ONLY (PASTE AT VERY END) ============ */
-/* Goal: Mobile par menu default hidden rahe, hamburger pe clean dropdown open ho
-   Works with: .menu.is-open (your app.js toggle)
-*/
-
-@media (max-width: 859px){
-
-  /* Header ke under dropdown overlay (content push nahi karega) */
-  .site-header{
-    overflow: visible !important;
+  /* menu layout */
+  .site-header .menu .nav-inner,
+  .site-header nav.menu .nav-inner,
+  .site-header #primary-navigation .nav-inner{
+    width:100% !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:8px !important;
+    padding:12px 0 !important;
+    flex-wrap:nowrap !important;
   }
 
-  /* Menu: hidden by default on mobile */
-  .site-header .menu{
-    position: absolute !important;
-    top: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-
-    display: none !important;
-    border-top: 1px solid var(--line);
-    background: rgba(11,15,20,.92);
-    backdrop-filter: blur(10px);
-
-    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  /* link style */
+  .site-header .menu a:not(.btn),
+  .site-header nav.menu a:not(.btn),
+  .site-header #primary-navigation a:not(.btn){
+    display:block !important;
+    width:100% !important;
+    text-align:left !important;
+    padding:12px 14px !important;
+    border-radius:12px !important;
+    color:var(--text) !important;
+    background:rgba(255,255,255,.03) !important;
+    border:1px solid rgba(255,255,255,.08) !important;
   }
 
-  /* When opened by JS */
-  .site-header .menu.is-open{
-    display: block !important;
+  .site-header .menu a.active:not(.btn),
+  .site-header nav.menu a.active:not(.btn),
+  .site-header #primary-navigation a.active:not(.btn){
+    background:rgba(29,161,242,.14) !important;
+    border-color:rgba(29,161,242,.35) !important;
+    box-shadow:0 0 0 3px rgba(29,161,242,.10) !important;
   }
 
-  /* Mobile menu layout: vertical, full width */
-  .site-header .menu .nav-inner{
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-    padding: 12px 0 !important;
-    flex-wrap: nowrap !important;
-  }
-
-  /* Links: full-width buttons like */
-  .site-header .menu a:not(.btn){
-    display: block !important;
-    width: 100% !important;
-    text-align: left !important;
-
-    padding: 12px 14px !important;
-    border-radius: 12px !important;
-
-    color: var(--text) !important;
-    background: rgba(255,255,255,.03) !important;
-    border: 1px solid rgba(255,255,255,.08) !important;
-  }
-
-  .site-header .menu a:not(.btn):hover{
-    background: rgba(255,255,255,.06) !important;
-  }
-
-  .site-header .menu a.active:not(.btn){
-    background: rgba(29,161,242,.14) !important;
-    border-color: rgba(29,161,242,.35) !important;
-    box-shadow: 0 0 0 3px rgba(29,161,242,.10) !important;
-  }
-}
-
-/* Desktop safety: menu always visible, never “display:none” */
-@media (min-width: 860px){
-  .site-header .menu{
-    position: static !important;
-    display: block !important;
-    box-shadow: none !important;
-  }
-}
-/* =========================================================
-   FIX: Mobile header alignment (Pricing + all pages)
-   - Align logo/title + hamburger properly
-   - Keep CTA button from breaking layout on small screens
-========================================================= */
-@media (max-width: 859px) {
+  /* mobile header alignment (safe) */
   .site-header .navbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:12px !important;
   }
 
   .site-header .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:0;
-  }
-
-  .site-header .brand-title{
-    min-width:0;
-    line-height:1.1;
+    min-width:0 !important;
   }
 
   .site-header .brand-title strong,
   .site-header .brand-title span{
-    display:block;
+    max-width:42vw;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width:42vw;
   }
 
-  .site-header .nav-toggle{
-    flex:0 0 auto;
-    width:44px;
-    height:44px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  /* CTA ko mobile me hide karo (optional but recommended for clean alignment) */
-  .site-header .header-actions{
-    display:none;
-  }
-
-  /* Nav links spacing */
-  .site-header .menu .nav-inner{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    padding:10px 0;
-  }
-
-  .site-header .menu a{
-    display:block;
-    padding:10px 12px;
-  }
+  /* optional: hide CTA on mobile for clean header */
+  .site-header .header-actions{ display:none !important; }
 }
