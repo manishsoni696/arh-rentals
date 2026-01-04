@@ -486,5 +486,64 @@ if (logoutBtn) {
 
   window.addEventListener("pageshow", applyActiveNav);
 })();
+(() => {
+  const toggleBtn = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("primary-navigation");
+
+  if (!toggleBtn || !menu) return;
+
+  const MOBILE_MAX = 859;
+  const isMobile = () => window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
+
+  function setExpanded(open) {
+    toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  function openMenu() {
+    menu.classList.add("is-open");
+    document.body.classList.add("nav-open");
+    setExpanded(true);
+  }
+
+  function closeMenu() {
+    menu.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+    setExpanded(false);
+  }
+
+  function toggleMenu() {
+    const open = menu.classList.contains("is-open") || document.body.classList.contains("nav-open");
+    if (open) closeMenu();
+    else openMenu();
+  }
+
+  toggleBtn.setAttribute("type", "button");
+  toggleBtn.setAttribute("aria-controls", "primary-navigation");
+  if (!toggleBtn.hasAttribute("aria-expanded")) setExpanded(false);
+
+  toggleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!isMobile()) return;
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    if (toggleBtn.contains(target) || menu.contains(target)) return;
+    closeMenu();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!isMobile()) closeMenu();
+  });
+
+  if (!isMobile()) closeMenu();
+})();
 
 
