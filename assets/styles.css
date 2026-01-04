@@ -832,7 +832,53 @@ button.btn-primary:hover{
   .site-header .brand-title strong{ font-size: 16px; }
   .site-header .brand-title span{ font-size: 12px; }
 }
+/* ============ STEP 2.3 — HEADER FINAL BALANCE TUNING (ADD-ONLY) ============ */
+/* Fix: logo too big feel, CTA too loud, nav spacing more premium */
 
+@media (min-width: 860px){
+  /* Brand width: nav ko zyada push na kare */
+  .brand{
+    min-width: 200px; /* was 220 */
+  }
+
+  /* Logo: slightly reduced for premium balance */
+  .site-header .brand-logo{
+    height: 48px;      /* was 52 */
+    max-width: 210px;  /* was 220 */
+  }
+
+  /* CTA: smaller + cleaner */
+  .site-header .header-cta{
+    min-height: 40px;       /* was 42/44 */
+    padding: 8px 12px;      /* was 9/14 */
+    font-size: 14.5px;      /* was 15 */
+    border-radius: 13px;
+  }
+
+  /* Nav: slightly tighter & cleaner */
+  .menu a:not(.btn){
+    font-size: 14px;        /* was 14.5 */
+    padding: 9px 11px;      /* was 10 12 */
+    border-radius: 11px;
+    font-weight: 640;
+  }
+
+  /* Gap tuning */
+  .menu .nav-inner{
+    gap: 10px;              /* was 12/14 */
+  }
+  .menu .container{
+    gap: 14px;              /* was 18 */
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+  .site-header .brand-logo{ height: 44px; }
+  .site-header .header-cta{ padding: 8px 12px; font-size: 14px; }
+}
+
+/* Mobile stays same (your existing mobile rules) */
 
 
 
