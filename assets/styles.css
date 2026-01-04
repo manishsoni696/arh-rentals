@@ -1367,3 +1367,64 @@ body{
     box-shadow: none !important;
   }
 }
+/* =========================================================
+   FIX: Mobile header alignment (Pricing + all pages)
+   - Align logo/title + hamburger properly
+   - Keep CTA button from breaking layout on small screens
+========================================================= */
+@media (max-width: 859px) {
+  .site-header .navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .site-header .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+
+  .site-header .brand-title{
+    min-width:0;
+    line-height:1.1;
+  }
+
+  .site-header .brand-title strong,
+  .site-header .brand-title span{
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:42vw;
+  }
+
+  .site-header .nav-toggle{
+    flex:0 0 auto;
+    width:44px;
+    height:44px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* CTA ko mobile me hide karo (optional but recommended for clean alignment) */
+  .site-header .header-actions{
+    display:none;
+  }
+
+  /* Nav links spacing */
+  .site-header .menu .nav-inner{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:10px 0;
+  }
+
+  .site-header .menu a{
+    display:block;
+    padding:10px 12px;
+  }
+}
