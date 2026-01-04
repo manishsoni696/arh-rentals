@@ -1294,4 +1294,35 @@ body{
     display:block !important;
   }
 }
+/* ================================
+   MOBILE NAV FIX — SHOW HAMBURGER
+   ROOT CAUSE FIX:
+   - .header-actions was hidden on mobile
+   - nav-toggle lives INSIDE .header-actions
+   - Result: hamburger never rendered
+   ================================ */
+
+/* MOBILE: keep header-actions visible */
+@media (max-width: 859px){
+  .site-header .header-actions{
+    display:flex !important;
+    align-items:center !important;
+    gap:12px !important;
+  }
+
+  /* MOBILE: hide only CTA, NOT hamburger */
+  .site-header .header-actions .header-cta{
+    display:none !important;
+  }
+
+  /* MOBILE: force hamburger visible */
+  .site-header .nav-toggle{
+    display:inline-flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    z-index:100000 !important;
+  }
+}
+
   
