@@ -521,5 +521,85 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+/* =========================================================
+   PATCH: MOBILE NAV TOGGLE — WORKS FOR BOTH:
+   1) <nav class="menu" id="primary-navigation">
+   2) <nav class="menu"> (without id)
+   ALSO: prevents "menu always visible" issue
+   ADD-ONLY (paste at VERY END of assets/app.js)
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".nav-toggle");
+  const menu =
+    document.getElementById("primary-navigation") ||
+    document.querySelector("nav.menu") ||
+    document.querySelector(".menu");
 
-  
+  if (!toggle || !menu) return;
+
+  const MOBILE_MAX = 859;
+  const isMobile = () => window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
+
+  function setOpen(open) {
+    document.body.classList.toggle("nav-open", open);
+    menu.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+
+    // Optional: use hidden attribute if you want hard-hide without CSS dependency
+    if (open) menu.removeAttribute("hidden");
+    else if (isMobile()) menu.setAttribute("hidden", "");
+  }
+
+  // Initial state
+  if (isMobile()) {
+    menu.classList.remove("is-open");
+    menu.setAttribute("hidden", "");
+    toggle.setAttribute("aria-expanded", "false");
+  } else {
+    menu.removeAttribute("hidden");
+    menu.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  // Toggle on hamburger click
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isMobile()) return;
+
+    const open = document.body.classList.contains("nav-open");
+    setOpen(!open);
+  });
+
+  // Close when clicking a menu link
+  menu.addEventListener("click", (e) => {
+    if (!isMobile()) return;
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+    setOpen(false);
+  });
+
+  // Close on outside click
+  document.addEventListener("click", (e) => {
+    if (!isMobile()) return;
+    if (toggle.contains(e.target) || menu.contains(e.target)) return;
+    setOpen(false);
+  });
+
+  // Close on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+
+  // Reset on resize
+  window.addEventListener("resize", () => {
+    if (isMobile()) {
+      setOpen(false);
+    } else {
+      document.body.classList.remove("nav-open");
+      menu.removeAttribute("hidden");
+      menu.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+});
