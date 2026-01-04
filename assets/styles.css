@@ -46,35 +46,114 @@ a:hover{color:var(--blue2)}
 }
 
 .brand{display:flex; align-items:center; gap:10px}
-.brand-logo{height:36px; max-width:140px; object-fit:contain}
+.brand-logo{height:36px; width:auto; max-width:140px; object-fit:contain}
 
 .brand-title{
   display:flex;
   flex-direction:column;
   line-height:1.1;
 }
-.brand-title strong{font-size:15px}
-.brand-title span{font-size:12px;color:var(--muted)}
+.brand-title strong{font-size:15px; letter-spacing:.2px}
+.brand-title span{font-size:12px; color:var(--muted)}
 
-.menu{
+/* ===== Header actions (CTA + toggle) ===== */
+.header-actions{
   display:flex;
   align-items:center;
-  gap:14px;
-  font-size:13px;
-  color:var(--muted);
+  gap:12px;
 }
+
+.header-cta{white-space:nowrap}
+
+/* ===== Nav toggle (mobile) ===== */
+.nav-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  color:var(--text);
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.nav-toggle:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.06);
+}
+
+.nav-toggle-icon{
+  width:18px;
+  height:2px;
+  background: rgba(255,255,255,.85);
+  border-radius:2px;
+  position:relative;
+  display:block;
+}
+
+.nav-toggle-icon::before,
+.nav-toggle-icon::after{
+  content:"";
+  position:absolute;
+  left:0;
+  width:18px;
+  height:2px;
+  background: rgba(255,255,255,.85);
+  border-radius:2px;
+}
+
+.nav-toggle-icon::before{top:-6px}
+.nav-toggle-icon::after{top:6px}
+
+/* Safety: remove any stray pseudo lines */
+.nav-toggle::before,
+.nav-toggle::after{
+  content:none !important;
+}
+
+/* ===== Menu ===== */
+.menu{
+  border-top:1px solid var(--line);
+  background: rgba(11,15,20,.55);
+}
+
+.nav-inner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  flex-wrap:wrap;
+}
+
 .menu a{
+  color:var(--muted);
   padding:8px 10px;
   border-radius:10px;
+  font-size:13px;
 }
+
 .menu a:hover{
   background: rgba(255,255,255,.06);
   color:var(--text);
 }
 
-/* Desktop: hide mobile toggle */
+.menu-cta{margin-left:auto}
+
+/* Desktop behavior */
 @media(min-width:860px){
   .nav-toggle{display:none!important}
+  .menu{border-top:none; background:transparent}
+  .nav-inner{justify-content:center}
+  .menu-cta{display:none}
+}
+
+/* Mobile: keep menu usable */
+@media(max-width:859px){
+  .nav-inner{justify-content:flex-start}
+  .menu-cta{width:100%; justify-content:center}
 }
 
 /* ================= BUTTONS ================= */
@@ -106,11 +185,39 @@ a:hover{color:var(--blue2)}
   box-shadow: 0 0 0 3px rgba(29,161,242,.20);
 }
 
-/* ================= HERO ================= */
-.hero{
-  padding:54px 0 26px;
+/* ================= TYPO / UTIL ================= */
+.muted,.sub{color:var(--muted)}
+.small{font-size:12px; color:var(--muted)}
+
+/* ================= HERO + INFO ================= */
+.hero{padding:54px 0 26px}
+.hero h1{margin:0; font-size:34px; letter-spacing:.2px}
+.hero p{margin:10px 0 0; color:var(--muted)}
+
+.notice{
+  padding:12px 14px;
+  border:1px dashed rgba(29,161,242,.45);
+  border-radius:12px;
+  background: rgba(29,161,242,.08);
+  color:var(--text);
 }
 
+.trust-strip{
+  margin:16px 0 24px;
+  padding:12px 14px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+  border:1px dashed rgba(29,161,242,.45);
+  border-radius:12px;
+  background: rgba(29,161,242,.08);
+  color:var(--text);
+  font-size:13px;
+}
+.trust-strip span{display:inline-flex; align-items:center; gap:6px}
+
+/* ================= HOME HERO (POLISH) ================= */
 .home-hero{
   width:100%;
   max-width:960px;
@@ -134,7 +241,6 @@ a:hover{color:var(--blue2)}
   font-size:16px;
   line-height:1.75;
   margin-bottom:26px;
-  color:var(--muted);
 }
 
 .hero-actions{
@@ -150,6 +256,7 @@ a:hover{color:var(--blue2)}
   flex-wrap:wrap;
   margin-top:10px;
 }
+
 .hero-trust span{
   background: rgba(255,255,255,.06);
   padding:6px 12px;
@@ -158,7 +265,7 @@ a:hover{color:var(--blue2)}
   opacity:.9;
 }
 
-/* ================= INTRO ================= */
+/* ================= HOME INTRO ================= */
 .home-intro{
   padding:40px;
   margin-top:32px;
@@ -167,51 +274,34 @@ a:hover{color:var(--blue2)}
   border:1px solid rgba(255,255,255,.06);
 }
 
-/* ================= GRID & CARDS ================= */
-.grid{
-  margin-top:40px;
-}
+/* ================= GRIDS ================= */
+.grid{margin-top:40px}
 
 .grid-3{
   display:grid;
   grid-template-columns:1fr;
   gap:14px;
+  margin-top:18px;
 }
 
 @media(min-width:860px){
   .grid-3{grid-template-columns:repeat(3,1fr)}
 }
 
-.card{
-  border:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  position:relative;
-  transition: transform .25s ease, box-shadow .25s ease;
+/* Pricing grid uses same class on pricing page */
+.grid-3#pricingGrid,
+#pricingGrid.grid-3{
+  padding:12px 0 28px;
 }
 
-.card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.45);
-}
-
-.card-body{
-  padding:46px 18px 18px;
-}
-
-.card h2,.card h3{margin:0 0 8px}
-
-.hr{
-  height:1px;
-  background:var(--line);
-  margin:14px 0;
-}
+/* ================= HR + PILLS ================= */
+.hr{height:1px; background:var(--line); margin:14px 0}
 
 .pills{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
+  margin-top:10px;
 }
 
 .pill{
@@ -223,14 +313,85 @@ a:hover{color:var(--blue2)}
   color:var(--muted);
 }
 
-/* ================= PRICING ================= */
+/* ================= CARDS ================= */
+.card{
+  border:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(17,26,36,.92), rgba(15,23,32,.86));
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.45);
+}
+
+/* bottom glow line */
+.card::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0 0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, var(--blue2), transparent);
+  opacity:.6;
+  pointer-events:none;
+}
+
+.card-body{padding:46px 18px 18px}
+.card h2,.card h3{margin:0 0 8px}
+
+/* Featured pricing card */
+.card.featured{
+  border:1px solid rgba(29,161,242,.55);
+  background: linear-gradient(180deg, rgba(29,161,242,.12), rgba(15,23,32,.86));
+}
+
+/* Most popular tag */
+.tag{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:10;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  border:1px solid rgba(29,161,242,.45);
+  background: rgba(29,161,242,.18);
+  color:#eaf7ff;
+  pointer-events:none;
+}
+
+/* Pricing price */
+.price{
+  font-size:28px;
+  font-weight:700;
+  margin:10px 0;
+  color:#fff;
+}
+
+/* ================= PRICING SELECTED ================= */
 #pricingGrid .card{
   overflow:visible;
+  position:relative;
+}
+
+#pricingGrid .card::after{
+  pointer-events:none;
+  z-index:1;
 }
 
 #pricingGrid .card.selected{
-  border:3px solid rgba(29,161,242,.95);
-  box-shadow:0 0 0 4px rgba(29,161,242,.22),0 22px 60px rgba(0,0,0,.55);
+  border:3px solid rgba(29,161,242,.95) !important;
+  box-shadow: 0 0 0 4px rgba(29,161,242,.22), 0 22px 60px rgba(0,0,0,.55) !important;
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(29,161,242,.16), rgba(15,23,32,.90)) !important;
+  z-index:5;
 }
 
 #pricingGrid .card.selected::before{
@@ -238,45 +399,29 @@ a:hover{color:var(--blue2)}
   position:absolute;
   top:12px;
   left:12px;
+  z-index:6;
   padding:6px 10px;
-  font-size:11px;
   border-radius:999px;
-  background: rgba(29,161,242,.30);
+  font-size:11px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
   border:1px solid rgba(29,161,242,.55);
+  background: rgba(29,161,242,.30);
+  color:#fff;
+  pointer-events:none;
 }
 
-/* ================= FOOTER ================= */
-.footer{
-  margin-top:26px;
-  padding:18px 0 30px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:12px;
+#pricingGrid .card.selected .select-btn{
+  background: linear-gradient(180deg,#1da1f2,#0a74b8) !important;
+  border-color: transparent !important;
+  color:#fff !important;
+  font-weight:700;
 }
 
-/* ================= RESPONSIVE ================= */
-@media(max-width:1024px){
-  .home-hero{padding:44px 26px}
-  .home-intro{padding:30px}
-}
+/* Ensure card pseudo never blocks clicks */
+#pricingGrid .card::after{pointer-events:none}
 
-@media(max-width:600px){
-  .home-hero{
-    padding:28px 16px;
-    border-radius:16px;
-  }
-  .home-hero h1{font-size:28px}
-  .home-hero .sub{font-size:15px}
-  .hero-actions .btn{width:100%}
-  .home-intro{padding:22px}
-}
-
-/* ================================
-   HOME: LISTINGS SECTION POLISH
-   (Latest Rental Listings in Hisar)
-   Mobile + Tablet + Desktop
-================================ */
-
+/* ================= HOME: LISTINGS SECTION POLISH ================= */
 .listings{
   display:flex;
   flex-direction:column;
@@ -328,27 +473,60 @@ a:hover{color:var(--blue2)}
   padding:10px 14px;
 }
 
-/* Keep the CTA button vertically aligned */
-.listing > .btn{
-  margin-top:4px;
+.listing > .btn{margin-top:4px}
+
+/* ================= FOOTER ================= */
+.footer{
+  margin-top:26px;
+  padding:18px 0 30px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:12px;
 }
 
-/* Tablet */
-@media (max-width: 1024px){
-  .listing{
-    padding:14px;
+.footer a{color:var(--text)}
+.footer a:hover{color:var(--blue2)}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1024px){
+  .home-hero{padding:44px 26px}
+  .home-intro{padding:30px}
+  .listing{padding:14px}
+}
+
+@media(max-width:600px){
+  .hero{padding:34px 0 18px}
+
+  .home-hero{
+    padding:28px 16px;
+    border-radius:16px;
   }
-}
 
-/* Mobile: stack button below content */
-@media (max-width: 600px){
+  .home-hero h1{
+    font-size:28px;
+    line-height:1.2;
+  }
+
+  .home-hero .sub{
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .hero-actions{gap:10px}
+  .hero-actions .btn{width:100%}
+
+  .home-intro{
+    padding:22px;
+    border-radius:16px;
+  }
+
   .listing{
     flex-direction:column;
     align-items:stretch;
   }
+
   .listing > .btn{
     width:100%;
     margin-top:6px;
   }
 }
-
