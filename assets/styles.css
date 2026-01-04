@@ -727,11 +727,12 @@ button.btn-primary:hover{
   .brand-logo{ height: 36px; }
   .brand-title strong{ font-size: 16px; }
 }
-/* ============ STEP 2.1 — NAV ALIGNMENT FIX (WORKS WITH OR WITHOUT .nav-inner) ============ */
+/* ============ STEP 2.1 — NAV ALIGNMENT FIX (CORRECT FOR .menu > .container > .nav-inner) ============ */
 /* Goal: Desktop par menu "floating center" na lage; brand ke paas start ho */
 
-/* Desktop: make .menu itself align properly even if .nav-inner doesn't exist */
+/* Desktop */
 @media (min-width: 860px){
+  /* Keep header row: brand | nav | CTA */
   .navbar{
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -739,25 +740,28 @@ button.btn-primary:hover{
     column-gap: 18px;
   }
 
-  /* If nav has direct links */
+  /* Menu background already transparent in your desktop rules */
   .menu{
+    border-top: none;
+    background: transparent;
+  }
+
+  /* IMPORTANT: menu ke andar container ko flex banao (links yahin ke through align honge) */
+  .menu .container{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 14px;
   }
 
-  /* If nav uses .nav-inner wrapper */
+  /* Nav wrapper (your .nav-inner) */
   .menu .nav-inner{
-    display: flex;
-    align-items: center;
     justify-content: flex-start !important;
     gap: 14px;
+    padding: 8px 0;
   }
 
-  /* Keep CTA on right */
-  .header-actions,
-  .header-cta{
+  /* CTA stays right */
+  .header-actions{
     justify-self: end;
   }
 }
