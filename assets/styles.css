@@ -547,3 +547,99 @@ a:hover{color:var(--blue2)}
   .header-cta{display:none !important;}
   .menu-cta{display:inline-flex !important;}
 }
+
+/* ================================
+   HEADER UI POLISH (PREMIUM LOOK)
+   Desktop + Tablet + Mobile SAFE
+   ================================ */
+
+/* Header container height + balance */
+.site-header{
+  padding: 6px 0;
+}
+
+/* Navbar spacing */
+.navbar{
+  padding: 14px 0;
+}
+
+/* Brand (Logo + Title) */
+.brand{
+  gap: 12px;
+}
+
+.brand-logo{
+  height: 44px;              /* Bigger logo */
+  max-width: 170px;
+}
+
+.brand-title strong{
+  font-size: 17px;
+  letter-spacing: .3px;
+}
+
+.brand-title span{
+  font-size: 13px;
+  opacity: .85;
+}
+
+/* Center navigation (Desktop) */
+.menu{
+  font-size: 14px;           /* Bigger nav text */
+  gap: 18px;
+}
+
+.menu a{
+  padding: 10px 14px;
+  font-weight: 500;
+}
+
+/* Active / hover feel */
+.menu a:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* Header CTA (Post Property) */
+.header-cta{
+  padding: 12px 20px;        /* Slightly smaller but premium */
+  font-size: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+/* Remove oversized feel */
+.header-actions{
+  gap: 10px;
+}
+
+/* Desktop alignment fix */
+@media (min-width: 860px){
+  .nav-inner{
+    justify-content: center;
+  }
+}
+
+/* Tablet tuning */
+@media (max-width: 1024px){
+  .brand-logo{
+    height: 40px;
+  }
+  .menu{
+    font-size: 13px;
+  }
+}
+
+/* Mobile tuning */
+@media (max-width: 600px){
+  .brand-logo{
+    height: 38px;
+  }
+
+  .brand-title strong{
+    font-size: 16px;
+  }
+
+  .menu a{
+    font-size: 14px;
+  }
+}
