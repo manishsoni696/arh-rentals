@@ -530,3 +530,20 @@ a:hover{color:var(--blue2)}
     margin-top:6px;
   }
 }
+/* ================================
+   FIX: Duplicate "Post Property" button (Desktop + Mobile)
+   Desktop: show header button only
+   Mobile/Tablet: show menu button only
+================================ */
+
+/* Desktop */
+@media (min-width: 860px){
+  .header-cta{display:inline-flex !important;}
+  .menu-cta{display:none !important;}
+}
+
+/* Mobile + Tablet */
+@media (max-width: 859px){
+  .header-cta{display:none !important;}
+  .menu-cta{display:inline-flex !important;}
+}
