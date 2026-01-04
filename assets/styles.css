@@ -621,6 +621,36 @@ button.btn-primary:hover{
     min-height: 46px;
   }
 }
+/* ============ STEP 1.4 — HERO SUBTEXT PREMIUM READABILITY (ADD-ONLY) ============ */
+
+.home-hero .sub{
+  max-width: 780px;
+  margin-top: 10px;
+  margin-bottom: 18px;
+  color: rgba(255,255,255,.70);
+  font-weight: 450;
+  letter-spacing: .05px;
+}
+
+/* Better paragraph rhythm */
+.home-hero .sub{
+  line-height: 1.85;
+}
+
+/* Desktop: keep comfortable line length */
+@media (min-width: 1100px){
+  .home-hero .sub{
+    max-width: 760px;
+  }
+}
+
+/* Mobile: slightly tighter so it doesn’t feel too tall */
+@media (max-width: 600px){
+  .home-hero .sub{
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+}
 
 
 
