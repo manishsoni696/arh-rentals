@@ -717,4 +717,135 @@ a:hover{color:var(--blue2)}
     );
   }
 }
+/* ================================
+   HEADER POLISH (PRO LOOK)
+   - Bigger logo
+   - Better nav spacing + typography
+   - Active state (glow pill)
+   - Desktop inline menu
+   - Mobile menu slide-down
+   Mobile + Tablet + Desktop friendly
+================================ */
+
+/* Header container spacing */
+.site-header .navbar{
+  padding:14px 0;
+}
+
+/* Brand sizing */
+.brand-logo{
+  height:44px !important;
+  max-width:170px !important;
+}
+
+.brand-title strong{
+  font-size:16px !important;
+  letter-spacing:.3px !important;
+}
+
+.brand-title span{
+  font-size:12.5px !important;
+  opacity:.95;
+}
+
+/* Make nav look premium */
+.menu{
+  background: rgba(11,15,20,.55);
+  border-top:1px solid var(--line);
+}
+
+.nav-inner{
+  gap:12px;
+  padding:12px 0;
+}
+
+.menu a{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.2px;
+  color:rgba(245,247,250,.82);
+  padding:10px 12px;
+  border-radius:12px;
+  transition: background .2s ease, transform .2s ease, color .2s ease;
+}
+
+.menu a:hover{
+  background: rgba(255,255,255,.07);
+  color:var(--text);
+  transform: translateY(-1px);
+}
+
+/* ACTIVE NAV */
+.menu a.active{
+  color:var(--text);
+  background: linear-gradient(180deg, rgba(29,161,242,.22), rgba(10,116,184,.12));
+  border:1px solid rgba(29,161,242,.35);
+  box-shadow: 0 0 0 3px rgba(29,161,242,.10);
+}
+
+/* CTA sizing (less bulky) */
+.header-cta{
+  padding:10px 14px !important;
+  border-radius:12px !important;
+  font-weight:700;
+  letter-spacing:.2px;
+}
+
+.header-actions{
+  gap:10px;
+}
+
+/* Desktop: turn menu into inline (right side), hide the big bar */
+@media(min-width:860px){
+  .site-header{
+    background: rgba(11,15,20,.78);
+  }
+
+  .menu{
+    border-top:none;
+    background: transparent;
+  }
+
+  .menu .nav-inner{
+    justify-content:flex-end;
+    padding:0;
+  }
+
+  /* Put the menu next to header by tightening layout */
+  .site-header .navbar{
+    align-items:center;
+  }
+}
+
+/* Mobile/Tablet: collapsible menu behavior (requires app.js toggle) */
+@media(max-width:859px){
+  .menu{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .menu.is-open{
+    max-height:520px;
+  }
+  .menu .nav-inner{
+    padding:12px 0 16px;
+  }
+  .menu-cta{
+    width:100%;
+    justify-content:center;
+    margin-top:8px;
+  }
+
+  /* Make logo + CTA balanced */
+  .brand-logo{height:40px !important;}
+}
+
+/* Mobile: nav links full width for tappability */
+@media(max-width:600px){
+  .menu a{
+    width:100%;
+    justify-content:flex-start;
+  }
+}
+
 
