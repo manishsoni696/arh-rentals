@@ -313,4 +313,21 @@ a:hover{color:var(--blue2)}
 #pricingGrid .card.selected::before{
   z-index: 6;
 }
+/* === FIX: Remove stray dash next to Post Property (desktop) === */
+
+/* Hide mobile nav toggle completely on desktop */
+@media (min-width: 860px) {
+  .nav-toggle {
+    display: none !important;
+  }
+}
+
+/* Safety: disable any pseudo lines */
+.nav-toggle::before,
+.nav-toggle::after,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: none !important;
+}
+
 
