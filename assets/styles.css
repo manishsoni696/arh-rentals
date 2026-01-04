@@ -1310,4 +1310,21 @@ body{
     word-break:break-word !important;
   }
 }
+/* ================================
+   FIX: MOBILE CONTENT HIDING UNDER FIXED HEADER
+   ================================ */
 
+/* Increase header offset for mobile */
+@media (max-width: 600px){
+  :root{
+    --arh-header-h: 92px; /* was 72px */
+  }
+}
+
+/* Extra safety for hero section */
+@media (max-width: 600px){
+  .hero,
+  .home-hero{
+    margin-top: 10px;
+  }
+}
