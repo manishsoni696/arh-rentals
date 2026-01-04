@@ -1,153 +1,263 @@
-# 🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.1)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.2)
 
-This document defines what is DONE, what is PENDING, and what MUST be done next, in strict execution order.  
-Last Updated: Jan 2026  
-Status: 🔒 CORE STABLE + ✅ OTP HARDENING APPLIED + ✅ PRICING UX DONE + ✅ LEGAL HOOKUP DONE
+Last Updated: Jan 2026
+Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING UX + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED
 
----
+✅ COMPLETED / LOCKED (DO NOT TOUCH)
+1) Working Rules & Process
 
-## ✅ COMPLETED / LOCKED (DO NOT TOUCH)
+Rules Master finalized (how Manish works)
 
-### 1) Working Rules & Process
-- Rules Master finalized (how Manish works)
-- Code delivery format locked (paste-box only)
-- Add-only policy enforced
-- Mobile + Tablet + Desktop mandatory
-- Single-chat workflow accepted
+Code delivery format locked (paste-box only)
 
-### 2) Core UI Foundation
-- Dark SaaS-style theme locked
-- Header structure finalized (brand | nav | CTA)
-- Hero section hierarchy refined
-- Button system standardized
-- Card system finalized
+Add-only policy enforced
 
-### 3) Mobile Menu (NAV) — STATUS LOCKED (DO NOT REWORK)
-Mobile hamburger now appears and opens on:
-- Home ✅
-- Pricing ✅
-- Listings ✅ (not perfect, but acceptable)
-- Legal ✅
+Mobile + Tablet + Desktop mandatory
+
+Single-chat workflow accepted
+
+2) Core UI Foundation
+
+Dark SaaS-style theme locked
+
+Header structure finalized (brand | nav | CTA)
+
+Hero section hierarchy refined
+
+Button system standardized
+
+Card system finalized
+
+3) Mobile Menu (NAV) — STATUS LOCKED
+
+Mobile hamburger works on:
+
+Home ✅
+
+Pricing ✅
+
+Listings ✅ (acceptable)
+
+Legal ✅
+
+Post Property ✅
 
 Strategy locked:
-- ❌ No HTML restructure
-- ❌ No new JS toggle scripts
-- ✅ CSS is the single source of truth
-- JS only toggles: `body.nav-open` + `.menu.is-open`
 
-### 4) Authentication Philosophy (LOCKED)
-- OTP logic finalized (session-based)
-- PIN login allowed
-- OTP limits & blocks defined (reference locked)
+❌ No HTML restructure
 
-### 5) Pricing Selection Bug (JS/CSS) — ✅ FIXED
-- Pricing card selection now works
-- Default Premium selected on load
-- Card click + button click both work
-- Selected visual highlight visible
-- Final winning CSS override locked at END of `styles.css`
-- 🚫 Do not revisit unless broken again
+❌ No new JS toggle scripts
 
-### 6) Session & OTP Backend Validation — ✅ COMPLETED
-Backend (Cloudflare Worker) validated against locked rules:
-- 60 sec resend cooldown enforced ✅
-- Max 3 OTP in 4 hours enforced ✅
-- OTP validity (5 minutes) enforced ✅
-- PIN restriction enforced ✅
-- `/me` protected via Bearer token ✅
-- Same-device session logic supported (frontend + token) ✅
+✅ CSS is the single source of truth
 
-### 7) OTP Security Hardening (Backend) — ✅ DONE
-Implemented production-grade protections:
-- OTP single-use enforcement ✅
-- Wrong OTP tries limit using `tries` ✅
-- Replay protection ✅
-- `/me` endpoint confirmed working ✅
-- Session expiry / revocation → optional, deferred
+JS only toggles: body.nav-open + .menu.is-open
 
-### 8) Plans / Pricing Page UX (Copy + Flow) — ✅ COMPLETED
-- Plan copy clarified (who each plan is for)
-- Clear explanation: 1 Plan = 1 Property
-- “No broker / no deal guarantee” messaging placed correctly
-- “Next Step” guidance added (Select → Post Property)
-- Mobile + Tablet + Desktop verified
-- Legal-safe, conversion-clear, rule-compliant
-- 🚫 Do not revisit unless business model changes
+4) Authentication Philosophy (LOCKED)
 
-### 9) Legal Page Final Hookup — ✅ COMPLETED (LATEST)
-- Footer links fixed to correct absolute paths ✅
-- Disclaimer updated to match locked business model ✅
-- No banned words used ✅
-- Mobile + Tablet + Desktop safe ✅
-- 🚫 Do not revisit unless legal text changes
+OTP logic finalized (session-based)
 
----
+PIN login allowed
 
-## 🧾 WHAT CHANGES WERE MADE (SUMMARY)
+OTP limits & blocks defined (reference locked)
 
-### A) GLOBAL MOBILE MENU SUPPORT (CSS)
-- Supports both nav markup variants
-- Uses `body.nav-open` / `.menu.is-open`
-- Mobile dropdown positioned correctly
-- Full-width stacked links on mobile
+5) Pricing Selection Bug — ✅ FIXED
 
-### B) LISTINGS PAGE — HAMBURGER ALIGNMENT
-- Listings-scoped CSS override
-- Space reserved for hamburger
-- Brand collision reduced  
-Result: Accepted (not perfect, OK)
+Pricing card selection works
 
-### C) PRICING PAGE UX (HTML COPY)
-- Improved hero + plan copy clarity
-- Added “Next step” guidance section
+Default Premium selected
 
-### D) LEGAL PAGE FOOTER HOOKUP (HTML)
-- Footer internal links corrected
-- Disclaimer text aligned with locked model
+Card click + button click supported
 
-⚠️ All CSS changes are ADD-ONLY and must remain at end of `styles.css`
+Visual highlight visible
 
----
+Final CSS override locked at END of styles.css
 
-## ⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
+🚫 Do not revisit unless broken
 
-### 🟠 PRIORITY 1 — CORE BUSINESS PAGES (NEXT)
-1) **Post Property Page Audit**
-   - Field validation
-   - Submission feedback
-   - Mobile spacing & UX check
+6) Session & OTP Backend Validation — ✅ COMPLETED
 
-### 🟡 PRIORITY 2 — SEO & DISCOVERABILITY
-2) Google Search Console Review  
-3) On-page SEO Audit
+Resend cooldown enforced (60s) ✅
 
-### 🔵 PRIORITY 3 — USER EXPERIENCE BOOSTERS
-4) WhatsApp / Call CTA Logic  
-5) Micro UX Improvements
+Max OTP limit enforced (3 / 4 hours) ✅
 
-### ⚪ PRIORITY 4 — FUTURE (DO NOT START YET)
-6) Customer Dashboard  
-7) AI Listing Assistant  
-8) Subscription Automation  
-9) Analytics & Event Tracking  
+OTP validity (5 min) ✅
 
----
+PIN restriction enforced ✅
 
-## ▶️ NEXT IMMEDIATE STEP (CONFIRMED)
-➤ START WITH: **Post Property Page Audit**
+/me protected with Bearer token ✅
+
+Same-device session supported ✅
+
+7) OTP Security Hardening — ✅ DONE
+
+OTP single-use enforced ✅
+
+Wrong OTP tries limited (tries) ✅
+
+Replay protection active ✅
+
+/me endpoint verified ✅
+
+Session expiry → deferred (future)
+
+8) Plans / Pricing Page UX — ✅ COMPLETED
+
+Clear plan intent copy
+
+1 Plan = 1 Property explained
+
+No broker / no guarantee messaging placed
+
+“Next Step” guidance added
+
+Mobile + Tablet + Desktop verified
+
+🚫 Locked unless business model changes
+
+9) Legal Page Final Hookup — ✅ COMPLETED
+
+Footer links absolute & correct
+
+Disclaimer matches locked business model
+
+No banned words
+
+Mobile + Tablet + Desktop safe
+
+🚫 Locked unless legal text changes
+
+10) Post Property Page Audit — ✅ COMPLETED (LATEST)
+
+File: /post/index.html
+
+Verified & fixed:
+
+Flow clarity (PIN → OTP → Property → Plan)
+
+Removed misleading verification language
+
+Frontend input validation safety added
+
+Footer links corrected
+
+Mandatory disclaimer aligned with master
+
+Mobile + Tablet + Desktop spacing verified
+
+No OTP / pricing / CSS logic disturbed
+
+🚫 Status: LOCKED unless new posting features added
+
+🧾 WHAT CHANGES WERE MADE (SUMMARY)
+A) GLOBAL MOBILE MENU (CSS)
+
+Supports multiple nav variants
+
+Controlled via body.nav-open + .menu.is-open
+
+Full-width mobile dropdown
+
+Locked
+
+B) LISTINGS PAGE NAV ADJUSTMENT
+
+Scoped CSS override
+
+Hamburger spacing acceptable
+
+Locked
+
+C) PRICING PAGE UX
+
+Copy clarity
+
+Conversion-safe flow
+
+Locked
+
+D) LEGAL PAGE FOOTER
+
+Absolute paths
+
+Correct disclaimer
+
+Locked
+
+E) POST PROPERTY FLOW
+
+Legal-safe wording
+
+Clear step order
+
+Validation safety
+
+Conversion-safe
+
+Locked
+
+⚠️ All CSS remains ADD-ONLY at end of styles.css
+
+⏳ PENDING TASKS (UPDATED PRIORITY ORDER)
+🟡 PRIORITY 1 — SEO & DISCOVERABILITY (NEXT)
+
+Google Search Console Review
+
+Coverage
+
+Indexing
+
+Sitemap
+
+Errors / warnings
+
+On-page SEO Audit
+
+Titles & meta descriptions
+
+H1/H2 structure
+
+Internal linking
+
+No keyword stuffing
+
+🔵 PRIORITY 2 — USER EXPERIENCE BOOSTERS
+
+WhatsApp / Call CTA Logic
+
+Micro UX Improvements (loading, disabled states, hover consistency)
+
+⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
+
+Customer Dashboard
+
+AI Listing Assistant
+
+Subscription Automation
+
+Analytics & Event Tracking
+
+▶️ NEXT IMMEDIATE STEP (CONFIRMED)
+
+➤ START WITH: Google Search Console Review
 
 Reason:
-- Pricing + Legal are completed
-- Post flow is core conversion path
-- Mobile UX + validation directly impacts successful postings
 
----
+Core business flow is stable
 
-## 🧠 EXECUTION RULE (REMINDER)
-- ONE task at a time
-- No parallel changes
-- Only add-only safe patches
-- Never restructure HTML for nav/menu
-- If a task requires code → paste-box format strictly
+Conversion path secured
 
-END — v5.1 LOCKED
+SEO visibility is next growth lever
+
+🧠 EXECUTION RULE (REMINDER)
+
+ONE task at a time
+
+No parallel changes
+
+Add-only safe patches
+
+Never restructure nav/menu HTML
+
+Code only via paste-box format
+
+END — v5.2 LOCKED
