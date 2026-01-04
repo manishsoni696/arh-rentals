@@ -603,3 +603,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+/* ============ MOBILE NAV TOGGLE (HARD OVERRIDE) — ADD-ONLY ============ */
+/* This block force-controls menu open/close even if older toggle code exists */
+(function(){
+  function onReady(fn){
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+
+  onReady(function(){
+    var MOBILE_MAX = 859;
+
+    function isMobile(){
+      return window.matchMedia("(max-width:" + MOBILE_MAX + "px)").matches;
+    }
+
+    function getMenu(){
+      return document.getElementById("primary-navigation") || document.querySelector("nav.menu") || document.querySelector(".menu");
+    }
+
+    function getToggle(){
+      return document.querySelector(".nav-toggle");
+    }
+
+    function setOpen(open){
+      var menu = getMenu();
+      var toggle = getToggle();
+      if (!menu || !toggle) return;
+
+      document.body.classList.toggle("nav-open", !!open);
+      menu.classList.toggle("is-open", !!open);
+
+      if (!!open) menu.removeAttribute("hidden");
+      else menu.setAttribute("hidden", "");
+
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function initState(){
+      var menu = getMenu();
+      var toggle = getToggle();
+      if (!menu || !toggle) return;
+
+      toggle.setAttribute("aria-expanded", "false");
+
+      if (isMobile()){
+        setOpen(false);
+      } else {
+        document.body.classList.remove("nav-open");
+        menu.classList.remove("is-open");
+        menu.removeAttribute("hidden");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    initState();
+
+    document.addEventListener("click", function(e){
+      var toggle = getToggle();
+      var menu = getMenu();
+      if (!toggle || !menu) return;
+
+      var isToggleClick = e.target && (e.target.closest && e.target.closest(".nav-toggle"));
+      if (!isToggleClick) return;
+
+      if (!isMobile()) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+      var openNow = document.body.classList.contains("nav-open") || menu.classList.contains("is-open");
+      setOpen(!openNow);
+    }, true);
+
+    document.addEventListener("click", function(e){
+      var toggle = getToggle();
+      var menu = getMenu();
+      if (!toggle || !menu) return;
+      if (!isMobile()) return;
+
+      var clickedInsideMenu = menu.contains(e.target);
+      var clickedToggle = toggle.contains(e.target);
+
+      if (clickedToggle) return;
+
+      if (!clickedInsideMenu){
+        setOpen(false);
+      }
+    }, true);
+
+    document.addEventListener("click", function(e){
+      var menu = getMenu();
+      if (!menu) return;
+      if (!isMobile()) return;
+
+      var link = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!link) return;
+      if (!menu.contains(link)) return;
+
+      setOpen(false);
+    }, true);
+
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape") setOpen(false);
+    }, true);
+
+    window.addEventListener("resize", function(){
+      initState();
+    });
+  });
+})();
