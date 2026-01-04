@@ -1348,6 +1348,36 @@ body{
     z-index:100000 !important;
   }
 }
+/* ================================
+   GLOBAL FIX: HAMBURGER VISIBLE ON ALL PAGES (MOBILE)
+   Reason: your CSS hides .site-header .header-actions on mobile,
+           and on some pages the hamburger is inside .header-actions.
+   ================================ */
+@media (max-width: 859px){
+  /* Never hide the whole header-actions on mobile */
+  .site-header .header-actions{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:12px !important;
+    z-index:1200 !important;
+  }
+
+  /* Hide only the CTA (keep header clean) */
+  .site-header .header-actions .header-cta{
+    display:none !important;
+  }
+
+  /* Force hamburger visible */
+  .site-header .nav-toggle{
+    display:inline-flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    position:relative !important;
+    z-index:100000 !important;
+  }
+}
 
 
   
