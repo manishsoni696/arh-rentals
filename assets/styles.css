@@ -1080,37 +1080,13 @@ button.btn-primary:hover{
   font-size: 12px;
   color: rgba(255,255,255,.65);
 }
-/* ============ GLOBAL HEADER STICKY FIX (ADD-ONLY) ============ */
-/* Purpose: Header stays visible on scroll on ALL pages (Home included) */
+/* ============ MOBILE TEXT CUT + HEADER OVERLAP — FINAL CLEAN LOCK (ADD-ONLY) ============ */
+/* Purpose: Works even if header is <header class="site-header"> OR <div class="site-header"> */
 
-.site-header{
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 999 !important;
-}
-/* ============ GLOBAL HEADER STICKY FIX (ROBUST) — ADD-ONLY ============ */
-/* Reason: Home page header class likely .nav (not .site-header), so sticky rule not applying */
-
-header.site-header,
-header.nav,
-.nav{
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 9999 !important;
-}
-
-/* Safety: if any parent is clipping sticky, this prevents header from getting hidden */
-body{
-  overflow-x: hidden;
-}
-/* ============ HEADER FIX (GUARANTEED) — MAKE IT FIXED ON SCROLL (ADD-ONLY) ============ */
-/* Sticky can fail if any parent has overflow/transform. Fixed will always work. */
-
-:root{
-  --arh-header-h: 78px;
-}
+:root{ --arh-header-h: 78px; }
 
 /* Support BOTH header types used across your pages */
+.site-header,
 header.site-header,
 header.nav,
 .nav{
@@ -1124,268 +1100,34 @@ header.nav,
 
 /* Prevent content from hiding under fixed header */
 body{
+  overflow-x: hidden;
   padding-top: var(--arh-header-h) !important;
 }
 
-/* Mobile: slightly smaller offset */
 @media (max-width: 600px){
   :root{ --arh-header-h: 72px; }
-}
-/* MOBILE HOME PAGE — HIDE NAV LINKS, KEEP HAMBURGER + POST PROPERTY */
-@media (max-width: 859px){
-  body.home .menu .nav-inner a:not(.menu-cta){
-    display: none !important;
-  }
 
-  body.home .menu .nav-inner{
-    justify-content: center;
-  }
-
-  body.home .menu-cta{
-    display: inline-flex !important;
-    width: 100%;
-    justify-content: center;
-  }
-}
-/* 2) MOBILE HOME ONLY — HIDE NAV LINKS ROW, KEEP HAMBURGER, KEEP "POST PROPERTY" CTA */
-@media (max-width: 859px){
-  body.home .menu .nav-inner a:not(.menu-cta){
-    display: none !important;
-  }
-
-  body.home .menu .nav-inner{
-    justify-content: center !important;
-    gap: 0 !important;
-  }
-
-  body.home .menu-cta{
-    display: inline-flex !important;
-    width: 100% !important;
-    justify-content: center !important;
-  }
-}
-/* ============ HOME MOBILE NAV: HIDE LINKS ROW, KEEP CTA, SHOW LINKS ONLY WHEN OPEN (ADD-ONLY) ============ */
-@media (max-width: 859px){
-  /* Keep menu container visible */
-  body.home .menu{
-    border-top: 1px solid rgba(255,255,255,.10);
-  }
-
-  /* Hide nav links by default (Home only) */
-  body.home .menu:not(.is-open) .nav-inner a:not(.menu-cta){
-    display: none !important;
-  }
-
-  /* When hamburger opens, show links */
-  body.home .menu.is-open .nav-inner a:not(.menu-cta){
-    display: inline-flex !important;
-  }
-
-  /* CTA always visible */
-  body.home .menu .menu-cta{
-    display: inline-flex !important;
-    width: 100% !important;
-    justify-content: center !important;
-    margin-top: 10px;
-  }
-
-  /* Spacing */
-  body.home .menu .nav-inner{
-    justify-content: flex-start !important;
-    gap: 10px !important;
-    padding: 10px 0 !important;
-  }
-}
-
-/* ============ MOBILE TEXT CUT FIX (HEADINGS WRAP) — ADD-ONLY ============ */
-@media (max-width: 600px){
   h1, h2, h3{
     white-space: normal !important;
     overflow: visible !important;
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
   }
-}
-@media (max-width: 859px){
-  .menu{
-    display: block !important;
-  }
 
-  body:not(.nav-open) .menu .nav-inner a:not(.menu-cta){
-    display: none !important;
-  }
-
-  body.nav-open .menu .nav-inner a:not(.menu-cta){
-    display: inline-flex !important;
-  }
-
-  .menu .nav-inner{
-    justify-content: flex-start !important;
-    gap: 10px !important;
-    padding: 10px 0 !important;
-    flex-wrap: wrap !important;
-  }
-
-  .menu-cta{
-    display: inline-flex !important;
-    width: 100% !important;
-    justify-content: center !important;
-    margin-top: 10px !important;
-  }
-}
-/* ============ MOBILE TEXT CUT FIX (HOME) — ADD-ONLY ============ */
-/* Fix: heading/hero text getting clipped on mobile */
-
-@media (max-width: 600px){
   .hero,
   .home-hero{
     overflow: visible !important;
+    margin-top: 8px !important;
   }
 
   .hero h1,
   .hero h2,
   .home-hero h1{
-    white-space: normal !important;
-    overflow: visible !important;
     text-overflow: clip !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
     line-height: 1.22 !important;
   }
 
-  /* Extra safety if any wrapper is clipping */
   .container{
     overflow: visible !important;
-  }
-}
-/* ============ FINAL MOBILE MENU OVERRIDE (LOCK) — ADD THIS AT VERY END ============ */
-/* Purpose:
-   1) Mobile hamburger menu ALWAYS opens/closes reliably
-   2) Links are hidden by default on mobile, shown only when nav-open
-   3) CTA (Post Property button) stays visible on mobile */
-
-@media (max-width: 859px){
-
-  /* Ensure menu container is always present */
-  .menu{ display:block !important; }
-
-  /* Default: hide links */
-  .menu .nav-inner a:not(.menu-cta){
-    display:none !important;
-  }
-
-  /* When open: show links */
-  body.nav-open .menu .nav-inner a:not(.menu-cta),
-  .menu.is-open .nav-inner a:not(.menu-cta){
-    display:inline-flex !important;
-  }
-
-  /* Keep layout clean */
-  .menu .nav-inner{
-    justify-content:flex-start !important;
-    gap:10px !important;
-    padding:10px 0 !important;
-    flex-wrap:wrap !important;
-  }
-
-  /* CTA always visible (Post Property) */
-  .menu-cta{
-    display:inline-flex !important;
-    width:100% !important;
-    justify-content:center !important;
-    margin-top:10px !important;
-  }
-
-  /* Safety: prevent text clipping in hero/title on mobile */
-  .hero,
-  .home-hero,
-  .container{ overflow:visible !important; }
-
-  .hero h1,
-  .home-hero h1{
-    white-space:normal !important;
-    overflow:visible !important;
-    text-overflow:clip !important;
-    overflow-wrap:anywhere !important;
-    word-break:break-word !important;
-  }
-}
-/* ================================
-   FIX: MOBILE CONTENT HIDING UNDER FIXED HEADER
-   ================================ */
-
-/* Increase header offset for mobile */
-@media (max-width: 600px){
-  :root{
-    --arh-header-h: 92px; /* was 72px */
-  }
-}
-
-/* Extra safety for hero section */
-@media (max-width: 600px){
-  .hero,
-  .home-hero{
-    margin-top: 10px;
-  }
-}
-
-/* =========================================
-   FINAL FIX — MOBILE HEADER OVERLAP (LOCK)
-   ========================================= */
-
-/* Force correct offset for fixed header */
-body{
-  padding-top: 100px !important;
-}
-
-/* Mobile fine-tuning */
-@media (max-width: 600px){
-  body{
-    padding-top: 112px !important;
-  }
-
-  /* Extra safety for hero */
-  .hero,
-  .home-hero{
-    margin-top: 8px !important;
-  }
-}
-
-/* =========================================
-   FINAL MOBILE MENU FIX — ALL PAGES
-   ========================================= */
-
-@media (max-width: 859px){
-
-  /* Menu container always visible */
-  .menu{
-    display:block !important;
-  }
-
-  /* Hide links by default */
-  .menu .nav-inner a:not(.menu-cta){
-    display:none !important;
-  }
-
-  /* Show links ONLY when menu is open */
-  body.nav-open .menu .nav-inner a:not(.menu-cta),
-  .menu.is-open .nav-inner a:not(.menu-cta){
-    display:inline-flex !important;
-  }
-
-  /* Layout cleanup */
-  .menu .nav-inner{
-    justify-content:flex-start !important;
-    gap:10px !important;
-    padding:10px 0 !important;
-    flex-wrap:wrap !important;
-  }
-
-  /* CTA always visible */
-  .menu-cta{
-    display:inline-flex !important;
-    width:100% !important;
-    justify-content:center !important;
-    margin-top:10px !important;
   }
 }
