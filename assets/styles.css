@@ -539,5 +539,23 @@ button.btn-primary:hover{
     line-height: 1.22;
   }
 }
+/* ============ STEP 1.2 — HERO TITLE SINGLE LINE (DESKTOP) ============ */
+/* Goal: Desktop par headline ek hi line me rahe, mobile par wrap allowed */
+
+/* Desktop / Large screens */
+@media (min-width: 1100px){
+  .home-hero h1{
+    white-space: nowrap;
+    max-width: none;
+  }
+}
+
+/* Safety: Tablet & mobile par wrap allowed */
+@media (max-width: 1099px){
+  .home-hero h1{
+    white-space: normal;
+  }
+}
+
 
 
