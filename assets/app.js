@@ -714,3 +714,91 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+// === ARH NAV (MOBILE) — HARD FIX (ADD-ONLY) ===
+// Works even if CSS hides .menu by default.
+// Toggle target: #primary-navigation (nav.menu) + body.nav-open
+(function () {
+  function initArhNav() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+
+    var toggle = header.querySelector(".nav-toggle");
+    var nav = header.querySelector("#primary-navigation") || header.querySelector("nav.menu") || header.querySelector(".menu");
+    if (!toggle || !nav) return;
+
+    // Ensure nav has an id for CSS/JS consistency
+    if (!nav.id) nav.id = "primary-navigation";
+
+    // Normalize initial state
+    toggle.setAttribute("aria-expanded", "false");
+    nav.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+
+    function openNav() {
+      nav.classList.add("is-open");
+      document.body.classList.add("nav-open");
+      toggle.setAttribute("aria-expanded", "true");
+      nav.removeAttribute("hidden");
+    }
+
+    function closeNav() {
+      nav.classList.remove("is-open");
+      document.body.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      nav.setAttribute("hidden", "");
+    }
+
+    function isMobile() {
+      return window.matchMedia && window.matchMedia("(max-width: 859px)").matches;
+    }
+
+    function syncByViewport() {
+      if (isMobile()) {
+        // mobile: closed by default
+        closeNav();
+      } else {
+        // desktop: always open
+        openNav();
+      }
+    }
+
+    // Click toggle
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isMobile()) return; // desktop always open
+
+      if (nav.classList.contains("is-open")) closeNav();
+      else openNav();
+    });
+
+    // Close on outside click (mobile only)
+    document.addEventListener("click", function (e) {
+      if (!isMobile()) return;
+      if (!nav.classList.contains("is-open")) return;
+
+      var inside = header.contains(e.target);
+      if (!inside) closeNav();
+    });
+
+    // Close on Esc
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (!isMobile()) return;
+      closeNav();
+    });
+
+    // Viewport change
+    window.addEventListener("resize", syncByViewport);
+
+    // Init
+    syncByViewport();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initArhNav);
+  } else {
+    initArhNav();
+  }
+})();
