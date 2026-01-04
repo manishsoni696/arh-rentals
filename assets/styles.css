@@ -1550,6 +1550,30 @@ right: 18px !important;
 z-index: 1000000 !important;
 }
 }
+/* ============ MOBILE NAV TOGGLE ALIGNMENT (LISTINGS + ALL PAGES) ============ */
+/* Keep this BELOW your existing global mobile-menu fix (VERY END of styles.css) */
+
+/* Ensure header can anchor the hamburger */
+header { position: relative; }
+
+/* Reserve space so toggle never overlaps title/text */
+header .container,
+header .nav-inner {
+  padding-right: 74px;
+}
+
+/* Force hamburger to a consistent top-right position on mobile */
+@media (max-width: 860px){
+  .nav-toggle{
+    position: absolute !important;
+    right: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+  }
+}
+
 
 
   
