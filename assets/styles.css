@@ -1253,7 +1253,6 @@ body{
     text-overflow:ellipsis;
   }
 
-  /* optional: hide CTA on mobile for clean header */
+ /* optional: hide CTA on mobile for clean header */
   .site-header .header-actions{ display:none !important; }
-}
 }
