@@ -352,531 +352,6 @@ if (logoutBtn) {
     initPricingSelect();
   }
 })();
-/* =========================================================
-   MOBILE NAV TOGGLE — FINAL (SINGLE SOURCE OF TRUTH) ✅
-   - Works only on mobile
-   - Uses: .nav-toggle + #primary-navigation
-   - Toggles: body.nav-open + .menu.is-open
-========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".nav-toggle");
-  const menu = document.getElementById("primary-navigation");
-
-  if (!toggle || !menu) return;
-
-  const MOBILE_MAX = 859;
-  const isMobile = () =>
-    window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
-
-  function setOpen(open) {
-    document.body.classList.toggle("nav-open", open);
-    menu.classList.toggle("is-open", open);
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-  }
-
-  // Toggle on hamburger click
-  toggle.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!isMobile()) return;
-
-    const open = document.body.classList.contains("nav-open");
-    setOpen(!open);
-  });
-
-  // Close when clicking a menu link (mobile only)
-  menu.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    const link = e.target.closest("a[href]");
-    if (!link) return;
-    setOpen(false);
-  });
-
-  // Close on outside click
-  document.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    if (toggle.contains(e.target) || menu.contains(e.target)) return;
-    setOpen(false);
-  });
-
-  // Close on ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
-  });
-
-  // Reset on desktop resize
-  window.addEventListener("resize", () => {
-    if (!isMobile()) setOpen(false);
-  });
-});
-/* ================================
-   MOBILE NAV TOGGLE (FIX) — ADD-ONLY
-   ================================ */
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.querySelector(".nav-toggle");
-  const menu =
-    document.getElementById("primary-navigation") ||
-    document.querySelector(".menu");
-
-  if (!toggleBtn || !menu) return;
-
-  // Ensure correct initial state (mobile)
-  toggleBtn.setAttribute("aria-expanded", "false");
-  menu.classList.remove("is-open");
-
-  const closeMenu = () => {
-    toggleBtn.setAttribute("aria-expanded", "false");
-    menu.classList.remove("is-open");
-  };
-
-  const openMenu = () => {
-    toggleBtn.setAttribute("aria-expanded", "true");
-    menu.classList.add("is-open");
-  };
-
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = menu.classList.contains("is-open");
-    if (isOpen) closeMenu();
-    else openMenu();
-  });
-
-  // Close when any menu link is clicked (mobile UX)
-  menu.addEventListener("click", (e) => {
-    const a = e.target.closest("a");
-    if (a && window.innerWidth <= 859) closeMenu();
-  });
-
-  // On desktop resize, force menu visible via desktop CSS (and remove mobile open state)
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 860) closeMenu();
-  });
-});
-/* =========================================================
-   FIX: MOBILE HAMBURGER MENU TOGGLE (ARH Rentals)
-   ========================================================= */
-(function () {
-  function ready(fn){ if(document.readyState !== "loading"){ fn(); } else { document.addEventListener("DOMContentLoaded", fn); } }
-
-  ready(function () {
-    var btn = document.querySelector(".nav-toggle");
-    var nav = document.getElementById("primary-navigation");
-
-    if (!btn || !nav) return;
-
-    // Ensure initial state (mobile)
-    if (window.matchMedia("(max-width: 859px)").matches) {
-      nav.classList.remove("is-open");
-      nav.setAttribute("hidden", "");
-      btn.setAttribute("aria-expanded", "false");
-    }
-
-    function openNav() {
-      nav.classList.add("is-open");
-      nav.removeAttribute("hidden");
-      btn.setAttribute("aria-expanded", "true");
-    }
-
-    function closeNav() {
-      nav.classList.remove("is-open");
-      nav.setAttribute("hidden", "");
-      btn.setAttribute("aria-expanded", "false");
-    }
-
-    function toggleNav() {
-      var isOpen = btn.getAttribute("aria-expanded") === "true";
-      if (isOpen) closeNav();
-      else openNav();
-    }
-
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      toggleNav();
-    });
-
-    // Close when clicking any nav link (mobile)
-    nav.addEventListener("click", function (e) {
-      var a = e.target.closest("a");
-      if (!a) return;
-      if (window.matchMedia("(max-width: 859px)").matches) closeNav();
-    });
-
-    // Close on outside click (mobile)
-    document.addEventListener("click", function (e) {
-      if (!window.matchMedia("(max-width: 859px)").matches) return;
-      if (e.target.closest("#primary-navigation") || e.target.closest(".nav-toggle")) return;
-      closeNav();
-    });
-
-    // On resize: keep desktop open, mobile closed by default
-    window.addEventListener("resize", function () {
-      if (window.matchMedia("(min-width: 860px)").matches) {
-        nav.classList.remove("is-open");
-        nav.removeAttribute("hidden");
-        btn.setAttribute("aria-expanded", "false");
-      } else {
-        nav.classList.remove("is-open");
-        nav.setAttribute("hidden", "");
-        btn.setAttribute("aria-expanded", "false");
-      }
-    });
-  });
-})();
-/* =========================================================
-   PATCH: MOBILE NAV TOGGLE — WORKS FOR BOTH:
-   1) <nav class="menu" id="primary-navigation">
-   2) <nav class="menu"> (without id)
-   ALSO: prevents "menu always visible" issue
-   ADD-ONLY (paste at VERY END of assets/app.js)
-========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".nav-toggle");
-  const menu =
-    document.getElementById("primary-navigation") ||
-    document.querySelector("nav.menu") ||
-    document.querySelector(".menu");
-
-  if (!toggle || !menu) return;
-
-  const MOBILE_MAX = 859;
-  const isMobile = () => window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
-
-  function setOpen(open) {
-    document.body.classList.toggle("nav-open", open);
-    menu.classList.toggle("is-open", open);
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-
-    // Optional: use hidden attribute if you want hard-hide without CSS dependency
-    if (open) menu.removeAttribute("hidden");
-    else if (isMobile()) menu.setAttribute("hidden", "");
-  }
-
-  // Initial state
-  if (isMobile()) {
-    menu.classList.remove("is-open");
-    menu.setAttribute("hidden", "");
-    toggle.setAttribute("aria-expanded", "false");
-  } else {
-    menu.removeAttribute("hidden");
-    menu.classList.remove("is-open");
-    toggle.setAttribute("aria-expanded", "false");
-  }
-
-  // Toggle on hamburger click
-  toggle.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!isMobile()) return;
-
-    const open = document.body.classList.contains("nav-open");
-    setOpen(!open);
-  });
-
-  // Close when clicking a menu link
-  menu.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    const link = e.target.closest("a[href]");
-    if (!link) return;
-    setOpen(false);
-  });
-
-  // Close on outside click
-  document.addEventListener("click", (e) => {
-    if (!isMobile()) return;
-    if (toggle.contains(e.target) || menu.contains(e.target)) return;
-    setOpen(false);
-  });
-
-  // Close on ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
-  });
-
-  // Reset on resize
-  window.addEventListener("resize", () => {
-    if (isMobile()) {
-      setOpen(false);
-    } else {
-      document.body.classList.remove("nav-open");
-      menu.removeAttribute("hidden");
-      menu.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-    }
-  });
-});
-/* ============ MOBILE NAV TOGGLE (HARD OVERRIDE) — ADD-ONLY ============ */
-/* This block force-controls menu open/close even if older toggle code exists */
-(function(){
-  function onReady(fn){
-    if (document.readyState !== "loading") fn();
-    else document.addEventListener("DOMContentLoaded", fn);
-  }
-
-  onReady(function(){
-    var MOBILE_MAX = 859;
-
-    function isMobile(){
-      return window.matchMedia("(max-width:" + MOBILE_MAX + "px)").matches;
-    }
-
-    function getMenu(){
-      return document.getElementById("primary-navigation") || document.querySelector("nav.menu") || document.querySelector(".menu");
-    }
-
-    function getToggle(){
-      return document.querySelector(".nav-toggle");
-    }
-
-    function setOpen(open){
-      var menu = getMenu();
-      var toggle = getToggle();
-      if (!menu || !toggle) return;
-
-      document.body.classList.toggle("nav-open", !!open);
-      menu.classList.toggle("is-open", !!open);
-
-      if (!!open) menu.removeAttribute("hidden");
-      else menu.setAttribute("hidden", "");
-
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
-    function initState(){
-      var menu = getMenu();
-      var toggle = getToggle();
-      if (!menu || !toggle) return;
-
-      toggle.setAttribute("aria-expanded", "false");
-
-      if (isMobile()){
-        setOpen(false);
-      } else {
-        document.body.classList.remove("nav-open");
-        menu.classList.remove("is-open");
-        menu.removeAttribute("hidden");
-        toggle.setAttribute("aria-expanded", "false");
-      }
-    }
-
-    initState();
-
-    document.addEventListener("click", function(e){
-      var toggle = getToggle();
-      var menu = getMenu();
-      if (!toggle || !menu) return;
-
-      var isToggleClick = e.target && (e.target.closest && e.target.closest(".nav-toggle"));
-      if (!isToggleClick) return;
-
-      if (!isMobile()) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-      var openNow = document.body.classList.contains("nav-open") || menu.classList.contains("is-open");
-      setOpen(!openNow);
-    }, true);
-
-    document.addEventListener("click", function(e){
-      var toggle = getToggle();
-      var menu = getMenu();
-      if (!toggle || !menu) return;
-      if (!isMobile()) return;
-
-      var clickedInsideMenu = menu.contains(e.target);
-      var clickedToggle = toggle.contains(e.target);
-
-      if (clickedToggle) return;
-
-      if (!clickedInsideMenu){
-        setOpen(false);
-      }
-    }, true);
-
-    document.addEventListener("click", function(e){
-      var menu = getMenu();
-      if (!menu) return;
-      if (!isMobile()) return;
-
-      var link = e.target && e.target.closest ? e.target.closest("a[href]") : null;
-      if (!link) return;
-      if (!menu.contains(link)) return;
-
-      setOpen(false);
-    }, true);
-
-    document.addEventListener("keydown", function(e){
-      if (e.key === "Escape") setOpen(false);
-    }, true);
-
-    window.addEventListener("resize", function(){
-      initState();
-    });
-  });
-})();
-// === ARH NAV (MOBILE) — HARD FIX (ADD-ONLY) ===
-// Works even if CSS hides .menu by default.
-// Toggle target: #primary-navigation (nav.menu) + body.nav-open
-(function () {
-  function initArhNav() {
-    var header = document.querySelector(".site-header");
-    if (!header) return;
-
-    var toggle = header.querySelector(".nav-toggle");
-    var nav = header.querySelector("#primary-navigation") || header.querySelector("nav.menu") || header.querySelector(".menu");
-    if (!toggle || !nav) return;
-
-    // Ensure nav has an id for CSS/JS consistency
-    if (!nav.id) nav.id = "primary-navigation";
-
-    // Normalize initial state
-    toggle.setAttribute("aria-expanded", "false");
-    nav.classList.remove("is-open");
-    document.body.classList.remove("nav-open");
-
-    function openNav() {
-      nav.classList.add("is-open");
-      document.body.classList.add("nav-open");
-      toggle.setAttribute("aria-expanded", "true");
-      nav.removeAttribute("hidden");
-    }
-
-    function closeNav() {
-      nav.classList.remove("is-open");
-      document.body.classList.remove("nav-open");
-      toggle.setAttribute("aria-expanded", "false");
-      nav.setAttribute("hidden", "");
-    }
-
-    function isMobile() {
-      return window.matchMedia && window.matchMedia("(max-width: 859px)").matches;
-    }
-
-    function syncByViewport() {
-      if (isMobile()) {
-        // mobile: closed by default
-        closeNav();
-      } else {
-        // desktop: always open
-        openNav();
-      }
-    }
-
-    // Click toggle
-    toggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (!isMobile()) return; // desktop always open
-
-      if (nav.classList.contains("is-open")) closeNav();
-      else openNav();
-    });
-
-    // Close on outside click (mobile only)
-    document.addEventListener("click", function (e) {
-      if (!isMobile()) return;
-      if (!nav.classList.contains("is-open")) return;
-
-      var inside = header.contains(e.target);
-      if (!inside) closeNav();
-    });
-
-    // Close on Esc
-    document.addEventListener("keydown", function (e) {
-      if (e.key !== "Escape") return;
-      if (!isMobile()) return;
-      closeNav();
-    });
-
-    // Viewport change
-    window.addEventListener("resize", syncByViewport);
-
-    // Init
-    syncByViewport();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initArhNav);
-  } else {
-    initArhNav();
-  }
-})();
-(function () {
-  function ready(fn){
-    if (document.readyState !== "loading") fn();
-    else document.addEventListener("DOMContentLoaded", fn);
-  }
-
-  ready(function () {
-    var MOBILE_MAX = 859;
-
-    var header = document.querySelector(".site-header");
-    if (!header) return;
-
-    var toggle = header.querySelector(".nav-toggle");
-    var nav =
-      header.querySelector("#primary-navigation") ||
-      header.querySelector("nav.menu") ||
-      header.querySelector(".menu");
-
-    if (!toggle || !nav) return;
-
-    if (!nav.id) nav.id = "primary-navigation";
-
-    function isMobile(){
-      return window.matchMedia("(max-width:" + MOBILE_MAX + "px)").matches;
-    }
-
-    function openNav(){
-      nav.classList.add("is-open");
-      document.body.classList.add("nav-open");
-      nav.removeAttribute("hidden");
-      toggle.setAttribute("aria-expanded", "true");
-    }
-
-    function closeNav(){
-      nav.classList.remove("is-open");
-      document.body.classList.remove("nav-open");
-      nav.setAttribute("hidden", "");
-      toggle.setAttribute("aria-expanded", "false");
-    }
-
-    function sync(){
-      if (isMobile()) {
-        closeNav();
-      } else {
-        nav.classList.remove("is-open");
-        nav.removeAttribute("hidden");
-        document.body.classList.remove("nav-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
-    }
-
-    toggle.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if (!isMobile()) return;
-      if (nav.classList.contains("is-open")) closeNav();
-      else openNav();
-    });
-
-    document.addEventListener("click", function(e){
-      if (!isMobile()) return;
-      if (!nav.classList.contains("is-open")) return;
-      if (toggle.contains(e.target) || nav.contains(e.target)) return;
-      closeNav();
-    });
-
-    document.addEventListener("keydown", function(e){
-      if (e.key === "Escape" && isMobile()) closeNav();
-    });
-
-    window.addEventListener("resize", sync);
-
-    sync();
-  });
-})();
 /* =====================================
    LISTINGS FILTERS — AUTO APPLY (UI)
 ===================================== */
@@ -997,6 +472,96 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial run
   applyFilters();
 });
+/* =========================================================
+   ARH — MOBILE NAV CONTROLLER (SINGLE SOURCE OF TRUTH)
+   Applies to ALL pages consistently
+   Breakpoint: <= 859px
+   Depends on:
+   - .nav-toggle
+   - #primary-navigation (.menu)
+   - body.nav-open
+========================================================= */
+
+(function () {
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+
+  ready(function () {
+    const MOBILE_MAX = 859;
+    const toggle = document.querySelector(".nav-toggle");
+    const menu =
+      document.getElementById("primary-navigation") ||
+      document.querySelector("nav.menu") ||
+      document.querySelector(".menu");
+
+    if (!toggle || !menu) return;
+
+    function isMobile() {
+      return window.matchMedia(`(max-width:${MOBILE_MAX}px)`).matches;
+    }
+
+    function openNav() {
+      document.body.classList.add("nav-open");
+      menu.classList.add("is-open");
+      menu.removeAttribute("hidden");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+
+    function closeNav() {
+      document.body.classList.remove("nav-open");
+      menu.classList.remove("is-open");
+      if (isMobile()) menu.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    function syncByViewport() {
+      if (isMobile()) {
+        closeNav(); // mobile default closed
+      } else {
+        menu.classList.remove("is-open");
+        menu.removeAttribute("hidden");
+        document.body.classList.remove("nav-open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    // Toggle click
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isMobile()) return;
+
+      if (menu.classList.contains("is-open")) closeNav();
+      else openNav();
+    });
+
+    // Close on menu link click (mobile)
+    menu.addEventListener("click", function (e) {
+      if (!isMobile()) return;
+      if (e.target.closest("a[href]")) closeNav();
+    });
+
+    // Close on outside click
+    document.addEventListener("click", function (e) {
+      if (!isMobile()) return;
+      if (toggle.contains(e.target) || menu.contains(e.target)) return;
+      closeNav();
+    });
+
+    // Close on ESC
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isMobile()) closeNav();
+    });
+
+    // Sync on resize
+    window.addEventListener("resize", syncByViewport);
+
+    // Init
+    syncByViewport();
+  });
+})();
 
 
 
