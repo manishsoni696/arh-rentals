@@ -696,6 +696,16 @@ textarea.input:focus{
 /* Secondary panel show/hide (More Filters button) */
 .listings-page .filters-panel{ display:none; }
 .listings-page .filters-ui.show-more .filters-panel{ display:block; }
+/* === FIX: More Filters panel visibility === */
+.listings-page .filters-ui.show-more{
+  overflow: visible;
+}
+
+.listings-page .filters-ui.show-more .filters-panel{
+  display: block;
+  margin-top: 12px;
+}
+
 
 .listings-page .more-filters-btn{
   width:100%;
