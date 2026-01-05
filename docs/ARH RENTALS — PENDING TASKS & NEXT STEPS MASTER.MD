@@ -24,11 +24,11 @@ Rules Master finalized (Manish working style)
 ✅ Single-chat workflow confirmed (no multi-expert / no master-controller)
 ✅ One task at a time, sequential fixes only
 ✅ One step = one file = one paste box
-✅ Mobile + Tablet + Desktop mandatory
+✅ Mobile + Tablet + Desktop mandatory (LOCKED forever)
 
 Important note (updated):
 Owner requested: “Full code nahi chahiye, sirf exact change + exact location”
-→ Still follows paste-box rule (code only inside paste box), but only the minimal snippet is shared.
+→ Still follows paste-box rule (code only inside paste box), but only minimal snippet is shared.
 
 2) Core UI Foundation — 🔒 LOCKED
 
@@ -38,22 +38,19 @@ Hero hierarchy refined
 Button system standardized
 Card system finalized
 
-3) Mobile Menu (NAV) — 🔒 LOGIC LOCKED
+3) Mobile Menu (NAV) — 🔒 LOGIC LOCKED (STABLE)
 
-Status: Stable & acceptable
+Status: Stable & acceptable (session verified)
 Working on (verified):
 Home ✅ | Pricing ✅ | Listings ✅ | Legal ✅ | Post Property ✅
 
 NAV STRATEGY (LOCKED LOGIC):
-
 JS toggles only:
 
 body.nav-open
 
-.menu.is-open or #primary-navigation.is-open
-
+.menu.is-open OR #primary-navigation.is-open
 No heavy JS
-
 No framework
 
 IMPORTANT:
@@ -61,16 +58,27 @@ IMPORTANT:
 ❌ Breaking existing nav logic NOT allowed
 ✅ Minimal targeted CSS/JS allowed
 
-NOTES (WHAT HAPPENED):
-Mobile hamburger visibility issues came because some pages had hamburger inside .header-actions and CSS was hiding .header-actions on mobile.
+NOTES (WHAT HAPPENED IN THIS SESSION):
 
-Final fix approach was:
+Problem observed: Mobile nav different look/behavior across pages; alignment/visibility inconsistent.
+
+Root reason discussed: Some pages had hamburger inside .header-actions and CSS was hiding .header-actions on mobile → hamburger disappears / nav mismatch.
+
+Final fix approach decided (LOCKED):
 
 Keep .header-actions visible on mobile
 
 Hide only .header-cta
 
 Force .nav-toggle visible
+
+📌 SESSION CHANGE-TRACK (NAV):
+
+File involved (logic side): assets/app.js
+
+Approach: “Single source of truth” mobile nav controller strategy (avoid multiple conflicting nav toggles).
+
+Why: Multiple “nav fix” blocks created conflict risk; we locked final logic and restricted future changes to minimal safe adjustments only.
 
 4) Authentication Philosophy — 🔒 LOCKED
 
@@ -144,37 +152,37 @@ Responsive verified
 
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
 12) Listings Filters UI — IN PROGRESS (NOT FROZEN)
-✅ WHAT IS DONE
+✅ WHAT IS DONE (THIS SESSION TRACKED)
 
-Filters redesigned to be realistic (initial version):
+A) “More Filters” button issue addressed (functional intent locked)
 
-City
+Problem seen: “More Filter” button kuch kaam nahi kar raha tha
 
-Area / Sector
+Fix logic present in assets/app.js:
 
-Property Type
+Button #moreFiltersBtn click → .filters-ui class toggle: .show-more
 
-Rent Range dropdown (structure approved)
+Button text swaps: “+ More Filters” ↔ “− Less Filters”
 
-Sorting intentionally removed
+Why: Secondary filters ko hide/show karke UI ko clean rakhna (hybrid model ke liye base).
 
-“Search Properties” CTA added (UI-only)
+B) Filters Auto-Apply (UI-level) implemented/kept
 
-“Unlock Details” future note present (inside each listing card)
+File: assets/app.js
 
-Helper text bug fixed:
+Logic: Filter form change/input par listings display update
 
-“Filters are UI-ready…” text was wrongly placed → removed from HTML
+Why: Demo stage me faster UX; Apply button dependency remove (UI-only).
 
-Small cleanup started:
+⚠️ NOTE (IMPORTANT):
 
-Inline spacing reduced
+assets/app.js me earlier attempts ke multiple duplicate filter blocks present the.
 
-Dedicated class approach planned for notes
+Final architecture is decided; but cleanup is planned after Listings UI freeze + styles cleanup task.
 
 ✅ NEW (DECIDED IN THIS SESSION): FINAL FILTER ARCHITECTURE — HYBRID MODEL (LOCKED)
-🎯 Layout Decision (LOCKED)
 
+🎯 Layout Decision (LOCKED)
 ✅ Hybrid filters:
 
 Primary Filters = TOP BAR (always visible)
@@ -190,8 +198,8 @@ Sidebar-only mobile UX weak ho sakta hai
 Hybrid gives best conversion + speed + clean UI
 
 ✅ PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) — LOCKED
-🏠 Residential (Category: Residential)
 
+🏠 Residential (Category: Residential)
 Primary:
 
 City (default Hisar)
@@ -207,7 +215,6 @@ Size (Sq Yds)
 Rent Range
 
 🏢 Commercial (Category: Commercial)
-
 Primary:
 
 City
@@ -222,13 +229,14 @@ Size (Sq Ft)
 
 Rent Range
 
-✅ Notes:
+✅ Notes (LOCKED):
 
 Size unit difference locked: Residential = Sq Yds, Commercial = Sq Ft
 
-This matches real-estate market expectation in India.
+Matches India real-estate market expectation.
 
 ✅ SECONDARY FILTERS (SIDEBAR / MORE FILTERS) — LOCKED
+
 🏠 Residential Secondary
 
 Amenities
@@ -239,16 +247,7 @@ Furnishing: Unfurnished / Semi-Furnished / Furnished
 
 Property Age
 
-Floor (NEW LOCKED):
-
-Ground
-
-First
-
-Second
-
-Third+
-
+Floor (NEW LOCKED): Ground / First / Second / Third+
 🚫 Basement NOT allowed in residential (locked)
 
 🏢 Commercial Secondary
@@ -257,45 +256,43 @@ Amenities
 
 Furnishing: Unfurnished / Furnished
 
-Floor (NEW LOCKED):
-
-Basement
-
-Ground
-
-First
-
-Second
-
-Upper / Other
+Floor (NEW LOCKED): Basement / Ground / First / Second / Upper / Other
 
 ❌ WHAT IS STILL PENDING (UPDATED)
-Listings UI structure still not professional enough
 
-Needs real-estate style layout (reference-style):
+🟡 Listings UI structure still not professional enough
+Target: Real-estate reference-style layout
 
 Desktop: filters sidebar left + results right
 
 Mobile: primary top + secondary collapsible/drawer
 
-Hybrid UI implementation pending
+🟡 Hybrid UI implementation pending
 
 Build Primary Filter row (top)
 
 Move Secondary filters into sidebar / More Filters panel
 
-Conditional logic UI:
+Make “More Filters” behave like proper panel/drawer (mobile-first)
 
-Residential vs Commercial (show correct size unit + floors + bhk visibility)
+🟡 Conditional logic UI pending
 
-Dropdown readability must remain permanently fixed
+Residential vs Commercial (show correct size unit + floors + BHK visibility)
 
-Options visibility, contrast, background, focus states
+🟡 Dropdown readability permanent fix pending
+
+Options visibility
+
+Contrast/background
+
+Focus states
+
+Must remain permanently fixed
 
 🚨 styles.css HEALTH STATUS (VERY IMPORTANT)
 13) styles.css — OVERLOADED / NEEDS CLEANUP (NOT OPTIONAL)
 
-Current reality:
+Current reality (as tracked):
 
 Same feature solved multiple times with duplicate blocks
 
@@ -303,9 +300,7 @@ Listings filters styled 5–8 times with conflicts
 
 Mobile menu fixed multiple times with force overrides
 
-:has() used heavily → future risk + inconsistent support in some environments
-
-“ADD-ONLY” blocks now override each other (not clean)
+“ADD-ONLY” blocks override each other → not clean
 
 ✅ WHAT WE WILL KEEP (LOCK)
 
@@ -330,7 +325,7 @@ After cleanup:
 
 styles.css becomes stable and predictable
 
-future work becomes fast and safe
+future work fast and safe
 
 ⚠️ Rule: Cleanup will be done as a separate controlled task (one file, one paste box).
 
@@ -338,9 +333,9 @@ future work becomes fast and safe
 
 Desktop:
 
-Sidebar filters on LEFT
+Sidebar filters LEFT
 
-Listings on RIGHT
+Listings RIGHT
 
 Compact spacing
 
@@ -384,7 +379,6 @@ Fix dropdown readability permanently
 Balance CTA size & alignment
 
 Verify Desktop + Tablet + Mobile
-
 ✅ After this → FREEZE LISTINGS UI
 
 🟠 PRIORITY 1B — styles.css CLEANUP (IMMEDIATELY AFTER LISTINGS FINAL)
@@ -399,8 +393,7 @@ Keep pricing final override at very end
 
 Remove duplicate “step blocks” that override each other
 
-Validate all pages quickly (Home, Pricing, Listings, Legal, Post)
-
+Validate pages quickly: Home, Pricing, Listings, Legal, Post
 ✅ After cleanup → LOCK styles.css
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
