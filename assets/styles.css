@@ -1092,4 +1092,47 @@ textarea.input:focus{
   position: relative;
   z-index: 1;
 }
+/* ===============================
+   LISTINGS: Area / Sector dropdown UI FIX
+   - Remove nested scrollbars
+   - Single clean scroll in panel
+   - Better spacing + wrap pills
+================================ */
+
+/* Panel container: ONE scrollbar only */
+.listings-page .area-panel{
+  max-height: min(420px, 70vh);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* Make option groups wrap as pills (no inner scroll) */
+.listings-page .area-panel .area-options{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow: visible !important;
+  max-height: none !important;
+  padding-right: 6px; /* small room so scrollbar doesn’t sit on pills */
+}
+
+/* Head row spacing */
+.listings-page .area-panel .area-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+/* All areas section spacing */
+.listings-page #areaAllWrap{
+  margin-top: 12px;
+}
+
+/* Ensure the separator doesn’t create weird tight gaps */
+.listings-page #areaAllWrap .hr{
+  margin: 12px 0;
+}
+
 
