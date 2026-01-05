@@ -1159,6 +1159,127 @@ button.btn-primary:hover{
     grid-template-columns: 1fr;
   }
 }
+/* ================================
+   LISTINGS (v5.9) — HYBRID FILTERS SUPPORT (ADD-ONLY)
+   Primary filters = top bar
+   Secondary filters = sidebar (desktop) / collapsible (mobile)
+   ================================ */
+
+/* Primary top bar */
+.listings-page .primary-filters-card{
+  margin-bottom: 16px;
+}
+
+.listings-page .primary-filters-card .card-body{
+  padding: 16px;
+}
+
+.listings-page .primary-filters-row{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.listings-page .primary-filters-row .field{
+  margin: 0;
+}
+
+.listings-page .primary-actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+
+.listings-page .primary-actions .btn{
+  min-height: 44px;
+  padding: 10px 14px;
+}
+
+/* Desktop: filters left, listings right */
+.listings-page .listings-layout{
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+/* Sidebar sticky (desktop only) */
+@media (min-width: 901px){
+  .listings-page .filters-card{
+    position: sticky;
+    top: 96px;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+  }
+}
+
+/* Secondary panel behavior:
+   Desktop: visible
+   Mobile: collapsible via .show-more
+*/
+.listings-page .filters-panel{
+  display: block;
+}
+
+@media (max-width: 900px){
+  .listings-page .filters-panel{
+    display: none;
+  }
+  .listings-page .filters-ui.show-more .filters-panel{
+    display: block;
+  }
+}
+
+/* More Filters button */
+.listings-page .more-filters-btn{
+  width: 100%;
+  margin: 8px 0 4px;
+  justify-content: space-between;
+  background: rgba(255,255,255,.05);
+  border: 1px dashed rgba(255,255,255,.18);
+}
+
+/* Ensure secondary groups default spacing looks clean */
+.listings-page .filters-panel .filter-group.secondary{
+  margin-top: 12px;
+}
+
+/* Dropdown readability (safe, listings-only) */
+.listings-page .filters-ui select.input option{
+  background: #ffffff;
+  color: #0b0f14;
+}
+
+/* Primary top bar responsiveness */
+@media (max-width: 1024px){
+  .listings-page .primary-filters-row{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px){
+  .listings-page .primary-filters-row{
+    grid-template-columns: 1fr;
+  }
+  .listings-page .primary-actions{
+    grid-column: auto;
+    justify-content: stretch;
+  }
+  .listings-page .primary-actions .btn{
+    width: 100%;
+  }
+}
+
+/* Whole page responsive: stack sidebar + listings */
+@media (max-width: 900px){
+  .listings-page .listings-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* ============ PRICING (FINAL WINNING OVERRIDE) — MUST BE VERY LAST ============ */
 /* Purpose: Selected pricing card highlight MUST always be visible */
