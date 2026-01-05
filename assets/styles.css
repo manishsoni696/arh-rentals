@@ -2796,6 +2796,204 @@ grid-template-columns: 1fr !important;
 .listings-card{
   min-height:300px;
 }
+/* ================================
+   LISTINGS — FILTERS UI FINAL LOCK (STEP 2)
+   Paste at VERY END of styles.css
+   Purpose:
+   - Compact professional sidebar
+   - Show ONLY primary filters
+   - Hide secondary filters behind "More Filters"
+   - Kill all previous conflicting rules
+================================ */
+
+/* ===== HARD RESET (LISTINGS FILTERS ONLY) ===== */
+.listings-page .filters-card,
+.listings-page .filters-ui,
+.listings-page .filters-panel,
+.listings-page .filters-form,
+.listings-page .filter-group,
+.listings-page .filters-grid,
+.listings-page .amenities{
+  all: unset;
+  box-sizing: border-box;
+}
+
+/* ===== LAYOUT ===== */
+.listings-page-layout{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+@media (max-width: 900px){
+  .listings-page-layout{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ===== FILTER CARD ===== */
+.filters-card{
+  position: sticky;
+  top: 96px;
+}
+
+.filters-ui{
+  display:block;
+  padding:14px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+/* ===== HEADER ===== */
+.filters-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.filters-head h2{
+  font-size:16px;
+  margin:0;
+}
+
+.filters-head-actions{
+  display:flex;
+  gap:6px;
+}
+
+.filters-head-actions .btn{
+  min-height:34px;
+  padding:6px 10px;
+  font-size:13px;
+  border-radius:10px;
+}
+
+/* ===== MORE FILTERS BUTTON ===== */
+.more-filters-btn{
+  width:100%;
+  margin:10px 0 6px;
+  padding:8px 10px;
+  font-size:13px;
+  border-radius:10px;
+  background:rgba(255,255,255,.05);
+  border:1px dashed rgba(255,255,255,.18);
+}
+
+/* ===== FORM ===== */
+.filters-panel{
+  margin-top:10px;
+}
+
+.filters-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* ===== FILTER GROUPS ===== */
+.filter-group{
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  padding:10px;
+  background:rgba(255,255,255,.02);
+}
+
+.filter-group legend{
+  font-size:11px;
+  font-weight:600;
+  color:var(--muted);
+  padding:0 6px;
+}
+
+/* Hide secondary groups by default */
+.filter-group.secondary{
+  display:none;
+}
+
+/* Show secondary groups when expanded */
+.filters-ui.show-more .filter-group.secondary{
+  display:block;
+}
+
+/* ===== FIELDS ===== */
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-top:8px;
+}
+
+.field .small{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.filters-ui .input,
+.filters-ui select.input{
+  height:40px;
+  padding:8px 10px;
+  font-size:13px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:var(--text);
+}
+
+.filters-ui select.input option{
+  background:#fff;
+  color:#0b0f14;
+}
+
+/* ===== AMENITIES ===== */
+.amenities{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+
+.amenity{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 8px;
+  font-size:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.03);
+}
+
+.amenity input{
+  width:14px;
+  height:14px;
+}
+
+/* ===== FOOTER ===== */
+.filters-footer{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:4px;
+}
+
+.filters-footer .btn{
+  width:100%;
+  min-height:44px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 420px){
+  .amenities{
+    grid-template-columns:1fr;
+  }
+}
 
 
 
