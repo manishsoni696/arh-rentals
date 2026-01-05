@@ -414,13 +414,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 /* =========================================================
-   STEP 3 — FILTERS: MORE / LESS TOGGLE (SAFE, ADD-ONLY)
-   Purpose:
-   - Toggle secondary filters visibility
-   - Change button text: + More Filters / − Less Filters
-   - NO delete
-   - NO replace
-   - Works with existing CSS (.filters-ui.show-more)
+   ARH — CLEANUP NOTE
+   STEP 3 & STEP 4 DUPLICATE LISTINGS BLOCKS REMOVED
+   Reason:
+   - Duplicate listeners were causing multiple executions
+   - Single Source of Truth rule enforced
+   - Final Listings logic retained above
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -437,15 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
       : "+ More Filters";
   });
 });
-/* =========================================================
-   STEP 4 — FILTERS: AUTO-APPLY (FRONTEND ONLY, SAFE)
-   Purpose:
-   - Auto filter listings on any filter change
-   - No Apply button needed (can remain visually)
-   - Works with existing demo listings
-   - Uses data-rent only (others ready for backend later)
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("filtersForm");
   const listings = Array.from(document.querySelectorAll(".listing"));
