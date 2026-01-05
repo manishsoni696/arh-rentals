@@ -2144,6 +2144,13 @@ Add-only patch for /listings/index.html
   display:block;
   margin-top:12px;
 }
+/* LISTINGS PAGE — HIDE "Filters are UI-ready" HELPER TEXT (ADD-ONLY) */
+
+/* Hide the helper note under filters */
+.filters-ui .small.muted{
+  display:none !important;
+}
+
 
 
 
