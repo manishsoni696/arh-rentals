@@ -1697,6 +1697,138 @@ aside.card .small.muted {
     padding: 11px;
   }
 }
+/* ================================
+   LISTINGS PAGE — SEARCH UI (PRO)
+   Goal: Big horizontal search bar style (like reference image)
+   Add-only CSS (NO HTML change)
+================================ */
+
+/* Scope ONLY listings page (active nav link) */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card{
+  border-radius: 18px;
+  background:
+    radial-gradient(900px 360px at 30% 0%, rgba(29,161,242,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* Make the filter box feel like a "search console" */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+  padding: 18px 18px 16px;
+}
+
+/* Title row */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body h2{
+  font-size: 18px;
+  letter-spacing: .15px;
+  margin: 0 0 12px;
+}
+
+/* Remove extra dividers inside filters */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body .hr{
+  display:none;
+}
+
+/* Labels */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .small{
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+  margin: 10px 0 6px;
+}
+
+/* Inputs look premium */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .input,
+body:has(#primary-navigation a.active[href="/listings"]) aside.card select.input{
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  color: var(--text);
+  outline: none;
+}
+
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .input::placeholder{
+  color: rgba(255,255,255,.55);
+}
+
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .input:focus,
+body:has(#primary-navigation a.active[href="/listings"]) aside.card select.input:focus{
+  border-color: rgba(29,161,242,.55);
+  box-shadow: 0 0 0 3px rgba(29,161,242,.18);
+}
+
+/* Turn the top part into a big "search bar" layout (desktop/tablet) */
+@media (min-width: 860px){
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 14px 14px;
+    align-items: end;
+  }
+
+  /* Title spans full */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body h2{
+    grid-column: 1 / -1;
+    margin-bottom: 2px;
+  }
+
+  /* City: compact left */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fCity{
+    min-height: 54px;
+    font-weight: 700;
+    font-size: 15px;
+    background: rgba(255,255,255,.08);
+  }
+
+  /* Area: long bar feel */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fArea{
+    min-height: 54px;
+    font-size: 15px;
+  }
+
+  /* Property type + max rent in second row, 2 columns */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fType,
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fMax{
+    min-height: 48px;
+  }
+
+  /* Make button big & aligned like reference */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body button.btn.btn-primary{
+    grid-column: 1 / -1;
+    min-height: 52px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 750;
+    letter-spacing: .15px;
+    box-shadow: 0 18px 40px rgba(10,116,184,.18);
+  }
+}
+
+/* Mobile: stacked but clean */
+@media (max-width: 859px){
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+    padding: 16px 14px 14px;
+  }
+
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body button.btn.btn-primary{
+    width: 100%;
+    min-height: 50px;
+    border-radius: 16px;
+    font-size: 14.5px;
+    font-weight: 750;
+    margin-top: 12px;
+  }
+}
+
+/* Tiny helper note */
+body:has(#primary-navigation a.active[href="/listings"]) aside.card .small.muted{
+  margin-top: 10px !important;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  color: rgba(255,255,255,.58);
+}
 
 
 
