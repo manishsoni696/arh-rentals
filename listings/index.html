@@ -91,9 +91,31 @@
     class="input"
     id="fArea"
     name="area"
-    list="hisarAreas"
+    list="hisarAreasTop"
     placeholder="Type area / sector (e.g. Sector 14, PLA, New Grain Market)"
   />
+
+  <!-- TOP SUGGESTIONS (SHORT LIST) -->
+<datalist id="hisarAreasTop">
+  <!-- Popular / common picks first (top 10) -->
+  <option value="Sector 14">
+  <option value="Sector 15">
+  <option value="Sector 13">
+  <option value="Sector 16–17">
+  <option value="Sector 33">
+  <option value="Sector-PLA">
+  <option value="New Grain Market">
+  <option value="Housing Board Colony (Sirsa Road)">
+  <option value="Sundar Nagar">
+  <option value="Vikas Nagar">
+
+  <!-- Keep quick escape -->
+  <option value="Other">
+
+  <!-- Trigger to expand full list -->
+  <option value="More Areas (show all)">
+</datalist>
+
 
   <datalist id="hisarAreas">
     <!-- ===== SECTORS ===== -->
