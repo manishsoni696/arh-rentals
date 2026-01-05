@@ -1829,6 +1829,104 @@ body:has(#primary-navigation a.active[href="/listings"]) aside.card .small.muted
   border-top: 1px solid rgba(255,255,255,.10);
   color: rgba(255,255,255,.58);
 }
+/* ================================
+   LISTINGS FILTERS — FIX LAYOUT (ALL DEVICES)
+   Problem now: labels left, inputs pushed right (weird columns)
+   Fix: force clean grid where label sits ABOVE each field
+   Add-only, Listings-only
+================================ */
+
+/* Listings-only scope */
+@media (min-width: 0px){
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+    display:block !important; /* kill earlier grid behavior */
+  }
+
+  /* Labels always full-width */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body .small{
+    display:block !important;
+    width:100% !important;
+    margin:10px 0 6px !important;
+  }
+
+  /* Fields always full-width */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body .input,
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body select.input{
+    width:100% !important;
+  }
+
+  /* Remove any accidental left/right spacing artifacts */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body > *{
+    max-width:100% !important;
+  }
+}
+
+/* Desktop / Tablet: 2-column grid for fields (professional) */
+@media (min-width: 860px){
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+    display:grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px 14px !important;
+    align-items:start !important;
+  }
+
+  /* Title + helper + button full width */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body h2{
+    grid-column: 1 / -1 !important;
+    margin: 0 0 4px !important;
+  }
+
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body button.btn.btn-primary{
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    border-radius: 16px !important;
+    font-size: 15px !important;
+    font-weight: 750 !important;
+    letter-spacing: .15px !important;
+    margin-top: 4px !important;
+  }
+
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body .small.muted{
+    grid-column: 1 / -1 !important;
+    margin-top: 0 !important;
+  }
+
+  /* Make Area/Sector span full width (primary field) */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fArea{
+    grid-column: 1 / -1 !important;
+  }
+
+  /* City + Type side-by-side */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fCity{
+    grid-column: 1 / 2 !important;
+  }
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fType{
+    grid-column: 2 / 3 !important;
+  }
+
+  /* Max rent full width (clean) */
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body #fMax{
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* Mobile: single column, tight + clean */
+@media (max-width: 859px){
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body{
+    display:block !important;
+    padding: 16px 14px 14px !important;
+  }
+
+  body:has(#primary-navigation a.active[href="/listings"]) aside.card .card-body button.btn.btn-primary{
+    width:100% !important;
+    min-height: 50px !important;
+    border-radius: 16px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    margin-top: 12px !important;
+  }
+}
 
 
 
