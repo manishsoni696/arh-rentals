@@ -353,51 +353,66 @@ if (logoutBtn) {
   }
 })();
 /* =====================================
-   LISTINGS FILTERS — AUTO APPLY (UI)
+   LISTINGS FILTERS — FINAL (SINGLE SOURCE)
+   - Auto apply on change + input
+   - Rent range supported
+   - Results count sync
+   - More / Less toggle
 ===================================== */
 
-(function(){
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("filtersForm");
-  const listings = document.querySelectorAll(".listing");
-  if(!form || !listings.length) return;
+  const listings = Array.from(document.querySelectorAll(".listing"));
+  const rentSelect = document.getElementById("fRent");
+  const resultsCount = document.getElementById("resultsCount");
+  const moreBtn = document.getElementById("moreFiltersBtn");
+  const filtersUI = document.querySelector(".filters-ui");
 
-  function applyFilters(){
-    const type = form.fType.value;
-    const rent = form.fRent.value;
+  if (!form || !listings.length) return;
 
-    listings.forEach(item=>{
-      let show = true;
-
-      if(type && !item.innerText.includes(type)) show = false;
-
-      if(rent){
-        const [min,max] = rent.split("-");
-        const r = Number(item.dataset.rent || 0);
-        if(max){
-          if(r < Number(min) || r > Number(max)) show = false;
-        }else{
-          if(r < Number(min)) show = false;
-        }
-      }
-
-      item.style.display = show ? "flex" : "none";
-    });
+  function inRentRange(rent, range) {
+    if (!range) return true;
+    if (range.endsWith("+")) {
+      return rent >= Number(range.replace("+", ""));
+    }
+    const [min, max] = range.split("-").map(Number);
+    return rent >= min && rent <= max;
   }
 
-  form.addEventListener("change", applyFilters);
+  function applyFilters() {
+    let visible = 0;
+    const rentRange = rentSelect?.value || "";
 
-  /* More Filters toggle */
-  const btn = document.getElementById("moreFiltersBtn");
-  const ui = document.querySelector(".filters-ui");
-  if(btn && ui){
-    btn.addEventListener("click", ()=>{
-      ui.classList.toggle("show-more");
-      btn.textContent = ui.classList.contains("show-more")
+    listings.forEach((item) => {
+      const rent = Number(item.dataset.rent || 0);
+      const show = inRentRange(rent, rentRange);
+
+      item.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+
+    if (resultsCount) {
+      resultsCount.textContent = `Showing ${visible} properties`;
+    }
+  }
+
+  // Auto apply
+  form.addEventListener("change", applyFilters);
+  form.addEventListener("input", applyFilters);
+
+  // Initial run
+  applyFilters();
+
+  // More / Less toggle (single source)
+  if (moreBtn && filtersUI) {
+    moreBtn.addEventListener("click", () => {
+      const expanded = filtersUI.classList.toggle("show-more");
+      moreBtn.textContent = expanded
         ? "− Less Filters"
         : "+ More Filters";
     });
   }
-})();
+});
 /* =========================================================
    STEP 3 — FILTERS: MORE / LESS TOGGLE (SAFE, ADD-ONLY)
    Purpose:
