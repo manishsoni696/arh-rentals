@@ -414,55 +414,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 /* =========================================================
-   ARH — CLEANUP NOTE
-   STEP 3 & STEP 4 DUPLICATE LISTINGS BLOCKS REMOVED
-   Reason:
-   - Duplicate listeners were causing multiple executions
-   - Single Source of Truth rule enforced
-   - Final Listings logic retained above
-========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("filtersForm");
-  const listings = Array.from(document.querySelectorAll(".listing"));
-  const rentSelect = document.getElementById("fRent");
-  const resultsCount = document.getElementById("resultsCount");
-
-  if (!form || !listings.length) return;
-
-  function inRentRange(rent, range) {
-    if (!range) return true;
-    if (range.endsWith("+")) {
-      return rent >= Number(range.replace("+", ""));
-    }
-    const [min, max] = range.split("-").map(Number);
-    return rent >= min && rent <= max;
-  }
-
-  function applyFilters() {
-    let visible = 0;
-    const rentRange = rentSelect?.value || "";
-
-    listings.forEach((item) => {
-      const rent = Number(item.dataset.rent || 0);
-      const show = inRentRange(rent, rentRange);
-
-      item.style.display = show ? "" : "none";
-      if (show) visible++;
-    });
-
-    if (resultsCount) {
-      resultsCount.textContent = `Showing ${visible} properties`;
-    }
-  }
-
-  // Auto-apply on any change
-  form.addEventListener("change", applyFilters);
-  form.addEventListener("input", applyFilters);
-
-  // Initial run
-  applyFilters();
-});
-/* =========================================================
    ARH — MOBILE NAV CONTROLLER (SINGLE SOURCE OF TRUTH)
    Applies to ALL pages consistently
    Breakpoint: <= 859px
