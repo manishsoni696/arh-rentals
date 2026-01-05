@@ -2722,6 +2722,80 @@ grid-template-columns: 1fr 1fr !important;
 grid-template-columns: 1fr !important;
 }
 }
+/* ================================
+   LISTINGS — FINAL FILTERS UI (PRO)
+   Compact + More Filters + Sticky
+================================ */
+
+/* Main layout */
+.listings-page-layout{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+@media(max-width:900px){
+  .listings-page-layout{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Filters sidebar */
+.filters-card{
+  position:sticky;
+  top:96px;
+  max-height:calc(100vh - 120px);
+  overflow:auto;
+}
+
+/* Reduce padding & size */
+.filters-ui .field .input,
+.filters-ui select.input{
+  height:40px;
+  font-size:14px;
+  padding:8px 10px;
+}
+
+.filters-ui legend{
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+/* Hide secondary groups by default */
+.filter-group.secondary{
+  display:none;
+}
+
+/* More filters toggle */
+.more-filters-btn{
+  width:100%;
+  margin:8px 0 4px;
+  background:rgba(255,255,255,.05);
+  border:1px dashed rgba(255,255,255,.18);
+}
+
+/* Show secondary filters */
+.filters-ui.show-more .filter-group.secondary{
+  display:block;
+}
+
+/* Amenities compact grid */
+.amenities{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px 10px;
+}
+
+.amenity{
+  font-size:13px;
+}
+
+/* Listings area */
+.listings-card{
+  min-height:300px;
+}
 
 
 
