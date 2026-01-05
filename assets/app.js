@@ -413,6 +413,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+/* =====================================
+   LISTINGS: Area / Sector "More Areas" Toggle
+   - Switches from TOP list to FULL list
+   - Minimal JS, no framework
+   - Desktop / Tablet / Mobile safe
+===================================== */
+(function () {
+  document.addEventListener("DOMContentLoaded", function () {
+    const areaInput = document.getElementById("fArea");
+    if (!areaInput) return;
+
+    const TOP_LIST = "hisarAreasTop";
+    const FULL_LIST = "hisarAreas";
+    const TRIGGER_TEXT = "More Areas (show all)";
+
+    function openFullList() {
+      areaInput.setAttribute("list", FULL_LIST);
+      areaInput.value = "";
+      areaInput.focus();
+
+      // reopen suggestions (best-effort across browsers)
+      areaInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+
+    areaInput.addEventListener("change", function () {
+      if (
+        areaInput.getAttribute("list") === TOP_LIST &&
+        areaInput.value === TRIGGER_TEXT
+      ) {
+        openFullList();
+      }
+    });
+
+    areaInput.addEventListener("input", function () {
+      if (
+        areaInput.getAttribute("list") === TOP_LIST &&
+        areaInput.value === TRIGGER_TEXT
+      ) {
+        openFullList();
+      }
+    });
+  });
+})();
 /* =========================================================
    ARH — MOBILE NAV CONTROLLER (SINGLE SOURCE OF TRUTH)
    Applies to ALL pages consistently
