@@ -2194,6 +2194,11 @@ Add-only patch for /listings/index.html
     min-width: 260px;
   }
 }
+/* LISTINGS: remove inline style from #listingWrap (ADD-ONLY) */
+.listing-wrap{
+  margin-top:12px;
+}
+
 
 
 
