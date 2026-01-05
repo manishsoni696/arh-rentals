@@ -1,309 +1,270 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.1)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.2)
 
-Last Updated: Jan 2026 (Jan 5, 2026)
+Last Updated: Jan 2026 (Jan 6, 2026)
 
-OVERALL GOAL (NON-NEGOTIABLE)
-✅ Website visually premium ho
-✅ Fast load ho (no bloat)
-✅ SEO-friendly ho (only when asked)
-✅ Mobile + Tablet + Desktop perfect ho (LOCKED forever)
-✅ No technical compromise
+================================================
+OVERALL GOAL (NON-NEGOTIABLE — LOCKED)
+================================================
+✅ Website visually premium
+✅ Fast load (no bloat, no over-engineering)
+✅ SEO-friendly (ONLY when explicitly asked)
+✅ Mobile + Tablet + Desktop PERFECT (🔒 LOCKED FOREVER)
+✅ No technical compromise at any layer
 
-OVERALL STATUS (UPDATED)
-🔒 Core Stable
-✅ Auth + Pricing + Legal + Post Flow Locked
-🟡 Listings UI FINALIZATION IN PROGRESS (ACTIVE)
-🟢 styles.css CLEANED & STABLE (NO LONGER CRITICAL)
-🟡 Listings “Area/Sector” dropdown + typing suggestions (ACTIVE)
-⏳ SEO & Backend Planning Deferred
+================================================
+OVERALL PROJECT STATUS (CURRENT)
+================================================
+🔒 Core System: STABLE & LOCKED  
+🟡 Listings UI: FINALIZATION IN PROGRESS (ACTIVE WORK ZONE)  
+🟢 styles.css: CLEANED, STABLE, PREDICTABLE (NOT CRITICAL ANYMORE)  
+🟡 Area / Sector input UX upgrade: ACTIVE  
+⏳ SEO + Backend planning: DEFERRED (DO NOT TOUCH YET)
 
+================================================
 ✅ COMPLETED & LOCKED (DO NOT TOUCH)
+================================================
 
-1) Working Rules & Execution Process — 🔒 LOCKED
+1) WORKING RULES & EXECUTION PROCESS — 🔒 LOCKED  
+• Single-chat workflow only  
+• One task at a time  
+• One file = one step = one paste box  
+• Exact change + exact location only (no full file rewrites)  
+• Mobile + Tablet + Desktop mandatory (FOREVER)
 
-Single-chat workflow
+2) CORE UI FOUNDATION — 🔒 LOCKED  
+• Dark SaaS theme finalized  
+• Buttons, cards, spacing standardized  
+• Visual hierarchy stable  
+• No cosmetic experiments allowed now
 
-One task at a time
+3) MOBILE NAVIGATION — 🔒 LOGIC LOCKED  
+Status: ✅ Verified & stable on ALL pages  
 
-One file = one step = one paste box
-
-Mobile + Tablet + Desktop mandatory (LOCKED forever)
-
-Owner rule: “Full code nahi chahiye, sirf exact change + exact location”
-
-2) Core UI Foundation — 🔒 LOCKED
-
-Dark SaaS theme finalized
-
-Header / buttons / cards standardized
-
-Visual hierarchy stable
-
-3) Mobile Navigation — 🔒 LOGIC LOCKED (STABLE)
-Status: ✅ Verified & stable on all pages
-
-Final rules:
-
-JS single source of truth
-
-body.nav-open
-
-.menu.is-open / #primary-navigation.is-open
-
-Final decision (LOCKED):
-
-.header-actions visible on mobile
-
-.header-cta hidden
-
-.nav-toggle always visible
+Final rules (DO NOT CHANGE):
+• JS single source of truth  
+• body.nav-open as state  
+• .menu.is-open / #primary-navigation.is-open  
+• .header-actions visible on mobile  
+• .header-cta hidden on mobile  
+• .nav-toggle always visible  
 
 File: assets/app.js
 
-4) Authentication & Sessions — 🔒 LOCKED
+4) AUTHENTICATION & SESSIONS — 🔒 LOCKED  
+• OTP = session confirmation only  
+• PIN login allowed  
+• Same-device session supported  
+• No misleading language anywhere
 
-OTP = session confirmation only
+5) OTP BACKEND RULES — 🔒 LOCKED  
+• Resend cooldown: 60 seconds  
+• Max OTP: 3 per 4 hours  
+• OTP validity: 5 minutes  
 
-PIN login allowed
+6) PRICING PAGE — 🔒 LOCKED  
+• One plan selectable at a time  
+• Premium selected by default  
+• CSS override locked at END of styles.css  
+• Responsive verified  
 
-No misleading language
+7) LEGAL PAGE — 🔒 LOCKED  
+• Disclaimer aligned  
+• No banned / risky words  
+• Responsive verified  
 
-5) Pricing Page — 🔒 LOCKED
+8) POST PROPERTY FLOW — 🔒 LOCKED  
+Flow: PIN → OTP → Property → Plan  
+• No false promises  
+• No misleading text  
 
-One plan selectable
+9) HOME PAGE — 🔒 LOCKED  
+• UI finalized  
+• Responsive verified  
 
-Premium default
-
-CSS override locked at END
-
-Responsive verified
-
-6) OTP Backend Rules — ✅ DONE
-
-60s resend cooldown
-
-Max 3 OTP / 4 hours
-
-OTP validity: 5 minutes
-
-Same-device session supported
-
-7) Legal Page — 🔒 LOCKED
-
-Disclaimer aligned
-
-No banned words
-
-Responsive verified
-
-8) Post Property Flow — 🔒 LOCKED
-PIN → OTP → Property → Plan
-No misleading language
-
-9) Home Page — 🔒 LOCKED
-UI finalized & responsive
-
+================================================
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
-10) Listings Filters — IN FINALIZATION
+================================================
 
-✅ DONE (THIS SESSION)
+10) LISTINGS FILTER SYSTEM — FINALIZED ARCHITECTURE (🔒 LOCKED)
 
-Listings JS cleaned
+✅ FINAL DECISION: HYBRID FILTER MODEL  
 
-Duplicate filter blocks removed
+PRIMARY FILTERS (Top Bar) — 🔒 LOCKED  
+• Always visible  
+• Fast filtering  
 
-Single source of truth retained:
-“LISTINGS FILTERS — FINAL (SINGLE SOURCE)”
+SECONDARY FILTERS (“More Filters” Panel) — 🔒 LOCKED  
+• Progressive disclosure  
+• Better mobile UX  
 
-More Filters toggle logic exists
+Reason: Clean UI + Best UX across all devices.
 
-Auto-apply filters active
+------------------------------------------------
+PRIMARY FILTERS (LOCKED STRUCTURE)
+------------------------------------------------
 
-File: assets/app.js
-Status: JS STABLE
+Residential:
+• City (Hisar)
+• Category (Residential)
+• Type (House / Flat / PG)
+• Area / Sector (UPGRADE ACTIVE)
+• Size (Sq Yds)
+• Rent Range
 
-✅ FINAL FILTER ARCHITECTURE — 🔒 LOCKED
+Commercial:
+• City (Hisar)
+• Category (Commercial)
+• Type (Shop / Office / Warehouse)
+• Area / Sector (UPGRADE ACTIVE)
+• Size (Sq Ft)
+• Rent Range
 
-Hybrid Model (Final Decision)
+📌 Size unit difference is FINAL & LOCKED (India standard)
 
-Primary Filters → Top bar
-
-Secondary Filters → “More Filters” panel
-
-Reason: clean UI + best UX on mobile & desktop.
-
-PRIMARY FILTERS (LOCKED)
-
-Residential
-
-City (Hisar)
-
-Category (Residential)
-
-Type (House / Flat / PG)
-
-Area / Sector (UPGRADE ACTIVE)
-
-Size (Sq Yds)
-
-Rent Range
-
-Commercial
-
-City
-
-Category (Commercial)
-
-Type (Shop / Office / Warehouse)
-
-Area / Sector (UPGRADE ACTIVE)
-
-Size (Sq Ft)
-
-Rent Range
-
-📌 Size unit difference LOCKED (India standard)
-
+------------------------------------------------
 SECONDARY FILTERS (LOCKED)
+------------------------------------------------
 
-Residential
-
-Amenities
-
-BHK
-
-Furnishing
-
-Property Age
-
-Floor: Ground / First / Second / Third+
-
+Residential:
+• Amenities
+• BHK
+• Furnishing
+• Property Age
+• Floor: Ground / First / Second / Third+  
 ❌ Basement NOT allowed
 
-Commercial
+Commercial:
+• Amenities
+• Furnishing
+• Floor: Basement / Ground / First / Second / Upper / Other
 
-Amenities
+================================================
+🟡 AREA / SECTOR INPUT — ACTIVE OWNER REQUEST
+================================================
 
-Furnishing
+Purpose:
+Reduce huge dropdown pain + improve UX on mobile & desktop.
 
-Floor: Basement / Ground / First / Second / Upper / Other
+FINAL REQUIREMENTS:
+• Typeable input
+• Smart suggestions
+• “Other” option mandatory
+• Owner-approved Hisar list only
+• Desktop + Tablet + Mobile compatible
+• No browser-dependent datalist hacks
 
-🟡 AREA / SECTOR FIELD — ACTIVE OWNER REQUEST
+FINAL DECISION:
+✅ Custom lightweight dropdown (NO framework)
+✅ Popular areas shown first
+✅ “More Areas” expands full list INSIDE panel
+✅ Guaranteed open/expand behavior
 
-Requirements:
+------------------------------------------------
+CONFIRMED & APPROVED AREA LIST (LOCKED)
+------------------------------------------------
 
-Typeable input
+SECTORS:
+• Sector 1–4
+• Sector 3
+• Sector 5
+• Sector 9–11
+• Sector 13
+• Sector 14
+• Sector 15
+• Sector 16–17
+• Sector 24
+• Sector MGA
+• Sector 27–28
+• Sector 33
+• Sector-PLA
 
-Dropdown suggestions (autocomplete)
+AREAS / LOCALITIES:
+• New Grain Market
+• Housing Board Colony (Sirsa Road)
+• Sundar Nagar
+• Vikas Nagar
+• Parav Chowk
+• Lahoria Chowk
+• Preeti Nagar
+• Professor Colony
+• Aggarwal Colony
+• Aggarsain Colony
+• Prem Nagar
+• Old Mandi Road
+• Nagori Gate
+• Other (MANDATORY)
 
-Include “Other”
+⚠️ No assumptions. No auto-addition beyond this list.
 
-Owner-approved Hisar list only
-
-Mobile / Tablet / Desktop compatible
-
-CONFIRMED SECTORS
-Sector 1–4
-Sector 3
-Sector 5
-Sector 9–11
-Sector 13
-Sector 14
-Sector 15
-Sector 16–17
-Sector 24
-Sector MGA
-Sector 27–28
-Sector 33
-
-CONFIRMED AREAS
-New Grain Market
-Housing Board Colony (Sirsa Road)
-Sundar Nagar
-Vikas Nagar
-Parav Chowk
-Lahoria Chowk
-Sector-PLA
-Preeti Nagar
-Professor Colony
-Aggarwal Colony
-Aggarsain Colony
-Prem Nagar
-Old Mandi Road
-Nagori Gate
-Other (mandatory)
-
-⚠️ No assumption beyond this list.
-
-🟢 styles.css STATUS — UPDATED
-
-Current Status:
+================================================
+🟢 styles.css STATUS — FINAL
+================================================
+Current state:
 ✅ Cleaned
 ✅ Stable
 ✅ Predictable
-✅ No longer critical
+✅ No duplicate blocks
+✅ Pricing lock intact
 
-Rules:
+RULE:
+❌ Do NOT restart CSS cleanup
+❌ No structural CSS edits unless absolutely required
 
-No more structural changes unless required
-
-Safe for future incremental UI work
-
+================================================
 🔢 UPDATED PRIORITY QUEUE
+================================================
 
-🟠 PRIORITY 1 — LISTINGS AREA / SECTOR AUTOCOMPLETE
+🟠 PRIORITY 1 (ACTIVE — NOW):
+Listings Area / Sector input (HTML + minimal JS)
+• Custom dropdown UI
+• Popular first → expand full list
+• Works in all browsers
+• Freeze Listings UI after this
 
-Type + dropdown suggestions
+🟡 PRIORITY 2 (LATER):
+SEO (ONLY after listings UI freeze)
 
-Residential / Commercial compatibility
+⚪ FUTURE (DO NOT START):
+• Listings API
+• Dashboard
+• AI Assistant
+• Payments
+• Analytics
 
-Mobile-first UX
+================================================
+▶️ NEXT IMMEDIATE ACTION (VERY CLEAR)
+================================================
 
-Then FREEZE listings UI
+START NOW:
+👉 Listings Area / Sector input upgrade
+   • HTML first
+   • Then minimal JS
+   • One file at a time
+   • One paste box
+   • No CSS refactor
 
-🟡 PRIORITY 2 — SEO
-(Only after listings UI frozen)
-
-⚪ FUTURE (DO NOT START)
-
-Listings API
-
-Dashboard
-
-AI Assistant
-
-Payments
-
-Analytics
-
-▶️ NEXT IMMEDIATE ACTION
-
-START:
-👉 Listings Area / Sector input upgrade (HTML + minimal JS)
-
-✅ END — MASTER v6.1
-
----
-
-# 🔁 UPDATED HANDOVER VERSION (NEW CHAT READY)
-
-Paste **this** in new chat 👇
+================================================
+✅ END — MASTER FILE v6.2
+================================================
 
 
+------------------------------------------------
+🔁 HANDOVER VERSION — NEW CHAT READY
+------------------------------------------------
 
-PROJECT: ARH RENTALS WEBSITE — HANDOVER (v6.1)
+PROJECT: ARH RENTALS WEBSITE — HANDOVER (v6.2)
 
-styles.css is CLEANED & STABLE (NOT CRITICAL).
-DO NOT start CSS cleanup again.
+• styles.css is CLEANED & STABLE → DO NOT touch.
+• Mobile nav logic LOCKED.
+• Pricing logic LOCKED.
+• Auth & OTP LOCKED.
 
 ACTIVE TASK:
-Listings Area / Sector input upgrade
-(typeable + autocomplete + Other)
+👉 Listings Area / Sector input upgrade
+   (custom dropdown + autocomplete + Other)
 
-JS already cleaned.
-Mobile nav locked.
-Pricing locked.
-Auth locked.
-
-Start with Listings HTML + minimal JS only.
-One step, one file, one paste box.
+RULES:
+• One step → one file → one paste box
+• Exact change + exact location
+• No SEO unless asked
+• Mobile + Tablet + Desktop mandatory
