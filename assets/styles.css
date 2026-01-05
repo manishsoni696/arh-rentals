@@ -837,3 +837,53 @@ textarea.input:focus{
   color:#ffffff !important;
   font-weight:700 !important;
 }
+/* ================================
+   LISTINGS (MOBILE) — NAV ALIGNMENT FIX (ADD-ONLY)
+   Fix: hamburger misaligned on Listings page mobile
+================================ */
+@media (max-width: 859px){
+
+  /* Ensure navbar can position the hamburger properly */
+  .listings-page .site-header .navbar{
+    position: relative !important;
+    padding-right: 86px !important; /* reserve space for hamburger */
+    align-items: center !important;
+  }
+
+  /* Pin hamburger to the right, vertically centered */
+  .listings-page .site-header .nav-toggle{
+    position: absolute !important;
+    right: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    z-index: 1000000 !important;
+  }
+
+  /* Keep brand from colliding into reserved hamburger space */
+  .listings-page .site-header .brand{
+    max-width: calc(100% - 86px) !important;
+    min-width: 0 !important;
+  }
+
+  /* Prevent long text from pushing layout */
+  .listings-page .site-header .brand-title strong,
+  .listings-page .site-header .brand-title span{
+    max-width: 55vw !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Ensure header actions don’t break alignment */
+  .listings-page .site-header .header-actions{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Hide only CTA button (keep hamburger visible) */
+  .listings-page .site-header .header-actions .header-cta{
+    display: none !important;
+  }
+}
