@@ -1,4 +1,5 @@
-🔐 ARH — WORKING RULES MASTER (FINAL v2.0)
+🔐 ARH — WORKING RULES MASTER (FINAL v2.1)
+
 ⚠️ THIS IS A HARD RULEBOOK
 
 This document defines exactly how work must be done on ARH / ARH Rentals projects.
@@ -9,15 +10,11 @@ If there is any confusion, THIS FILE OVERRIDES EVERYTHING.
 1️⃣ COMMUNICATION & FLOW RULES (MANDATORY)
 
 ✅ SINGLE CHAT only
-
 ❌ No multiple expert chats
-
 ❌ No master-controller system
-
 ❌ No parallel problem solving
 
 ✅ One task at a time
-
 ✅ One step at a time
 
 Working sequence rule:
@@ -27,16 +24,13 @@ Finish → Verify → Lock → Move to next
 If multiple issues exist:
 → Solve sequentially, NEVER together
 
-2️⃣ TEACHING & EXPLANATION STYLE (OWNER PREFERENCE — LOCKED)
+2️⃣ TEACHING & EXPLANATION STYLE (OWNER PREFERENCE — 🔒 LOCKED)
 
 This is CRITICAL.
 
 ✅ Explain ONE STEP at a time
-
 ❌ Never dump multiple steps together
-
 ❌ Never assume previous steps are done
-
 ✅ Wait for explicit CONFIRM / DONE before next step
 
 If the owner says “KUCH SAMAJH NHI AYA”:
@@ -50,6 +44,7 @@ If the owner says “KUCH SAMAJH NHI AYA”:
 ✅ ALL code must be inside ONE clear paste box
 
 REQUIRED FORMAT (NON-NEGOTIABLE)
+
 ----------------------------
 PASTE THIS CODE:
 <code only, nothing else>
@@ -60,12 +55,11 @@ PASTE LOCATION (TEXT ONLY):
 - Exact section / exact line / exact selector
 - Add / Replace / Delete (clearly mentioned)
 
+
 ABSOLUTE RULES
 
 ❌ No explanation inside code
-
 ❌ No mixed text + code
-
 ❌ No “paste here somewhere” type instructions
 
 If NO code is required, reply ONLY:
@@ -77,22 +71,17 @@ NO CODE CHANGE REQUIRED
 By default:
 
 ❌ NO deletions
-
 ❌ NO restructuring
-
 ❌ NO renaming files
-
 ❌ NO changing architecture
 
 Allowed ONLY unless explicitly approved:
 
 ✅ Additions
-
 ✅ Improvements
-
 ✅ Polishing
 
-DELETION RULE (SPECIAL)
+🧨 DELETION RULE (SPECIAL — 🔒)
 
 If something must be deleted:
 
@@ -109,7 +98,6 @@ Then and only then → delete
 ✅ ONE STEP = ONE FILE
 
 ❌ Never give multiple files in one step
-
 ❌ Never mix HTML + CSS + JS together
 
 Examples:
@@ -118,27 +106,26 @@ Step = listings/index.html → ONLY that file
 
 Step = styles.css → ONLY that file
 
-6️⃣ RESPONSIVENESS (NON-NEGOTIABLE)
+6️⃣ RESPONSIVENESS (NON-NEGOTIABLE — 🔒 HARD LOCK)
 
-Every change must work on:
+THIS RULE WAS RECONFIRMED AND HARD-LOCKED IN THIS SESSION
+
+Every single change MUST work on:
 
 📱 Mobile
-
-💻 Desktop
-
 📟 Tablet
+💻 Desktop
 
 If responsiveness is not verified:
 → Task is INVALID
 
+This rule is automatic, permanent, and does not need repetition.
+
 7️⃣ PERFORMANCE & BLOAT RULES
 
 ❌ No unnecessary CSS duplication
-
 ❌ No heavy JS
-
 ❌ No animation abuse
-
 ❌ No framework injection
 
 Guideline:
@@ -148,22 +135,18 @@ Clean CSS > Smart layout > Minimum JS
 8️⃣ SEO & CONTENT RULES
 
 ❌ No SEO unless explicitly asked
-
 ❌ No keyword stuffing
-
 ❌ No schema, backlinks, hacks unless approved
 
 When SEO is requested:
 
 ✅ Clean
-
 ✅ Minimal
-
 ✅ Logical
-
 ✅ Long-term safe
 
 9️⃣ BUSINESS LANGUAGE RULES (CRITICAL)
+
 🚫 FORBIDDEN WORDS (ANYWHERE)
 
 verified
@@ -186,24 +169,18 @@ No mediator
 
 No responsibility for deals
 
-This applies to:
+Applies to:
 
 UI text
-
 Buttons
-
 Legal
-
 FAQs
-
 Notices
-
 Pricing copy
 
-🔟 OTP & AUTH RULES (LOCKED)
+🔟 OTP & AUTH RULES (🔒 LOCKED)
 
 OTP = login/session confirmation only
-
 ❌ OTP ≠ verification
 
 Default rules:
@@ -221,18 +198,15 @@ Block duration: 15 minutes (progressive)
 Session rule:
 
 Same device + active session → NO OTP
-
 PIN login allowed
 
 1️⃣1️⃣ PRICING & PLANS RULES
 
 1 plan = 1 property
-
 Multiple properties = multiple plans
 
-No lifetime plans
-
-No unlimited listings
+❌ No lifetime plans
+❌ No unlimited listings
 
 Expiry = listing hidden
 
@@ -243,22 +217,47 @@ REFERENCE ONLY — NOT ACTIVE
 1️⃣2️⃣ UI / UX RULES
 
 Premium SaaS feel
-
 No clutter
-
 No oversized elements
-
 Balanced spacing
-
 Clear hierarchy
 
 If owner says:
 
 “LOOK ACHI NHI LAG RHI”
-
 → Fix is MANDATORY, debate not allowed.
 
-1️⃣3️⃣ DECISION AUTHORITY (FINAL)
+🆕 1️⃣3️⃣ STABILITY OVER POLISH RULE (ADDED THIS SESSION — 🔒)
+
+If a feature is:
+
+Functionally stable
+
+Business-safe
+
+Usable on Desktop + Tablet + Mobile
+
+Then:
+
+❌ Micro-alignment / cosmetic perfection is NOT mandatory immediately
+✅ Such improvements may be explicitly deferred
+✅ Stability > premature polish
+
+This rule prevents unnecessary churn and regression.
+
+🆕 1️⃣4️⃣ SINGLE SOURCE OF TRUTH RULE (JS / CSS) — 🔒
+
+For critical systems (e.g. Mobile NAV, Pricing selection):
+
+There must be ONLY ONE active logic source
+
+Duplicate “fix blocks” are NOT allowed long-term
+
+Temporary duplication may exist only until cleanup phase
+
+Final logic must be locked and documented
+
+1️⃣5️⃣ DECISION AUTHORITY (FINAL)
 
 Business logic = OWNER FINAL
 
@@ -270,10 +269,9 @@ Never override business intent
 
 Never force “best practice” against owner’s rule
 
-1️⃣4️⃣ CHANGE MEMORY & TRANSFER RULE
+1️⃣6️⃣ CHANGE MEMORY & TRANSFER RULE
 
 Any confirmed working style
-
 Any approved execution pattern
 
 → Must be remembered and transferred to:
@@ -298,3 +296,13 @@ If any suggestion conflicts with this file:
 → THIS FILE WINS
 
 📌 END OF FILE — DO NOT MODIFY WITHOUT OWNER APPROVAL
+
+📌 FILE UPDATE STATUS
+
+✅ Rules updated to v2.1
+
+✅ Only session-approved rules added
+
+❌ No old rules removed
+
+❌ No scope creep
