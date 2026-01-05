@@ -947,5 +947,56 @@ document.addEventListener("DOMContentLoaded", () => {
       : "+ More Filters";
   });
 });
+/* =========================================================
+   STEP 4 — FILTERS: AUTO-APPLY (FRONTEND ONLY, SAFE)
+   Purpose:
+   - Auto filter listings on any filter change
+   - No Apply button needed (can remain visually)
+   - Works with existing demo listings
+   - Uses data-rent only (others ready for backend later)
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("filtersForm");
+  const listings = Array.from(document.querySelectorAll(".listing"));
+  const rentSelect = document.getElementById("fRent");
+  const resultsCount = document.getElementById("resultsCount");
+
+  if (!form || !listings.length) return;
+
+  function inRentRange(rent, range) {
+    if (!range) return true;
+    if (range.endsWith("+")) {
+      return rent >= Number(range.replace("+", ""));
+    }
+    const [min, max] = range.split("-").map(Number);
+    return rent >= min && rent <= max;
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    const rentRange = rentSelect?.value || "";
+
+    listings.forEach((item) => {
+      const rent = Number(item.dataset.rent || 0);
+      const show = inRentRange(rent, rentRange);
+
+      item.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+
+    if (resultsCount) {
+      resultsCount.textContent = `Showing ${visible} properties`;
+    }
+  }
+
+  // Auto-apply on any change
+  form.addEventListener("change", applyFilters);
+  form.addEventListener("input", applyFilters);
+
+  // Initial run
+  applyFilters();
+});
+
 
 
