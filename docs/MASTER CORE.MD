@@ -1,52 +1,63 @@
-✅ ARH RENTALS — UPDATED MASTER (TASK 2 SOLVED)
+🔐 ARH RENTALS — UPDATED MASTER (TASK 2 SOLVED + TRANSPARENCY PLANNING)
 
 Last Updated: Jan 2026
-Status: 🔒 LOCKED CORE + ✅ Pricing Selection Fixed
+Status: 🔒 LOCKED CORE + ✅ Pricing Selection Fixed + 🟡 Broker Transparency Planned
 
 0) PROJECT IDENTITY
 
 Project: ARH Rentals
-
-Brand/Owner: Anjani Real Heights
-
+Brand / Owner: Anjani Real Heights
 Website: https://rent.anjanirealheights.com
 
 Location Focus (Phase-1): Hisar
 
-Type: Rental advertisement + information-access platform
+Platform Type:
+Rental advertisement + information-access platform
 
-NOT a broker
-
-NOT a mediator
-
-NOT a verifier
+❌ NOT a broker
+❌ NOT a mediator
+❌ NOT a verifier
 
 1) CORE BUSINESS MODEL (NON-NEGOTIABLE)
-1.1 ZERO RESPONSIBILITY MODEL (LOCKED)
+1.1 ZERO RESPONSIBILITY MODEL (🔒 LOCKED)
 
-ARH Rentals ONLY publishes rental ads (owner-posted).
+ARH Rentals ONLY publishes rental advertisements (posted by users).
 
 We DO NOT:
 
-verify property / owner / tenant
+Verify property
 
-verify documents
+Verify owner or tenant
 
-guarantee deal success
+Verify documents
 
-guarantee tenant availability
+Guarantee deal success
 
-guarantee lead quality / calls / conversions
+Guarantee tenant availability
 
-approve / validate listings
+Guarantee lead quality / calls / conversions
 
-1.2 STRICT WORD BAN (GLOBAL)
+Approve or validate listings
 
-NEVER use these words anywhere:
+1.2 STRICT WORD BAN (GLOBAL — 🔒 LOCKED)
 
-Verified, Trusted, Approved, Guaranteed, Assured, Confirmed, Safe Deal
+❌ Never use anywhere:
 
-Allowed safe wording:
+Verified
+
+Trusted
+
+Approved
+
+Guaranteed
+
+Assured
+
+Confirmed
+
+Safe Deal
+
+✅ Allowed safe wording:
 
 Owner-posted
 
@@ -58,15 +69,14 @@ Information access only
 
 Users must independently verify
 
-1.3 MANDATORY DISCLAIMER (USE EVERYWHERE)
+1.3 MANDATORY DISCLAIMER (USE EVERYWHERE — 🔒 LOCKED)
 
 ARH Rentals is an information-access platform only.
-Property details are posted directly by owners.
+Property details are posted directly by users.
 Users must independently verify all details before any transaction.
 ARH Rentals does not guarantee tenant availability or deal success.
 
-2) USER TYPES (LOCKED)
-
+2) USER TYPES (🔒 LOCKED)
 A) OWNER (Property Poster)
 
 OTP login required
@@ -81,14 +91,11 @@ B) TENANT / SEEKER (Viewer)
 
 Browse listings (public)
 
-Contact unlock / details unlock = future paid feature
+Contact unlock = future paid feature
 
 Must verify independently
 
-3) LIVE OWNER PLANS & PRICING (LOCKED)
-
-1 plan = 1 property listing
-
+3) LIVE OWNER PLANS & PRICING (🔒 LOCKED)
 Plan	Price	Validity	Listings
 Basic	₹199	15 days	1 property
 Premium	₹349	30 days	1 property
@@ -102,19 +109,19 @@ No lifetime plans
 
 Expiry hides listing automatically
 
-4) LISTING EXPIRY / DELETE POLICY (LOCKED)
+4) LISTING EXPIRY / DELETE POLICY (🔒 LOCKED)
 
-On plan expiry: listing becomes hidden (not visible)
+On plan expiry → listing becomes hidden
 
-Soft delete: deleted_at
+Soft delete using deleted_at
 
-Hard delete buffer (7–15 days): future decision
+Hard delete buffer (7–15 days) → future decision
 
 5) OTP LOGIN SYSTEM (CURRENTLY IMPLEMENTED)
-5.1 PURPOSE (LOCKED)
+5.1 PURPOSE (🔒 LOCKED)
 
 OTP is ONLY for login/session (phone ownership confirmation).
-OTP is NOT verification/approval of owner/property.
+OTP is NOT verification of owner or property.
 
 5.2 FLOW (SUMMARY)
 
@@ -124,9 +131,9 @@ Send OTP
 
 Verify OTP
 
-Session token stored: localStorage.arh_token
+Session token stored → localStorage.arh_token
 
-5.3 OTP RULES (LOCKED)
+5.3 OTP RULES (🔒 LOCKED)
 
 60 sec resend cooldown
 
@@ -136,9 +143,9 @@ OTP valid for 5 minutes
 
 Token stored locally
 
-5.4 FRONTEND STORAGE KEYS (LOCKED)
+5.4 FRONTEND STORAGE KEYS (🔒 LOCKED)
 
-localStorage:
+localStorage
 
 arh_token
 
@@ -148,35 +155,27 @@ arh_otp_lock_until
 
 arh_otp_sent_once_<mobile>
 
-sessionStorage:
+sessionStorage
 
 arh_pincode
 
 arh_mobile
 
 6) FRONTEND FILE STRUCTURE (LIVE)
-
-/index.html → Home
-
-/listings/index.html → Listings
-
-/pricing/index.html → Plans (pricing UI)
-
-/post/index.html → Post flow (PIN + OTP)
-
-/legal/index.html → Legal + disclaimers
+/index.html              → Home
+/listings/index.html     → Listings
+/pricing/index.html      → Plans
+/post/index.html         → Post flow (PIN + OTP)
+/legal/index.html        → Legal & disclaimers
 
 /assets/
+  app.js                 → OTP + PIN + pricing logic
+  styles.css             → All styling
+  arh-logo.png
 
-app.js → OTP + PIN + pricing selection logic
+7) BACKEND (Cloudflare Worker)
 
-styles.css → All styling
-
-arh-logo.png
-
-7) BACKEND (Cloudflare Worker) — CURRENT + ROUTES
-
-Endpoints:
+Endpoints
 
 GET /check-pincode?pincode=XXXXXX
 
@@ -184,9 +183,9 @@ POST /send-otp
 
 POST /verify-otp
 
-GET /me (Bearer token)
+GET /me
 
-Auth:
+Auth
 
 Authorization: Bearer <arh_token>
 
@@ -194,88 +193,85 @@ Authorization: Bearer <arh_token>
 
 File: /pricing/index.html
 
-Required DOM (LOCKED)
-
+Required DOM (🔒 LOCKED)
 <section class="grid-3" id="pricingGrid">
+  <article class="card" data-plan="basic|premium|pro">
+    <button class="btn btn-primary select-btn" type="button">
+      Select Plan
+    </button>
+  </article>
+</section>
 
-<article class="card" data-plan="basic|premium|pro">
-
-button: <button class="btn btn-primary select-btn" type="button">Select Plan</button>
-
-Intended behavior (NOW WORKING)
+Intended Behavior (NOW WORKING)
 
 Card OR button click:
 
-Adds .selected to that card
+Adds .selected
 
-Selected card button text → “Selected”
+Button text → Selected
 
-Other cards button text → “Select Plan”
+Other cards reset
 
 Default on load:
 
 Premium selected
 
-Previous known issue (RESOLVED)
+Fix Applied:
+Selected-state CSS placed at END of styles.css as final override.
 
-JS executed + DOM found + .selected applied
-
-But visual highlight not visible
-
-Root cause: CSS override ordering/selector priority
-
-Fix: selected highlight CSS kept at END of styles.css as “final winning override”
-
-✅ Current status: Selection works + highlight visible
+✅ Selection works
+✅ Highlight visible
 
 9) MOBILE MENU STATUS (STABLE)
 
-Mobile menu works on:
+Works on:
 
 Home ✅
 
 Pricing ✅
 
-Listings ✅ (acceptable)
+Listings ✅
 
-Legal ✅ (for now)
+Legal ✅
 
-Strategy remains:
+Strategy (🔒 LOCKED):
 
 ❌ No HTML restructure
 
 ❌ No new toggle JS
 
-✅ CSS controls visibility using body.nav-open + .menu.is-open
+✅ CSS-only visibility using body.nav-open
 
-10) LEGAL PAGE — FINAL TEXT (READY)
+10) LEGAL PAGE — FINAL (READY)
 
-Use on: /legal/index.html
+File: /legal/index.html
 
-(legal content remains same as locked master)
+Content remains as locked master
 
-11) NEXT PHASE (NOT IMPLEMENTED YET) — REFERENCE ONLY
+Disclaimer usage mandatory
+
+11) NEXT PHASE (REFERENCE ONLY — NOT IMPLEMENTED)
 
 Tables created: payments, credits, listings, users, sessions, otps
 
 Payment → 1 credit → publish consumes credit
 
-Expiry job future
+Expiry cron → future
 
-12) UPDATED PENDING TASKS (NEW PRIORITY ORDER)
+12) UPDATED PENDING TASKS (PRIORITY ORDER)
 🔴 PRIORITY 1 — STABILITY & SAFETY
 
-Freeze CSS Base (locked add-only)
+Freeze CSS base (add-only)
 
-Session & OTP Backend Validation
+Session & OTP backend validation
 
-Contact/Post page validation & feedback audit
+Post flow validation & error feedback
 
 🟠 PRIORITY 2 — CORE BUSINESS PAGES
 
-Legal page linking + footer path correctness
+Legal page linking + footer path fixes
 
-Plans page copy polish (clarity & CTA intent)
+Plans page copy polish (clarity + CTA intent)
 
 🟡 PRIORITY 3 — SEO & DISCOVERABILITY
 
@@ -285,16 +281,123 @@ On-page SEO audit
 
 🔵 PRIORITY 4 — UX BOOSTERS
 
-WhatsApp/Call CTA logic
+WhatsApp / Call CTA logic
 
-Micro UX improvements (loading/disabled/hover consistency)
+Micro-UX consistency (hover / disabled / loading)
 
-⚪ PRIORITY 5 — FUTURE (DO NOT START YET)
+⚪ PRIORITY 5 — FUTURE (DO NOT START)
 
-Customer dashboard
+Dashboard
 
 AI listing assistant
 
-Subscription automation
+Subscriptions
 
-Analytics & event tracking
+Analytics
+
+13) BROKER-LISTED PROPERTY TRANSPARENCY (NEW — PLANNED)
+13.1 PROBLEM STATEMENT
+
+Sometimes a tenant unlocks contact and discovers:
+
+Property was posted by a broker
+
+Caller is not the owner
+
+This reduces trust and conflicts with ARH Rentals’ goal:
+Genuine Owner ↔ Genuine Tenant
+
+13.2 CORE PRINCIPLE (🔒 LOCKED)
+
+ARH Rentals will NOT auto-block brokers,
+but will enforce transparent disclosure when identified.
+
+No silent allowance.
+No false owner positioning.
+
+13.3 USER-REPORTED BROKER FLAG
+
+Tenants may optionally mark:
+
+“This property is listed by a broker, not an owner”
+
+Purpose:
+
+Transparency only
+
+No accusation
+
+No penalty
+
+13.4 LISTING VISIBILITY TAG
+
+After threshold (future logic):
+
+⚠️ This property is listed by a broker, not directly by the owner
+
+Neutral language only.
+No verification claim.
+
+13.5 DISCLAIMER WITH TAG (MANDATORY)
+
+ARH Rentals does not verify whether a listing is posted by an owner or broker.
+This label is based on user feedback and shown for transparency only.
+
+13.6 INTERNAL SIGNALS (FUTURE — INDICATIVE ONLY)
+
+Multiple tenant reports
+
+Same phone posting many listings
+
+High-volume posting patterns
+
+⚠️ Indicators only — NOT proof
+
+13.7 BUSINESS & LEGAL SAFETY
+
+✔ Zero-responsibility model preserved
+✔ No verification burden
+✔ No legal exposure
+✔ Improves trust naturally
+
+13.8 UI / UX IDEA (FUTURE)
+
+Small ⚠️ info badge
+
+Grey (not red)
+
+Tooltip explanation
+
+Visible before contact unlock
+
+❌ No popups
+❌ No blocking
+❌ No warnings
+
+13.9 OPTIONAL FUTURE IDEAS (REFERENCE ONLY)
+
+“Owner-posted” self-declaration checkbox
+
+Owner-like / Agent-like confidence hint
+
+Filter: “Prefer owner-posted listings”
+
+⚠️ None active or promised
+
+13.10 STATUS
+
+🟡 PLANNED — NOT IMPLEMENTED
+🟡 Logic & UX to be refined later
+🟡 May evolve with better data
+
+🔒 FINAL LOCK NOTE
+
+This transparency feature:
+
+Does NOT certify owners
+
+Does NOT verify listings
+
+Does NOT change ARH Rentals’ legal position
+
+It exists only to improve user awareness.
