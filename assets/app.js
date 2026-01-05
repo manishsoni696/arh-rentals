@@ -1,3 +1,5 @@
+----------------------------
+PASTE THIS CODE:
 /* =========================================================
    ARH Rentals - assets/app.js (BACKEND OTP - HISAR SMS) ✅
    - PIN check via backend:  GET /check-pincode?pincode=xxxxxx
@@ -6,12 +8,44 @@
    - Session token stored in localStorage as "arh_token"
 ========================================================= */
 
-// === OTP UI LOCK (4 hours) helpers ===
+/* ===============================
+   COMMON
+=============================== */
+const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
+
+// footer year
+(function () {
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+})();
+
+/* ===============================
+   HELPERS
+=============================== */
+function normalizePincode(pin) {
+  return String(pin || "").trim().replace(/\D/g, "").slice(0, 6);
+}
+function normalizeMobile(m) {
+  return String(m || "").trim().replace(/\D/g, "").slice(0, 10);
+}
+function normalizeOtp(o) {
+  return String(o || "").trim().replace(/\D/g, "").slice(0, 6);
+}
+function setText(el, txt) {
+  if (el) el.textContent = txt;
+}
+
+/* ===============================
+   OTP UI LOCK (4 hours) helpers
+=============================== */
 const OTP_LOCK_KEY = "arh_otp_lock_until"; // stored in localStorage
 
 function getLockMap() {
-  try { return JSON.parse(localStorage.getItem(OTP_LOCK_KEY) || "{}"); }
-  catch { return {}; }
+  try {
+    return JSON.parse(localStorage.getItem(OTP_LOCK_KEY) || "{}");
+  } catch {
+    return {};
+  }
 }
 function setLockUntil(mobile, untilMs) {
   const map = getLockMap();
@@ -33,10 +67,12 @@ function formatHMS(ms) {
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  return `${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+  return `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
 }
-function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText="Send OTP") {
+function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText = "Send OTP") {
+  if (!sendOtpBtn) return;
   sendOtpBtn.disabled = true;
+
   const tick = () => {
     const left = lockUntilMs - Date.now();
     if (left <= 0) {
@@ -47,34 +83,13 @@ function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText="Send OTP") {
     sendOtpBtn.textContent = `Try after ${formatHMS(left)}`;
     setTimeout(tick, 1000);
   };
+
   tick();
 }
 
 /* ===============================
-   COMMON
+   OTP UI: "Send" vs "Resend" memory
 =============================== */
-const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
-
-// footer year
-const yearEl = document.getElementById("year");
-if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-/* ===============================
-   HELPERS
-=============================== */
-function normalizePincode(pin) {
-  return String(pin || "").trim().replace(/\D/g, "").slice(0, 6);
-}
-function normalizeMobile(m) {
-  return String(m || "").trim().replace(/\D/g, "").slice(0, 10);
-}
-function normalizeOtp(o) {
-  return String(o || "").trim().replace(/\D/g, "").slice(0, 6);
-}
-function setText(el, txt) {
-  if (el) el.textContent = txt;
-}
-// ✅ STEP 1 helper: per-mobile "Send" vs "Resend" memory
 function otpBtnBaseTextForMobile(mobile) {
   const k = `arh_otp_sent_once_${mobile}`;
   return localStorage.getItem(k) === "1" ? "Resend OTP" : "Send OTP";
@@ -86,8 +101,10 @@ function markOtpSentOnce(mobile) {
 /* =========================================================
    POST PAGE : PIN CHECK (backend)
 ========================================================= */
-const pinBtn = document.getElementById("pinCheckBtn");
-if (pinBtn) {
+(function initPinCheck() {
+  const pinBtn = document.getElementById("pinCheckBtn");
+  if (!pinBtn) return;
+
   pinBtn.addEventListener("click", async () => {
     const pinEl = document.getElementById("postPin");
     const msgEl = document.getElementById("postPinMsg");
@@ -105,8 +122,10 @@ if (pinBtn) {
     if (step2El) step2El.style.display = "none";
 
     try {
-      const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
-      const data = await res.json();
+      const res = await fetch(
+        `${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`
+      );
+      const data = await res.json().catch(() => ({}));
 
       if (data?.success && data?.allowed) {
         setText(msgEl, `✅ Service available for ${pincode}`);
@@ -121,26 +140,33 @@ if (pinBtn) {
       setText(msgEl, "❌ Backend not reachable");
     }
   });
-}
+})();
 
 /* =========================================================
    SEND OTP (BACKEND - HISAR SMS)
 ========================================================= */
-const sendOtpBtn = document.getElementById("sendOtpBtn");
-const cd = Number(localStorage.getItem("arh_otp_cooldown_until") || 0);
-if (sendOtpBtn && cd > Date.now()) {
-  const mNow = normalizeMobile(document.getElementById("mobileInput")?.value);
-  startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
-}
-if (sendOtpBtn && cd && cd <= Date.now()) {
-  localStorage.removeItem("arh_otp_cooldown_until");
-}
-if (sendOtpBtn) {
-  // ✅ page load पर अगर lock चल रहा है तो button को lock mode में दिखाओ (optional but useful)
+(function initSendOtp() {
+  const sendOtpBtn = document.getElementById("sendOtpBtn");
+  if (!sendOtpBtn) return;
+
+  const COOLDOWN_KEY = "arh_otp_cooldown_until";
+
+  // Resume cooldown on load if present
+  const cd = Number(localStorage.getItem(COOLDOWN_KEY) || 0);
+  if (cd > Date.now()) {
+    const mNow = normalizeMobile(document.getElementById("mobileInput")?.value);
+    startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
+  } else if (cd) {
+    localStorage.removeItem(COOLDOWN_KEY);
+  }
+
+  // Optional: if lock running, show countdown
   const mobileElOnLoad = document.getElementById("mobileInput");
   const m0 = normalizeMobile(mobileElOnLoad?.value);
   const l0 = m0 ? getLockUntil(m0) : 0;
-  if (m0 && l0 && Date.now() < l0) startSendBtnCountdown(sendOtpBtn, l0, "Send OTP");
+  if (m0 && l0 && Date.now() < l0) {
+    startSendBtnCountdown(sendOtpBtn, l0, otpBtnBaseTextForMobile(m0));
+  }
 
   sendOtpBtn.addEventListener("click", async () => {
     const mobileEl = document.getElementById("mobileInput");
@@ -159,11 +185,14 @@ if (sendOtpBtn) {
       return;
     }
 
-    // ✅ 4-hour UI lock check
+    // 4-hour UI lock check
     const lockUntil = getLockUntil(mobile);
     if (lockUntil && Date.now() < lockUntil) {
-      setText(msgEl, `❌ OTP limit reached. Try after ${formatHMS(lockUntil - Date.now())}`);
-      startSendBtnCountdown(sendOtpBtn, lockUntil, "Send OTP");
+      setText(
+        msgEl,
+        `❌ OTP limit reached. Try after ${formatHMS(lockUntil - Date.now())}`
+      );
+      startSendBtnCountdown(sendOtpBtn, lockUntil, otpBtnBaseTextForMobile(mobile));
       return;
     }
 
@@ -173,31 +202,30 @@ if (sendOtpBtn) {
       const res = await fetch(`${BACKEND}/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile, pincode }),
+        body: JSON.stringify({ mobile, pincode })
       });
 
       const data = await res.json().catch(() => ({}));
 
-      // ❌ FAIL / BLOCK
+      // FAIL / BLOCK
       if (!res.ok || !data.success) {
-        // ✅ 4-hour UI lock jab backend 429 de aur message me hour/4 hour ho
+        // UI lock if backend says limit reached (429 + hour)
         if (res.status === 429 && (data.message || "").toLowerCase().includes("hour")) {
           const until = Date.now() + 4 * 60 * 60 * 1000; // 4 hours
           setLockUntil(mobile, until);
-          startSendBtnCountdown(sendOtpBtn, until, "Send OTP");
+          startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
         }
         setText(msgEl, `❌ ${data.message || "OTP failed"}`);
         return;
       }
 
-      // ✅ SUCCESS → ab 60 sec cooldown start karo (FIX 1)
-       // ✅ save 60s cooldown (survives refresh)
-const until = Date.now() + 60 * 1000; // 60 seconds
-localStorage.setItem("arh_otp_cooldown_until", String(until));
-       // ✅ mark: this mobile has received OTP at least once
-markOtpSentOnce(mobile);
-       
-startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
+      // SUCCESS -> 60s cooldown
+      const until = Date.now() + 60 * 1000;
+      localStorage.setItem(COOLDOWN_KEY, String(until));
+
+      markOtpSentOnce(mobile);
+      startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
+
       // store mobile for verify step
       sessionStorage.setItem("arh_mobile", mobile);
 
@@ -208,13 +236,15 @@ startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
       setText(msgEl, "❌ Network error");
     }
   });
-}
+})();
 
 /* =========================================================
    VERIFY OTP (BACKEND)
 ========================================================= */
-const verifyOtpBtn = document.getElementById("verifyOtpBtn");
-if (verifyOtpBtn) {
+(function initVerifyOtp() {
+  const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+  if (!verifyOtpBtn) return;
+
   verifyOtpBtn.addEventListener("click", async () => {
     const otpEl = document.getElementById("otpInput");
     const msgEl = document.getElementById("otpMsg");
@@ -238,7 +268,7 @@ if (verifyOtpBtn) {
       const res = await fetch(`${BACKEND}/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile, otp }),
+        body: JSON.stringify({ mobile, otp })
       });
 
       const data = await res.json().catch(() => ({}));
@@ -248,10 +278,10 @@ if (verifyOtpBtn) {
         return;
       }
 
-      // ✅ store session token returned by backend (persistent)
+      // store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
 
-      // ✅ optional: successful login पर OTP lock clear कर दो
+      // successful login -> clear lock
       clearLock(mobile);
 
       setText(msgEl, "✅ Verified & Logged in");
@@ -261,26 +291,31 @@ if (verifyOtpBtn) {
       setText(msgEl, "❌ Network error");
     }
   });
-}
+})();
 
 /* =========================================================
-   OPTIONAL: LOGOUT (FIX 2)
+   OPTIONAL: LOGOUT
 ========================================================= */
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
+(function initLogout() {
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (!logoutBtn) return;
+
   logoutBtn.addEventListener("click", () => {
-    const m = sessionStorage.getItem("arh_mobile") || ""; // ✅ पहले mobile ले लो
+    const m = sessionStorage.getItem("arh_mobile") || "";
 
     localStorage.removeItem("arh_token");
     sessionStorage.removeItem("arh_mobile");
     // sessionStorage.removeItem("arh_pincode"); // optional
 
-    if (m) clearLock(m); // ✅ lock clear
+    if (m) clearLock(m);
 
     setText(document.getElementById("otpMsg"), "Logged out");
   });
-}
-/* === PRICING (ARH Rentals): Card Select + Default Premium (OVERRIDE-SAFE) === */
+})();
+
+/* =========================================================
+   PRICING: Card Select + Default Premium (OVERRIDE-SAFE)
+========================================================= */
 (function () {
   function initPricingSelect() {
     const grid = document.querySelector("#pricingGrid");
@@ -336,9 +371,7 @@ if (logoutBtn) {
 
         // Stop accidental navigation if any nested <a> exists
         const link = e.target.closest("a[href]");
-        if (link) {
-          e.preventDefault();
-        }
+        if (link) e.preventDefault();
 
         applySelected(plan);
       },
@@ -352,78 +385,67 @@ if (logoutBtn) {
     initPricingSelect();
   }
 })();
-/* =====================================
+
+/* =========================================================
    LISTINGS FILTERS — FINAL (SINGLE SOURCE)
-   - Auto apply on change + input
-   - Rent range supported
-   - Results count sync
-   - More / Less toggle
-===================================== */
+========================================================= */
+(function initListingsFilters() {
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("filtersForm");
-  const listings = Array.from(document.querySelectorAll(".listing"));
-  const rentSelect = document.getElementById("fRent");
-  const resultsCount = document.getElementById("resultsCount");
-  const moreBtn = document.getElementById("moreFiltersBtn");
-  const filtersUI = document.querySelector(".filters-ui");
+  ready(() => {
+    const form = document.getElementById("filtersForm");
+    const listings = Array.from(document.querySelectorAll(".listing"));
+    const rentSelect = document.getElementById("fRent");
+    const resultsCount = document.getElementById("resultsCount");
+    const moreBtn = document.getElementById("moreFiltersBtn");
+    const filtersUI = document.querySelector(".filters-ui");
 
-  if (!form || !listings.length) return;
+    if (!form || !listings.length) return;
 
-  function inRentRange(rent, range) {
-    if (!range) return true;
-    if (range.endsWith("+")) {
-      return rent >= Number(range.replace("+", ""));
+    function inRentRange(rent, range) {
+      if (!range) return true;
+      if (range.endsWith("+")) return rent >= Number(range.replace("+", ""));
+      const parts = range.split("-");
+      const min = Number(parts[0]);
+      const max = Number(parts[1]);
+      return rent >= min && rent <= max;
     }
-    const [min, max] = range.split("-").map(Number);
-    return rent >= min && rent <= max;
-  }
 
-  function applyFilters() {
-    let visible = 0;
-    const rentRange = rentSelect?.value || "";
+    function applyFilters() {
+      let visible = 0;
+      const rentRange = rentSelect?.value || "";
 
-    listings.forEach((item) => {
-      const rent = Number(item.dataset.rent || 0);
-      const show = inRentRange(rent, rentRange);
+      listings.forEach((item) => {
+        const rent = Number(item.dataset.rent || 0);
+        const show = inRentRange(rent, rentRange);
+        item.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
 
-      item.style.display = show ? "" : "none";
-      if (show) visible++;
-    });
-
-    if (resultsCount) {
-      resultsCount.textContent = `Showing ${visible} properties`;
+      if (resultsCount) resultsCount.textContent = `Showing ${visible} properties`;
     }
-  }
 
-  // Auto apply
-  form.addEventListener("change", applyFilters);
-  form.addEventListener("input", applyFilters);
+    form.addEventListener("change", applyFilters);
+    form.addEventListener("input", applyFilters);
 
-  // Initial run
-  applyFilters();
+    applyFilters();
 
-  // More / Less toggle (single source)
-  if (moreBtn && filtersUI) {
-    moreBtn.addEventListener("click", () => {
-      const expanded = filtersUI.classList.toggle("show-more");
-      moreBtn.textContent = expanded
-        ? "− Less Filters"
-        : "+ More Filters";
-    });
-  }
-});
+    // More / Less toggle
+    if (moreBtn && filtersUI) {
+      moreBtn.addEventListener("click", () => {
+        const expanded = filtersUI.classList.toggle("show-more");
+        moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
+      });
+    }
+  });
+})();
 
 /* =========================================================
    ARH — MOBILE NAV CONTROLLER (SINGLE SOURCE OF TRUTH)
-   Applies to ALL pages consistently
-   Breakpoint: <= 859px
-   Depends on:
-   - .nav-toggle
-   - #primary-navigation (.menu)
-   - body.nav-open
 ========================================================= */
-
 (function () {
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -469,7 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Toggle click
     toggle.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -479,95 +500,137 @@ document.addEventListener("DOMContentLoaded", () => {
       else openNav();
     });
 
-    // Close on menu link click (mobile)
     menu.addEventListener("click", function (e) {
       if (!isMobile()) return;
       if (e.target.closest("a[href]")) closeNav();
     });
 
-    // Close on outside click
     document.addEventListener("click", function (e) {
       if (!isMobile()) return;
       if (toggle.contains(e.target) || menu.contains(e.target)) return;
       closeNav();
     });
 
-    // Close on ESC
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && isMobile()) closeNav();
     });
 
-    // Sync on resize
     window.addEventListener("resize", syncByViewport);
 
-    // Init
     syncByViewport();
   });
 })();
-/* ============ LISTINGS : AREA / SECTOR DROPDOWN (JS FINAL) ============ */
-/* Safe, minimal, no framework. Scoped to listings page only. */
 
-(function () {
-  if (!document.body.classList.contains('listings-page')) return;
+/* =========================================================
+   LISTINGS : AREA / SECTOR DROPDOWN (SINGLE SOURCE)
+   - Uses #fArea, #areaPanel, #areaExpandBtn, #areaAllWrap, #areaAllOptions, #hisarAreas
+========================================================= */
+(function initListingsAreaDropdown() {
+  if (!document.body.classList.contains("listings-page")) return;
 
-  const areaInput = document.getElementById('fArea');
-  const areaPanel = document.getElementById('areaPanel');
-  const moreBtn = document.getElementById('areaMoreBtn');
-  const allWrap = document.getElementById('areaAllWrap');
+  const areaInput = document.getElementById("fArea");
+  const areaPanel = document.getElementById("areaPanel");
+  const areaExpandBtn = document.getElementById("areaExpandBtn");
+  const areaAllWrap = document.getElementById("areaAllWrap");
+  const areaAllOptions = document.getElementById("areaAllOptions");
+  const hisarAreas = document.getElementById("hisarAreas");
 
   if (!areaInput || !areaPanel) return;
 
-  let isOpen = false;
+  let allBuilt = false;
 
   function openPanel() {
-    if (isOpen) return;
-    isOpen = true;
     areaPanel.hidden = false;
+    areaInput.setAttribute("aria-expanded", "true");
   }
 
   function closePanel() {
-    if (!isOpen) return;
-    isOpen = false;
     areaPanel.hidden = true;
-    if (allWrap) allWrap.hidden = true;
+    areaInput.setAttribute("aria-expanded", "false");
+    if (areaAllWrap) areaAllWrap.hidden = true;
+    if (areaExpandBtn) areaExpandBtn.textContent = "More Areas";
   }
 
-  /* Open on focus / click */
-  areaInput.addEventListener('focus', openPanel);
-  areaInput.addEventListener('click', openPanel);
-
-  /* Select option (pill buttons) */
-  areaPanel.addEventListener('click', function (e) {
-    const btn = e.target.closest('.area-opt');
-    if (!btn) return;
-    areaInput.value = btn.textContent.trim();
+  function setAreaValue(v) {
+    areaInput.value = v || "";
     closePanel();
+  }
+
+  function buildAllAreas() {
+    if (allBuilt || !hisarAreas || !areaAllOptions) return;
+    allBuilt = true;
+
+    const opts = Array.from(hisarAreas.querySelectorAll("option"));
+    let values = opts
+      .map((o) => (o.value || "").trim())
+      .filter(Boolean);
+
+    // de-dupe
+    const seen = new Set();
+    values = values.filter((v) => {
+      const k = v.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+
+    const frag = document.createDocumentFragment();
+    values.forEach((v) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "area-opt";
+      b.setAttribute("data-value", v);
+      b.textContent = v;
+      b.addEventListener("click", () => setAreaValue(v));
+      frag.appendChild(b);
+    });
+
+    areaAllOptions.innerHTML = "";
+    areaAllOptions.appendChild(frag);
+  }
+
+  // open panel on focus / typing
+  areaInput.addEventListener("focus", openPanel);
+  areaInput.addEventListener("input", openPanel);
+  areaInput.addEventListener("click", openPanel);
+
+  // click on any popular button
+  areaPanel.addEventListener("click", (e) => {
+    const btn = e.target.closest(".area-opt");
+    if (!btn) return;
+    const v = (btn.getAttribute("data-value") || btn.textContent || "").trim();
+    setAreaValue(v);
   });
 
-  /* More Areas toggle */
-  if (moreBtn && allWrap) {
-    moreBtn.addEventListener('click', function (e) {
+  // More Areas toggle (THIS fixes your issue: ID is #areaExpandBtn, not #areaMoreBtn)
+  if (areaExpandBtn && areaAllWrap) {
+    areaExpandBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      allWrap.hidden = !allWrap.hidden;
+
+      openPanel();
+
+      const willOpen = areaAllWrap.hidden === true;
+      if (willOpen) buildAllAreas();
+
+      areaAllWrap.hidden = !willOpen;
+      areaExpandBtn.textContent = willOpen ? "Less Areas" : "More Areas";
     });
   }
 
-  /* Close on outside click */
-  document.addEventListener('click', function (e) {
-    if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
-    closePanel();
+  // close on outside click
+  document.addEventListener("click", (e) => {
+    if (areaPanel.hidden) return;
+    const inside = areaPanel.contains(e.target) || areaInput.contains(e.target);
+    if (!inside) closePanel();
   });
 
-  /* Close on ESC */
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closePanel();
+  // close on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePanel();
   });
 
-  /* Start closed */
-  areaPanel.hidden = true;
-  if (allWrap) allWrap.hidden = true;
+  // initial state
+  closePanel();
 })();
-
-
-
-
+----------------------------
