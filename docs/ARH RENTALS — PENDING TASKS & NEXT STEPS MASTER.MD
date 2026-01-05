@@ -1,4 +1,4 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.8)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.9)
 Last Updated: Jan 2026 (Jan 5, 2026)
 
 OVERALL GOAL (NON-NEGOTIABLE)
@@ -21,31 +21,26 @@ OVERALL STATUS
 1) Working Rules & Execution Process — 🔒 LOCKED
 
 Rules Master finalized (Manish working style)
+✅ Single-chat workflow confirmed (no multi-expert / no master-controller)
+✅ One task at a time, sequential fixes only
+✅ One step = one file = one paste box
+✅ Mobile + Tablet + Desktop mandatory
 
-Paste-box only code delivery rule enforced
-
-One step = one file = one paste box
-
-Mobile + Tablet + Desktop mandatory
-
-Single-chat workflow confirmed
+Important note (updated):
+Owner requested: “Full code nahi chahiye, sirf exact change + exact location”
+→ Still follows paste-box rule (code only inside paste box), but only the minimal snippet is shared.
 
 2) Core UI Foundation — 🔒 LOCKED
 
 Dark SaaS-style theme finalized
-
 Header structure locked (Brand | Nav | CTA)
-
 Hero hierarchy refined
-
 Button system standardized
-
 Card system finalized
 
 3) Mobile Menu (NAV) — 🔒 LOGIC LOCKED
 
 Status: Stable & acceptable
-
 Working on (verified):
 Home ✅ | Pricing ✅ | Listings ✅ | Legal ✅ | Post Property ✅
 
@@ -67,7 +62,6 @@ IMPORTANT:
 ✅ Minimal targeted CSS/JS allowed
 
 NOTES (WHAT HAPPENED):
-
 Mobile hamburger visibility issues came because some pages had hamburger inside .header-actions and CSS was hiding .header-actions on mobile.
 
 Final fix approach was:
@@ -81,61 +75,41 @@ Force .nav-toggle visible
 4) Authentication Philosophy — 🔒 LOCKED
 
 OTP = session confirmation only
-
 PIN login allowed
-
 No “verification / approval” language
-
 Limits & cooldowns finalized
 
 5) Pricing Page — Card Selection — 🔒 LOCKED
 
 Card + button click both work
-
 Only one card selectable
-
 Premium selected by default
-
 Visual highlight stable
-
 Final CSS override locked at END of styles.css
-
 All breakpoints verified
-
 🚫 Revisit only if business model changes
 
 6) Session & OTP Backend Validation — ✅ DONE
 
 60s resend cooldown
-
 Max 3 OTP / 4 hours
-
 OTP validity: 5 minutes
-
 PIN restriction enforced
-
 /me protected with Bearer token
-
 Same-device session supported
 
 7) OTP Security Hardening — ✅ DONE
 
 OTP single-use enforced
-
 Wrong OTP attempt limit
-
 Replay protection
-
 /me endpoint verified
-
 Session expiry strategy deferred (future)
 
 8) Plans / Pricing Page UX — 🔒 LOCKED
 
 Clear rule: 1 Plan = 1 Property
-
 No broker / no deal guarantee copy placed
-
 “Next Step” guidance added
 
 Pricing clarity section finalized:
@@ -149,39 +123,30 @@ Conversion-safe & legal-safe
 9) Legal Page — 🔒 LOCKED
 
 Footer links corrected (absolute paths)
-
 Disclaimer aligned with zero-responsibility model
-
 No banned words
-
 Responsive verified
 
 10) Post Property Page — 🔒 LOCKED
 
 File: /post/index.html
 Flow locked: PIN → OTP → Property → Plan
-
 No misleading language
-
 Frontend validation safe
-
 Footer + disclaimer aligned
-
 Responsive verified
 
 11) Home Page — 🔒 LOCKED
 
 UI finalized
-
 Hero & CTA hierarchy stable
-
 Responsive verified
 
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
 12) Listings Filters UI — IN PROGRESS (NOT FROZEN)
 ✅ WHAT IS DONE
 
-Filters redesigned to be realistic:
+Filters redesigned to be realistic (initial version):
 
 City
 
@@ -207,36 +172,132 @@ Inline spacing reduced
 
 Dedicated class approach planned for notes
 
-❌ WHAT IS STILL PENDING
+✅ NEW (DECIDED IN THIS SESSION): FINAL FILTER ARCHITECTURE — HYBRID MODEL (LOCKED)
+🎯 Layout Decision (LOCKED)
 
-Filters layout still not professional enough
+✅ Hybrid filters:
 
-Needs real-estate style sidebar (reference-style)
+Primary Filters = TOP BAR (always visible)
 
-More filter groups to ADD:
+Secondary Filters = Sidebar / “More Filters” panel
 
-Size
+Reason:
 
-Amenities (checkbox / pills)
+Filters zyada hain → top-only clutter ho jayega
 
-BHK Type
+Sidebar-only mobile UX weak ho sakta hai
+
+Hybrid gives best conversion + speed + clean UI
+
+✅ PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) — LOCKED
+🏠 Residential (Category: Residential)
+
+Primary:
+
+City (default Hisar)
+
+Property Category: Residential
+
+Property Type (House / Flat / PG)
+
+Area / Sector (text)
+
+Size (Sq Yds)
+
+Rent Range
+
+🏢 Commercial (Category: Commercial)
+
+Primary:
+
+City
+
+Property Category: Commercial
+
+Property Type (Shop / Office / Warehouse)
+
+Area / Sector
+
+Size (Sq Ft)
+
+Rent Range
+
+✅ Notes:
+
+Size unit difference locked: Residential = Sq Yds, Commercial = Sq Ft
+
+This matches real-estate market expectation in India.
+
+✅ SECONDARY FILTERS (SIDEBAR / MORE FILTERS) — LOCKED
+🏠 Residential Secondary
+
+Amenities
+
+BHK
+
+Furnishing: Unfurnished / Semi-Furnished / Furnished
 
 Property Age
 
-Rent / Price UI decision:
+Floor (NEW LOCKED):
 
-Option A: Dropdown ranges (fast + clean)
+Ground
 
-Option B: Slider (reference style) — allowed if lightweight
+First
 
-Dropdown option visibility needs permanent fix (must remain readable)
+Second
 
-🚨 NEW: styles.css HEALTH STATUS (VERY IMPORTANT)
+Third+
+
+🚫 Basement NOT allowed in residential (locked)
+
+🏢 Commercial Secondary
+
+Amenities
+
+Furnishing: Unfurnished / Furnished
+
+Floor (NEW LOCKED):
+
+Basement
+
+Ground
+
+First
+
+Second
+
+Upper / Other
+
+❌ WHAT IS STILL PENDING (UPDATED)
+Listings UI structure still not professional enough
+
+Needs real-estate style layout (reference-style):
+
+Desktop: filters sidebar left + results right
+
+Mobile: primary top + secondary collapsible/drawer
+
+Hybrid UI implementation pending
+
+Build Primary Filter row (top)
+
+Move Secondary filters into sidebar / More Filters panel
+
+Conditional logic UI:
+
+Residential vs Commercial (show correct size unit + floors + bhk visibility)
+
+Dropdown readability must remain permanently fixed
+
+Options visibility, contrast, background, focus states
+
+🚨 styles.css HEALTH STATUS (VERY IMPORTANT)
 13) styles.css — OVERLOADED / NEEDS CLEANUP (NOT OPTIONAL)
 
 Current reality:
 
-Same feature solved many times with multiple blocks
+Same feature solved multiple times with duplicate blocks
 
 Listings filters styled 5–8 times with conflicts
 
@@ -257,7 +318,6 @@ Pricing FINAL WINNING OVERRIDE (must remain at end)
 Listings FINAL FILTERS UI block (only one)
 
 🧹 CLEANUP STRATEGY (LOCKED)
-
 Delete duplicate older blocks that target same selectors repeatedly:
 
 Listings filters earlier versions
@@ -275,6 +335,7 @@ future work becomes fast and safe
 ⚠️ Rule: Cleanup will be done as a separate controlled task (one file, one paste box).
 
 🎯 LISTINGS UI TARGET (REFERENCE-STYLE)
+
 Desktop:
 
 Sidebar filters on LEFT
@@ -287,40 +348,36 @@ Professional real-estate look
 
 Filters UI:
 
-Checkbox / pill style
+Primary top bar (clean)
 
-Slider for price (if chosen)
+Secondary sidebar with checkbox/pills
 
-Clean labels + readable dropdowns
+Price as dropdown ranges (default) OR slider only if lightweight
 
 Mobile:
 
-Sidebar collapses into stacked filters
+Primary top stacked
+
+Secondary collapses into drawer/accordion
 
 No clutter
 
 Smooth scroll
 
-⚠️ Listings UI MUST NOT be frozen until this is complete.
+⚠️ Listings UI MUST NOT be frozen until hybrid layout is complete.
 
 ⏳ UPDATED PRIORITY QUEUE
 🟠 PRIORITY 1A — FINISH LISTINGS FILTER UI (ACTIVE)
 
 Steps:
 
-Rebuild filters into professional sidebar layout
+Convert to Hybrid filters (Primary top + Secondary sidebar/more panel)
 
-Add remaining filter blocks:
+Implement Residential vs Commercial view logic (UI-level)
 
-Size
+Add Floor filter (locked options)
 
-Amenities
-
-BHK Type
-
-Property Age
-
-Finalize Rent / Price UI (dropdown OR slider)
+Ensure correct size unit (Sq Yds vs Sq Ft)
 
 Fix dropdown readability permanently
 
@@ -357,20 +414,15 @@ On-page SEO audit
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
 
 Listings API integration
-
 Contact unlock logic
-
 Customer Dashboard
-
 AI Listing Assistant
-
 Subscription automation
-
 Analytics & event tracking
 
 ▶️ NEXT IMMEDIATE ACTION (CONFIRMED)
 
-👉 Finish Listings Filters UI (HTML + CSS + minimal JS allowed)
+👉 Finish Listings Filters UI (Hybrid: HTML + CSS + minimal JS allowed)
 👉 Freeze Listings UI
 👉 Then styles.css cleanup (remove duplicates + lock final structure)
 👉 Then move to SEO or backend planning
@@ -390,4 +442,4 @@ If deleting:
 
 Website quality > artificial restrictions
 
-END — MASTER v5.8 (NEW CHAT REFERENCE READY)
+END — MASTER v5.9 (NEW CHAT REFERENCE READY)
