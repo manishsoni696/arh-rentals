@@ -1,170 +1,172 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.4.1)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.5)
 
 Last Updated: Jan 2026
-Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING CARD SELECTION FIXED + ✅ PRICING CLARITY SECTION + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED + 🟡 LISTINGS FILTER UI IMPROVED (IN PROGRESS)
+Overall Status:
+🔒 Core Stable
+✅ Auth + Pricing + Legal + Post Flow Locked
+🟡 Listings UI FINALIZATION IN PROGRESS
+⏳ SEO & Backend Planning Deferred
 
-✅ COMPLETED / LOCKED (DO NOT TOUCH)
-1) Working Rules & Process
+✅ COMPLETED & LOCKED (DO NOT TOUCH)
+1) Working Rules & Execution Process — 🔒 LOCKED
 
-Rules Master finalized (how Manish works)
+Rules Master finalized (Manish working style)
 
-Code delivery format locked (paste-box only)
+Paste-box only code delivery rule enforced
 
-Add-only policy enforced
+Add-only policy strictly followed
 
 Mobile + Tablet + Desktop mandatory
 
-Single-chat workflow accepted
+Single-chat workflow confirmed
 
-2) Core UI Foundation
+2) Core UI Foundation — 🔒 LOCKED
 
-Dark SaaS-style theme locked
+Dark SaaS-style theme finalized
 
-Header structure finalized (brand | nav | CTA)
+Header structure locked (Brand | Nav | CTA)
 
-Hero section hierarchy refined
+Hero hierarchy refined
 
 Button system standardized
 
 Card system finalized
 
-3) Mobile Menu (NAV) — STATUS LOCKED
+3) Mobile Menu (NAV) — 🔒 LOCKED
 
-Mobile hamburger appears & works on:
+Status: Stable & acceptable
+
+Working on:
 
 Home ✅
 
 Pricing ✅
 
-Listings ✅ (acceptable)
+Listings ✅
 
 Legal ✅
 
 Post Property ✅
 
-Strategy locked:
+Strategy Locked:
 
 ❌ No HTML restructure
 
-❌ No new JS toggle scripts
+❌ No new JS toggles
 
-✅ CSS is the single source of truth
+✅ CSS is single source of truth
 
-JS toggles only: body.nav-open + .menu.is-open
+JS only toggles:
 
-4) Authentication Philosophy — LOCKED
+body.nav-open
 
-OTP logic finalized (session-based)
+.menu.is-open
+
+4) Authentication Philosophy — 🔒 LOCKED
+
+OTP is session confirmation only
 
 PIN login allowed
 
-OTP limits & blocks defined (reference locked)
+No “verification / approval” language
 
-5) Pricing Page — Card Click Selection — ✅ FIXED & LOCKED
+Limits & cooldowns finalized
 
-Pricing cards clickable (card + button)
+5) Pricing Page — Card Selection — 🔒 LOCKED
 
-Only one card selected at a time
+Card + button click both work
 
-Default Premium selected on load
+Only one card selectable
 
-Selected visual highlight stable
+Premium selected by default
 
-Final CSS override locked at END of /assets/styles.css
+Visual highlight stable
 
-Mobile + Tablet + Desktop verified
-🚫 Do not revisit unless broken
+Final CSS override locked at END of styles.css
 
-6) Session & OTP Backend Validation — ✅ COMPLETED
+All breakpoints verified
 
-60 sec resend cooldown enforced
+🚫 Revisit only if business model changes
 
-Max 3 OTP in 4 hours enforced
+6) Session & OTP Backend Validation — ✅ DONE
 
-OTP validity (5 minutes) enforced
+60s resend cooldown
+
+Max 3 OTP / 4 hours
+
+OTP validity: 5 minutes
 
 PIN restriction enforced
 
-/me protected via Bearer token
+/me protected with Bearer token
 
 Same-device session supported
 
-7) OTP Security Hardening (Backend) — ✅ DONE
+7) OTP Security Hardening — ✅ DONE
 
-OTP single-use enforcement
+OTP single-use enforced
 
-Wrong OTP tries limit
+Wrong OTP attempt limit
 
 Replay protection
 
-/me endpoint confirmed working
+/me endpoint verified
 
-Session expiry / revocation deferred
+Session expiry strategy deferred (future)
 
-8) Plans / Pricing Page UX — ✅ COMPLETED & STABLE
-
-Includes latest updates:
-
-Plan copy clarified (who each plan is for)
+8) Plans / Pricing Page UX — 🔒 LOCKED
 
 Clear rule: 1 Plan = 1 Property
 
-“No broker / no deal guarantee” messaging placed
+No broker / no deal guarantee copy placed
 
-“Next Step” guidance added (Select → Post Property)
+“Next Step” guidance added
 
-Pricing Clarity Section added (Option 2 + 3 merged):
+Pricing Clarity section finalized:
 
-“Which plan is right for you?”
+Which plan is right for you?
 
-“Important before you select”
+Important before you select
 
-Mobile + Tablet + Desktop verified
+Conversion-safe & legal-safe
 
-Legal-safe, conversion-clear, rule-compliant
-🚫 Do not revisit unless business model changes
+9) Legal Page — 🔒 LOCKED
 
-9) Legal Page Final Hookup — ✅ COMPLETED
+Footer links corrected (absolute paths)
 
-Footer links fixed (absolute paths)
+Disclaimer aligned with zero-responsibility model
 
-Disclaimer aligned with locked business model
+No banned words
 
-No banned words used
+Responsive verified
 
-Mobile + Tablet + Desktop safe
-🚫 Locked unless legal text changes
-
-10) Post Property Page Audit — ✅ COMPLETED
+10) Post Property Page — 🔒 LOCKED
 
 File: /post/index.html
 
-Flow clarity verified (PIN → OTP → Property → Plan)
+Clear flow: PIN → OTP → Property → Plan
 
-No misleading verification wording
+No misleading language
 
-Frontend validation safety applied
+Frontend validation safe
 
-Footer links & disclaimer aligned
+Footer + disclaimer aligned
 
-Mobile + Tablet + Desktop verified
-🚫 Locked unless posting features change
+Responsive verified
 
-11) Home Page Status — ✅ READY & STABLE
+11) Home Page — 🔒 LOCKED
 
 UI finalized
 
-Hero + CTA hierarchy stable
+Hero & CTA hierarchy stable
 
-Mobile + Tablet + Desktop verified
-🚫 Locked unless brand direction changes
+Responsive verified
 
-🟡 LISTINGS PAGE — CURRENT STATUS (IN PROGRESS, NOT FROZEN YET)
-12) Listings Page Filters UI — PARTIALLY IMPROVED
+🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
+12) Listings Filters UI — IN PROGRESS (NOT FROZEN)
+✅ What is DONE
 
-What we already changed (DONE):
-
-Filters shifted away from PIN based intent → now more realistic:
+Filters redesigned to be realistic:
 
 City
 
@@ -172,131 +174,128 @@ Area / Sector
 
 Property Type
 
+Sorting intentionally removed
+
 “Search Properties” CTA added (UI-only)
 
-Sorting removed for now (as requested)
+“Unlock Details” future note present
 
-Future-safe note present: “Live search later”
+Temporary helper text removed from wrong position (bug fixed)
 
-“Unlock Details” shows a future note (only)
+❌ What is STILL PENDING
 
-Problem still visible (NOT DONE yet):
+Filters layout still needs final polish
 
-Layout still not perfect: filter card is too wide / spacing not fully professional
+Filter bar still feels too wide / too loose
 
-Dropdown items visibility issue (options look white / hard to read)
+Dropdown option visibility needs final lock
 
-Rent input needs to be converted into Rent Range dropdown with your exact ranges:
+Rent input → Rent Range dropdown (exact ranges):
 
-10000
+Up to 10,000
+10,001 – 14,999
+15,000 – 19,999
+20,000 – 25,000
+Above 25,000
 
-10001–14999
+🎯 GOAL FOR LISTINGS UI
 
-15000–19999
+Professional search-bar style
 
-20000–25000
+Compact, side-by-side on desktop
 
-Above 25000
+Clean single-column on mobile
 
-Overall goal: Make filters look like a proper professional search bar layout (side-by-side, compact, clean)
+No empty unused space
 
-Meaning: Listings UI is NOT frozen yet. We will polish it next.
+CTA button balanced (not oversized)
 
-🧾 WHAT CHANGES WERE MADE (SUMMARY)
+⚠️ Listings UI MUST NOT be frozen until this is complete.
 
-A) GLOBAL MOBILE MENU SUPPORT (CSS)
+🧾 WHAT WE CHANGED SO FAR (TRACKING)
+A) Global Mobile Menu Support (CSS-Only)
 
-Supports multiple nav markup variants
+Handles multiple nav markup variants
 
-Uses body.nav-open / .menu.is-open
-
-Mobile dropdown positioned correctly
+Dropdown alignment fixed
 
 Full-width stacked links on mobile
 
-B) LISTINGS PAGE — HAMBURGER ALIGNMENT
+B) Listings Page — Hamburger Alignment
 
 Listings-scoped CSS override
 
-Space reserved for hamburger
-
 Brand collision reduced
-Result: Accepted (not perfect, OK)
 
-C) PRICING PAGE — CARD CLICK SELECTION
+Status: Accepted (not perfect, OK)
 
-Card-level + button-level click support
+C) Pricing Page — Selection Fix
 
-Single selected state enforced
+Card + button click logic
 
-Default Premium auto-selected
+Single selected state
 
-Visual highlight stable
+Premium default
 
-D) PRICING PAGE — CLARITY SECTION
+Highlight stable
+
+D) Pricing Clarity Section
 
 Option 2 + 3 merged
 
-Improves decision clarity without changing logic
+Improves understanding without logic change
 
-E) LEGAL PAGE FOOTER HOOKUP
+E) Legal Page Footer Hookup
 
 Internal links corrected
 
 Disclaimer aligned
 
-F) POST PROPERTY FLOW
+F) Post Property Flow
 
-Legal-safe wording
+Legal-safe copy
 
-Clear step order
+Clear steps
 
-Validation safety
+Validation checks
 
-Conversion-safe
+G) Listings Filters UI (Partial)
 
-G) LISTINGS FILTERS UI (IN PROGRESS)
+Core fields added
 
-City / Area / Type added
+Sorting removed
 
-Search CTA added
+CTA added
 
-Sorting removed intentionally
+Helper text bug fixed
+🟡 Final layout polish still pending
 
-Future-safe messaging present
-🟡 Needs final polish + rent range dropdown + dropdown visibility fix
+⏳ UPDATED PRIORITY QUEUE
+🟠 PRIORITY 1 — FINISH LISTINGS FILTER UI (NEXT)
 
-⚠️ All CSS changes are ADD-ONLY and must remain at the end of styles.css.
+Only active task
 
-⏳ PENDING TASKS (UPDATED PRIORITY)
-🟠 PRIORITY 1 — LISTINGS FILTER UI FINISH (NEXT)
+Steps:
 
-Goal: Filters should look professional + compact + responsive.
+Finalize compact filter layout
 
-To do next:
+Fix dropdown option visibility permanently
 
-Convert “Max Rent” input → Rent Range dropdown (your ranges)
+Replace rent input with Rent Range dropdown
 
-Fix dropdown option visibility (text should always be readable)
+Balance CTA size & alignment
 
-Finalize filter layout:
+Verify Desktop + Tablet + Mobile
 
-Side-by-side fields on desktop
-
-Single column on mobile
-
-No huge empty space
-
-CTA button aligned properly (not overly large)
-
-✅ After this step → Listings UI can be frozen
+✅ After this → FREEZE LISTINGS UI
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
+
+Start only after Listings freeze
 
 Google Search Console review
 
 On-page SEO audit
-⚠️ Start only after Listings UI is frozen
 
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
 
@@ -308,26 +307,26 @@ Customer Dashboard
 
 AI Listing Assistant
 
-Subscription Automation
+Subscription automation
 
-Analytics & Event Tracking
+Analytics & event tracking
 
-▶️ NEXT IMMEDIATE STEP (CONFIRMED)
+▶️ NEXT IMMEDIATE ACTION (CONFIRMED)
 
-👉 Finish Listings Filter UI
-Then freeze Listings UI.
-After freeze → SEO or backend planning.
+👉 Finish Listings Filters UI
+👉 Freeze Listings UI
+👉 Then move to SEO or backend planning
 
-🧠 EXECUTION RULE (REMINDER)
+🧠 FINAL EXECUTION RULE REMINDER
 
 ONE task at a time
 
-No parallel changes
+No parallel work
 
-Add-only safe patches
+Add-only CSS
 
-Never restructure HTML for nav/menu
+No nav HTML restructure
 
-If code required → paste-box format only
+Paste-box only for code
 
-END — v5.4.1 LOCKED
+END — MASTER v5.5 (READY FOR FUTURE USE)
