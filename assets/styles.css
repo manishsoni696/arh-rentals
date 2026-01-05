@@ -427,6 +427,17 @@ textarea.input:focus{
 
 /* ============ Hero / Home ============ */
 .hero{padding:54px 0 26px}
+/* ============ Listings: Hero spacing tighten (desktop/tablet/mobile) ============ */
+.listings-page .hero{
+  padding:28px 0 18px;
+}
+
+@media (max-width: 600px){
+  .listings-page .hero{
+    padding:22px 0 14px;
+  }
+}
+
 .hero h1{margin:0;font-size:34px;letter-spacing:.2px}
 .hero p{margin:10px 0 0;color:var(--muted)}
 
