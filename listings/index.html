@@ -5,6 +5,48 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Listings • ARH Rentals</title>
   <link rel="stylesheet" href="/assets/styles.css"/>
+
+  <style>
+    /* Listings Filters UI (scoped) */
+    .filters-ui .filters-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px 18px;
+      align-items:end;
+    }
+    .filters-ui .field{display:block}
+    .filters-ui .field .small{display:block;margin:0 0 6px}
+    .filters-ui .input{width:100%}
+
+    .filters-ui .filters-actions{
+      grid-column:1 / -1;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:12px;
+      margin-top:2px;
+    }
+    .filters-ui .filters-actions .btn{
+      width:auto;
+      min-width:240px;
+      padding:12px 18px;
+    }
+
+    /* Fix dropdown text visibility */
+    .filters-ui select.input{
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+    }
+    .filters-ui select.input option{
+      color:#0b0f14;
+      background:#ffffff;
+    }
+
+    @media (max-width: 820px){
+      .filters-ui .filters-grid{grid-template-columns:1fr}
+      .filters-ui .filters-actions .btn{min-width:100%}
+    }
+  </style>
 </head>
 <body>
 <header class="site-header">
@@ -48,65 +90,61 @@
 <main class="container">
   <section class="hero">
     <h1>Hisar Rentals</h1>
-    <p class="sub">Browse rental listings and filter by city, area, property type, and budget. Contact details unlock (future update).</p>
+    <p>Premium listings with clean filters + sorting. Contact details unlock via plans (coming soon).</p>
   </section>
 
   <div class="grid">
-    <!-- FILTERS (2-COLUMN STRUCTURE WRAP) -->
-<aside class="card">
-  <div class="card-body">
+    <aside class="card">
+      <div class="card-body filters-ui">
+        <h2>Filters</h2>
+        <div class="hr"></div>
 
-    <h2>Filters</h2>
-    <div class="hr"></div>
+        <div class="filters-grid">
+          <label class="field">
+            <span class="small">City</span>
+            <select class="input" id="fCity">
+              <option value="hisar">Hisar</option>
+            </select>
+          </label>
 
-    <!-- GRID WRAPPER -->
-    <div class="filters-grid">
+          <label class="field">
+            <span class="small">Property Type</span>
+            <select class="input" id="fType">
+              <option value="">Any</option>
+              <option value="House">House</option>
+              <option value="Shop">Shop</option>
+              <option value="Office">Office</option>
+            </select>
+          </label>
 
-      <!-- LEFT COLUMN -->
-      <div class="filter-col">
-        <div class="small">City</div>
-        <select class="input" id="fCity">
-          <option value="hisar">Hisar</option>
-        </select>
+          <label class="field">
+            <span class="small">Area / Sector</span>
+            <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town"/>
+          </label>
 
-        <div style="height:12px"></div>
+          <label class="field">
+            <span class="small">Rent Range</span>
+            <select class="input" id="fRent">
+              <option value="">Any</option>
+              <option value="0-10000">Up to ₹10,000</option>
+              <option value="10001-14999">₹10,001 – ₹14,999</option>
+              <option value="15000-19999">₹15,000 – ₹19,999</option>
+              <option value="20000-25000">₹20,000 – ₹25,000</option>
+              <option value="25001+">Above ₹25,000</option>
+            </select>
+          </label>
 
-        <div class="small">Area / Sector</div>
-        <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town"/>
+          <div class="filters-actions">
+            <button class="btn btn-primary" type="button">Search Properties</button>
+          </div>
+        </div>
+
+        <div class="small muted" style="margin-top:10px">
+          Filters are UI-ready. Live search will be enabled in a future update.
+        </div>
       </div>
+    </aside>
 
-      <!-- RIGHT COLUMN -->
-      <div class="filter-col">
-        <div class="small">Property Type</div>
-        <select class="input" id="fType">
-          <option value="">Any</option>
-          <option value="House">House</option>
-          <option value="Shop">Shop</option>
-          <option value="Office">Office</option>
-        </select>
-
-        <div style="height:12px"></div>
-
-        <div class="small">Max Rent (₹)</div>
-        <input class="input" id="fMax" placeholder="e.g. 15000"/>
-      </div>
-
-    </div>
-
-    <div class="hr"></div>
-
-    <button class="btn btn-primary" type="button">
-      Search Properties
-    </button>
-
-    <div class="small muted" style="margin-top:8px">
-      Filters are UI-ready. Live search will be enabled in a future update.
-    </div>
-
-  </div>
-</aside>
-
-    <!-- LISTINGS -->
     <section class="card">
       <div class="card-body">
         <h2>Listings</h2>
@@ -124,7 +162,9 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
+            <div class="small muted" style="margin-top:6px">
+              Contact details unlock will be available in a future update.
+            </div>
           </div>
 
           <div class="listing" data-rent="18000">
@@ -138,7 +178,9 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
+            <div class="small muted" style="margin-top:6px">
+              Contact details unlock will be available in a future update.
+            </div>
           </div>
 
           <div class="listing" data-rent="6500">
@@ -152,13 +194,15 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
+            <div class="small muted" style="margin-top:6px">
+              Contact details unlock will be available in a future update.
+            </div>
           </div>
         </div>
 
         <div class="hr"></div>
         <div class="notice">
-          Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
+          Filters + sorting UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
         </div>
       </div>
     </section>
