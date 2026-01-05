@@ -2131,6 +2131,19 @@ Add-only patch for /listings/index.html
 .filters-ui .small.muted{
   margin-top:10px;
 }
+/* LISTINGS FILTERS — FORCE HELPER TEXT BELOW (ADD-ONLY) */
+
+/* Make filters grid a column flow anchor */
+.filters-ui .filters-grid{
+  align-items:start;
+}
+
+/* Helper text always full-width & below */
+.filters-ui .small.muted{
+  grid-column: 1 / -1;
+  display:block;
+  margin-top:12px;
+}
 
 
 
