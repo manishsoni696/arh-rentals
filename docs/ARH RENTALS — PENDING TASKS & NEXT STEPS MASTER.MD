@@ -1,7 +1,7 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.4)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.4.1)
 
 Last Updated: Jan 2026
-Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING CARD SELECTION FIXED + ✅ PRICING CLARITY SECTION + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED + ✅ LISTINGS UI STABLE
+Status: 🔒 CORE STABLE + ✅ OTP HARDENING + ✅ PRICING CARD SELECTION FIXED + ✅ PRICING CLARITY SECTION + ✅ LEGAL HOOKUP + ✅ POST FLOW AUDITED + 🟡 LISTINGS FILTER UI IMPROVED (IN PROGRESS)
 
 ✅ COMPLETED / LOCKED (DO NOT TOUCH)
 1) Working Rules & Process
@@ -42,7 +42,7 @@ Legal ✅
 
 Post Property ✅
 
-Strategy locked
+Strategy locked:
 
 ❌ No HTML restructure
 
@@ -119,8 +119,6 @@ Pricing Clarity Section added (Option 2 + 3 merged):
 
 “Important before you select”
 
-Pricing selection + UX flow stable
-
 Mobile + Tablet + Desktop verified
 
 Legal-safe, conversion-clear, rule-compliant
@@ -149,9 +147,7 @@ Frontend validation safety applied
 
 Footer links & disclaimer aligned
 
-Mobile + Tablet + Desktop UX verified
-
-No OTP / pricing / CSS logic touched
+Mobile + Tablet + Desktop verified
 🚫 Locked unless posting features change
 
 11) Home Page Status — ✅ READY & STABLE
@@ -163,30 +159,51 @@ Hero + CTA hierarchy stable
 Mobile + Tablet + Desktop verified
 🚫 Locked unless brand direction changes
 
-12) Listings Page UI — ✅ STABLE & FUTURE-READY (NEW)
+🟡 LISTINGS PAGE — CURRENT STATUS (IN PROGRESS, NOT FROZEN YET)
+12) Listings Page Filters UI — PARTIALLY IMPROVED
 
-Filters updated to City / Area / Property Type / Max Rent
+What we already changed (DONE):
 
-Sorting intentionally removed (future feature)
+Filters shifted away from PIN based intent → now more realistic:
+
+City
+
+Area / Sector
+
+Property Type
 
 “Search Properties” CTA added (UI-only)
 
-Clear messaging: filters are UI-ready, backend coming later
+Sorting removed for now (as requested)
 
-“Unlock Details” controlled with future-safe note
+Future-safe note present: “Live search later”
 
-Mobile + Tablet + Desktop balanced
+“Unlock Details” shows a future note (only)
 
-No false promises / no misleading claims
+Problem still visible (NOT DONE yet):
 
-🚫 Listings Page UI is now FROZEN
-Further changes only when:
+Layout still not perfect: filter card is too wide / spacing not fully professional
 
-Real listings API is connected
+Dropdown items visibility issue (options look white / hard to read)
 
-Unlock logic is actually implemented
+Rent input needs to be converted into Rent Range dropdown with your exact ranges:
+
+10000
+
+10001–14999
+
+15000–19999
+
+20000–25000
+
+Above 25000
+
+Overall goal: Make filters look like a proper professional search bar layout (side-by-side, compact, clean)
+
+Meaning: Listings UI is NOT frozen yet. We will polish it next.
 
 🧾 WHAT CHANGES WERE MADE (SUMMARY)
+
 A) GLOBAL MOBILE MENU SUPPORT (CSS)
 
 Supports multiple nav markup variants
@@ -238,33 +255,48 @@ Validation safety
 
 Conversion-safe
 
-G) LISTINGS PAGE FILTER UX (NEW)
+G) LISTINGS FILTERS UI (IN PROGRESS)
 
-City / Area / Type / Rent based filters
+City / Area / Type added
 
 Search CTA added
 
-Future-safe messaging
-
 Sorting removed intentionally
+
+Future-safe messaging present
+🟡 Needs final polish + rent range dropdown + dropdown visibility fix
 
 ⚠️ All CSS changes are ADD-ONLY and must remain at the end of styles.css.
 
 ⏳ PENDING TASKS (UPDATED PRIORITY)
-🟠 PRIORITY 1 — UI POLISH (OPTIONAL, VERY LIMITED)
+🟠 PRIORITY 1 — LISTINGS FILTER UI FINISH (NEXT)
 
-Minor spacing / alignment refinements only if needed
+Goal: Filters should look professional + compact + responsive.
 
-❌ No logic changes
+To do next:
 
-❌ No new features
+Convert “Max Rent” input → Rent Range dropdown (your ranges)
+
+Fix dropdown option visibility (text should always be readable)
+
+Finalize filter layout:
+
+Side-by-side fields on desktop
+
+Single column on mobile
+
+No huge empty space
+
+CTA button aligned properly (not overly large)
+
+✅ After this step → Listings UI can be frozen
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
 
 Google Search Console review
 
 On-page SEO audit
-⚠️ Deferred until UI is fully frozen (almost there)
+⚠️ Start only after Listings UI is frozen
 
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
 
@@ -280,15 +312,11 @@ Subscription Automation
 
 Analytics & Event Tracking
 
-▶️ NEXT IMMEDIATE STEP (RECOMMENDED)
+▶️ NEXT IMMEDIATE STEP (CONFIRMED)
 
-👉 UI FREEZE CONFIRMATION
-After this, move to:
-
-SEO (GSC + on-page)
-OR
-
-Backend integration planning
+👉 Finish Listings Filter UI
+Then freeze Listings UI.
+After freeze → SEO or backend planning.
 
 🧠 EXECUTION RULE (REMINDER)
 
@@ -300,6 +328,6 @@ Add-only safe patches
 
 Never restructure HTML for nav/menu
 
-If code is required → paste-box format only
+If code required → paste-box format only
 
-END — v5.4 LOCKED
+END — v5.4.1 LOCKED
