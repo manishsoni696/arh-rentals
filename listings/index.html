@@ -52,52 +52,59 @@
   </section>
 
   <div class="grid">
-    <!-- FILTERS -->
-    <aside class="card">
-      <div class="card-body">
-        <h2>Filters</h2>
-        <div class="hr"></div>
+    <!-- FILTERS (2-COLUMN STRUCTURE WRAP) -->
+<aside class="card">
+  <div class="card-body">
 
-        <form class="filters-form" action="#" onsubmit="return false;">
-          <div class="filter-field">
-            <div class="small">City</div>
-            <select class="input" id="fCity" name="city">
-              <option value="hisar">Hisar</option>
-            </select>
-          </div>
+    <h2>Filters</h2>
+    <div class="hr"></div>
 
-          <div class="filter-field">
-            <div class="small">Area / Sector</div>
-            <input class="input" id="fArea" name="area" placeholder="e.g. Sector 14, Model Town"/>
-          </div>
+    <!-- GRID WRAPPER -->
+    <div class="filters-grid">
 
-          <div class="filter-field">
-            <div class="small">Property Type</div>
-            <select class="input" id="fType" name="type">
-              <option value="">Any</option>
-              <option value="House">House</option>
-              <option value="Shop">Shop</option>
-              <option value="Office">Office</option>
-            </select>
-          </div>
+      <!-- LEFT COLUMN -->
+      <div class="filter-col">
+        <div class="small">City</div>
+        <select class="input" id="fCity">
+          <option value="hisar">Hisar</option>
+        </select>
 
-          <div class="filter-field">
-            <div class="small">Max Rent (₹)</div>
-            <input class="input" id="fMax" name="maxRent" placeholder="e.g. 15000"/>
-          </div>
+        <div style="height:12px"></div>
 
-          <div class="hr"></div>
-
-          <button class="btn btn-primary" type="button">
-            Search Properties
-          </button>
-
-          <div class="small muted" style="margin-top:10px">
-            Filters are UI-ready. Live search will be enabled in a future update.
-          </div>
-        </form>
+        <div class="small">Area / Sector</div>
+        <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town"/>
       </div>
-    </aside>
+
+      <!-- RIGHT COLUMN -->
+      <div class="filter-col">
+        <div class="small">Property Type</div>
+        <select class="input" id="fType">
+          <option value="">Any</option>
+          <option value="House">House</option>
+          <option value="Shop">Shop</option>
+          <option value="Office">Office</option>
+        </select>
+
+        <div style="height:12px"></div>
+
+        <div class="small">Max Rent (₹)</div>
+        <input class="input" id="fMax" placeholder="e.g. 15000"/>
+      </div>
+
+    </div>
+
+    <div class="hr"></div>
+
+    <button class="btn btn-primary" type="button">
+      Search Properties
+    </button>
+
+    <div class="small muted" style="margin-top:8px">
+      Filters are UI-ready. Live search will be enabled in a future update.
+    </div>
+
+  </div>
+</aside>
 
     <!-- LISTINGS -->
     <section class="card">
