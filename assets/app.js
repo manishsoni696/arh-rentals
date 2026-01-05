@@ -512,12 +512,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const areaInput = document.getElementById("fArea");
   const areaPanel = document.getElementById("areaPanel");
-  const moreBtn = document.getElementById("areaExpandBtn"); // ✅ FIX: correct button id
+  const moreBtn = document.getElementById("areaExpandBtn");
   const allWrap = document.getElementById("areaAllWrap");
+  const allOptions = document.getElementById("areaAllOptions");
+  const dataList = document.getElementById("hisarAreas");
 
   if (!areaInput || !areaPanel) return;
 
   let isOpen = false;
+  let allBuilt = false;
 
   function openPanel() {
     if (isOpen) return;
@@ -532,6 +535,39 @@ document.addEventListener("DOMContentLoaded", () => {
     areaPanel.hidden = true;
     areaInput.setAttribute("aria-expanded", "false");
     if (allWrap) allWrap.hidden = true;
+    if (moreBtn) moreBtn.textContent = "More Areas";
+  }
+
+  function buildAllAreasOnce() {
+    if (allBuilt) return;
+    if (!allOptions || !dataList) return;
+
+    const top = new Set(
+      Array.from(areaPanel.querySelectorAll(".area-opt")).map((b) =>
+        (b.dataset.value || b.textContent || "").trim()
+      )
+    );
+
+    const values = Array.from(dataList.querySelectorAll("option"))
+      .map((o) => (o.value || "").trim())
+      .filter(Boolean);
+
+    const unique = Array.from(new Set(values));
+
+    const frag = document.createDocumentFragment();
+    unique.forEach((val) => {
+      if (top.has(val)) return;
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "area-opt";
+      b.dataset.value = val;
+      b.textContent = val;
+      frag.appendChild(b);
+    });
+
+    allOptions.innerHTML = "";
+    allOptions.appendChild(frag);
+    allBuilt = true;
   }
 
   // Open on focus / click
@@ -546,16 +582,17 @@ document.addEventListener("DOMContentLoaded", () => {
     closePanel();
   });
 
-  // ✅ More Areas toggle
+  // More Areas toggle
   if (moreBtn && allWrap) {
     moreBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
 
+      openPanel();
+      buildAllAreasOnce();
+
       const show = allWrap.hidden === true;
       allWrap.hidden = !show;
-
-      // optional button text toggle
       moreBtn.textContent = show ? "Less Areas" : "More Areas";
     });
   }
