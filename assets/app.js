@@ -877,3 +877,50 @@ document.addEventListener("DOMContentLoaded", () => {
     sync();
   });
 })();
+/* =====================================
+   LISTINGS FILTERS — AUTO APPLY (UI)
+===================================== */
+
+(function(){
+  const form = document.getElementById("filtersForm");
+  const listings = document.querySelectorAll(".listing");
+  if(!form || !listings.length) return;
+
+  function applyFilters(){
+    const type = form.fType.value;
+    const rent = form.fRent.value;
+
+    listings.forEach(item=>{
+      let show = true;
+
+      if(type && !item.innerText.includes(type)) show = false;
+
+      if(rent){
+        const [min,max] = rent.split("-");
+        const r = Number(item.dataset.rent || 0);
+        if(max){
+          if(r < Number(min) || r > Number(max)) show = false;
+        }else{
+          if(r < Number(min)) show = false;
+        }
+      }
+
+      item.style.display = show ? "flex" : "none";
+    });
+  }
+
+  form.addEventListener("change", applyFilters);
+
+  /* More Filters toggle */
+  const btn = document.getElementById("moreFiltersBtn");
+  const ui = document.querySelector(".filters-ui");
+  if(btn && ui){
+    btn.addEventListener("click", ()=>{
+      ui.classList.toggle("show-more");
+      btn.textContent = ui.classList.contains("show-more")
+        ? "− Less Filters"
+        : "+ More Filters";
+    });
+  }
+})();
+
