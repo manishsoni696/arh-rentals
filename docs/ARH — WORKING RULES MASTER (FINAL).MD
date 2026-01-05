@@ -1,188 +1,300 @@
-# ARH — WORKING RULES MASTER (FINAL)
+🔐 ARH — WORKING RULES MASTER (FINAL v2.0)
+⚠️ THIS IS A HARD RULEBOOK
 
-⚠️ **THIS IS A HARD RULEBOOK**
+This document defines exactly how work must be done on ARH / ARH Rentals projects.
+Any chat, AI, or developer MUST follow this word-by-word.
 
-This document defines **how work must be done** on ARH / ARH Rentals projects.
-Any chat, expert, or AI **must follow this exactly**.
+If there is any confusion, THIS FILE OVERRIDES EVERYTHING.
 
----
+1️⃣ COMMUNICATION & FLOW RULES (MANDATORY)
 
-## 1️⃣ COMMUNICATION RULES (MANDATORY)
+✅ SINGLE CHAT only
 
-* Work will be done in **SINGLE CHAT only**
-* ❌ No multiple expert chats
-* ❌ No master-controller system
-* ✅ One task at a time
-* ✅ One step at a time
+❌ No multiple expert chats
+
+❌ No master-controller system
+
+❌ No parallel problem solving
+
+✅ One task at a time
+
+✅ One step at a time
+
+Working sequence rule:
+
+Finish → Verify → Lock → Move to next
 
 If multiple issues exist:
-→ **Fix sequentially, never parallel**
+→ Solve sequentially, NEVER together
 
----
+2️⃣ TEACHING & EXPLANATION STYLE (OWNER PREFERENCE — LOCKED)
 
-## 2️⃣ CODE DELIVERY RULES (VERY STRICT)
+This is CRITICAL.
 
-* ❌ NEVER write raw code in normal chat text
-* ✅ ALL code must be given **ONLY inside a clearly marked paste box**
+✅ Explain ONE STEP at a time
 
-### Required format:
+❌ Never dump multiple steps together
 
-```
+❌ Never assume previous steps are done
+
+✅ Wait for explicit CONFIRM / DONE before next step
+
+If the owner says “KUCH SAMAJH NHI AYA”:
+→ Restart explanation in simpler, smaller steps
+→ No ego, no rushing
+
+3️⃣ CODE DELIVERY RULES (VERY STRICT)
+
+❌ NEVER write raw code in normal chat text
+
+✅ ALL code must be inside ONE clear paste box
+
+REQUIRED FORMAT (NON-NEGOTIABLE)
 ----------------------------
 PASTE THIS CODE:
-<code only>
+<code only, nothing else>
 ----------------------------
 
 PASTE LOCATION (TEXT ONLY):
 - File name
-- Exact section / where to paste
-```
+- Exact section / exact line / exact selector
+- Add / Replace / Delete (clearly mentioned)
 
-* ❌ No explanation inside code
-* ❌ No mixed text + code
+ABSOLUTE RULES
 
-If **no code is required**, reply ONLY:
+❌ No explanation inside code
 
-> **NO CODE CHANGE REQUIRED**
+❌ No mixed text + code
 
----
+❌ No “paste here somewhere” type instructions
 
-## 3️⃣ FILE SAFETY RULES
+If NO code is required, reply ONLY:
 
-* ❌ NO deletions
-* ❌ NO restructuring
-* ❌ NO renaming files
-* ❌ NO changing architecture
+NO CODE CHANGE REQUIRED
 
-Allowed actions:
+4️⃣ FILE & ARCHITECTURE SAFETY RULES
 
-* ✅ Additions
-* ✅ Improvements
-* ✅ Polishing
+By default:
 
-Everything must be **ADD-ONLY unless explicitly approved**.
+❌ NO deletions
 
----
+❌ NO restructuring
 
-## 4️⃣ RESPONSIVENESS (NON‑NEGOTIABLE)
+❌ NO renaming files
+
+❌ NO changing architecture
+
+Allowed ONLY unless explicitly approved:
+
+✅ Additions
+
+✅ Improvements
+
+✅ Polishing
+
+DELETION RULE (SPECIAL)
+
+If something must be deleted:
+
+AI must announce deletion FIRST
+
+Explain WHY
+
+Get explicit approval
+
+Then and only then → delete
+
+5️⃣ ONE FILE RULE (STRICT)
+
+✅ ONE STEP = ONE FILE
+
+❌ Never give multiple files in one step
+
+❌ Never mix HTML + CSS + JS together
+
+Examples:
+
+Step = listings/index.html → ONLY that file
+
+Step = styles.css → ONLY that file
+
+6️⃣ RESPONSIVENESS (NON-NEGOTIABLE)
 
 Every change must work on:
 
-* 📱 Mobile
-* 💻 Desktop
-* 📟 Tablet
+📱 Mobile
 
-If responsiveness is not ensured → **task is invalid**.
+💻 Desktop
 
----
+📟 Tablet
 
-## 5️⃣ SEO & CONTENT RULES
+If responsiveness is not verified:
+→ Task is INVALID
 
-* ❌ No SEO unless explicitly asked
-* ❌ No keyword stuffing
-* ❌ No schema / backlinks unless approved
+7️⃣ PERFORMANCE & BLOAT RULES
 
-When SEO is asked:
+❌ No unnecessary CSS duplication
 
-* ✅ Clean
-* ✅ Minimal
-* ✅ Logical
+❌ No heavy JS
 
----
+❌ No animation abuse
 
-## 6️⃣ BUSINESS LANGUAGE RULES (CRITICAL)
+❌ No framework injection
 
-**FORBIDDEN WORDS (ANYWHERE):**
+Guideline:
 
-* verified
-* guaranteed
-* assured
-* trusted (in promise sense)
-* confirmed tenant
+Clean CSS > Smart layout > Minimum JS
 
-**MANDATORY POSITIONING:**
+8️⃣ SEO & CONTENT RULES
 
-* Information‑only platform
-* No broker
-* No mediator
-* No responsibility for deals
+❌ No SEO unless explicitly asked
 
-This must be respected in:
+❌ No keyword stuffing
 
-* UI text
-* Legal
-* FAQs
-* Buttons
-* Notices
+❌ No schema, backlinks, hacks unless approved
 
----
+When SEO is requested:
 
-## 7️⃣ OTP & AUTH RULES (LOCKED)
+✅ Clean
 
-* OTP is **for login only**
-* ❌ OTP ≠ verification
+✅ Minimal
 
-### Default rules:
+✅ Logical
 
-* OTP validity: **5 minutes**
-* Resend cooldown: **60 seconds**
-* Max OTP: **3 in 4 hours**
-* Max wrong attempts: **5**
-* Block duration: **15 minutes** (progressive)
+✅ Long-term safe
 
-### Session rule:
+9️⃣ BUSINESS LANGUAGE RULES (CRITICAL)
+🚫 FORBIDDEN WORDS (ANYWHERE)
 
-* Same device + active session → **NO OTP again**
-* PIN login allowed
+verified
 
----
+guaranteed
 
-## 8️⃣ PRICING & PLANS RULES
+assured
 
-* 1 plan = 1 property
-* Multiple properties = multiple plans
-* No lifetime plans
-* No unlimited listings
-* Expiry = listing hidden
+trusted (promise sense)
 
-Future plans must be marked:
+confirmed tenant
 
-> **REFERENCE ONLY — NOT ACTIVE**
+✅ MANDATORY POSITIONING
 
----
+Information-only platform
 
-## 9️⃣ UI / UX RULES
+No broker
 
-* Premium SaaS feel
-* No clutter
-* No oversized elements
-* Balanced spacing
-* Clear hierarchy
+No mediator
 
-If something "looks off" → it must be fixed.
+No responsibility for deals
 
----
+This applies to:
 
-## 🔟 DECISION AUTHORITY
+UI text
 
-* Business logic = **OWNER FINAL**
-* AI must:
+Buttons
 
-  * Ask before assuming
-  * Never override business intent
+Legal
 
----
+FAQs
 
-## ✅ FINAL STATEMENT
+Notices
 
-This document is the **ONLY working authority** for:
+Pricing copy
 
-* All future chats
-* All developers
-* All AI assistance
+🔟 OTP & AUTH RULES (LOCKED)
 
-If a rule conflicts with suggestions → **RULE WINS**.
+OTP = login/session confirmation only
 
----
+❌ OTP ≠ verification
 
-📌 **END OF FILE — DO NOT MODIFY WITHOUT OWNER APPROVAL**
+Default rules:
+
+OTP validity: 5 minutes
+
+Resend cooldown: 60 seconds
+
+Max OTP: 3 in 4 hours
+
+Max wrong attempts: 5
+
+Block duration: 15 minutes (progressive)
+
+Session rule:
+
+Same device + active session → NO OTP
+
+PIN login allowed
+
+1️⃣1️⃣ PRICING & PLANS RULES
+
+1 plan = 1 property
+
+Multiple properties = multiple plans
+
+No lifetime plans
+
+No unlimited listings
+
+Expiry = listing hidden
+
+Any future plans MUST be marked:
+
+REFERENCE ONLY — NOT ACTIVE
+
+1️⃣2️⃣ UI / UX RULES
+
+Premium SaaS feel
+
+No clutter
+
+No oversized elements
+
+Balanced spacing
+
+Clear hierarchy
+
+If owner says:
+
+“LOOK ACHI NHI LAG RHI”
+
+→ Fix is MANDATORY, debate not allowed.
+
+1️⃣3️⃣ DECISION AUTHORITY (FINAL)
+
+Business logic = OWNER FINAL
+
+AI must:
+
+Ask before assuming
+
+Never override business intent
+
+Never force “best practice” against owner’s rule
+
+1️⃣4️⃣ CHANGE MEMORY & TRANSFER RULE
+
+Any confirmed working style
+
+Any approved execution pattern
+
+→ Must be remembered and transferred to:
+
+New chat
+
+New task
+
+New phase
+
+✅ FINAL STATEMENT
+
+This file is the ONLY WORKING AUTHORITY for:
+
+All future chats
+
+All developers
+
+All AI assistance
+
+If any suggestion conflicts with this file:
+→ THIS FILE WINS
+
+📌 END OF FILE — DO NOT MODIFY WITHOUT OWNER APPROVAL
