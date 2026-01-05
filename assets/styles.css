@@ -2203,6 +2203,14 @@ Add-only patch for /listings/index.html
 .listings-page .filters-ui > .small.muted{
   display:none !important;
 }
+/* LISTINGS PAGE — REMOVE INLINE STYLES (ADD-ONLY) */
+.listings-page #listingWrap{
+  margin-top:12px;
+}
+
+.listings-page .listing-note{
+  margin-top:6px;
+}
 
 
 
