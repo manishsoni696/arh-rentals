@@ -2118,6 +2118,20 @@ Add-only patch for /listings/index.html
   .filters-ui .filters-grid{grid-template-columns:1fr}
   .filters-ui .filters-actions .btn{min-width:100%}
 }
+/* LISTINGS — INLINE STYLE REPLACEMENT (ADD-ONLY) */
+
+#listingWrap{
+  margin-top:12px;
+}
+
+.listing .small.muted{
+  margin-top:6px;
+}
+
+.filters-ui .small.muted{
+  margin-top:10px;
+}
+
 
 
 
