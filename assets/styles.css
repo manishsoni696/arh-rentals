@@ -2728,13 +2728,6 @@ grid-template-columns: 1fr !important;
 ================================ */
 
 /* Main layout */
-.listings-page-layout{
-  display:grid;
-  grid-template-columns:280px 1fr;
-  gap:18px;
-  align-items:start;
-}
-
 @media(max-width:900px){
   .listings-page-layout{
     grid-template-columns:1fr;
@@ -2819,17 +2812,8 @@ grid-template-columns: 1fr !important;
 }
 
 /* ===== LAYOUT ===== */
-.listings-page-layout{
-  display:grid;
-  grid-template-columns:280px 1fr;
-  gap:18px;
-  align-items:start;
-}
 
 @media (max-width: 900px){
-  .listings-page-layout{
-    grid-template-columns:1fr;
-  }
 }
 
 /* ===== FILTER CARD ===== */
