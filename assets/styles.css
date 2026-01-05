@@ -2211,6 +2211,178 @@ Add-only patch for /listings/index.html
 .listings-page .listing-note{
   margin-top:6px;
 }
+PASTE THIS CODE:
+/* ================================
+   LISTINGS (STEP-2) — PRO SIDEBAR FILTERS UI
+   CSS ONLY • Scope: Listings page only
+   NOTE: Keep PRICING FINAL OVERRIDE as the LAST block in the file.
+================================ */
+
+/* Layout: Left filters + right listings */
+.listings-page .listings-layout{
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items:start;
+}
+
+/* Sidebar card sticky (desktop) */
+@media (min-width: 901px){
+  .listings-page .filters-card{
+    position: sticky;
+    top: 92px;
+  }
+}
+
+/* Head row */
+.listings-page .filters-ui .filters-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.listings-page .filters-ui .filters-head h2{
+  margin:0;
+}
+
+.listings-page .filters-ui .filters-head-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* Collapse button (shown on mobile; JS later) */
+.listings-page .filters-collapse-btn{
+  display:none;
+  width:100%;
+  margin:12px 0 0;
+}
+
+/* Panel spacing */
+.listings-page .filters-panel{
+  margin-top: 14px;
+}
+
+/* Form + groups */
+.listings-page .filters-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.listings-page .filter-group{
+  border:1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.listings-page .filter-group legend{
+  padding: 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .2px;
+}
+
+.listings-page .filter-group .field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin: 10px 0 0;
+}
+
+/* Inputs (Listings-only safety) */
+.listings-page .filters-ui .input{
+  width:100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  outline: none;
+}
+
+.listings-page .filters-ui .input::placeholder{
+  color: rgba(255,255,255,.55);
+}
+
+.listings-page .filters-ui .input:focus{
+  border-color: rgba(29,161,242,.55);
+  box-shadow: 0 0 0 3px rgba(29,161,242,.16);
+}
+
+/* Dropdown readability */
+.listings-page .filters-ui select.input option{
+  background:#ffffff;
+  color:#0b0f14;
+}
+
+/* Amenities pills */
+.listings-page .amenities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 10px;
+}
+
+.listings-page .amenity{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  color: rgba(255,255,255,.82);
+  cursor:pointer;
+  user-select:none;
+}
+
+.listings-page .amenity input{
+  accent-color: var(--blue2);
+}
+
+/* Footer actions */
+.listings-page .filters-footer{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-top: 2px;
+}
+
+.listings-page .filters-footer .btn{
+  width: 100%;
+  min-height: 48px;
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: .15px;
+}
+
+/* Listings head */
+.listings-page .listings-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .listings-page .listings-layout{
+    grid-template-columns: 1fr;
+  }
+
+  .listings-page .filters-card{
+    position: relative;
+    top:auto;
+  }
+
+  .listings-page .filters-collapse-btn{
+    display:inline-flex;
+  }
+}
 
 
 
