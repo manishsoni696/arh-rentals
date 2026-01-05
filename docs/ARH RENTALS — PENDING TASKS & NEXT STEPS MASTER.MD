@@ -1,26 +1,39 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.6)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.7)
 
 Last Updated: Jan 2026
-Overall Status:
+
+OVERALL GOAL (NON-NEGOTIABLE)
+✅ Website visually premium ho
+✅ Fast load ho (no bloat)
+✅ SEO-friendly ho
+✅ Mobile + Tablet + Desktop perfect ho
+✅ No technical compromise — jo zarurat ho, wo change hoga
+
+OVERALL STATUS
 🔒 Core Stable
 ✅ Auth + Pricing + Legal + Post Flow Locked
-🟡 Listings UI FINALIZATION IN PROGRESS
+🟡 Listings UI FINALIZATION IN PROGRESS (ACTIVE)
 ⏳ SEO & Backend Planning Deferred
 
+--------------------------------------------------
 ✅ COMPLETED & LOCKED (DO NOT TOUCH)
+--------------------------------------------------
+
 1) Working Rules & Execution Process — 🔒 LOCKED
 
 Rules Master finalized (Manish working style)
 
 Paste-box only code delivery rule enforced
 
-Add-only policy strictly followed
+One step = one file = one paste box
 
 Mobile + Tablet + Desktop mandatory
 
 Single-chat workflow confirmed
 
+--------------------------------------------------
 2) Core UI Foundation — 🔒 LOCKED
+--------------------------------------------------
 
 Dark SaaS-style theme finalized
 
@@ -32,38 +45,40 @@ Button system standardized
 
 Card system finalized
 
-3) Mobile Menu (NAV) — 🔒 LOCKED
+--------------------------------------------------
+3) Mobile Menu (NAV) — 🔒 LOGIC LOCKED
+--------------------------------------------------
 
 Status: Stable & acceptable
 
 Working on:
-
 Home ✅
-
 Pricing ✅
-
 Listings ✅
-
 Legal ✅
-
 Post Property ✅
 
-Strategy Locked:
+IMPORTANT CLARIFICATION:
+❌ Random nav/menu rewrite NOT allowed
+❌ Breaking existing nav logic NOT allowed
 
-❌ No HTML restructure
+BUT:
+✅ HTML changes allowed (if planned)
+✅ CSS changes allowed
+✅ JS changes allowed (if minimal & controlled)
 
-❌ No new JS toggles
+NAV STRATEGY (LOCKED LOGIC):
+- JS toggles only:
+  body.nav-open
+  .menu.is-open
+- No heavy JS
+- No framework
 
-✅ CSS is single source of truth
-JS only toggles:
-
-body.nav-open
-
-.menu.is-open
-
+--------------------------------------------------
 4) Authentication Philosophy — 🔒 LOCKED
+--------------------------------------------------
 
-OTP is session confirmation only
+OTP = session confirmation only
 
 PIN login allowed
 
@@ -71,7 +86,9 @@ No “verification / approval” language
 
 Limits & cooldowns finalized
 
+--------------------------------------------------
 5) Pricing Page — Card Selection — 🔒 LOCKED
+--------------------------------------------------
 
 Card + button click both work
 
@@ -84,9 +101,12 @@ Visual highlight stable
 Final CSS override locked at END of styles.css
 
 All breakpoints verified
+
 🚫 Revisit only if business model changes
 
+--------------------------------------------------
 6) Session & OTP Backend Validation — ✅ DONE
+--------------------------------------------------
 
 60s resend cooldown
 
@@ -100,7 +120,9 @@ PIN restriction enforced
 
 Same-device session supported
 
+--------------------------------------------------
 7) OTP Security Hardening — ✅ DONE
+--------------------------------------------------
 
 OTP single-use enforced
 
@@ -112,7 +134,9 @@ Replay protection
 
 Session expiry strategy deferred (future)
 
+--------------------------------------------------
 8) Plans / Pricing Page UX — 🔒 LOCKED
+--------------------------------------------------
 
 Clear rule: 1 Plan = 1 Property
 
@@ -121,14 +145,14 @@ No broker / no deal guarantee copy placed
 “Next Step” guidance added
 
 Pricing Clarity section finalized:
-
-Which plan is right for you?
-
-Important before you select
+- Which plan is right for you?
+- Important before you select
 
 Conversion-safe & legal-safe
 
+--------------------------------------------------
 9) Legal Page — 🔒 LOCKED
+--------------------------------------------------
 
 Footer links corrected (absolute paths)
 
@@ -138,11 +162,14 @@ No banned words
 
 Responsive verified
 
+--------------------------------------------------
 10) Post Property Page — 🔒 LOCKED
+--------------------------------------------------
 
 File: /post/index.html
 
-Clear flow: PIN → OTP → Property → Plan
+Clear flow:
+PIN → OTP → Property → Plan
 
 No misleading language
 
@@ -152,7 +179,9 @@ Footer + disclaimer aligned
 
 Responsive verified
 
+--------------------------------------------------
 11) Home Page — 🔒 LOCKED
+--------------------------------------------------
 
 UI finalized
 
@@ -160,20 +189,19 @@ Hero & CTA hierarchy stable
 
 Responsive verified
 
+--------------------------------------------------
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
+--------------------------------------------------
+
 12) Listings Filters UI — IN PROGRESS (NOT FROZEN)
 
-✅ What is DONE
+✅ WHAT IS DONE
 
 Filters redesigned to be realistic:
-
-City
-
-Area / Sector
-
-Property Type
-
-Rent Range dropdown (exact ranges structure approved)
+- City
+- Area / Sector
+- Property Type
+- Rent Range dropdown (structure approved)
 
 Sorting intentionally removed
 
@@ -182,168 +210,80 @@ Sorting intentionally removed
 “Unlock Details” future note present (inside each listing card)
 
 Helper text bug fixed:
+- “Filters are UI-ready…” text was wrongly placed
+- Found directly in HTML and removed
 
-The text “Filters are UI-ready. Live search will be enabled in a future update.” was appearing in wrong place.
+Small cleanup started:
+- Inline spacing being reduced
+- Dedicated class approach planned for notes
 
-Text was found directly in HTML and removed.
+❌ WHAT IS STILL PENDING
 
-✅ What is ALSO DONE (small cleanup)
+Filters layout still not professional enough
 
-Started moving inline spacing (style="margin-top:...") to CSS approach (better practice)
+Needs **real-estate style sidebar** (reference screenshots)
 
-Added a dedicated class idea for listing note (.listing-note) (cleaner, consistent)
+More filter groups to ADD:
+- Size
+- Amenities (checkbox / pills)
+- BHK Type
+- Property Age
 
-❌ What is STILL PENDING
+Rent / Price UI decision:
+- Option A: Dropdown ranges (fast + clean)
+- Option B: Slider (reference style) — allowed if lightweight
 
-Filters layout still needs final polish (too wide / too loose)
+Dropdown option visibility needs permanent fix
 
-Need professional sidebar filter style (like your reference screenshots)
-
-Need more filter options added (as decided):
-
-City
-
-Area
-
-Size
-
-Amenities
-
-Price (slider + range style like reference)
-
-Property Type
-
-BHK Type
-
-Rent Range (slider acceptable if we decide)
-
-Property Age
-
-Dropdown option visibility needs final lock (text readability inside dropdown list)
-
-Decide final rent UI:
-
-Either keep dropdown ranges (fast + clean)
-
-OR replace with slider (like reference) — only if we can do it cleanly without breaking design
-
+--------------------------------------------------
 🎯 LISTINGS UI TARGET (REFERENCE-STYLE)
+--------------------------------------------------
 
-Goal: Filters should look like a professional real-estate sidebar (like your screenshots)
+Desktop:
+- Sidebar filters on LEFT
+- Listings on RIGHT
+- Compact spacing
+- Professional real-estate look
 
-Sidebar filters on desktop (left)
+Filters UI:
+- Checkbox / pill style
+- Slider for price (if chosen)
+- Clean labels + readable dropdowns
 
-Listings content on right
-
-Compact, clean spacing
-
-Checkbox / pill style for amenities and options
-
-Slider UI for rent / price (if final decision is slider)
-
-Mobile: sidebar collapses into stacked filters cleanly
+Mobile:
+- Sidebar collapses into stacked filters
+- No clutter
+- Smooth scroll
 
 ⚠️ Listings UI MUST NOT be frozen until this is complete.
 
-🧾 WHAT WE CHANGED SO FAR (TRACKING)
-
-A) Global Mobile Menu Support (CSS-only)
-
-Handles multiple nav markup variants
-
-Dropdown alignment fixed
-
-Full-width stacked links on mobile
-
-B) Listings Page — Hamburger Alignment
-
-Listings-scoped CSS override
-
-Brand collision reduced
-Status: Accepted (not perfect, OK)
-
-C) Pricing Page — Selection Fix
-
-Card + button click logic
-
-Single selected state
-
-Premium default
-
-Highlight stable
-
-D) Pricing Clarity Section
-
-Option 2 + 3 merged
-
-Improves understanding without logic change
-
-E) Legal Page Footer Hookup
-
-Internal links corrected
-
-Disclaimer aligned
-
-F) Post Property Flow
-
-Legal-safe copy
-
-Clear steps
-
-Validation checks
-
-G) Listings Filters UI (Active Work)
-
-Core fields added
-
-Sorting removed
-
-CTA added
-
-Helper text wrong-position bug fixed ✅
-
-Rent Range structure approved ✅
-🟡 Final layout + new filter blocks pending
-
+--------------------------------------------------
 ⏳ UPDATED PRIORITY QUEUE
-🟠 PRIORITY 1 — FINISH LISTINGS FILTER UI (NEXT)
+--------------------------------------------------
+
+🟠 PRIORITY 1 — FINISH LISTINGS FILTER UI (ACTIVE)
 
 Only active task.
 
 Steps:
+1) Rebuild filters into professional sidebar layout
+2) Add remaining filter blocks:
+   - Size
+   - Amenities
+   - BHK Type
+   - Property Age
+3) Finalize Rent / Price UI (dropdown OR slider)
+4) Fix dropdown readability permanently
+5) Balance CTA size & alignment
+6) Verify Desktop + Tablet + Mobile
 
-Convert current filters layout → sidebar professional layout
-
-Add remaining filter groups:
-
-Size
-
-Amenities (checkbox/pills)
-
-BHK type
-
-Property Age
-
-Decide & implement rent/price UI:
-
-Dropdown (ranges) OR
-
-Slider (reference style)
-
-Fix dropdown option visibility permanently
-
-Balance CTA size & alignment
-
-Verify Desktop + Tablet + Mobile
 ✅ After this → FREEZE LISTINGS UI
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
 
 Start only after Listings freeze:
-
-Google Search Console review
-
-On-page SEO audit
+- Google Search Console review
+- On-page SEO audit
 
 ⚪ PRIORITY 3 — FUTURE (DO NOT START YET)
 
@@ -359,22 +299,29 @@ Subscription automation
 
 Analytics & event tracking
 
+--------------------------------------------------
 ▶️ NEXT IMMEDIATE ACTION (CONFIRMED)
+--------------------------------------------------
 
-👉 Finish Listings Filters UI
+👉 Finish Listings Filters UI (HTML + CSS + minimal JS allowed)
 👉 Freeze Listings UI
 👉 Then move to SEO or backend planning
 
-🧠 FINAL EXECUTION RULE REMINDER
+--------------------------------------------------
+🧠 FINAL EXECUTION RULES (LOCKED)
+--------------------------------------------------
 
-ONE task at a time
+✅ HTML changes ALLOWED
+✅ CSS changes ALLOWED
+✅ JS changes ALLOWED (minimal, performance-safe)
 
-No parallel work
+ONE task at a time  
+ONE file per step  
+ONE paste-box per step  
 
-Add-only CSS
+If deleting:
+→ Mention clearly BEFORE delete
 
-No nav HTML restructure
+Website quality > artificial restrictions
 
-Paste-box only for code
-
-END — MASTER v5.6 (READY FOR FUTURE USE)
+END — MASTER v5.7 (NEW CHAT REFERENCE READY)
