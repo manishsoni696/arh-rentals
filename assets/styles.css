@@ -2602,7 +2602,126 @@ Add-only patch for /listings/index.html
     display:inline-flex;
   }
 }
+/* ================================
+LISTINGS FILTERS — COMPACT SIZE FIX (ADD-ONLY)
+Fix: Sidebar filters too big / tall controls
+Scope: Listings page only
+================================ */
 
+/* Sidebar width a bit tighter + safe */
+.listings-page .listings-layout{
+grid-template-columns: 300px 1fr;
+gap: 16px;
+}
+
+/* Card padding compact */
+.listings-page .filters-ui .card-body{
+padding: 14px !important;
+}
+
+/* Head */
+.listings-page .filters-ui .filters-head h2{
+font-size: 16px !important;
+}
+.listings-page .filters-ui .filters-head-actions .btn{
+min-height: 34px !important;
+padding: 6px 10px !important;
+border-radius: 10px !important;
+font-size: 13px !important;
+}
+
+/* Group + legend compact */
+.listings-page .filter-group{
+padding: 10px !important;
+border-radius: 12px !important;
+}
+.listings-page .filter-group legend{
+font-size: 11px !important;
+}
+
+/* Labels + fields tighter */
+.listings-page .filter-group .field{
+gap: 5px !important;
+margin-top: 8px !important;
+}
+.listings-page .filters-ui .small{
+font-size: 12px !important;
+margin: 8px 0 6px !important;
+}
+
+/* Inputs: reduce height + padding */
+.listings-page .filters-ui .input,
+.listings-page .filters-ui select.input{
+min-height: 40px !important;
+height: 40px !important;
+padding: 8px 10px !important;
+border-radius: 11px !important;
+font-size: 13px !important;
+}
+
+/* Textarea (if any) */
+.listings-page .filters-ui textarea.input{
+min-height: 92px !important;
+height: auto !important;
+padding: 10px 10px !important;
+}
+
+/* Amenities: 2-column pills to reduce height */
+.listings-page .amenities{
+display: grid !important;
+grid-template-columns: 1fr 1fr !important;
+gap: 8px !important;
+margin-top: 10px !important;
+}
+.listings-page .amenity{
+padding: 7px 10px !important;
+border-radius: 12px !important;
+font-size: 12px !important;
+line-height: 1.2 !important;
+}
+.listings-page .amenity input{
+width: 16px !important;
+height: 16px !important;
+}
+
+/* Footer buttons compact */
+.listings-page .filters-footer .btn{
+min-height: 44px !important;
+border-radius: 12px !important;
+font-size: 14px !important;
+padding: 10px 12px !important;
+}
+
+/* Sticky top offset a bit tighter */
+@media (min-width: 901px){
+.listings-page .filters-card{
+top: 86px !important;
+}
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+.listings-page .listings-layout{
+grid-template-columns: 280px 1fr;
+}
+}
+
+/* Mobile: keep comfortable */
+@media (max-width: 900px){
+.listings-page .listings-layout{
+grid-template-columns: 1fr;
+}
+.listings-page .amenities{
+grid-template-columns: 1fr 1fr !important;
+}
+}
+
+/* Small mobile: single column amenities */
+@media (max-width: 420px){
+.listings-page .amenities{
+grid-template-columns: 1fr !important;
+}
+}
 
 
 
