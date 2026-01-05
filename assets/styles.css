@@ -1629,6 +1629,74 @@ textarea.input:focus{
 .select-btn:disabled{
   opacity:.75;
 }
+/* ================================
+   LISTINGS – FILTERS UI POLISH
+   Add-only CSS (Professional Look)
+================================ */
+
+.listings-filters,
+aside.card .card-body {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+}
+
+aside.card h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+aside.card .small {
+  font-weight: 500;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+aside.card .input,
+aside.card select {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+aside.card .input:focus,
+aside.card select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(29,161,242,0.25);
+}
+
+aside.card button.btn-primary {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  font-size: 15px;
+}
+
+aside.card .small.muted {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  aside.card {
+    margin-bottom: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  aside.card h2 {
+    font-size: 16px;
+  }
+
+  aside.card button.btn-primary {
+    font-size: 14px;
+    padding: 11px;
+  }
+}
 
 
 
