@@ -970,6 +970,20 @@ textarea.input:focus{
   }
 }
 
+/* ============ LISTINGS : AREA / SECTOR DROPDOWN — Z-INDEX FIX ============ */
+#areaPanel{
+  position: absolute;
+  z-index: 9999;
+}
+
+.filters,
+.filters-ui,
+.filters-row{
+  position: relative;
+  z-index: 1;
+}
+
+
 
 
 /* =========================================================
