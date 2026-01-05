@@ -508,12 +508,12 @@ document.addEventListener("DOMContentLoaded", () => {
 /* Safe, minimal, no framework. Scoped to listings page only. */
 
 (function () {
-  if (!document.body.classList.contains('listings-page')) return;
+  if (!document.body.classList.contains("listings-page")) return;
 
-  const areaInput = document.getElementById('fArea');
-  const areaPanel = document.getElementById('areaPanel');
-  const moreBtn = document.getElementById('areaMoreBtn');
-  const allWrap = document.getElementById('areaAllWrap');
+  const areaInput = document.getElementById("fArea");
+  const areaPanel = document.getElementById("areaPanel");
+  const moreBtn = document.getElementById("areaExpandBtn"); // ✅ FIX: correct button id
+  const allWrap = document.getElementById("areaAllWrap");
 
   if (!areaInput || !areaPanel) return;
 
@@ -523,47 +523,55 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isOpen) return;
     isOpen = true;
     areaPanel.hidden = false;
+    areaInput.setAttribute("aria-expanded", "true");
   }
 
   function closePanel() {
     if (!isOpen) return;
     isOpen = false;
     areaPanel.hidden = true;
+    areaInput.setAttribute("aria-expanded", "false");
     if (allWrap) allWrap.hidden = true;
   }
 
-  /* Open on focus / click */
-  areaInput.addEventListener('focus', openPanel);
-  areaInput.addEventListener('click', openPanel);
+  // Open on focus / click
+  areaInput.addEventListener("focus", openPanel);
+  areaInput.addEventListener("click", openPanel);
 
-  /* Select option (pill buttons) */
-  areaPanel.addEventListener('click', function (e) {
-    const btn = e.target.closest('.area-opt');
+  // Select option
+  areaPanel.addEventListener("click", function (e) {
+    const btn = e.target.closest(".area-opt");
     if (!btn) return;
-    areaInput.value = btn.textContent.trim();
+    areaInput.value = (btn.dataset.value || btn.textContent || "").trim();
     closePanel();
   });
 
-  /* More Areas toggle */
+  // ✅ More Areas toggle
   if (moreBtn && allWrap) {
-    moreBtn.addEventListener('click', function (e) {
+    moreBtn.addEventListener("click", function (e) {
+      e.preventDefault();
       e.stopPropagation();
-      allWrap.hidden = !allWrap.hidden;
+
+      const show = allWrap.hidden === true;
+      allWrap.hidden = !show;
+
+      // optional button text toggle
+      moreBtn.textContent = show ? "Less Areas" : "More Areas";
     });
   }
 
-  /* Close on outside click */
-  document.addEventListener('click', function (e) {
+  // Close on outside click
+  document.addEventListener("click", function (e) {
     if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
     closePanel();
   });
 
-  /* Close on ESC */
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closePanel();
+  // Close on ESC
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePanel();
   });
 
-  /* Start closed */
+  // Start closed
   areaPanel.hidden = true;
   if (allWrap) allWrap.hidden = true;
 })();
