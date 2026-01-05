@@ -964,4 +964,42 @@ textarea.input:focus{
     padding-right:74px !important;
   }
 }
+/* ================================
+   MOBILE HEADER ALIGNMENT — FINAL TUNING (ALL PAGES)
+   Fix: logo/text/hamburger vertical alignment + remove unwanted right padding
+   Add-only • Paste at VERY END of /assets/styles.css
+================================ */
+
+@media (max-width: 859px){
+
+  /* 1) Remove the forced header right padding (it was making layout feel “off”) */
+  .site-header{
+    padding-right: 0 !important;
+  }
+
+  /* 2) Align everything from TOP so logo doesn’t sit “lower” than text */
+  .site-header .navbar{
+    align-items: flex-start !important;
+  }
+
+  /* 3) Brand block: top aligned + tighter spacing */
+  .site-header .brand{
+    align-items: flex-start !important;
+  }
+
+  .site-header .brand-logo{
+    margin-top: 2px !important;
+  }
+
+  /* 4) Hamburger: nudge up to match brand top */
+  .site-header .header-actions{
+    margin-top: 2px !important;
+  }
+
+  /* 5) ONLY if a page has nav-toggle OUTSIDE navbar, then reserve space */
+  .site-header:has(> .nav-toggle){
+    padding-right: 74px !important;
+  }
+}
+
 
