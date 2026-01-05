@@ -48,83 +48,82 @@
 <main class="container">
   <section class="hero">
     <h1>Hisar Rentals</h1>
-    <p>Premium listings with clean filters + sorting. Contact details unlock via plans (coming soon).</p>
+    <p>Premium listings with clean filters + search. Contact details unlock via plans (coming soon).</p>
   </section>
 
   <div class="grid">
     <aside class="card">
-  <div class="card-body filters-ui">
-    <h2>Filters</h2>
-    <div class="hr"></div>
+      <div class="card-body filters-ui">
+        <h2>Filters</h2>
+        <div class="hr"></div>
 
-    <div class="filters-grid">
-      <label class="field">
-        <span class="small">City</span>
-        <select class="input" id="fCity">
-          <option value="hisar">Hisar</option>
-        </select>
-      </label>
+        <div class="filters-grid">
+          <label class="field">
+            <span class="small">City</span>
+            <select class="input" id="fCity">
+              <option value="hisar">Hisar</option>
+            </select>
+          </label>
 
-      <label class="field">
-        <span class="small">Property Type</span>
-        <select class="input" id="fType">
-          <option value="">Any</option>
-          <option value="House">House</option>
-          <option value="Shop">Shop</option>
-          <option value="Office">Office</option>
-        </select>
-      </label>
+          <label class="field">
+            <span class="small">Property Type</span>
+            <select class="input" id="fType">
+              <option value="">Any</option>
+              <option value="House">House</option>
+              <option value="Shop">Shop</option>
+              <option value="Office">Office</option>
+            </select>
+          </label>
 
-      <label class="field">
-        <span class="small">Area / Sector</span>
-        <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town" />
-      </label>
+          <label class="field">
+            <span class="small">Area / Sector</span>
+            <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town" />
+          </label>
 
-      <label class="field">
-        <span class="small">Rent Range</span>
-        <select class="input" id="fRent">
-          <option value="">Any</option>
-          <option value="0-10000">Up to ₹10,000</option>
-          <option value="10001-14999">₹10,001 – ₹14,999</option>
-          <option value="15000-19999">₹15,000 – ₹19,999</option>
-          <option value="20000-25000">₹20,000 – ₹25,000</option>
-          <option value="25001+">Above ₹25,000</option>
-        </select>
-      </label>
+          <label class="field">
+            <span class="small">Rent Range</span>
+            <select class="input" id="fRent">
+              <option value="">Any</option>
+              <option value="0-10000">Up to ₹10,000</option>
+              <option value="10001-14999">₹10,001 – ₹14,999</option>
+              <option value="15000-19999">₹15,000 – ₹19,999</option>
+              <option value="20000-25000">₹20,000 – ₹25,000</option>
+              <option value="25001+">Above ₹25,000</option>
+            </select>
+          </label>
 
-      <div class="filters-actions">
-        <button class="btn btn-primary" type="button">Search Properties</button>
+          <div class="filters-actions">
+            <button class="btn btn-primary" type="button">Search Properties</button>
+          </div>
+        </div>
+
+        <div class="small muted" style="margin-top:10px">
+          Filters are UI-ready. Live search will be enabled in a future update.
+        </div>
       </div>
-    </div>
+    </aside>
 
-    <div class="small muted" style="margin-top:10px">
-      Filters are UI-ready. Live search will be enabled in a future update.
-    </div>
-  </div>
-</aside>
-    
     <section class="card">
       <div class="card-body">
         <h2>Listings</h2>
         <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
 
-        <div id="listingWrap" class="listings" style="margin-top:12px">
-
+        <div id="listingWrap" class="listings listing-wrap">
           <div class="listing" data-rent="12000">
-  <div>
-    <h3>2 BHK House</h3>
-    <p>Sector 14 • Hisar</p>
-    <div class="pills">
-      <span class="pill">House</span>
-      <span class="pill">₹12,000</span>
-      <span class="pill">125001</span>
-    </div>
-  </div>
-  <button class="btn">Unlock Details</button>
-  <div class="small muted" style="margin-top:6px">
-    Contact details unlock will be available in a future update.
-  </div>
-</div>
+            <div>
+              <h3>2 BHK House</h3>
+              <p>Sector 14 • Hisar</p>
+              <div class="pills">
+                <span class="pill">House</span>
+                <span class="pill">₹12,000</span>
+                <span class="pill">125001</span>
+              </div>
+            </div>
+            <button class="btn">Unlock Details</button>
+            <div class="small muted" style="margin-top:6px">
+              Contact details unlock will be available in a future update.
+            </div>
+          </div>
 
           <div class="listing" data-rent="18000">
             <div>
@@ -171,8 +170,8 @@
     <div class="container">
       <div>
         © <span id="year"></span> ARH Rentals •
-        <a href="legal.html">Legal</a> •
-        <a href="pricing.html">Plans</a>
+        <a href="/legal">Legal</a> •
+        <a href="/pricing">Plans</a>
       </div>
 
       <div class="footer-disclaimer">
