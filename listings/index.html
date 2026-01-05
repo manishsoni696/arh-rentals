@@ -44,58 +44,62 @@
     </div>
   </nav>
 </header>
-  
+
 <main class="container">
   <section class="hero">
     <h1>Hisar Rentals</h1>
-    <p>Premium listings with clean filters + sorting. Contact details unlock via plans (coming soon).</p>
+    <p class="sub">Browse rental listings and filter by city, area, property type, and budget. Contact details unlock (future update).</p>
   </section>
 
   <div class="grid">
+    <!-- FILTERS -->
     <aside class="card">
-  <div class="card-body">
+      <div class="card-body">
+        <h2>Filters</h2>
+        <div class="hr"></div>
 
-    <h2>Filters</h2>
-    <div class="hr"></div>
+        <form class="filters-form" action="#" onsubmit="return false;">
+          <div class="filter-field">
+            <div class="small">City</div>
+            <select class="input" id="fCity" name="city">
+              <option value="hisar">Hisar</option>
+            </select>
+          </div>
 
-    <div class="small">City</div>
-    <select class="input" id="fCity">
-      <option value="hisar">Hisar</option>
-    </select>
+          <div class="filter-field">
+            <div class="small">Area / Sector</div>
+            <input class="input" id="fArea" name="area" placeholder="e.g. Sector 14, Model Town"/>
+          </div>
 
-    <div style="height:10px"></div>
+          <div class="filter-field">
+            <div class="small">Property Type</div>
+            <select class="input" id="fType" name="type">
+              <option value="">Any</option>
+              <option value="House">House</option>
+              <option value="Shop">Shop</option>
+              <option value="Office">Office</option>
+            </select>
+          </div>
 
-    <div class="small">Area / Sector</div>
-    <input class="input" id="fArea" placeholder="e.g. Sector 14, Model Town"/>
+          <div class="filter-field">
+            <div class="small">Max Rent (₹)</div>
+            <input class="input" id="fMax" name="maxRent" placeholder="e.g. 15000"/>
+          </div>
 
-    <div style="height:10px"></div>
+          <div class="hr"></div>
 
-    <div class="small">Property Type</div>
-    <select class="input" id="fType">
-      <option value="">Any</option>
-      <option value="House">House</option>
-      <option value="Shop">Shop</option>
-      <option value="Office">Office</option>
-    </select>
+          <button class="btn btn-primary" type="button">
+            Search Properties
+          </button>
 
-    <div style="height:10px"></div>
+          <div class="small muted" style="margin-top:10px">
+            Filters are UI-ready. Live search will be enabled in a future update.
+          </div>
+        </form>
+      </div>
+    </aside>
 
-    <div class="small">Max Rent (₹)</div>
-    <input class="input" id="fMax" placeholder="e.g. 15000"/>
-
-    <div class="hr"></div>
-
-    <button class="btn btn-primary" type="button">
-      Search Properties
-    </button>
-
-    <div class="small muted" style="margin-top:8px">
-      Filters are UI-ready. Live search will be enabled in a future update.
-    </div>
-
-  </div>
-</aside>
-
+    <!-- LISTINGS -->
     <section class="card">
       <div class="card-body">
         <h2>Listings</h2>
@@ -113,10 +117,7 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">
-  Contact details unlock will be available in a future update.
-</div>
-
+            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
           </div>
 
           <div class="listing" data-rent="18000">
@@ -130,10 +131,7 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">
-  Contact details unlock will be available in a future update.
-</div>
-
+            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
           </div>
 
           <div class="listing" data-rent="6500">
@@ -147,40 +145,35 @@
               </div>
             </div>
             <button class="btn">Unlock Details</button>
-            <div class="small muted" style="margin-top:6px">
-  Contact details unlock will be available in a future update.
-</div>
-
+            <div class="small muted" style="margin-top:6px">Contact details unlock will be available in a future update.</div>
           </div>
         </div>
 
         <div class="hr"></div>
         <div class="notice">
-          Filters + sorting UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
+          Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
         </div>
       </div>
     </section>
   </div>
 
   <footer class="footer">
-  <div class="container">
-    <div>
-      © <span id="year"></span> ARH Rentals •
-      <a href="legal.html">Legal</a> •
-      <a href="pricing.html">Plans</a>
-    </div>
+    <div class="container">
+      <div>
+        © <span id="year"></span> ARH Rentals •
+        <a href="legal.html">Legal</a> •
+        <a href="pricing.html">Plans</a>
+      </div>
 
-    <div class="footer-disclaimer">
-      Disclaimer: ARH Rentals is an information-access platform only. We do not guarantee
-      leads, tenants, responses, or deal closure. Users must independently verify all details
-      before any transaction.
+      <div class="footer-disclaimer">
+        Disclaimer: ARH Rentals is an information-access platform only. We do not guarantee
+        leads, tenants, responses, or deal closure. Users must independently verify all details
+        before any transaction.
+      </div>
     </div>
-  </div>
-</footer>
-
+  </footer>
 </main>
 
 <script src="/assets/app.js"></script>
 </body>
 </html>
-
