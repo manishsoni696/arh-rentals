@@ -628,21 +628,14 @@ textarea.input:focus{
   gap:10px;
   align-items:end;
 }
-/* ============ CLEANUP: REMOVE BROKEN LINES + DEDUPE AREA FIX (REPLACE THIS WHOLE MESSY BLOCK) ============ */
 
-/* IMPORTANT: Delete ALL these from styles.css (they are NOT valid CSS and break parsing):
-   - any line that is exactly: ----------------------------
-   - any line that says: PASTE THIS CODE:
-*/
+/* ============ LISTINGS : AREA DROPDOWN — GRID CLIP FINAL FIX ============ */
+.listings-page .primary-filters-row{
+  align-items: stretch !important;
+}
 
 /* ALSO: You currently have the Area FIX block repeated multiple times.
    KEEP ONLY THIS SINGLE FINAL VERSION (paste once). */
-
-.listings-page .primary-filters-card,
-.listings-page .primary-filters-card .card-body,
-.listings-page .primary-filters-row{
-  overflow: visible !important;
-}
 
 .listings-page label.field[for="fArea"]{
   position: relative;
@@ -969,23 +962,6 @@ textarea.input:focus{
     max-height:160px;
   }
 }
-
-/* ============ LISTINGS : AREA / SECTOR DROPDOWN — Z-INDEX FIX ============ */
-#areaPanel{
-  position: absolute;
-  z-index: 9999;
-}
-
-.filters,
-.filters-ui,
-.filters-row{
-  position: relative;
-  z-index: 1;
-}
-
-
-
-
 /* =========================================================
    PRICING — FINAL LOCK (MUST BE VERY END OF FILE)
    ========================================================= */
@@ -1072,3 +1048,15 @@ textarea.input:focus{
   color:#ffffff !important;
   font-weight:700 !important;
 }
+/* ============ LISTINGS : FILTER CARD OVERFLOW UNLOCK (FINAL) ============ */
+
+/* Sirf listings page ke TOP filters card ke liye */
+.listings-page .primary-filters-card{
+  overflow: visible !important;
+}
+
+/* Safety: us card ke andar wali card-body bhi */
+.listings-page .primary-filters-card > .card-body{
+  overflow: visible !important;
+}
+
