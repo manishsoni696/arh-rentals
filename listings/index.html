@@ -51,252 +51,390 @@
     <p>Premium listings with clean filters + search. Contact details unlock via plans (coming soon).</p>
   </section>
 
-  <div class="listings-page-layout" aria-label="Listings with filters">
-    <!-- FILTERS SIDEBAR -->
-    <aside class="card filters-card" aria-label="Filters">
-      <div class="card-body filters-ui">
-        <div class="filters-head">
-          <h2>Filters</h2>
+    <div class="listings-page-layout" aria-label="Listings with filters">
+    <form id="filtersForm" class="filters-shell" autocomplete="off">
+      <!-- PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) -->
+      <section class="card primary-filters-card" aria-label="Primary filters">
+        <div class="card-body primary-filters">
+          <div class="primary-filters-row">
+            <label class="field" for="fCity">
+              <span class="small">City</span>
+              <select class="input" id="fCity" name="city">
+                <option value="hisar">Hisar</option>
+              </select>
+            </label>
 
-          <div class="filters-head-actions" aria-label="Filter actions">
-            <button class="btn" type="button" id="filtersClearBtn">Clear</button>
-            <button class="btn btn-primary" type="button" id="filtersApplyBtn">Apply</button>
-          </div>
-        </div>
+            <label class="field" for="fCategory">
+              <span class="small">Property Category</span>
+              <select class="input" id="fCategory" name="category">
+                <option value="residential" selected>Residential</option>
+                <option value="commercial">Commercial</option>
+              </select>
+            </label>
 
-        <div class="hr" role="separator" aria-hidden="true"></div>
+            <label class="field" for="fType">
+              <span class="small">Property Type</span>
+              <select class="input" id="fType" name="type">
+                <!-- default: Residential -->
+                <option value="">Any</option>
+                <option value="House">House</option>
+                <option value="Flat">Flat</option>
+                <option value="PG">PG</option>
+              </select>
+            </label>
 
-        <!-- Mobile collapse toggle (CSS/JS next step if needed) -->
-        <button class="btn filters-collapse-btn"
-                type="button"
-                id="filtersCollapseBtn"
-                aria-controls="filtersPanel"
-                aria-expanded="true">
-          Filter Options
-        </button>
-        <button type="button" class="btn more-filters-btn" id="moreFiltersBtn">
-  + More Filters
-</button>
+            <label class="field" for="fArea">
+              <span class="small">Area / Sector</span>
+              <input class="input" id="fArea" name="area" placeholder="e.g. Sector 14, Model Town" />
+            </label>
 
-        <div id="filtersPanel" class="filters-panel" role="region" aria-label="Filter options">
-          <form id="filtersForm" class="filters-form" autocomplete="off">
-            <!-- Location -->
-            <fieldset class="filter-group primary">
-              <legend>Location</legend>
+            <label class="field" for="fSize">
+              <span class="small">Size (<span id="sizeUnitLabel">Sq Yds</span>)</span>
+              <select class="input" id="fSize" name="size">
+                <!-- default: Residential (Sq Yds) -->
+                <option value="">Any</option>
+                <option value="0-50">Up to 50 sq yds</option>
+                <option value="51-100">51 – 100 sq yds</option>
+                <option value="101-200">101 – 200 sq yds</option>
+                <option value="201-350">201 – 350 sq yds</option>
+                <option value="351+">Above 350 sq yds</option>
+              </select>
+            </label>
 
-              <label class="field" for="fCity">
-                <span class="small">City</span>
-                <select class="input" id="fCity" name="city">
-                  <option value="hisar">Hisar</option>
-                </select>
-              </label>
+            <label class="field" for="fRent">
+              <span class="small">Rent Range</span>
+              <select class="input" id="fRent" name="rent">
+                <option value="">Any</option>
+                <option value="0-10000">Up to ₹10,000</option>
+                <option value="10001-14999">₹10,001 – ₹14,999</option>
+                <option value="15000-19999">₹15,000 – ₹19,999</option>
+                <option value="20000-25000">₹20,000 – ₹25,000</option>
+                <option value="25001+">Above ₹25,000</option>
+              </select>
+            </label>
 
-              <label class="field" for="fArea">
-                <span class="small">Area / Sector</span>
-                <input class="input" id="fArea" name="area" placeholder="e.g. Sector 14, Model Town" />
-              </label>
-            </fieldset>
-
-            <!-- Property -->
-            <fieldset class="filter-group secondary">
-              <legend>Property</legend>
-
-              <label class="field" for="fType">
-                <span class="small">Property Type</span>
-                <select class="input" id="fType" name="type">
-                  <option value="">Any</option>
-                  <option value="House">House</option>
-                  <option value="Flat">Flat</option>
-                  <option value="PG">PG</option>
-                  <option value="Shop">Shop</option>
-                  <option value="Office">Office</option>
-                  <option value="Warehouse">Warehouse</option>
-                </select>
-              </label>
-
-              <label class="field" for="fBhk">
-                <span class="small">BHK Type</span>
-                <select class="input" id="fBhk" name="bhk">
-                  <option value="">Any</option>
-                  <option value="1 RK">1 RK</option>
-                  <option value="1 BHK">1 BHK</option>
-                  <option value="2 BHK">2 BHK</option>
-                  <option value="3 BHK">3 BHK</option>
-                  <option value="4+ BHK">4+ BHK</option>
-                </select>
-              </label>
-
-              <label class="field" for="fAge">
-                <span class="small">Property Age</span>
-                <select class="input" id="fAge" name="age">
-                  <option value="">Any</option>
-                  <option value="0-1">0–1 year</option>
-                  <option value="1-3">1–3 years</option>
-                  <option value="3-5">3–5 years</option>
-                  <option value="5-10">5–10 years</option>
-                  <option value="10+">10+ years</option>
-                </select>
-              </label>
-            </fieldset>
-
-            <!-- Size -->
-            <fieldset class="filter-group primary">
-              <legend>Size</legend>
-
-              <label class="field" for="fSize">
-                <span class="small">Built-up / Area</span>
-                <select class="input" id="fSize" name="size">
-                  <option value="">Any</option>
-                  <option value="0-500">Up to 500 sq ft</option>
-                  <option value="501-800">501 – 800 sq ft</option>
-                  <option value="801-1200">801 – 1,200 sq ft</option>
-                  <option value="1201-1800">1,201 – 1,800 sq ft</option>
-                  <option value="1801+">Above 1,800 sq ft</option>
-                </select>
-              </label>
-            </fieldset>
-
-            <!-- Rent -->
-            <fieldset class="filter-group primary">
-              <legend>Rent</legend>
-
-              <label class="field" for="fRent">
-                <span class="small">Rent Range</span>
-                <select class="input" id="fRent" name="rent">
-                  <option value="">Any</option>
-                  <option value="0-10000">Up to ₹10,000</option>
-                  <option value="10001-14999">₹10,001 – ₹14,999</option>
-                  <option value="15000-19999">₹15,000 – ₹19,999</option>
-                  <option value="20000-25000">₹20,000 – ₹25,000</option>
-                  <option value="25001+">Above ₹25,000</option>
-                </select>
-              </label>
-            </fieldset>
-
-            <!-- Amenities -->
-            <fieldset class="filter-group primary">
-              <legend>Amenities</legend>
-
-              <div class="amenities" role="group" aria-label="Amenities">
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="parking" />
-                  <span>Parking</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="powerBackup" />
-                  <span>Power Backup</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="lift" />
-                  <span>Lift</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="security" />
-                  <span>Security</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="furnished" />
-                  <span>Furnished</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="semiFurnished" />
-                  <span>Semi-Furnished</span>
-                </label>
-
-                <label class="amenity">
-                  <input type="checkbox" name="amenities" value="ac" />
-                  <span>AC</span>
-                </label>
-              </div>
-            </fieldset>
-
-            <div class="filters-footer">
+            <div class="primary-actions">
+              <button class="btn" type="button" id="filtersClearBtn">Clear</button>
               <button class="btn btn-primary" type="button" id="filtersSearchBtn">Search Properties</button>
-              <p class="small muted">
-                Tip: Apply filters to refine listings. (Backend integration next.)
-              </p>
             </div>
-          </form>
+          </div>
         </div>
+      </section>
+
+      <div class="listings-layout" aria-label="Listings layout">
+        <!-- SECONDARY FILTERS (SIDEBAR / MORE FILTERS) -->
+        <aside class="card filters-card" aria-label="More filters">
+          <div class="card-body filters-ui">
+            <div class="filters-head">
+              <h2>More Filters</h2>
+              <div class="filters-head-actions" aria-label="Filter actions">
+                <button class="btn" type="button" id="filtersApplyBtn">Apply</button>
+              </div>
+            </div>
+
+            <div class="hr" role="separator" aria-hidden="true"></div>
+
+            <button type="button" class="btn more-filters-btn" id="moreFiltersBtn" aria-expanded="false">
+              + More Filters
+            </button>
+
+            <div class="filters-panel" role="region" aria-label="Secondary filter options">
+              <!-- RESIDENTIAL SECONDARY -->
+              <fieldset class="filter-group secondary" data-cat="residential">
+                <legend>Residential</legend>
+
+                <label class="field" for="fBhk">
+                  <span class="small">BHK</span>
+                  <select class="input" id="fBhk" name="bhk">
+                    <option value="">Any</option>
+                    <option value="1 RK">1 RK</option>
+                    <option value="1 BHK">1 BHK</option>
+                    <option value="2 BHK">2 BHK</option>
+                    <option value="3 BHK">3 BHK</option>
+                    <option value="4+ BHK">4+ BHK</option>
+                  </select>
+                </label>
+
+                <label class="field" for="fFloor">
+                  <span class="small">Floor</span>
+                  <select class="input" id="fFloor" name="floor">
+                    <option value="">Any</option>
+                    <option value="Ground">Ground</option>
+                    <option value="First">First</option>
+                    <option value="Second">Second</option>
+                    <option value="Third+">Third+</option>
+                  </select>
+                </label>
+
+                <label class="field" for="fFurnish">
+                  <span class="small">Furnishing</span>
+                  <select class="input" id="fFurnish" name="furnishing">
+                    <option value="">Any</option>
+                    <option value="Unfurnished">Unfurnished</option>
+                    <option value="Semi-Furnished">Semi-Furnished</option>
+                    <option value="Furnished">Furnished</option>
+                  </select>
+                </label>
+
+                <label class="field" for="fAge">
+                  <span class="small">Property Age</span>
+                  <select class="input" id="fAge" name="age">
+                    <option value="">Any</option>
+                    <option value="0-1">0–1 year</option>
+                    <option value="1-3">1–3 years</option>
+                    <option value="3-5">3–5 years</option>
+                    <option value="5-10">5–10 years</option>
+                    <option value="10+">10+ years</option>
+                  </select>
+                </label>
+
+                <div class="hr" role="separator" aria-hidden="true"></div>
+
+                <div class="small">Amenities</div>
+                <div class="amenities" role="group" aria-label="Amenities (Residential)">
+                  <label class="amenity">
+                    <input type="checkbox" name="amenities" value="parking" />
+                    <span>Parking</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenities" value="powerBackup" />
+                    <span>Power Backup</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenities" value="lift" />
+                    <span>Lift</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenities" value="security" />
+                    <span>Security</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenities" value="ac" />
+                    <span>AC</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- COMMERCIAL SECONDARY -->
+              <fieldset class="filter-group secondary" data-cat="commercial">
+                <legend>Commercial</legend>
+
+                <label class="field" for="fFloorCom">
+                  <span class="small">Floor</span>
+                  <select class="input" id="fFloorCom" name="floorCommercial">
+                    <option value="">Any</option>
+                    <option value="Basement">Basement</option>
+                    <option value="Ground">Ground</option>
+                    <option value="First">First</option>
+                    <option value="Second">Second</option>
+                    <option value="Upper/Other">Upper / Other</option>
+                  </select>
+                </label>
+
+                <label class="field" for="fFurnishCom">
+                  <span class="small">Furnishing</span>
+                  <select class="input" id="fFurnishCom" name="furnishingCommercial">
+                    <option value="">Any</option>
+                    <option value="Unfurnished">Unfurnished</option>
+                    <option value="Furnished">Furnished</option>
+                  </select>
+                </label>
+
+                <div class="hr" role="separator" aria-hidden="true"></div>
+
+                <div class="small">Amenities</div>
+                <div class="amenities" role="group" aria-label="Amenities (Commercial)">
+                  <label class="amenity">
+                    <input type="checkbox" name="amenitiesCommercial" value="parking" />
+                    <span>Parking</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenitiesCommercial" value="powerBackup" />
+                    <span>Power Backup</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenitiesCommercial" value="lift" />
+                    <span>Lift</span>
+                  </label>
+                  <label class="amenity">
+                    <input type="checkbox" name="amenitiesCommercial" value="security" />
+                    <span>Security</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="filters-footer">
+                <p class="small muted">
+                  Tip: Primary filters are always visible. More filters are UI-only for now.
+                </p>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- LISTINGS -->
+        <section class="card listings-card" aria-label="Listings">
+          <div class="card-body">
+            <div class="listings-head">
+              <div>
+                <h2>Listings</h2>
+                <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
+              </div>
+
+              <div class="results-meta" aria-label="Results summary">
+                <span class="small muted" id="resultsCount">Showing 3 properties</span>
+              </div>
+            </div>
+
+            <div id="listingWrap" class="listings listing-wrap">
+              <div class="listing" data-rent="12000">
+                <div>
+                  <h3>2 BHK House</h3>
+                  <p>Sector 14 • Hisar</p>
+                  <div class="pills">
+                    <span class="pill">House</span>
+                    <span class="pill">₹12,000</span>
+                    <span class="pill">125001</span>
+                  </div>
+                </div>
+                <button class="btn">Unlock Details</button>
+                <div class="small muted listing-note">
+                  Contact details unlock will be available in a future update.
+                </div>
+              </div>
+
+              <div class="listing" data-rent="18000">
+                <div>
+                  <h3>Shop for Rent</h3>
+                  <p>Main Market Area</p>
+                  <div class="pills">
+                    <span class="pill">Shop</span>
+                    <span class="pill">₹18,000</span>
+                    <span class="pill">125001</span>
+                  </div>
+                </div>
+                <button class="btn">Unlock Details</button>
+                <div class="small muted listing-note">
+                  Contact details unlock will be available in a future update.
+                </div>
+              </div>
+
+              <div class="listing" data-rent="6500">
+                <div>
+                  <h3>1 RK</h3>
+                  <p>Near Income Tax Office</p>
+                  <div class="pills">
+                    <span class="pill">House</span>
+                    <span class="pill">₹6,500</span>
+                    <span class="pill">125005</span>
+                  </div>
+                </div>
+                <button class="btn">Unlock Details</button>
+                <div class="small muted listing-note">
+                  Contact details unlock will be available in a future update.
+                </div>
+              </div>
+            </div>
+
+            <div class="hr" role="separator" aria-hidden="true"></div>
+            <div class="notice">
+              Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
+            </div>
+          </div>
+        </section>
       </div>
-    </aside>
-
-    <!-- LISTINGS -->
-    <section class="card listings-card" aria-label="Listings">
-      <div class="card-body">
-        <div class="listings-head">
-          <div>
-            <h2>Listings</h2>
-            <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
-          </div>
-
-          <div class="results-meta" aria-label="Results summary">
-            <span class="small muted" id="resultsCount">Showing 3 properties</span>
-          </div>
-        </div>
-
-        <div id="listingWrap" class="listings listing-wrap">
-          <div class="listing" data-rent="12000">
-            <div>
-              <h3>2 BHK House</h3>
-              <p>Sector 14 • Hisar</p>
-              <div class="pills">
-                <span class="pill">House</span>
-                <span class="pill">₹12,000</span>
-                <span class="pill">125001</span>
-              </div>
-            </div>
-            <button class="btn">Unlock Details</button>
-            <div class="small muted listing-note">
-              Contact details unlock will be available in a future update.
-            </div>
-          </div>
-
-          <div class="listing" data-rent="18000">
-            <div>
-              <h3>Shop for Rent</h3>
-              <p>Main Market Area</p>
-              <div class="pills">
-                <span class="pill">Shop</span>
-                <span class="pill">₹18,000</span>
-                <span class="pill">125001</span>
-              </div>
-            </div>
-            <button class="btn">Unlock Details</button>
-            <div class="small muted listing-note">
-              Contact details unlock will be available in a future update.
-            </div>
-          </div>
-
-          <div class="listing" data-rent="6500">
-            <div>
-              <h3>1 RK</h3>
-              <p>Near Income Tax Office</p>
-              <div class="pills">
-                <span class="pill">House</span>
-                <span class="pill">₹6,500</span>
-                <span class="pill">125005</span>
-              </div>
-            </div>
-            <button class="btn">Unlock Details</button>
-            <div class="small muted listing-note">
-              Contact details unlock will be available in a future update.
-            </div>
-          </div>
-        </div>
-
-        <div class="hr" role="separator" aria-hidden="true"></div>
-        <div class="notice">
-          Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
-        </div>
-      </div>
-    </section>
+    </form>
   </div>
+
+  <script>
+    (function () {
+      var cat = document.getElementById("fCategory");
+      var type = document.getElementById("fType");
+      var size = document.getElementById("fSize");
+      var sizeUnit = document.getElementById("sizeUnitLabel");
+      var moreBtn = document.getElementById("moreFiltersBtn");
+      var ui = document.querySelector(".filters-ui");
+
+      var resTypes = [
+        { v: "", t: "Any" },
+        { v: "House", t: "House" },
+        { v: "Flat", t: "Flat" },
+        { v: "PG", t: "PG" }
+      ];
+
+      var comTypes = [
+        { v: "", t: "Any" },
+        { v: "Shop", t: "Shop" },
+        { v: "Office", t: "Office" },
+        { v: "Warehouse", t: "Warehouse" }
+      ];
+
+      var sizeRes = [
+        { v: "", t: "Any" },
+        { v: "0-50", t: "Up to 50 sq yds" },
+        { v: "51-100", t: "51 – 100 sq yds" },
+        { v: "101-200", t: "101 – 200 sq yds" },
+        { v: "201-350", t: "201 – 350 sq yds" },
+        { v: "351+", t: "Above 350 sq yds" }
+      ];
+
+      var sizeCom = [
+        { v: "", t: "Any" },
+        { v: "0-500", t: "Up to 500 sq ft" },
+        { v: "501-800", t: "501 – 800 sq ft" },
+        { v: "801-1200", t: "801 – 1,200 sq ft" },
+        { v: "1201-1800", t: "1,201 – 1,800 sq ft" },
+        { v: "1801+", t: "Above 1,800 sq ft" }
+      ];
+
+      function setOptions(selectEl, items) {
+        selectEl.innerHTML = "";
+        items.forEach(function (it) {
+          var o = document.createElement("option");
+          o.value = it.v;
+          o.textContent = it.t;
+          selectEl.appendChild(o);
+        });
+      }
+
+      function setSecondaryVisibility(category) {
+        document.querySelectorAll("[data-cat]").forEach(function (el) {
+          el.style.display = (el.getAttribute("data-cat") === category) ? "" : "none";
+        });
+      }
+
+      function syncCategory() {
+        var v = (cat && cat.value) ? cat.value : "residential";
+
+        if (v === "commercial") {
+          setOptions(type, comTypes);
+          setOptions(size, sizeCom);
+          sizeUnit.textContent = "Sq Ft";
+          setSecondaryVisibility("commercial");
+        } else {
+          setOptions(type, resTypes);
+          setOptions(size, sizeRes);
+          sizeUnit.textContent = "Sq Yds";
+          setSecondaryVisibility("residential");
+        }
+      }
+
+      if (cat) {
+        cat.addEventListener("change", syncCategory);
+      }
+
+      if (moreBtn && ui) {
+        moreBtn.addEventListener("click", function () {
+          ui.classList.toggle("show-more");
+          var open = ui.classList.contains("show-more");
+          moreBtn.setAttribute("aria-expanded", open ? "true" : "false");
+          moreBtn.textContent = open ? "− More Filters" : "+ More Filters";
+        });
+      }
+
+      syncCategory();
+    })();
+  </script>
 
   <footer class="footer">
     <div class="container">
