@@ -1,4 +1,4 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.5)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v5.6)
 
 Last Updated: Jan 2026
 Overall Status:
@@ -55,7 +55,6 @@ Strategy Locked:
 ❌ No new JS toggles
 
 ✅ CSS is single source of truth
-
 JS only toggles:
 
 body.nav-open
@@ -85,7 +84,6 @@ Visual highlight stable
 Final CSS override locked at END of styles.css
 
 All breakpoints verified
-
 🚫 Revisit only if business model changes
 
 6) Session & OTP Backend Validation — ✅ DONE
@@ -164,6 +162,7 @@ Responsive verified
 
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
 12) Listings Filters UI — IN PROGRESS (NOT FROZEN)
+
 ✅ What is DONE
 
 Filters redesigned to be realistic:
@@ -174,46 +173,81 @@ Area / Sector
 
 Property Type
 
+Rent Range dropdown (exact ranges structure approved)
+
 Sorting intentionally removed
 
 “Search Properties” CTA added (UI-only)
 
-“Unlock Details” future note present
+“Unlock Details” future note present (inside each listing card)
 
-Temporary helper text removed from wrong position (bug fixed)
+Helper text bug fixed:
+
+The text “Filters are UI-ready. Live search will be enabled in a future update.” was appearing in wrong place.
+
+Text was found directly in HTML and removed.
+
+✅ What is ALSO DONE (small cleanup)
+
+Started moving inline spacing (style="margin-top:...") to CSS approach (better practice)
+
+Added a dedicated class idea for listing note (.listing-note) (cleaner, consistent)
 
 ❌ What is STILL PENDING
 
-Filters layout still needs final polish
+Filters layout still needs final polish (too wide / too loose)
 
-Filter bar still feels too wide / too loose
+Need professional sidebar filter style (like your reference screenshots)
 
-Dropdown option visibility needs final lock
+Need more filter options added (as decided):
 
-Rent input → Rent Range dropdown (exact ranges):
+City
 
-Up to 10,000
-10,001 – 14,999
-15,000 – 19,999
-20,000 – 25,000
-Above 25,000
+Area
 
-🎯 GOAL FOR LISTINGS UI
+Size
 
-Professional search-bar style
+Amenities
 
-Compact, side-by-side on desktop
+Price (slider + range style like reference)
 
-Clean single-column on mobile
+Property Type
 
-No empty unused space
+BHK Type
 
-CTA button balanced (not oversized)
+Rent Range (slider acceptable if we decide)
+
+Property Age
+
+Dropdown option visibility needs final lock (text readability inside dropdown list)
+
+Decide final rent UI:
+
+Either keep dropdown ranges (fast + clean)
+
+OR replace with slider (like reference) — only if we can do it cleanly without breaking design
+
+🎯 LISTINGS UI TARGET (REFERENCE-STYLE)
+
+Goal: Filters should look like a professional real-estate sidebar (like your screenshots)
+
+Sidebar filters on desktop (left)
+
+Listings content on right
+
+Compact, clean spacing
+
+Checkbox / pill style for amenities and options
+
+Slider UI for rent / price (if final decision is slider)
+
+Mobile: sidebar collapses into stacked filters cleanly
 
 ⚠️ Listings UI MUST NOT be frozen until this is complete.
 
 🧾 WHAT WE CHANGED SO FAR (TRACKING)
-A) Global Mobile Menu Support (CSS-Only)
+
+A) Global Mobile Menu Support (CSS-only)
 
 Handles multiple nav markup variants
 
@@ -226,7 +260,6 @@ B) Listings Page — Hamburger Alignment
 Listings-scoped CSS override
 
 Brand collision reduced
-
 Status: Accepted (not perfect, OK)
 
 C) Pricing Page — Selection Fix
@@ -259,7 +292,7 @@ Clear steps
 
 Validation checks
 
-G) Listings Filters UI (Partial)
+G) Listings Filters UI (Active Work)
 
 Core fields added
 
@@ -267,31 +300,46 @@ Sorting removed
 
 CTA added
 
-Helper text bug fixed
-🟡 Final layout polish still pending
+Helper text wrong-position bug fixed ✅
+
+Rent Range structure approved ✅
+🟡 Final layout + new filter blocks pending
 
 ⏳ UPDATED PRIORITY QUEUE
 🟠 PRIORITY 1 — FINISH LISTINGS FILTER UI (NEXT)
 
-Only active task
+Only active task.
 
 Steps:
 
-Finalize compact filter layout
+Convert current filters layout → sidebar professional layout
+
+Add remaining filter groups:
+
+Size
+
+Amenities (checkbox/pills)
+
+BHK type
+
+Property Age
+
+Decide & implement rent/price UI:
+
+Dropdown (ranges) OR
+
+Slider (reference style)
 
 Fix dropdown option visibility permanently
-
-Replace rent input with Rent Range dropdown
 
 Balance CTA size & alignment
 
 Verify Desktop + Tablet + Mobile
-
 ✅ After this → FREEZE LISTINGS UI
 
 🟡 PRIORITY 2 — SEO & DISCOVERABILITY (DEFERRED)
 
-Start only after Listings freeze
+Start only after Listings freeze:
 
 Google Search Console review
 
@@ -329,4 +377,4 @@ No nav HTML restructure
 
 Paste-box only for code
 
-END — MASTER v5.5 (READY FOR FUTURE USE)
+END — MASTER v5.6 (READY FOR FUTURE USE)
