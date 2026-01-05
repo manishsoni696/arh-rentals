@@ -258,11 +258,10 @@ textarea.input:focus{
   .menu-cta{display:inline-flex !important;}
 }
 
-/* ============ Mobile Header + Menu (final) ============ */
+/* ============ Mobile Header + Menu (FINAL) ============ */
 @media (max-width: 859px){
   :root{ --arh-header-h:72px; }
 
-  /* Fixed header on mobile to stop overlap glitches across pages */
   .site-header,
   header.site-header,
   header.nav,
@@ -277,30 +276,36 @@ textarea.input:focus{
 
   body{ padding-top:var(--arh-header-h) !important; }
 
-  /* Consistent header row */
+  /* Keep header-actions visible (hamburger often lives here / beside it) */
+  .site-header .header-actions{
+    display:flex !important;
+    align-items:center !important;
+    gap:12px !important;
+  }
+
+  /* Hide only CTA on mobile */
+  .site-header .header-actions .header-cta{
+    display:none !important;
+  }
+
+  /* Ensure consistent alignment + truncation on all pages */
   .site-header .navbar{
     display:flex !important;
-    align-items:flex-start !important;
+    align-items:center !important;
     justify-content:space-between !important;
     gap:12px !important;
-    padding:12px 0 !important;
     position:relative !important;
   }
 
-  /* Brand: allow truncation */
   .site-header .brand{
     flex:1 1 auto !important;
     min-width:0 !important;
-    align-items:flex-start !important;
-    gap:12px !important;
   }
-  .site-header .brand-logo{
-    height:34px !important;
-    margin-top:2px !important;
-  }
+
   .site-header .brand-title{
     min-width:0 !important;
   }
+
   .site-header .brand-title strong,
   .site-header .brand-title span{
     display:block !important;
@@ -310,23 +315,6 @@ textarea.input:focus{
     text-overflow:ellipsis !important;
   }
 
-  /* Keep header-actions visible (hamburger often lives here) */
-  .site-header .header-actions{
-    display:flex !important;
-    align-items:flex-start !important;
-    justify-content:flex-end !important;
-    gap:10px !important;
-    flex:0 0 auto !important;
-    margin-left:auto !important;
-    margin-top:2px !important;
-  }
-
-  /* Hide only CTA on mobile */
-  .site-header .header-actions .header-cta{
-    display:none !important;
-  }
-
-  /* Hamburger */
   .site-header .nav-toggle{
     display:inline-flex !important;
     visibility:visible !important;
@@ -618,11 +606,62 @@ textarea.input:focus{
 }
 
 /* ============ Listings (scoped by .listings-page class) ============ */
+
+/* Primary filters (top bar) */
+.listings-page .primary-filters-card .card-body{
+  padding:14px;
+}
+.listings-page .primary-filters-row{
+  display:grid;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  gap:10px;
+  align-items:end;
+}
+.listings-page .primary-filters-row .field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+.listings-page .primary-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.listings-page .primary-actions .btn{
+  min-height:40px;
+  padding:8px 12px;
+  border-radius:12px;
+  font-weight:650;
+}
+
+@media (max-width: 1100px){
+  .listings-page .primary-filters-row{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px){
+  .listings-page .primary-filters-row{
+    grid-template-columns:1fr;
+  }
+  .listings-page .primary-actions{
+    justify-content:stretch;
+  }
+  .listings-page .primary-actions .btn{
+    width:100%;
+    min-height:46px;
+  }
+}
+
+/* Listings layout (sidebar + results) */
 .listings-page .listings-layout{
   display:grid;
   grid-template-columns:300px 1fr;
   gap:16px;
   align-items:start;
+  margin-top:14px;
 }
 @media (max-width:900px){
   .listings-page .listings-layout{ grid-template-columns:1fr; }
@@ -654,6 +693,18 @@ textarea.input:focus{
   font-size:13px;
 }
 
+/* Secondary panel show/hide (More Filters button) */
+.listings-page .filters-panel{ display:none; }
+.listings-page .filters-ui.show-more .filters-panel{ display:block; }
+
+.listings-page .more-filters-btn{
+  width:100%;
+  justify-content:center;
+  min-height:40px;
+  border-radius:12px;
+  font-weight:650;
+}
+
 /* Filter groups */
 .listings-page .filter-group{
   border:1px solid rgba(255,255,255,.10);
@@ -680,8 +731,8 @@ textarea.input:focus{
 }
 
 /* Inputs */
-.listings-page .filters-ui .input,
-.listings-page .filters-ui select.input{
+.listings-page .input,
+.listings-page select.input{
   width:100%;
   height:40px;
   min-height:40px;
@@ -693,12 +744,12 @@ textarea.input:focus{
   outline:none;
   font-size:13px;
 }
-.listings-page .filters-ui .input::placeholder{ color:rgba(255,255,255,.55); }
-.listings-page .filters-ui .input:focus{
+.listings-page .input::placeholder{ color:rgba(255,255,255,.55); }
+.listings-page .input:focus{
   border-color:rgba(29,161,242,.55);
   box-shadow:0 0 0 3px rgba(29,161,242,.16);
 }
-.listings-page .filters-ui select.input option{
+.listings-page select.input option{
   background:#ffffff;
   color:#0b0f14;
 }
@@ -756,8 +807,17 @@ textarea.input:focus{
 
 /* Listings card */
 .listings-page .listings-card .card-body{ padding:18px; }
+.listings-page .listings-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
 .listings-page .listing{ border-radius:18px; padding:16px; }
 .listings-page .listing > .btn{ min-height:46px; border-radius:14px; }
+.listings-page .listing-note{ margin-top:10px; }
 @media (max-width:600px){
   .listings-page .listing{ padding:14px; }
   .listings-page .listing > .btn{ width:100%; margin-top:6px; }
