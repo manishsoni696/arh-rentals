@@ -893,6 +893,84 @@ textarea.input:focus{
   .input, select.input, textarea.input{ min-height:44px; }
 }
 
+/* ============ LISTINGS : AREA / SECTOR DROPDOWN (FINAL UI FIX) ============ */
+
+.listings-page .area-panel{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  margin-top:6px;
+  background:linear-gradient(180deg, rgba(17,26,36,.98), rgba(15,23,32,.95));
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55);
+  padding:10px;
+  z-index:99999;
+}
+
+.listings-page .area-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.listings-page .area-panel-head .btn{
+  min-height:32px;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:10px;
+}
+
+.listings-page .area-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  max-height:200px;
+  overflow:auto;
+}
+
+.listings-page .area-opt{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:var(--text);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  cursor:pointer;
+  transition:.15s ease;
+  white-space:nowrap;
+}
+
+.listings-page .area-opt:hover{
+  background:rgba(29,161,242,.18);
+  border-color:rgba(29,161,242,.45);
+}
+
+.listings-page .area-opt:active{
+  transform:scale(.96);
+}
+
+.listings-page #areaAllWrap{
+  margin-top:10px;
+}
+
+.listings-page #areaAllWrap .small{
+  display:block;
+  margin-bottom:6px;
+}
+
+/* Mobile safety */
+@media (max-width: 720px){
+  .listings-page .area-options{
+    max-height:160px;
+  }
+}
+
+
 
 /* =========================================================
    PRICING — FINAL LOCK (MUST BE VERY END OF FILE)
