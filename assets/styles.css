@@ -874,6 +874,111 @@ textarea.input:focus{
   .btn{ min-height:44px; padding:12px 14px; }
   .input, select.input, textarea.input{ min-height:44px; }
 }
+/* ============ LISTINGS: Area / Sector Custom Dropdown (UI polish) ============ */
+
+/* Make the Area field a positioning context (safe: no visual change for other fields) */
+.listings-page .primary-filters-row .field{
+  position:relative;
+}
+
+/* Panel container */
+#areaPanel{
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  margin-top:8px;
+  z-index:9999;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(11,15,20,.96);
+  backdrop-filter:blur(10px);
+  box-shadow:0 18px 45px rgba(0,0,0,.55);
+  padding:12px;
+}
+
+/* Respect hidden attribute */
+#areaPanel[hidden]{ display:none !important; }
+
+/* Panel heading / layout */
+#areaPanel .small{
+  font-size:12px;
+  color:rgba(255,255,255,.72);
+  margin:0 0 8px;
+}
+
+#areaExpandBtn{
+  width:100%;
+  justify-content:center;
+  min-height:40px;
+  border-radius:12px;
+  font-weight:700;
+  margin:8px 0 10px;
+}
+
+/* Option buttons grid */
+#areaPanel .area-options,
+#areaAllOptions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+/* Option pills */
+#areaPanel .area-opt{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:rgba(255,255,255,.88);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12.5px;
+  line-height:1;
+  cursor:pointer;
+  transition:.15s ease;
+  max-width:100%;
+}
+
+#areaPanel .area-opt:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(29,161,242,.28);
+  box-shadow:0 0 0 3px rgba(29,161,242,.10);
+}
+
+/* Long text wraps nicely (e.g. Housing Board Colony...) */
+#areaPanel .area-opt{
+  white-space:normal;
+  text-align:left;
+}
+
+/* Full list wrap: scroll when expanded */
+#areaAllWrap{
+  margin-top:10px;
+}
+
+#areaAllWrap[hidden]{ display:none !important; }
+
+#areaAllOptions{
+  max-height:260px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+/* Mobile: panel stays within viewport and feels compact */
+@media (max-width: 720px){
+  #areaPanel{
+    padding:10px;
+  }
+  #areaPanel .area-opt{
+    width:auto;
+    padding:9px 12px;
+    font-size:13px;
+  }
+  #areaAllOptions{
+    max-height:220px;
+  }
+}
+
 
 /* =========================================================
    PRICING — FINAL LOCK (MUST BE VERY END OF FILE)
