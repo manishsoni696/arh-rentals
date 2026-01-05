@@ -923,4 +923,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 })();
+/* =========================================================
+   STEP 3 — FILTERS: MORE / LESS TOGGLE (SAFE, ADD-ONLY)
+   Purpose:
+   - Toggle secondary filters visibility
+   - Change button text: + More Filters / − Less Filters
+   - NO delete
+   - NO replace
+   - Works with existing CSS (.filters-ui.show-more)
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const moreBtn = document.getElementById("moreFiltersBtn");
+  const filtersUI = document.querySelector(".filters-ui");
+
+  if (!moreBtn || !filtersUI) return;
+
+  moreBtn.addEventListener("click", () => {
+    const expanded = filtersUI.classList.toggle("show-more");
+
+    moreBtn.textContent = expanded
+      ? "− Less Filters"
+      : "+ More Filters";
+  });
+});
+
 
