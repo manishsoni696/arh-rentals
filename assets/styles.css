@@ -1967,6 +1967,28 @@ body:has(#primary-navigation a.active[href="/listings"]) aside.card .small.muted
     max-width:100%;
   }
 }
+/* =========================
+   LISTINGS: FILTER BUTTON WIDTH FIX
+   (ADD-ONLY PATCH)
+   ========================= */
+
+/* Desktop/Tablet: keep button professional (not full width) */
+.grid > aside.card .btn.btn-primary{
+  width:auto !important;
+  max-width:none !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 18px;
+}
+
+/* Mobile: full width button */
+@media (max-width: 680px){
+  .grid > aside.card .btn.btn-primary{
+    width:100% !important;
+    display:flex;
+  }
+}
 
 
 
