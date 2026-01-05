@@ -414,171 +414,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* =====================================
-   LISTINGS: Area / Sector Custom Dropdown (NO framework)
-   - Opens top suggestions on focus
-   - "More Areas" expands full list (guaranteed)
-   - Full list is populated from <datalist id="hisarAreas">
-   - Type to filter (works for both top + all)
-   - Desktop / Tablet / Mobile safe
-===================================== */
-(function () {
-  document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("fArea");
-    const panel = document.getElementById("areaPanel");
-    const expandBtn = document.getElementById("areaExpandBtn");
-    const allWrap = document.getElementById("areaAllWrap");
-    const allBox = document.getElementById("areaAllOptions");
-    const dataList = document.getElementById("hisarAreas");
-
-    if (!input || !panel || !expandBtn || !allWrap || !allBox || !dataList) return;
-
-    // Remove native datalist behavior (we use it only as a data source)
-    input.removeAttribute("list");
-
-    const topBox = panel.querySelector(".area-options");
-    const topBtns = topBox ? Array.from(topBox.querySelectorAll(".area-opt")) : [];
-
-    let isExpanded = false;
-    let allBuilt = false;
-
-    function openPanel() {
-      panel.hidden = false;
-      input.setAttribute("aria-expanded", "true");
-    }
-
-    function closePanel() {
-      panel.hidden = true;
-      input.setAttribute("aria-expanded", "false");
-    }
-
-    function getAllValuesFromDatalist() {
-      const opts = Array.from(dataList.querySelectorAll("option"));
-      const values = opts
-        .map(o => (o.getAttribute("value") || "").trim())
-        .filter(Boolean);
-
-      // unique (preserve order)
-      const seen = new Set();
-      const unique = [];
-      values.forEach(v => {
-        const k = v.toLowerCase();
-        if (!seen.has(k)) {
-          seen.add(k);
-          unique.push(v);
-        }
-      });
-      return unique;
-    }
-
-    function buildAllOptionsIfNeeded() {
-      if (allBuilt) return;
-      allBuilt = true;
-
-      const values = getAllValuesFromDatalist();
-
-      const frag = document.createDocumentFragment();
-      values.forEach(function (v) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "area-opt";
-        btn.setAttribute("data-value", v);
-        btn.textContent = v;
-        frag.appendChild(btn);
-      });
-
-      allBox.innerHTML = "";
-      allBox.appendChild(frag);
-    }
-
-    function setValueAndClose(value) {
-      input.value = value;
-      closePanel();
-      input.focus();
-    }
-
-    function filterButtons(buttons, query) {
-      const q = query.trim().toLowerCase();
-      buttons.forEach(function (b) {
-        const v = (b.getAttribute("data-value") || b.textContent || "").toLowerCase();
-        b.style.display = !q || v.includes(q) ? "" : "none";
-      });
-    }
-
-    function applyFilter() {
-      const q = input.value || "";
-      filterButtons(topBtns, q);
-
-      if (isExpanded) {
-        const allBtns = Array.from(allBox.querySelectorAll(".area-opt"));
-        filterButtons(allBtns, q);
-      }
-    }
-
-    // Open on focus/click
-    input.addEventListener("focus", function () {
-      openPanel();
-      applyFilter();
-    });
-    input.addEventListener("click", function () {
-      openPanel();
-      applyFilter();
-    });
-
-    // Type to filter
-    input.addEventListener("input", function () {
-      openPanel();
-      applyFilter();
-    });
-
-    // Select from TOP (event delegation)
-    if (topBox) {
-      topBox.addEventListener("click", function (e) {
-        const btn = e.target.closest(".area-opt");
-        if (!btn) return;
-        setValueAndClose(btn.getAttribute("data-value") || btn.textContent || "");
-      });
-    }
-
-    // Expand full list (guaranteed)
-    expandBtn.addEventListener("click", function () {
-      buildAllOptionsIfNeeded();
-      isExpanded = true;
-      allWrap.hidden = false;
-      expandBtn.textContent = "Less Areas";
-      openPanel();
-      applyFilter();
-    });
-
-    // Collapse (optional)
-    expandBtn.addEventListener("dblclick", function () {
-      isExpanded = false;
-      allWrap.hidden = true;
-      expandBtn.textContent = "More Areas";
-      openPanel();
-      applyFilter();
-    });
-
-    // Select from ALL (event delegation)
-    allBox.addEventListener("click", function (e) {
-      const btn = e.target.closest(".area-opt");
-      if (!btn) return;
-      setValueAndClose(btn.getAttribute("data-value") || btn.textContent || "");
-    });
-
-    // Close on outside click
-    document.addEventListener("click", function (e) {
-      if (panel.hidden) return;
-      if (panel.contains(e.target) || input.contains(e.target)) return;
-      closePanel();
-    });
-
-    // Close on ESC
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !panel.hidden) closePanel();
-    });
-  });
-})();
 /* =========================================================
    ARH — MOBILE NAV CONTROLLER (SINGLE SOURCE OF TRUTH)
    Applies to ALL pages consistently
@@ -669,6 +504,70 @@ document.addEventListener("DOMContentLoaded", () => {
     syncByViewport();
   });
 })();
+/* ============ LISTINGS : AREA / SECTOR DROPDOWN (JS FINAL) ============ */
+/* Safe, minimal, no framework. Scoped to listings page only. */
+
+(function () {
+  if (!document.body.classList.contains('listings-page')) return;
+
+  const areaInput = document.getElementById('fArea');
+  const areaPanel = document.getElementById('areaPanel');
+  const moreBtn = document.getElementById('areaMoreBtn');
+  const allWrap = document.getElementById('areaAllWrap');
+
+  if (!areaInput || !areaPanel) return;
+
+  let isOpen = false;
+
+  function openPanel() {
+    if (isOpen) return;
+    isOpen = true;
+    areaPanel.hidden = false;
+  }
+
+  function closePanel() {
+    if (!isOpen) return;
+    isOpen = false;
+    areaPanel.hidden = true;
+    if (allWrap) allWrap.hidden = true;
+  }
+
+  /* Open on focus / click */
+  areaInput.addEventListener('focus', openPanel);
+  areaInput.addEventListener('click', openPanel);
+
+  /* Select option (pill buttons) */
+  areaPanel.addEventListener('click', function (e) {
+    const btn = e.target.closest('.area-opt');
+    if (!btn) return;
+    areaInput.value = btn.textContent.trim();
+    closePanel();
+  });
+
+  /* More Areas toggle */
+  if (moreBtn && allWrap) {
+    moreBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      allWrap.hidden = !allWrap.hidden;
+    });
+  }
+
+  /* Close on outside click */
+  document.addEventListener('click', function (e) {
+    if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
+    closePanel();
+  });
+
+  /* Close on ESC */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePanel();
+  });
+
+  /* Start closed */
+  areaPanel.hidden = true;
+  if (allWrap) allWrap.hidden = true;
+})();
+
 
 
 
