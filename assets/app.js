@@ -415,72 +415,167 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =====================================
-   LISTINGS: Area / Sector "More Areas" Toggle (IMPROVED OPEN)
-   - Switches from TOP list to FULL list
-   - Tries to OPEN the full datalist immediately (best-effort)
+   LISTINGS: Area / Sector Custom Dropdown (NO framework)
+   - Opens top suggestions on focus
+   - "More Areas" expands full list (guaranteed)
+   - Full list is populated from <datalist id="hisarAreas">
+   - Type to filter (works for both top + all)
    - Desktop / Tablet / Mobile safe
 ===================================== */
 (function () {
   document.addEventListener("DOMContentLoaded", function () {
-    const areaInput = document.getElementById("fArea");
-    if (!areaInput) return;
+    const input = document.getElementById("fArea");
+    const panel = document.getElementById("areaPanel");
+    const expandBtn = document.getElementById("areaExpandBtn");
+    const allWrap = document.getElementById("areaAllWrap");
+    const allBox = document.getElementById("areaAllOptions");
+    const dataList = document.getElementById("hisarAreas");
 
-    const TOP_LIST = "hisarAreasTop";
-    const FULL_LIST = "hisarAreas";
-    const TRIGGER_TEXT = "More Areas (show all)";
+    if (!input || !panel || !expandBtn || !allWrap || !allBox || !dataList) return;
 
-    function tryOpenDatalistNow() {
-      // Best-effort across browsers (no guaranteed API for datalist open)
-      requestAnimationFrame(function () {
-        areaInput.focus();
+    // Remove native datalist behavior (we use it only as a data source)
+    input.removeAttribute("list");
 
-        // nudge input to refresh suggestions
-        areaInput.dispatchEvent(new Event("input", { bubbles: true }));
+    const topBox = panel.querySelector(".area-options");
+    const topBtns = topBox ? Array.from(topBox.querySelectorAll(".area-opt")) : [];
 
-        // try ArrowDown to open datalist dropdown in many browsers
-        try {
-          areaInput.dispatchEvent(
-            new KeyboardEvent("keydown", {
-              key: "ArrowDown",
-              code: "ArrowDown",
-              bubbles: true,
-              cancelable: true
-            })
-          );
-          areaInput.dispatchEvent(
-            new KeyboardEvent("keyup", {
-              key: "ArrowDown",
-              code: "ArrowDown",
-              bubbles: true,
-              cancelable: true
-            })
-          );
-        } catch (_) {}
+    let isExpanded = false;
+    let allBuilt = false;
 
-        // fallback: click (some browsers open suggestions on click after focus)
-        try { areaInput.click(); } catch (_) {}
+    function openPanel() {
+      panel.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    function closePanel() {
+      panel.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+    }
+
+    function getAllValuesFromDatalist() {
+      const opts = Array.from(dataList.querySelectorAll("option"));
+      const values = opts
+        .map(o => (o.getAttribute("value") || "").trim())
+        .filter(Boolean);
+
+      // unique (preserve order)
+      const seen = new Set();
+      const unique = [];
+      values.forEach(v => {
+        const k = v.toLowerCase();
+        if (!seen.has(k)) {
+          seen.add(k);
+          unique.push(v);
+        }
+      });
+      return unique;
+    }
+
+    function buildAllOptionsIfNeeded() {
+      if (allBuilt) return;
+      allBuilt = true;
+
+      const values = getAllValuesFromDatalist();
+
+      const frag = document.createDocumentFragment();
+      values.forEach(function (v) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "area-opt";
+        btn.setAttribute("data-value", v);
+        btn.textContent = v;
+        frag.appendChild(btn);
+      });
+
+      allBox.innerHTML = "";
+      allBox.appendChild(frag);
+    }
+
+    function setValueAndClose(value) {
+      input.value = value;
+      closePanel();
+      input.focus();
+    }
+
+    function filterButtons(buttons, query) {
+      const q = query.trim().toLowerCase();
+      buttons.forEach(function (b) {
+        const v = (b.getAttribute("data-value") || b.textContent || "").toLowerCase();
+        b.style.display = !q || v.includes(q) ? "" : "none";
       });
     }
 
-    function openFullList() {
-      areaInput.setAttribute("list", FULL_LIST);
-      areaInput.value = "";
-      tryOpenDatalistNow();
+    function applyFilter() {
+      const q = input.value || "";
+      filterButtons(topBtns, q);
+
+      if (isExpanded) {
+        const allBtns = Array.from(allBox.querySelectorAll(".area-opt"));
+        filterButtons(allBtns, q);
+      }
     }
 
-    function isTriggerSelected() {
-      return (
-        areaInput.getAttribute("list") === TOP_LIST &&
-        areaInput.value === TRIGGER_TEXT
-      );
-    }
-
-    areaInput.addEventListener("change", function () {
-      if (isTriggerSelected()) openFullList();
+    // Open on focus/click
+    input.addEventListener("focus", function () {
+      openPanel();
+      applyFilter();
+    });
+    input.addEventListener("click", function () {
+      openPanel();
+      applyFilter();
     });
 
-    areaInput.addEventListener("input", function () {
-      if (isTriggerSelected()) openFullList();
+    // Type to filter
+    input.addEventListener("input", function () {
+      openPanel();
+      applyFilter();
+    });
+
+    // Select from TOP (event delegation)
+    if (topBox) {
+      topBox.addEventListener("click", function (e) {
+        const btn = e.target.closest(".area-opt");
+        if (!btn) return;
+        setValueAndClose(btn.getAttribute("data-value") || btn.textContent || "");
+      });
+    }
+
+    // Expand full list (guaranteed)
+    expandBtn.addEventListener("click", function () {
+      buildAllOptionsIfNeeded();
+      isExpanded = true;
+      allWrap.hidden = false;
+      expandBtn.textContent = "Less Areas";
+      openPanel();
+      applyFilter();
+    });
+
+    // Collapse (optional)
+    expandBtn.addEventListener("dblclick", function () {
+      isExpanded = false;
+      allWrap.hidden = true;
+      expandBtn.textContent = "More Areas";
+      openPanel();
+      applyFilter();
+    });
+
+    // Select from ALL (event delegation)
+    allBox.addEventListener("click", function (e) {
+      const btn = e.target.closest(".area-opt");
+      if (!btn) return;
+      setValueAndClose(btn.getAttribute("data-value") || btn.textContent || "");
+    });
+
+    // Close on outside click
+    document.addEventListener("click", function (e) {
+      if (panel.hidden) return;
+      if (panel.contains(e.target) || input.contains(e.target)) return;
+      closePanel();
+    });
+
+    // Close on ESC
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) closePanel();
     });
   });
 })();
