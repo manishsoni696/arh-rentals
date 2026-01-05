@@ -2199,6 +2199,10 @@ Add-only patch for /listings/index.html
   margin-top:12px;
 }
 
+/* LISTINGS: hide the filters helper note if it still exists (SAFE) */
+.listings-page .filters-ui > .small.muted{
+  display:none !important;
+}
 
 
 
