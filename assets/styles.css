@@ -968,6 +968,226 @@ button.btn-primary:hover{
   .brand-title strong{ font-size: 16px; }
   .brand-title span{ font-size: 12px; }
 }
+
+
+/* ================================
+   LISTINGS — LEFT FILTER SIDEBAR UI (REFERENCE STYLE)
+   Add-only • Listings-only scope
+   Paste ABOVE: PRICING (FINAL WINNING OVERRIDE)
+================================ */
+
+/* 1) Main 2-column layout */
+.listings-page .listings-layout{
+  display:grid;
+  grid-template-columns: 340px 1fr;
+  gap: 18px;
+  align-items:start;
+}
+
+/* 2) Sidebar: fixed-feel + scroll inside (desktop) */
+@media (min-width: 901px){
+  .listings-page .filters-card{
+    position: sticky;
+    top: 92px;
+  }
+
+  .listings-page .filters-panel{
+    max-height: calc(100vh - 140px);
+    overflow: auto;
+    padding-right: 6px;
+  }
+
+  .listings-page .filters-panel::-webkit-scrollbar{ width: 10px; }
+  .listings-page .filters-panel::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,.10);
+    border-radius: 999px;
+    border: 2px solid rgba(0,0,0,0);
+    background-clip: padding-box;
+  }
+}
+
+/* 3) Filters card polish */
+.listings-page .filters-card{
+  border-radius: 18px;
+}
+
+.listings-page .filters-ui{
+  padding: 0;
+}
+
+.listings-page .filters-ui .card-body{
+  padding: 18px;
+}
+
+.listings-page .filters-ui .hr{
+  margin: 10px 0 14px;
+}
+
+/* 4) Header row like real portals */
+.listings-page .filters-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.listings-page .filters-head h2{
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: .15px;
+}
+
+.listings-page .filters-head-actions{
+  display:flex;
+  gap: 8px;
+}
+
+.listings-page .filters-head-actions .btn{
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+
+/* 5) Field styling */
+.listings-page .filter-group{
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.listings-page .filter-group legend{
+  padding: 0 8px;
+  font-size: 12px;
+  letter-spacing: .2px;
+  color: rgba(255,255,255,.68);
+}
+
+.listings-page .filter-group .field{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.listings-page .filters-ui .input{
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  outline: none;
+}
+
+.listings-page .filters-ui .input::placeholder{
+  color: rgba(255,255,255,.55);
+}
+
+.listings-page .filters-ui .input:focus{
+  border-color: rgba(29,161,242,.55);
+  box-shadow: 0 0 0 3px rgba(29,161,242,.16);
+}
+
+/* Dropdown options readable */
+.listings-page .filters-ui select.input option{
+  background: #ffffff;
+  color: #0b0f14;
+}
+
+/* 6) Amenities: portal-style pill tiles */
+.listings-page .amenities{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.listings-page .amenity{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  color: rgba(255,255,255,.82);
+  cursor:pointer;
+  user-select:none;
+}
+
+.listings-page .amenity:hover{
+  background: rgba(255,255,255,.05);
+  border-color: rgba(29,161,242,.22);
+}
+
+.listings-page .amenity input{
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue2);
+}
+
+/* 7) Footer CTA */
+.listings-page .filters-footer{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.listings-page .filters-footer .btn{
+  width: 100%;
+  min-height: 50px;
+  border-radius: 16px;
+  font-weight: 750;
+  letter-spacing: .15px;
+}
+
+/* 8) Listings side: tighter + premium */
+.listings-page .listings-card .card-body{
+  padding: 18px;
+}
+
+.listings-page .listings-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 16px;
+}
+
+.listings-page .listing{
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.listings-page .listing > .btn{
+  min-height: 46px;
+  border-radius: 14px;
+}
+
+/* 9) Responsive: mobile stacked + collapsible button visible */
+@media (max-width: 900px){
+  .listings-page .listings-layout{
+    grid-template-columns: 1fr;
+  }
+
+  .listings-page .filters-collapse-btn{
+    display:inline-flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .listings-page .filters-panel{
+    max-height: none;
+    overflow: visible;
+  }
+
+  .listings-page .amenities{
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============ PRICING (FINAL WINNING OVERRIDE) — MUST BE VERY LAST ============ */
 /* Purpose: Selected pricing card highlight MUST always be visible */
 
