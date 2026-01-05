@@ -421,21 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
    - Single Source of Truth rule enforced
    - Final Listings logic retained above
 ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-  const moreBtn = document.getElementById("moreFiltersBtn");
-  const filtersUI = document.querySelector(".filters-ui");
-
-  if (!moreBtn || !filtersUI) return;
-
-  moreBtn.addEventListener("click", () => {
-    const expanded = filtersUI.classList.toggle("show-more");
-
-    moreBtn.textContent = expanded
-      ? "− Less Filters"
-      : "+ More Filters";
-  });
-});
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("filtersForm");
   const listings = Array.from(document.querySelectorAll(".listing"));
