@@ -344,34 +344,6 @@ button.btn-primary:hover{
   color:var(--muted);
 }
 
-/* ============ Listings section polish ============ */
-.listings{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  margin-top:14px;
-}
-.listing{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.03);
-  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
-.listing:hover{
-  transform:translateY(-2px);
-  background:rgba(255,255,255,.045);
-  box-shadow:0 18px 40px rgba(0,0,0,.35);
-}
-.listing h3{margin:0 0 6px;font-size:18px;line-height:1.25}
-.listing p{margin:0 0 10px;color:var(--muted)}
-.listing .pills{margin-top:8px;gap:8px}
-.listing .pill{background:rgba(255,255,255,.04)}
-.listing > .btn{margin-top:4px}
 
 /* ============ Pricing selected (keep working) ============ */
 #pricingGrid .card{overflow:visible;position:relative}
