@@ -87,36 +87,49 @@
 
 <label class="field" for="fArea">
   <span class="small">Area / Sector</span>
+
+  <!-- Typeable input (custom dropdown will be controlled by JS) -->
   <input
     class="input"
     id="fArea"
     name="area"
-    list="hisarAreasTop"
     placeholder="Type area / sector (e.g. Sector 14, PLA, New Grain Market)"
+    autocomplete="off"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-controls="areaPanel"
   />
 
-  <!-- TOP SUGGESTIONS (SHORT LIST) -->
-<datalist id="hisarAreasTop">
-  <!-- Popular / common picks first (top 10) -->
-  <option value="Sector 14">
-  <option value="Sector 15">
-  <option value="Sector 13">
-  <option value="Sector 16–17">
-  <option value="Sector 33">
-  <option value="Sector-PLA">
-  <option value="New Grain Market">
-  <option value="Housing Board Colony (Sirsa Road)">
-  <option value="Sundar Nagar">
-  <option value="Vikas Nagar">
+  <!-- Custom lightweight dropdown panel (hidden by default; JS will open/expand) -->
+  <div id="areaPanel" class="area-panel" hidden>
+    <div class="area-panel-head">
+      <span class="small muted">Popular areas</span>
+      <button class="btn" type="button" id="areaExpandBtn">More Areas</button>
+    </div>
 
-  <!-- Keep quick escape -->
-  <option value="Other">
+    <div class="area-options" role="listbox" aria-label="Area suggestions (Top)">
+      <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
+      <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
+      <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
+      <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
+      <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
+      <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
+      <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
+      <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">Housing Board Colony (Sirsa Road)</button>
+      <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
+      <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
+      <button type="button" class="area-opt" data-value="Other">Other</button>
+    </div>
 
-  <!-- Trigger to expand full list -->
-  <option value="More Areas (show all)">
-</datalist>
+    <!-- Full list container (JS will populate from datalist below when expanded) -->
+    <div id="areaAllWrap" hidden>
+      <div class="hr" role="separator" aria-hidden="true"></div>
+      <span class="small muted">All areas</span>
+      <div id="areaAllOptions" class="area-options" role="listbox" aria-label="Area suggestions (All)"></div>
+    </div>
+  </div>
 
-
+  <!-- Data source (keep as-is, JS will read from this list) -->
   <datalist id="hisarAreas">
     <!-- ===== SECTORS ===== -->
     <option value="Sector 1–4">
