@@ -1059,4 +1059,37 @@ textarea.input:focus{
 .listings-page .primary-filters-card > .card-body{
   overflow: visible !important;
 }
+/* ============ LISTINGS : AREA DROPDOWN STACK FIX (FINAL) ============ */
+
+/* Hero section ko stacking root banao */
+.listings-page .hero{
+  position: relative;
+  z-index: 5;
+}
+
+/* Filters card upar rahe */
+.listings-page .primary-filters-card{
+  position: relative;
+  z-index: 20;
+  overflow: visible !important;
+}
+
+/* Area input ka container */
+.listings-page label.field[for="fArea"]{
+  position: relative;
+  z-index: 30;
+}
+
+/* Actual dropdown panel */
+.listings-page .area-panel,
+#areaPanel{
+  position: absolute !important;
+  z-index: 9999 !important;
+}
+
+/* Neeche wale listings ko neeche bhejo */
+.listings-page .listings-layout{
+  position: relative;
+  z-index: 1;
+}
 
