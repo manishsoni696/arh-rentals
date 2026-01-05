@@ -415,9 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =====================================
-   LISTINGS: Area / Sector "More Areas" Toggle
+   LISTINGS: Area / Sector "More Areas" Toggle (IMPROVED OPEN)
    - Switches from TOP list to FULL list
-   - Minimal JS, no framework
+   - Tries to OPEN the full datalist immediately (best-effort)
    - Desktop / Tablet / Mobile safe
 ===================================== */
 (function () {
@@ -429,31 +429,58 @@ document.addEventListener("DOMContentLoaded", () => {
     const FULL_LIST = "hisarAreas";
     const TRIGGER_TEXT = "More Areas (show all)";
 
+    function tryOpenDatalistNow() {
+      // Best-effort across browsers (no guaranteed API for datalist open)
+      requestAnimationFrame(function () {
+        areaInput.focus();
+
+        // nudge input to refresh suggestions
+        areaInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+        // try ArrowDown to open datalist dropdown in many browsers
+        try {
+          areaInput.dispatchEvent(
+            new KeyboardEvent("keydown", {
+              key: "ArrowDown",
+              code: "ArrowDown",
+              bubbles: true,
+              cancelable: true
+            })
+          );
+          areaInput.dispatchEvent(
+            new KeyboardEvent("keyup", {
+              key: "ArrowDown",
+              code: "ArrowDown",
+              bubbles: true,
+              cancelable: true
+            })
+          );
+        } catch (_) {}
+
+        // fallback: click (some browsers open suggestions on click after focus)
+        try { areaInput.click(); } catch (_) {}
+      });
+    }
+
     function openFullList() {
       areaInput.setAttribute("list", FULL_LIST);
       areaInput.value = "";
-      areaInput.focus();
+      tryOpenDatalistNow();
+    }
 
-      // reopen suggestions (best-effort across browsers)
-      areaInput.dispatchEvent(new Event("input", { bubbles: true }));
+    function isTriggerSelected() {
+      return (
+        areaInput.getAttribute("list") === TOP_LIST &&
+        areaInput.value === TRIGGER_TEXT
+      );
     }
 
     areaInput.addEventListener("change", function () {
-      if (
-        areaInput.getAttribute("list") === TOP_LIST &&
-        areaInput.value === TRIGGER_TEXT
-      ) {
-        openFullList();
-      }
+      if (isTriggerSelected()) openFullList();
     });
 
     areaInput.addEventListener("input", function () {
-      if (
-        areaInput.getAttribute("list") === TOP_LIST &&
-        areaInput.value === TRIGGER_TEXT
-      ) {
-        openFullList();
-      }
+      if (isTriggerSelected()) openFullList();
     });
   });
 })();
