@@ -527,12 +527,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!areaInput || !areaPanel || !popularList || !dataList) return;
 
-    // Build approved values from datalist (as data source only)
     const approvedValues = Array.from(dataList.querySelectorAll("option"))
       .map((o) => (o.value || "").trim())
       .filter(Boolean);
 
-    // Unique + stable order
     const seen = new Set();
     const approvedUnique = approvedValues.filter((v) => {
       const key = v.toLowerCase();
@@ -541,12 +539,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     });
 
-    // Popular values = existing buttons in HTML
     const popularValues = Array.from(popularList.querySelectorAll(".area-opt"))
       .map((b) => (b.dataset.value || b.textContent || "").trim())
       .filter(Boolean);
 
-    // Create / reuse suggestions container (below popular)
     let suggestWrap = document.getElementById("areaSuggestWrap");
     let suggestList = document.getElementById("areaSuggestOptions");
 
@@ -642,7 +638,6 @@ document.addEventListener("DOMContentLoaded", () => {
       suggestWrap.hidden = finalList.length === 0;
     }
 
-    // Open on focus/click
     areaInput.addEventListener("focus", function () {
       openPanel();
       buildSuggestions(areaInput.value);
@@ -652,13 +647,11 @@ document.addEventListener("DOMContentLoaded", () => {
       buildSuggestions(areaInput.value);
     });
 
-    // Type to search
     areaInput.addEventListener("input", function () {
       openPanel();
       buildSuggestions(areaInput.value);
     });
 
-    // Click select (popular or suggestions)
     areaPanel.addEventListener("click", function (e) {
       const btn = e.target.closest(".area-opt");
       if (!btn) return;
@@ -667,18 +660,15 @@ document.addEventListener("DOMContentLoaded", () => {
       setValue(val);
     });
 
-    // Outside click closes
     document.addEventListener("click", function (e) {
       if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
       closePanel();
     });
 
-    // ESC closes
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closePanel();
     });
 
-    // Start closed
     closePanel();
   });
 })();
