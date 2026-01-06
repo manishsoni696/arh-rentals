@@ -1005,7 +1005,6 @@ textarea.input:focus{
 }
 /* =========================================================
    LISTINGS — AREA DROPDOWN (FINAL & SINGLE SOURCE OF TRUTH)
-   (KEEP THIS AS THE ONLY AREA DROPDOWN BLOCK AT END)
    ========================================================= */
 
 .listings-page label.field[for="fArea"]{
@@ -1033,13 +1032,13 @@ textarea.input:focus{
 
 .listings-page #areaPanel .area-options,
 .listings-page #areaAllOptions{
-  max-height: none;
-  overflow: visible;
+  max-height: none !important;
+  overflow: visible !important;
   width: 100%;
 }
 
 .listings-page #areaAllWrap{
-  overflow: visible;
+  overflow: visible !important;
 }
 
 .listings-page #areaPanel .area-opt{
