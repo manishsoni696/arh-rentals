@@ -83,114 +83,42 @@
             </label>
 
             <label class="field" for="fArea">
-              <span class="small">Area / Sector</span>
+  <span class="small">Area / Sector</span>
 
-              <input
-                class="input"
-                id="fArea"
-                name="area"
-                placeholder="Type area / sector (e.g. Sector 14, PLA, New Grain Market)"
-                autocomplete="off"
-                aria-autocomplete="list"
-                aria-expanded="false"
-                aria-controls="areaPanel"
-              />
+  <input
+    class="input"
+    id="fArea"
+    name="area"
+    placeholder="Type to search area / sector (e.g. Sector 14, PLA, New Grain Market)"
+    autocomplete="off"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-controls="areaPanel"
+  />
 
-              <div id="areaPanel" class="area-panel" hidden>
-                <div class="area-panel-head">
-                  <span class="small muted">Popular areas</span>
-                  <button class="btn" type="button" id="areaExpandBtn">More Areas</button>
-                </div>
+  <div id="areaPanel" class="area-panel" hidden>
+    <div class="area-panel-head">
+      <span class="small muted">Popular areas</span>
+      <span class="small muted">Type to search</span>
+    </div>
 
-                <div class="area-options" role="listbox" aria-label="Area suggestions (Top)">
-                  <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
-                  <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
-                  <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
-                  <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
-                  <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
-                  <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
-                  <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
-                  <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">Housing Board Colony (Sirsa Road)</button>
-                  <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
-                  <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
-                  <button type="button" class="area-opt" data-value="Other">Other</button>
-                </div>
-
-                <div id="areaAllWrap" hidden>
-                  <div class="hr" role="separator" aria-hidden="true"></div>
-                  <span class="small muted">All areas</span>
-                  <div id="areaAllOptions" class="area-options" role="listbox" aria-label="Area suggestions (All)"></div>
-                </div>
-              </div>
-
-              <datalist id="hisarAreas">
-                <option value="Sector 1–4">
-                <option value="Sector 3">
-                <option value="Sector 5">
-                <option value="Sector 9–11">
-                <option value="Sector 13">
-                <option value="Sector 14">
-                <option value="Sector 15">
-                <option value="Sector 16–17">
-                <option value="Sector 24">
-                <option value="Sector MGA">
-                <option value="Sector 27–28">
-                <option value="Sector 33">
-                <option value="Sector-PLA">
-
-                <option value="Model Town">
-                <option value="Model Town Extension">
-                <option value="Housing Board Colony (Sirsa Road)">
-                <option value="Sundar Nagar">
-                <option value="Vikas Nagar">
-                <option value="Preeti Nagar">
-                <option value="Professor Colony">
-                <option value="Aggarwal Colony">
-                <option value="Aggarsain Colony">
-                <option value="Prem Nagar">
-                <option value="Sant Nagar">
-                <option value="Jawahar Nagar">
-                <option value="Shastri Nagar">
-                <option value="Azad Nagar">
-                <option value="Indira Colony">
-                <option value="Adarsh Nagar">
-                <option value="Shanti Nagar">
-                <option value="Vidut Nagar">
-                <option value="Jindal Colony">
-                <option value="Teachers Colony">
-                <option value="Doctors Colony">
-                <option value="Bank Colony">
-                <option value="Police Lines">
-                <option value="Camp Area">
-
-                <option value="New Grain Market">
-                <option value="Old Mandi Road">
-                <option value="Nagori Gate">
-                <option value="Main Market">
-                <option value="Rajguru Market">
-                <option value="Auto Market">
-                <option value="Industrial Area">
-                <option value="Industrial Area Phase 1">
-                <option value="Industrial Area Phase 2">
-                <option value="Delhi Road Market">
-                <option value="Hansi Road Market">
-                <option value="Tosham Road Market">
-                <option value="Barwala Road Market">
-                <option value="Railway Road Market">
-                <option value="Bus Stand Area">
-
-                <option value="Parav Chowk">
-                <option value="Lahoria Chowk">
-                <option value="Jindal Chowk">
-                <option value="ITI Chowk">
-                <option value="Dabra Chowk">
-
-                <option value="Hisar Cantt Area">
-                <option value="Mirzapur Road">
-                <option value="Airport Road Area">
-                <option value="Other">
-              </datalist>
-            </label>
+    <div class="area-options" role="listbox" aria-label="Popular areas">
+      <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
+      <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
+      <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
+      <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
+      <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
+      <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
+      <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
+      <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">
+        Housing Board Colony (Sirsa Road)
+      </button>
+      <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
+      <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
+      <button type="button" class="area-opt" data-value="Other">Other</button>
+    </div>
+  </div>
+</label>
 
             <label class="field" for="fSize">
               <span class="small">Size (<span id="sizeUnitLabel">Sq Yds</span>)</span>
