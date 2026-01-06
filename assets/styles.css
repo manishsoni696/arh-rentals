@@ -1131,6 +1131,35 @@ textarea.input:focus{
   border-color: #0a74b8;
   color: #fff;
 }
+/* ===== FIX: Area dropdown alignment (FINAL) ===== */
+
+/* Make Area field an anchor */
+label.field {
+  position: relative;
+}
+
+/* Area dropdown panel */
+#areaPanel {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0;
+  width: 100%;
+  margin-top: 6px;
+
+  background: #0b0f14;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 10px;
+
+  z-index: 99999;
+}
+
+/* Chips layout */
+#areaPanel .area-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 
 
