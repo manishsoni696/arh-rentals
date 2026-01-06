@@ -630,6 +630,12 @@ textarea.input:focus{
   align-items:end;
 }
 
+.listings-page .primary-filters-row .field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
 .listings-page .primary-actions{
   grid-column: 1 / -1;
   display:flex;
