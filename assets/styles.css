@@ -1026,10 +1026,4 @@ textarea.input:focus{
   background: #0a74b8;
   border-color: #0a74b8;
   color: #fff;
-}
-
-/* Allow dropdown to flow */
-.listings-page .primary-filters-card,
-.listings-page .primary-filters-card > .card-body{
-  overflow: visible !important;
-}
+}}
