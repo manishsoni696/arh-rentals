@@ -504,23 +504,76 @@ document.addEventListener("DOMContentLoaded", () => {
     syncByViewport();
   });
 })();
-/* ============ LISTINGS : AREA / SECTOR DROPDOWN (JS FINAL) ============ */
-/* Safe, minimal, no framework. Scoped to listings page only. */
-
+/* ============ LISTINGS : AREA / SECTOR (SOLUTION 1) — SEARCH-FIRST ============
+   - Popular chips always available
+   - Type to search suggestions (max 8)
+   - No "More Areas" / no long list UI
+   - Uses #hisarAreas datalist as the approved source list (no browser datalist usage)
+   - Scoped to listings page only
+============================================================================= */
 (function () {
   if (!document.body.classList.contains("listings-page")) return;
 
   const areaInput = document.getElementById("fArea");
   const areaPanel = document.getElementById("areaPanel");
-  const moreBtn = document.getElementById("areaExpandBtn");
-  const allWrap = document.getElementById("areaAllWrap");
-  const allOptions = document.getElementById("areaAllOptions");
+  const popularList = areaPanel ? areaPanel.querySelector(".area-options") : null;
   const dataList = document.getElementById("hisarAreas");
 
-  if (!areaInput || !areaPanel) return;
+  if (!areaInput || !areaPanel || !popularList || !dataList) return;
+
+  // Build approved values from datalist (as data source only)
+  const approvedValues = Array.from(dataList.querySelectorAll("option"))
+    .map((o) => (o.value || "").trim())
+    .filter(Boolean);
+
+  // Unique + stable order
+  const seen = new Set();
+  const approvedUnique = approvedValues.filter((v) => {
+    const key = v.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Popular values = existing buttons in HTML
+  const popularValues = Array.from(popularList.querySelectorAll(".area-opt"))
+    .map((b) => (b.dataset.value || b.textContent || "").trim())
+    .filter(Boolean);
+
+  // Create / reuse suggestions container (below popular)
+  let suggestWrap = document.getElementById("areaSuggestWrap");
+  let suggestList = document.getElementById("areaSuggestOptions");
+
+  if (!suggestWrap) {
+    suggestWrap = document.createElement("div");
+    suggestWrap.id = "areaSuggestWrap";
+    suggestWrap.hidden = true;
+
+    const hr = document.createElement("div");
+    hr.className = "hr";
+    hr.setAttribute("role", "separator");
+    hr.setAttribute("aria-hidden", "true");
+
+    const title = document.createElement("span");
+    title.className = "small muted";
+    title.textContent = "Suggestions";
+
+    suggestList = document.createElement("div");
+    suggestList.id = "areaSuggestOptions";
+    suggestList.className = "area-options";
+    suggestList.setAttribute("role", "listbox");
+    suggestList.setAttribute("aria-label", "Area suggestions");
+
+    suggestWrap.appendChild(hr);
+    suggestWrap.appendChild(title);
+    suggestWrap.appendChild(suggestList);
+
+    areaPanel.appendChild(suggestWrap);
+  } else {
+    suggestList = document.getElementById("areaSuggestOptions");
+  }
 
   let isOpen = false;
-  let allBuilt = false;
 
   function openPanel() {
     if (isOpen) return;
@@ -534,29 +587,46 @@ document.addEventListener("DOMContentLoaded", () => {
     isOpen = false;
     areaPanel.hidden = true;
     areaInput.setAttribute("aria-expanded", "false");
-    if (allWrap) allWrap.hidden = true;
-    if (moreBtn) moreBtn.textContent = "More Areas";
+    if (suggestWrap) suggestWrap.hidden = true;
+    if (suggestList) suggestList.innerHTML = "";
   }
 
-  function buildAllAreasOnce() {
-    if (allBuilt) return;
-    if (!allOptions || !dataList) return;
+  function setValue(val) {
+    areaInput.value = val;
+    closePanel();
+    areaInput.focus();
+  }
 
-    const top = new Set(
-      Array.from(areaPanel.querySelectorAll(".area-opt")).map((b) =>
-        (b.dataset.value || b.textContent || "").trim()
-      )
-    );
+  function safeContains(hay, needle) {
+    return hay.toLowerCase().includes(needle.toLowerCase());
+  }
 
-    const values = Array.from(dataList.querySelectorAll("option"))
-      .map((o) => (o.value || "").trim())
-      .filter(Boolean);
+  function buildSuggestions(query) {
+    if (!suggestList || !suggestWrap) return;
 
-    const unique = Array.from(new Set(values));
+    const q = (query || "").trim();
+    if (q.length < 1) {
+      suggestList.innerHTML = "";
+      suggestWrap.hidden = true;
+      return;
+    }
 
+    // Filter from approved list
+    const matches = approvedUnique
+      .filter((v) => safeContains(v, q))
+      .slice(0, 8);
+
+    // Always include "Other" if nothing matches
+    if (!matches.length) matches.push("Other");
+
+    // Avoid duplicating popular items in suggestions
+    const popularSet = new Set(popularValues.map((v) => v.toLowerCase()));
+    const finalList = matches.filter((v) => !popularSet.has(v.toLowerCase())).slice(0, 8);
+
+    suggestList.innerHTML = "";
     const frag = document.createDocumentFragment();
-    unique.forEach((val) => {
-      if (top.has(val)) return;
+
+    finalList.forEach((val) => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "area-opt";
@@ -565,50 +635,46 @@ document.addEventListener("DOMContentLoaded", () => {
       frag.appendChild(b);
     });
 
-    allOptions.innerHTML = "";
-    allOptions.appendChild(frag);
-    allBuilt = true;
+    suggestList.appendChild(frag);
+    suggestWrap.hidden = finalList.length === 0;
   }
 
-  // Open on focus / click
-  areaInput.addEventListener("focus", openPanel);
-  areaInput.addEventListener("click", openPanel);
+  // Open on focus/click
+  areaInput.addEventListener("focus", function () {
+    openPanel();
+    buildSuggestions(areaInput.value);
+  });
+  areaInput.addEventListener("click", function () {
+    openPanel();
+    buildSuggestions(areaInput.value);
+  });
 
-  // Select option
+  // Type to search
+  areaInput.addEventListener("input", function () {
+    openPanel();
+    buildSuggestions(areaInput.value);
+  });
+
+  // Click select (popular or suggestions)
   areaPanel.addEventListener("click", function (e) {
     const btn = e.target.closest(".area-opt");
     if (!btn) return;
-    areaInput.value = (btn.dataset.value || btn.textContent || "").trim();
-    closePanel();
+    const val = (btn.dataset.value || btn.textContent || "").trim();
+    if (!val) return;
+    setValue(val);
   });
 
-  // More Areas toggle
-  if (moreBtn && allWrap) {
-    moreBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      openPanel();
-      buildAllAreasOnce();
-
-      const show = allWrap.hidden === true;
-      allWrap.hidden = !show;
-      moreBtn.textContent = show ? "Less Areas" : "More Areas";
-    });
-  }
-
-  // Close on outside click
+  // Outside click closes
   document.addEventListener("click", function (e) {
     if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
     closePanel();
   });
 
-  // Close on ESC
+  // ESC closes
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closePanel();
   });
 
   // Start closed
-  areaPanel.hidden = true;
-  if (allWrap) allWrap.hidden = true;
+  closePanel();
 })();
