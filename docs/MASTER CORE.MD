@@ -1,7 +1,7 @@
 🔐 ARH RENTALS — UPDATED MASTER (TASK 2 SOLVED + TRANSPARENCY PLANNING)
 
 Last Updated: Jan 2026
-Status: 🔒 LOCKED CORE + ✅ Pricing Selection Fixed + 🟡 Broker Transparency Planned
+Status: 🔒 CORE + 🔒 POST-UNLOCK RULES + 🔒 PRE-UNLOCK POPUP LOCKED
 
 0) PROJECT IDENTITY
 
@@ -389,6 +389,180 @@ Filter: “Prefer owner-posted listings”
 🟡 PLANNED — NOT IMPLEMENTED
 🟡 Logic & UX to be refined later
 🟡 May evolve with better data
+
+14) DEAL UNLOCK KE BAAD AVAILABILITY SCENARIOS (🔒 LOCKED)
+14.1 SCOPE
+
+Deal unlock ke baad agar:
+
+Property pehle hi rent pe chadh chuki ho, ya
+
+Owner ka rent dene ka decision change ho gaya ho
+
+to ye scenario valid mana jayega.
+
+14.2 CORE RULE (NON-NEGOTIABLE)
+
+Deal unlock sirf contact access deta hai.
+Property availability, owner intent ya deal outcome ki koi guarantee nahi hoti.
+
+ARH Rentals:
+
+Availability ka promise nahi karta
+
+Owner ke decision ke liye responsible nahi hota
+
+Timing ya market movement control nahi karta
+
+(Zero Responsibility Model fully applicable)
+
+14.3 TENANT FEEDBACK (POST-UNLOCK)
+
+Tenant ke paas simple options honge:
+
+“Property already rented”
+
+“Owner not interested in renting now”
+
+Purpose:
+
+Transparency
+
+Duplicate unlocks avoid karna
+
+Listing hygiene improve karna
+
+14.4 LISTING BEHAVIOR (SYSTEM)
+
+Agar listing “Not Available” mark hoti hai:
+
+Listing temporarily hidden / paused ho jayegi
+
+Public listing se remove ho jayegi
+
+Further unlocks avoid honge
+
+14.5 OWNER RE-CONFIRMATION
+
+Owner ko simple choice milegi:
+
+Still available – Reactivate listing
+
+Not available – Close listing
+
+❌ No verification
+❌ No penalty
+❌ No forced action
+
+14.6 REFUND / CREDIT (REFERENCE ONLY)
+
+Unlock = contact access only
+
+Availability guarantee nahi
+
+Optional future goodwill:
+
+Limited-time report ke case me small credit / coupon
+
+Not promised, not guaranteed
+
+14.7 LOCK STATUS
+
+🔒 RULE FINAL & LOCKED
+🔒 Implementation flexible, principle frozen
+
+🔒 SUMMARY (LOCKED)
+
+Deal unlock sirf contact access deta hai.
+Property availability owner ke control me hoti hai.
+Unavailable mark hone par listing temporarily hide kar di jati hai jab tak owner re-confirm na kare.
+
+15) DEAL UNLOCK SE PEHLE MANDATORY NOTICE (POPUP) (🔒 LOCKED)
+15.1 PURPOSE (LOCKED)
+
+Deal unlock se pehle tenant ko short, clear aur unavoidable notice dena mandatory hai taaki:
+
+Galat expectations na bane
+
+Availability guarantee na samjhi jaye
+
+Platform ki legal position clear rahe
+
+15.2 POPUP TRIGGER (LOCKED)
+
+Popup har baar dikhega jab user:
+
+👉 Deal Unlock / Contact Unlock par click kare
+
+Popup accept kiye bina unlock continue nahi hoga.
+
+15.3 POPUP CONTENT (FINAL — 🔒 LOCKED COPY)
+
+Title:
+🔔 Important Notice (Please Read)
+
+Message (short & readable):
+
+This unlock gives contact access only.
+
+Property availability is not guaranteed.
+
+Property may already be rented or owner may decline.
+
+ARH Rentals is an information-access platform only.
+
+Footer (small text):
+Users must independently verify all details.
+
+Buttons:
+✅ I Understand & Continue
+❌ Cancel
+
+15.4 DESIGN RULES (LOCKED)
+
+✔ Max 4 bullet points
+✔ No scrolling
+✔ Plain language
+✔ Mobile-friendly
+✔ Neutral tone
+
+❌ No long text
+❌ No hidden conditions
+❌ No aggressive warning
+
+15.5 LEGAL & BUSINESS SAFETY (LOCKED)
+
+✔ Explicit user consent before unlock
+✔ Zero-responsibility model reinforced
+✔ Refund / dispute risk minimized
+
+15.6 RELATION WITH OTHER RULES
+
+This popup supports and strengthens:
+
+Section 1 — Zero Responsibility Model
+
+Section 13 — Broker-Listed Transparency
+
+Section 14 — Post-Unlock Availability Rules
+
+No conflict with any locked section.
+
+15.7 LOCK STATUS
+
+🔒 FINAL & LOCKED
+🔒 Copy frozen
+🔒 Mandatory in all unlock flows
+
+🔒 FINAL CONFIRMATION
+
+Section 14 LOCKED
+
+Section 15 LOCKED
+
+Future changes sirf implementation level par ho sakte hain
+
+Principles, wording aur intent change nahi honge
 
 🔒 FINAL LOCK NOTE
 
