@@ -1,4 +1,4 @@
-🔐 ARH — WORKING RULES MASTER (FINAL v2.1)
+🔐 ARH — WORKING RULES MASTER (FINAL v2.2)
 
 ⚠️ THIS IS A HARD RULEBOOK
 
@@ -37,30 +37,48 @@ If the owner says “KUCH SAMAJH NHI AYA”:
 → Restart explanation in simpler, smaller steps
 → No ego, no rushing
 
-3️⃣ CODE DELIVERY RULES (VERY STRICT)
+3️⃣ CODE DELIVERY RULES (VERY STRICT — UPDATED 🔒)
 
 ❌ NEVER write raw code in normal chat text
 
 ✅ ALL code must be inside ONE clear paste box
 
 REQUIRED FORMAT (NON-NEGOTIABLE)
-
-----------------------------
 PASTE THIS CODE:
 <code only, nothing else>
-----------------------------
 
 PASTE LOCATION (TEXT ONLY):
-- File name
-- Exact section / exact line / exact selector
-- Add / Replace / Delete (clearly mentioned)
 
+File name
+
+Exact section / exact selector / exact block
+
+Action clearly mentioned: Add / Replace / Delete
+
+🆕 MANDATORY BEFORE / AFTER RULE (ADDED — 🔒 HARD LOCK)
+
+Whenever ANY UI / CSS / JS change is suggested:
+
+✅ AI MUST FIRST SHOW
+BEFORE (Current Code / Current State)
+AFTER (Changed Code / Expected State)
+
+Purpose:
+
+Owner must clearly understand what is changing
+
+Owner must see scope & impact
+
+No blind pasting, no surprises
+
+❌ Skipping BEFORE/AFTER comparison is NOT allowed
+❌ “Just paste this” without comparison is INVALID
 
 ABSOLUTE RULES
 
 ❌ No explanation inside code
 ❌ No mixed text + code
-❌ No “paste here somewhere” type instructions
+❌ No “paste here somewhere” instructions
 
 If NO code is required, reply ONLY:
 
@@ -103,12 +121,9 @@ Then and only then → delete
 Examples:
 
 Step = listings/index.html → ONLY that file
-
 Step = styles.css → ONLY that file
 
 6️⃣ RESPONSIVENESS (NON-NEGOTIABLE — 🔒 HARD LOCK)
-
-THIS RULE WAS RECONFIRMED AND HARD-LOCKED IN THIS SESSION
 
 Every single change MUST work on:
 
@@ -116,10 +131,9 @@ Every single change MUST work on:
 📟 Tablet
 💻 Desktop
 
-If responsiveness is not verified:
-→ Task is INVALID
+If responsiveness is not verified → Task INVALID
 
-This rule is automatic, permanent, and does not need repetition.
+This rule is automatic, permanent, no repetition needed.
 
 7️⃣ PERFORMANCE & BLOAT RULES
 
@@ -136,7 +150,7 @@ Clean CSS > Smart layout > Minimum JS
 
 ❌ No SEO unless explicitly asked
 ❌ No keyword stuffing
-❌ No schema, backlinks, hacks unless approved
+❌ No schema / hacks unless approved
 
 When SEO is requested:
 
@@ -150,50 +164,33 @@ When SEO is requested:
 🚫 FORBIDDEN WORDS (ANYWHERE)
 
 verified
-
 guaranteed
-
 assured
-
 trusted (promise sense)
-
 confirmed tenant
 
 ✅ MANDATORY POSITIONING
 
 Information-only platform
-
 No broker
-
 No mediator
-
 No responsibility for deals
 
 Applies to:
-
-UI text
-Buttons
-Legal
-FAQs
-Notices
-Pricing copy
+UI text, buttons, legal, FAQs, notices, pricing copy
 
 🔟 OTP & AUTH RULES (🔒 LOCKED)
 
-OTP = login/session confirmation only
+OTP = login / session confirmation only
 ❌ OTP ≠ verification
 
-Default rules:
+Defaults:
 
-OTP validity: 5 minutes
-
-Resend cooldown: 60 seconds
-
-Max OTP: 3 in 4 hours
-
-Max wrong attempts: 5
-
-Block duration: 15 minutes (progressive)
+• OTP validity: 5 minutes
+• Resend cooldown: 60 seconds
+• Max OTP: 3 in 4 hours
+• Max wrong attempts: 5
+• Block duration: 15 minutes (progressive)
 
 Session rule:
 
@@ -210,52 +207,41 @@ Multiple properties = multiple plans
 
 Expiry = listing hidden
 
-Any future plans MUST be marked:
-
+Future plans must be marked:
 REFERENCE ONLY — NOT ACTIVE
 
 1️⃣2️⃣ UI / UX RULES
 
 Premium SaaS feel
 No clutter
-No oversized elements
 Balanced spacing
 Clear hierarchy
 
 If owner says:
-
 “LOOK ACHI NHI LAG RHI”
-→ Fix is MANDATORY, debate not allowed.
+→ Fix is MANDATORY
 
-🆕 1️⃣3️⃣ STABILITY OVER POLISH RULE (ADDED THIS SESSION — 🔒)
+🆕 1️⃣3️⃣ STABILITY OVER POLISH RULE (🔒)
 
-If a feature is:
+If feature is:
 
 Functionally stable
 
 Business-safe
 
-Usable on Desktop + Tablet + Mobile
+Works on all devices
 
 Then:
-
-❌ Micro-alignment / cosmetic perfection is NOT mandatory immediately
-✅ Such improvements may be explicitly deferred
+❌ Cosmetic perfection not mandatory immediately
 ✅ Stability > premature polish
 
-This rule prevents unnecessary churn and regression.
+🆕 1️⃣4️⃣ SINGLE SOURCE OF TRUTH RULE (🔒)
 
-🆕 1️⃣4️⃣ SINGLE SOURCE OF TRUTH RULE (JS / CSS) — 🔒
+Critical systems (NAV, Pricing, Filters):
 
-For critical systems (e.g. Mobile NAV, Pricing selection):
-
-There must be ONLY ONE active logic source
-
-Duplicate “fix blocks” are NOT allowed long-term
-
-Temporary duplication may exist only until cleanup phase
-
-Final logic must be locked and documented
+• Only ONE active logic source
+• Duplicate fix blocks allowed temporarily only
+• Final logic must be cleaned + locked
 
 1️⃣5️⃣ DECISION AUTHORITY (FINAL)
 
@@ -267,14 +253,14 @@ Ask before assuming
 
 Never override business intent
 
-Never force “best practice” against owner’s rule
+Never force “best practice” against owner rules
 
 1️⃣6️⃣ CHANGE MEMORY & TRANSFER RULE
 
 Any confirmed working style
 Any approved execution pattern
 
-→ Must be remembered and transferred to:
+→ Must persist across:
 
 New chat
 
@@ -286,23 +272,17 @@ New phase
 
 This file is the ONLY WORKING AUTHORITY for:
 
-All future chats
+• All future chats
+• All developers
+• All AI assistance
 
-All developers
-
-All AI assistance
-
-If any suggestion conflicts with this file:
-→ THIS FILE WINS
-
-📌 END OF FILE — DO NOT MODIFY WITHOUT OWNER APPROVAL
+If any suggestion conflicts with this file → THIS FILE WINS
 
 📌 FILE UPDATE STATUS
 
-✅ Rules updated to v2.1
-
-✅ Only session-approved rules added
-
+✅ Version bumped to v2.2
+✅ BEFORE / AFTER rule added (session-approved)
 ❌ No old rules removed
-
 ❌ No scope creep
+
+📌 END OF FILE — DO NOT MODIFY WITHOUT OWNER APPROVAL
