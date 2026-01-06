@@ -1160,6 +1160,15 @@ label.field {
   flex-wrap: wrap;
   gap: 8px;
 }
+/* ===== MICRO ALIGNMENT FIX: Area dropdown ===== */
+
+label.field #areaPanel {
+  left: 0;
+  right: 0;
+  width: auto;
+  box-sizing: border-box;
+}
+
 
 
 
