@@ -358,6 +358,7 @@ if (logoutBtn) {
    - Rent range supported
    - Results count sync
    - More / Less toggle
+   - ✅ Clear button works (resets all filters)
 ===================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -367,6 +368,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsCount = document.getElementById("resultsCount");
   const moreBtn = document.getElementById("moreFiltersBtn");
   const filtersUI = document.querySelector(".filters-ui");
+
+  const clearBtn = document.getElementById("filtersClearBtn");
+  const searchBtn = document.getElementById("filtersSearchBtn");
 
   if (!form || !listings.length) return;
 
@@ -396,9 +400,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function collapseMoreFiltersUI() {
+    if (!filtersUI || !moreBtn) return;
+    filtersUI.classList.remove("show-more");
+    moreBtn.textContent = "+ More Filters";
+  }
+
   // Auto apply
   form.addEventListener("change", applyFilters);
   form.addEventListener("input", applyFilters);
+
+  // Search button (manual apply)
+  if (searchBtn) {
+    searchBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      applyFilters();
+    });
+  }
+
+  // ✅ Clear button (reset everything)
+  if (clearBtn) {
+    clearBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Reset native form fields
+      form.reset();
+
+      // Reset custom Area field UI safely
+      const areaInput = document.getElementById("fArea");
+      if (areaInput) {
+        areaInput.value = "";
+        areaInput.dispatchEvent(new Event("input", { bubbles: true }));
+        areaInput.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+
+      // Close area panel if open
+      const areaPanel = document.getElementById("areaPanel");
+      if (areaPanel) areaPanel.hidden = true;
+
+      // Collapse "More Filters" panel
+      collapseMoreFiltersUI();
+
+      // Re-apply
+      applyFilters();
+    });
+  }
 
   // Initial run
   applyFilters();
@@ -407,9 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (moreBtn && filtersUI) {
     moreBtn.addEventListener("click", () => {
       const expanded = filtersUI.classList.toggle("show-more");
-      moreBtn.textContent = expanded
-        ? "− Less Filters"
-        : "+ More Filters";
+      moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
     });
   }
 });
