@@ -630,16 +630,17 @@ textarea.input:focus{
   align-items:end;
 }
 
-.listings-page .primary-actions {
-  grid-column: 1 / -1;     /* <--- YE MAIN CHANGE HAI (Full width span) */
-  display: flex;
-  width: 100%;
-  gap: 12px;
-  justify-content: flex-end; /* Buttons ko right side align kiya */
-  align-items: center;
-  flex-wrap: nowrap;
-  margin-top: 12px;
+.listings-page .primary-actions{
+  grid-column: 1 / -1;
+  display:flex;
+  width:100%;
+  gap:12px;
+  justify-content:flex-end;  /* ✅ right aligned group */
+  align-items:center;
+  flex-wrap:nowrap;
+  margin-top:12px;
 }
+
 .listings-page .primary-actions .btn-primary{
   flex:0 0 auto;
   width:clamp(200px, 25vw, 300px);
