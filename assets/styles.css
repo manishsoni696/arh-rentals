@@ -888,9 +888,15 @@ textarea.input:focus{
    (KEEP THIS AS THE ONLY AREA DROPDOWN BLOCK AT END)
    ========================================================= */
 
+/* Ensure the whole top filter card stays ABOVE listings section */
+.listings-page .primary-filters-card{
+  position: relative;
+  z-index: 200;
+}
+
+/* Keep dropdown stacking above everything below */
 .listings-page label.field[for="fArea"]{
   position: relative;
-  isolation: isolate;
 }
 
 .listings-page #areaPanel{
@@ -905,7 +911,7 @@ textarea.input:focus{
   border-radius: 12px;
   padding: 10px;
 
-  z-index: 80;
+  z-index: 1000;
   max-height: min(420px, 70vh);
   overflow-y: auto;
   overflow-x: hidden;
