@@ -630,21 +630,20 @@ textarea.input:focus{
   align-items:end;
 }
 
-/* Primary actions: Clear + Search (FINAL) */
 .listings-page .primary-actions{
   display:flex;
+  width:100%;
   gap:12px;
   justify-content:flex-end;
   align-items:center;
   flex-wrap:nowrap;
 }
 
-.listings-page .primary-actions .btn{
-  min-height:44px;
-  padding:10px 14px;
-  border-radius:12px;
-  font-weight:650;
+.listings-page .primary-actions .btn-primary{
+  flex:0 0 auto;
+  width:clamp(220px, 28vw, 360px);
 }
+
 
 .listings-page .primary-actions .btn-primary{
   flex:1;
