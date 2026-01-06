@@ -364,6 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsCount = document.getElementById("resultsCount");
   const moreBtn = document.getElementById("moreFiltersBtn");
   const filtersUI = document.querySelector(".filters-ui");
+  const clearBtn = document.getElementById("filtersClearBtn");
 
   /* ✅ NEW: Category-based visibility (Commercial filters only when Commercial selected) */
   const categorySelect = document.getElementById("fCategory");
@@ -410,6 +411,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (!form || !listings.length) return;
+   function collapseMoreFiltersUI() {
+    if (!filtersUI || !moreBtn) return;
+    filtersUI.classList.remove("show-more");
+    moreBtn.textContent = "+ More Filters";
+    moreBtn.setAttribute("aria-expanded", "false");
+  }
+
 
   function inRentRange(rent, range) {
     if (!range) return true;
@@ -472,12 +480,12 @@ document.addEventListener("DOMContentLoaded", () => {
     moreBtn.addEventListener("click", () => {
       const expanded = filtersUI.classList.toggle("show-more");
       moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
+        moreBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
 
       // ✅ NEW: if panel opened/closed, ensure correct visibility
       syncCommercialVisibility();
     });
   }
-});
 
   // ✅ Clear button (reset everything)
   if (clearBtn) {
@@ -501,20 +509,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Collapse "More Filters" panel
       collapseMoreFiltersUI();
+       syncCommercialVisibility();
 
       // Re-apply
       applyFilters();
-    });
-  }
-
-  // Initial run
-  applyFilters();
-
-  // More / Less toggle (single source)
-  if (moreBtn && filtersUI) {
-    moreBtn.addEventListener("click", () => {
-      const expanded = filtersUI.classList.toggle("show-more");
-      moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
     });
   }
 });
