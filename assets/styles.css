@@ -1018,156 +1018,65 @@ textarea.input:focus{
   color:#ffffff !important;
   font-weight:700 !important;
 }
-/* ===== Area / Sector Autocomplete Dropdown FIX ===== */
-.area-suggestions,
-#areaSuggestions,
-.suggestions-box {
+/* =========================================================
+   LISTINGS — AREA DROPDOWN (FINAL & SINGLE SOURCE OF TRUTH)
+   ========================================================= */
+
+/* Anchor only the Area field */
+.listings-page label.field[for="fArea"]{
+  position: relative;
+}
+
+/* Dropdown panel */
+.listings-page #areaPanel{
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
   right: 0;
-  background: #0b0f14;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-  padding: 10px;
-  z-index: 9999;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  max-height: 260px;
-  overflow-y: auto;
-}
-
-/* individual suggestion chip */
-.area-suggestions button,
-#areaSuggestions button,
-.suggestions-box button,
-.area-suggestions div,
-#areaSuggestions div {
-  background: rgba(255,255,255,0.06);
-  color: #f5f7fa;
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.area-suggestions button:hover,
-#areaSuggestions button:hover,
-.suggestions-box button:hover,
-.area-suggestions div:hover,
-#areaSuggestions div:hover {
-  background: #0a74b8;
-  border-color: #0a74b8;
-  color: #fff;
-}
-
-/* ensure parent field is positioning context */
-.filter-group,
-.filter-row,
-.area-field,
-.area-wrapper {
-  position: relative;
-}
-/* ===== FINAL HARD FIX: Area / Sector Dropdown Anchor ===== */
-
-/* Force area field wrapper as anchor */
-.filter-row .area-field,
-.filter-row .area-wrapper,
-.filter-row .area-input-wrapper {
-  position: relative !important;
-}
-
-/* Force dropdown to align with input */
-.filter-row .area-suggestions,
-.filter-row #areaSuggestions,
-.filter-row .suggestions-box {
-  position: absolute !important;
-  top: 100% !important;
-  left: 0 !important;
-  width: 100% !important;
-  transform: none !important;
-
-  background: #0b0f14;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 6px;
-
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-
-  z-index: 99999;
-  max-height: 260px;
-  overflow-y: auto;
-}
-
-/* Suggestion chips */
-.filter-row .area-suggestions div,
-.filter-row #areaSuggestions div,
-.filter-row .area-suggestions button,
-.filter-row #areaSuggestions button {
-  background: rgba(255,255,255,0.06);
-  color: #f5f7fa;
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.filter-row .area-suggestions div:hover,
-.filter-row #areaSuggestions div:hover,
-.filter-row .area-suggestions button:hover,
-.filter-row #areaSuggestions button:hover {
-  background: #0a74b8;
-  border-color: #0a74b8;
-  color: #fff;
-}
-/* ===== FIX: Area dropdown alignment (FINAL) ===== */
-
-/* Make Area field an anchor */
-label.field {
-  position: relative;
-}
-
-/* Area dropdown panel */
-#areaPanel {
-  position: absolute !important;
-  top: 100% !important;
-  left: 0;
-  width: 100%;
   margin-top: 6px;
 
   background: #0b0f14;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,.15);
   border-radius: 12px;
   padding: 10px;
 
-  z-index: 99999;
+  z-index: 50;
+  max-height: min(420px, 70vh);
+  overflow-y: auto;
 }
 
 /* Chips layout */
-#areaPanel .area-options {
+.listings-page #areaPanel .area-options{
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-/* ===== MICRO ALIGNMENT FIX: Area dropdown ===== */
 
-label.field #areaPanel {
-  left: 0;
-  right: 0;
-  width: auto;
-  box-sizing: border-box;
+/* Individual chips */
+.listings-page #areaPanel .area-opt{
+  background: rgba(255,255,255,.06);
+  color: #f5f7fa;
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: .2s ease;
 }
+
+.listings-page #areaPanel .area-opt:hover{
+  background: #0a74b8;
+  border-color: #0a74b8;
+  color: #fff;
+}
+
+/* Allow dropdown to flow without covering listings */
+.listings-page .primary-filters-card,
+.listings-page .primary-filters-card > .card-body{
+  overflow: visible;
+}
+
 
 
 
