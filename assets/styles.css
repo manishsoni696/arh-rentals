@@ -635,9 +635,11 @@ textarea.input:focus{
   width:100%;
   gap:12px;
   justify-content:flex-end;
-  align-items:center;
+  align-items:flex-end; /* 🔑 inputs ke bottom se align */
+  padding-bottom:2px;   /* 🔑 micro baseline adjustment */
   flex-wrap:nowrap;
 }
+
 
 .listings-page .primary-actions .btn-primary{
   flex:0 0 auto;
