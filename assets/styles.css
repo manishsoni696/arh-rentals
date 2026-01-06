@@ -622,42 +622,55 @@ textarea.input:focus{
 .listings-page .primary-filters-card .card-body{
   padding:14px;
 }
+
 .listings-page .primary-filters-row{
   display:grid;
   grid-template-columns:repeat(6, minmax(0, 1fr));
   gap:10px;
   align-items:end;
 }
-/* ALSO: You currently have the Area FIX block repeated multiple times.
-   KEEP ONLY THIS SINGLE FINAL VERSION (paste once). */
+
+/* Primary actions: Clear + Search (FINAL) */
 .listings-page .primary-actions{
   display:flex;
-  gap:10px;
+  gap:12px;
   justify-content:flex-end;
   align-items:center;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
 }
+
 .listings-page .primary-actions .btn{
-  min-height:40px;
-  padding:8px 12px;
+  min-height:44px;
+  padding:10px 14px;
   border-radius:12px;
   font-weight:650;
 }
 
-@media (max-width: 1100px){
+.listings-page .primary-actions .btn-primary{
+  flex:1;
+  min-width:260px;
+}
+
+/* Tablet */
+@media (max-width:1100px){
   .listings-page .primary-filters-row{
     grid-template-columns:repeat(3, minmax(0, 1fr));
   }
 }
-@media (max-width: 720px){
+
+/* Mobile */
+@media (max-width:720px){
   .listings-page .primary-filters-row{
     grid-template-columns:1fr;
   }
   .listings-page .primary-actions{
-    justify-content:stretch;
+    flex-direction:column;
+    align-items:stretch;
   }
-  .listings-page .primary-actions .btn{
+  .listings-page .primary-actions .btn,
+  .listings-page .primary-actions .btn-primary{
     width:100%;
+    min-width:0;
     min-height:46px;
   }
 }
@@ -670,8 +683,11 @@ textarea.input:focus{
   align-items:start;
   margin-top:14px;
 }
+
 @media (max-width:900px){
-  .listings-page .listings-layout{ grid-template-columns:1fr; }
+  .listings-page .listings-layout{
+    grid-template-columns:1fr;
+  }
 }
 
 /* Filters sidebar */
@@ -683,7 +699,9 @@ textarea.input:focus{
     overflow:auto;
   }
 }
+
 .listings-page .filters-ui .card-body{ padding:14px; }
+
 .listings-page .filters-head{
   display:flex;
   align-items:center;
@@ -691,8 +709,19 @@ textarea.input:focus{
   gap:12px;
   margin-bottom:12px;
 }
-.listings-page .filters-head h2{ margin:0; font-size:16px; letter-spacing:.15px; }
-.listings-page .filters-head-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.listings-page .filters-head h2{
+  margin:0;
+  font-size:16px;
+  letter-spacing:.15px;
+}
+
+.listings-page .filters-head-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
 .listings-page .filters-head-actions .btn{
   min-height:34px;
   padding:6px 10px;
@@ -700,20 +729,19 @@ textarea.input:focus{
   font-size:13px;
 }
 
-/* Secondary panel show/hide (More Filters button) */
+/* Secondary panel (More filters) */
 .listings-page .filters-panel{ display:none; }
 .listings-page .filters-ui.show-more .filters-panel{ display:block; }
-/* === FIX: More Filters panel visibility === */
+
 .listings-page .filters-ui.show-more{
-  overflow: visible;
+  overflow:visible;
 }
 
 .listings-page .filters-ui.show-more .filters-panel{
-  display: block;
-  margin-top: 12px;
+  margin-top:12px;
 }
 
-
+/* More filters button */
 .listings-page .more-filters-btn{
   width:100%;
   justify-content:center;
@@ -729,18 +757,21 @@ textarea.input:focus{
   padding:10px;
   background:rgba(255,255,255,.02);
 }
+
 .listings-page .filter-group legend{
   padding:0 8px;
   font-size:11px;
   letter-spacing:.2px;
   color:rgba(255,255,255,.68);
 }
+
 .listings-page .filter-group .field{
   display:flex;
   flex-direction:column;
   gap:5px;
   margin-top:8px;
 }
+
 .listings-page .filters-ui .small{
   font-size:12px;
   margin:8px 0 6px;
@@ -758,86 +789,25 @@ textarea.input:focus{
   border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.05);
   color:var(--text);
-  outline:none;
   font-size:13px;
 }
-.listings-page .input::placeholder{ color:rgba(255,255,255,.55); }
+
 .listings-page .input:focus{
   border-color:rgba(29,161,242,.55);
   box-shadow:0 0 0 3px rgba(29,161,242,.16);
 }
-.listings-page select.input option{
-  background:#ffffff;
-  color:#0b0f14;
+
+/* Listings card actions */
+.listings-page .listing > .btn{
+  min-height:46px;
+  border-radius:14px;
 }
 
-/* Amenities */
-.listings-page .amenities{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px;
-}
-.listings-page .amenity{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:7px 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.03);
-  color:rgba(255,255,255,.82);
-  cursor:pointer;
-  user-select:none;
-  font-size:12px;
-  line-height:1.2;
-}
-.listings-page .amenity:hover{
-  background:rgba(255,255,255,.05);
-  border-color:rgba(29,161,242,.22);
-}
-.listings-page .amenity input{
-  width:16px;
-  height:16px;
-  accent-color:var(--blue2);
-}
-@media (max-width:420px){
-  .listings-page .amenities{ grid-template-columns:1fr; }
-}
-
-/* Filters footer buttons */
-.listings-page .filters-footer{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:8px;
-}
-.listings-page .filters-footer .btn{
-  width:100%;
-  min-height:44px;
-  border-radius:12px;
-  font-size:14px;
-  padding:10px 12px;
-  font-weight:700;
-  letter-spacing:.15px;
-}
-
-/* Listings card */
-.listings-page .listings-card .card-body{ padding:18px; }
-.listings-page .listings-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-.listings-page .listing{ border-radius:18px; padding:16px; }
-.listings-page .listing > .btn{ min-height:46px; border-radius:14px; }
-.listings-page .listing-note{ margin-top:10px; }
 @media (max-width:600px){
-  .listings-page .listing{ padding:14px; }
-  .listings-page .listing > .btn{ width:100%; margin-top:6px; }
+  .listings-page .listing > .btn{
+    width:100%;
+    margin-top:6px;
+  }
 }
 
 /* ============ Footer ============ */
