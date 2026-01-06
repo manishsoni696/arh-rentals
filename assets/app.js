@@ -504,11 +504,11 @@ document.addEventListener("DOMContentLoaded", () => {
     syncByViewport();
   });
 })();
-/* ============ LISTINGS : AREA / SECTOR (SOLUTION 1) — SEARCH-FIRST ============
-   - Popular chips always available
-   - Type to search suggestions (max 8)
-   - No "More Areas" / no long list UI
-   - Uses #hisarAreas datalist as the approved source list (no browser datalist usage)
+/* ============ LISTINGS : AREA / SECTOR (SOLUTION 1) — SEARCH-FILTER ============
+   REQUIRED BEHAVIOR (OWNER):
+   - When user types, dropdown must show ONLY matching areas
+   - All non-matching areas must NOT be shown
+   - Uses #hisarAreas datalist as the single approved source list
    - Scoped to listings page only
 ============================================================================= */
 (function () {
@@ -523,9 +523,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const areaInput = document.getElementById("fArea");
     const areaPanel = document.getElementById("areaPanel");
     const popularList = areaPanel ? areaPanel.querySelector(".area-options") : null;
+    const head = areaPanel ? areaPanel.querySelector(".area-panel-head") : null;
+    const headSpans = head ? head.querySelectorAll("span") : null;
     const dataList = document.getElementById("hisarAreas");
 
     if (!areaInput || !areaPanel || !popularList || !dataList) return;
+
+    const defaultHeadLeft = headSpans && headSpans[0] ? headSpans[0].textContent : "";
+    const defaultHeadRight = headSpans && headSpans[1] ? headSpans[1].textContent : "";
 
     const approvedValues = Array.from(dataList.querySelectorAll("option"))
       .map((o) => (o.value || "").trim())
@@ -539,40 +544,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     });
 
-    const popularValues = Array.from(popularList.querySelectorAll(".area-opt"))
-      .map((b) => (b.dataset.value || b.textContent || "").trim())
-      .filter(Boolean);
-
+    // Build / get Suggest UI
     let suggestWrap = document.getElementById("areaSuggestWrap");
     let suggestList = document.getElementById("areaSuggestOptions");
 
-    if (!suggestWrap) {
+    if (!suggestWrap || !suggestList) {
       suggestWrap = document.createElement("div");
       suggestWrap.id = "areaSuggestWrap";
-      suggestWrap.hidden = true;
+      suggestWrap.style.marginTop = "10px";
 
-      const hr = document.createElement("div");
-      hr.className = "hr";
-      hr.setAttribute("role", "separator");
-      hr.setAttribute("aria-hidden", "true");
-
-      const title = document.createElement("span");
+      const title = document.createElement("div");
       title.className = "small muted";
-      title.textContent = "Suggestions";
+      title.textContent = "Matching areas";
 
       suggestList = document.createElement("div");
       suggestList.id = "areaSuggestOptions";
       suggestList.className = "area-options";
       suggestList.setAttribute("role", "listbox");
-      suggestList.setAttribute("aria-label", "Area suggestions");
+      suggestList.setAttribute("aria-label", "Matching areas");
 
-      suggestWrap.appendChild(hr);
       suggestWrap.appendChild(title);
       suggestWrap.appendChild(suggestList);
-
       areaPanel.appendChild(suggestWrap);
-    } else {
-      suggestList = document.getElementById("areaSuggestOptions");
     }
 
     let isOpen = false;
@@ -589,38 +582,54 @@ document.addEventListener("DOMContentLoaded", () => {
       isOpen = false;
       areaPanel.hidden = true;
       areaInput.setAttribute("aria-expanded", "false");
-      if (suggestWrap) suggestWrap.hidden = true;
-      if (suggestList) suggestList.innerHTML = "";
     }
 
     function setValue(val) {
       areaInput.value = val;
+      areaInput.dispatchEvent(new Event("change", { bubbles: true }));
       closePanel();
-      areaInput.focus();
     }
 
-    function safeContains(hay, needle) {
-      return hay.toLowerCase().includes(needle.toLowerCase());
+    function norm(s) {
+      return String(s || "")
+        .toLowerCase()
+        .replace(/[\s\-_–—]+/g, ""); // remove spaces, hyphen, en-dash, em-dash
     }
 
-    function buildSuggestions(query) {
-      if (!suggestList || !suggestWrap) return;
+    function matchesQuery(area, query) {
+      const a = norm(area);
+      const q = norm(query);
+      if (!q) return true;
+      return a.includes(q);
+    }
+
+    function showPopularMode() {
+      // Restore header
+      if (headSpans && headSpans[0]) headSpans[0].textContent = defaultHeadLeft || "Popular areas";
+      if (headSpans && headSpans[1]) headSpans[1].textContent = defaultHeadRight || "Type to search";
+
+      // Show all popular
+      popularList.hidden = false;
+      Array.from(popularList.querySelectorAll(".area-opt")).forEach((b) => (b.hidden = false));
+
+      // Hide suggestions
+      suggestList.innerHTML = "";
+      suggestWrap.hidden = true;
+    }
+
+    function showSearchMode(query) {
+      // Header for search mode
+      if (headSpans && headSpans[0]) headSpans[0].textContent = "Matching areas";
+      if (headSpans && headSpans[1]) headSpans[1].textContent = "Select one";
+
+      // Hide popular completely (as owner asked: only matches should show)
+      popularList.hidden = true;
 
       const q = (query || "").trim();
-      if (q.length < 1) {
-        suggestList.innerHTML = "";
-        suggestWrap.hidden = true;
-        return;
-      }
+      const filtered = approvedUnique.filter((v) => matchesQuery(v, q));
 
-      const matches = approvedUnique
-        .filter((v) => safeContains(v, q))
-        .slice(0, 8);
-
-      if (!matches.length) matches.push("Other");
-
-      const popularSet = new Set(popularValues.map((v) => v.toLowerCase()));
-      const finalList = matches.filter((v) => !popularSet.has(v.toLowerCase())).slice(0, 8);
+      // If nothing matches, show only "Other"
+      const finalList = filtered.length ? filtered : ["Other"];
 
       suggestList.innerHTML = "";
       const frag = document.createDocumentFragment();
@@ -635,21 +644,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       suggestList.appendChild(frag);
-      suggestWrap.hidden = finalList.length === 0;
+      suggestWrap.hidden = false;
     }
 
+    function syncUI() {
+      const q = (areaInput.value || "").trim();
+      if (!q) showPopularMode();
+      else showSearchMode(q);
+    }
+
+    // Events
     areaInput.addEventListener("focus", function () {
       openPanel();
-      buildSuggestions(areaInput.value);
+      syncUI();
     });
+
     areaInput.addEventListener("click", function () {
       openPanel();
-      buildSuggestions(areaInput.value);
+      syncUI();
     });
 
     areaInput.addEventListener("input", function () {
       openPanel();
-      buildSuggestions(areaInput.value);
+      syncUI();
     });
 
     areaPanel.addEventListener("click", function (e) {
@@ -669,6 +686,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Escape") closePanel();
     });
 
+    // Init
+    showPopularMode();
     closePanel();
   });
 })();
