@@ -352,14 +352,10 @@ if (logoutBtn) {
     initPricingSelect();
   }
 })();
-/* =====================================
+/* =========================================================
    LISTINGS FILTERS — FINAL (SINGLE SOURCE)
-   - Auto apply on change + input
-   - Rent range supported
-   - Results count sync
-   - More / Less toggle
-   - ✅ Clear button works (resets all filters)
-===================================== */
+   + Commercial-only filters visibility fix
+   ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("filtersForm");
@@ -369,8 +365,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const moreBtn = document.getElementById("moreFiltersBtn");
   const filtersUI = document.querySelector(".filters-ui");
 
-  const clearBtn = document.getElementById("filtersClearBtn");
-  const searchBtn = document.getElementById("filtersSearchBtn");
+  /* ✅ NEW: Category-based visibility (Commercial filters only when Commercial selected) */
+  const categorySelect = document.getElementById("fCategory");
+
+  function findCommercialGroup() {
+    const panel = document.querySelector(".filters-panel");
+    if (!panel) return null;
+
+    const fieldsets = panel.querySelectorAll("fieldset");
+    for (const fs of fieldsets) {
+      const leg = fs.querySelector("legend");
+      if (leg && leg.textContent.trim().toLowerCase() === "commercial") return fs;
+    }
+
+    // Fallback (in case legend changes)
+    const comEl =
+      document.getElementById("fFloorCom") ||
+      document.getElementById("fFurnishCom");
+    return comEl ? comEl.closest("fieldset") : null;
+  }
+
+  const commercialGroup = findCommercialGroup();
+
+  function syncCommercialVisibility() {
+    const v = (categorySelect?.value || "").toLowerCase();
+    const isCommercial = v === "commercial";
+
+    if (commercialGroup) {
+      commercialGroup.style.display = isCommercial ? "" : "none";
+    }
+
+    // When not commercial, reset commercial fields (so filters don't silently apply)
+    if (!isCommercial && commercialGroup) {
+      commercialGroup.querySelectorAll("select, input").forEach((el) => {
+        if (el.tagName === "SELECT") {
+          el.selectedIndex = 0;
+        } else if (el.type === "checkbox" || el.type === "radio") {
+          el.checked = false;
+        } else if ("value" in el) {
+          el.value = "";
+        }
+      });
+    }
+  }
 
   if (!form || !listings.length) return;
 
@@ -384,39 +421,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function applyFilters() {
-    let visible = 0;
-    const rentRange = rentSelect?.value || "";
+    const fd = new FormData(form);
+    const city = (fd.get("city") || "").toString().toLowerCase();
+    const category = (fd.get("category") || "").toString().toLowerCase();
+    const type = (fd.get("type") || "").toString().toLowerCase();
+    const area = (fd.get("area") || "").toString().toLowerCase();
+    const size = (fd.get("size") || "").toString().toLowerCase();
+    const rentRange = (fd.get("rent") || "").toString();
 
-    listings.forEach((item) => {
-      const rent = Number(item.dataset.rent || 0);
-      const show = inRentRange(rent, rentRange);
+    let shown = 0;
 
-      item.style.display = show ? "" : "none";
-      if (show) visible++;
+    listings.forEach((card) => {
+      const cCity = (card.dataset.city || "").toLowerCase();
+      const cCategory = (card.dataset.category || "").toLowerCase();
+      const cType = (card.dataset.type || "").toLowerCase();
+      const cArea = (card.dataset.area || "").toLowerCase();
+      const cSize = (card.dataset.size || "").toLowerCase();
+      const cRent = Number(card.dataset.rent || 0);
+
+      const ok =
+        (!city || cCity === city) &&
+        (!category || cCategory === category) &&
+        (!type || cType === type) &&
+        (!area || cArea.includes(area)) &&
+        (!size || cSize === size) &&
+        inRentRange(cRent, rentRange);
+
+      card.style.display = ok ? "" : "none";
+      if (ok) shown++;
     });
 
-    if (resultsCount) {
-      resultsCount.textContent = `Showing ${visible} properties`;
-    }
+    if (resultsCount) resultsCount.textContent = `${shown}`;
   }
 
-  function collapseMoreFiltersUI() {
-    if (!filtersUI || !moreBtn) return;
-    filtersUI.classList.remove("show-more");
-    moreBtn.textContent = "+ More Filters";
-  }
+  // ✅ NEW: run once on load (before first filter apply)
+  syncCommercialVisibility();
 
-  // Auto apply
-  form.addEventListener("change", applyFilters);
+  // Auto apply on change/input
+  form.addEventListener("change", () => {
+    syncCommercialVisibility();
+    applyFilters();
+  });
   form.addEventListener("input", applyFilters);
 
-  // Search button (manual apply)
-  if (searchBtn) {
-    searchBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      applyFilters();
+  // Initial run
+  applyFilters();
+
+  // More / Less toggle (single source)
+  if (moreBtn && filtersUI) {
+    moreBtn.addEventListener("click", () => {
+      const expanded = filtersUI.classList.toggle("show-more");
+      moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
+
+      // ✅ NEW: if panel opened/closed, ensure correct visibility
+      syncCommercialVisibility();
     });
   }
+});
 
   // ✅ Clear button (reset everything)
   if (clearBtn) {
