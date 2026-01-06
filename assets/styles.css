@@ -792,6 +792,11 @@ textarea.input:focus{
   color:var(--text);
   font-size:13px;
 }
+/* Dropdown options (FIX dark theme) */
+.listings-page select.input option{
+  background:#0b0f14;
+  color:#f5f7fa;
+}
 
 .listings-page .input:focus{
   border-color:rgba(29,161,242,.55);
