@@ -163,3 +163,13 @@ Post-Unlock Availability rule LOCKED
 Pending tasks file successfully aligned with Master Policy
 
 Future implementation safe & guided
+
+PENDING (LATER) — Listing Status + Auto-Hide Workflow
+
+Add “Mark as Rented / Still Available” to owner renewal reminder flow
+
+Add user “Report Already Rented” request option on listing
+
+Build owner verify-confirm link flow (token-based)
+
+Define + get approval for SMS/WhatsApp templates (5 templates)
