@@ -1,4 +1,4 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.3)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.4)
 
 Last Updated: Jan 2026 (Jan 6, 2026)
 
@@ -14,9 +14,9 @@ OVERALL PROJECT STATUS (CURRENT)
 
 🔒 Core System: STABLE & LOCKED
 🟡 Listings UI: FINALIZATION IN PROGRESS (ACTIVE WORK ZONE)
-🟠 styles.css: FUNCTIONAL but has DUPLICATE blocks (cleanup needed, but ONLY after final fix)
-🟡 Area / Sector input UX upgrade: ACTIVE
-🟡 Pricing CSS “Final Lock” placement: NEEDS END-OF-FILE (pending)
+🟠 styles.css: FUNCTIONAL, duplicate Area dropdown blocks pending cleanup
+🟢 Pricing CSS “FINAL LOCK”: DONE & LOCKED (END-OF-FILE CONFIRMED)
+🟡 Area / Sector input UX upgrade: IN PROGRESS (HTML DONE, JS REPLACEMENT ACTIVE)
 ⏳ SEO + Backend planning: DEFERRED (DO NOT TOUCH YET)
 
 ✅ COMPLETED & LOCKED (DO NOT TOUCH)
@@ -38,7 +38,7 @@ OVERALL PROJECT STATUS (CURRENT)
 
 Status: ✅ Verified & stable on ALL pages
 
-Final rules (DO NOT CHANGE):
+Rules (DO NOT CHANGE):
 • JS single source of truth
 • body.nav-open as state
 • .menu.is-open / #primary-navigation.is-open
@@ -78,98 +78,99 @@ Flow: PIN → OTP → Property → Plan
 • UI finalized
 • Responsive verified
 
-9) DEAL UNLOCK RULES (PRE + POST) — 🔒 NEWLY LOCKED
-A) Pre-Unlock Mandatory Popup — 🔒 LOCKED
+9) DEAL UNLOCK RULES (PRE + POST) — 🔒 LOCKED (NEW THIS SESSION)
+A) Pre-Unlock Mandatory Popup — 🔒
 
-• Deal unlock se pehle short mandatory popup dikhega
-• Unlock sirf contact access deta hai
-• Property availability guaranteed nahi hoti
-• Property already rented ho sakti hai ya owner decline kar sakta hai
+• Mandatory popup before deal unlock
+• Unlock = contact access only
+• Property availability NOT guaranteed
+• Property may already be rented / owner may decline
 • ARH Rentals = information-access platform only
 
-Popup accept kiye bina unlock continue nahi hoga.
-(Text & intent FINAL — no expansion allowed)
+Popup acceptance mandatory before unlock.
 
-B) Post-Unlock Availability Handling — 🔒 LOCKED
+B) Post-Unlock Availability Handling — 🔒
 
-Agar unlock ke baad:
-• Property already rented nikle, ya
-• Owner rent dene se mana kar de
+If after unlock:
+• Property already rented OR
+• Owner declines
 
-To:
-• Tenant “Not Available” feedback de sakta hai
-• Listing temporarily hidden / paused ho jayegi
-• Further unlocks avoid honge
-• Owner ko re-confirm option milega (Reactivate / Close)
+Then:
+• Tenant can submit “Not Available” feedback
+• Listing temporarily hidden / paused
+• Further unlocks avoided
+• Owner gets re-confirm option (Reactivate / Close)
 
 ❌ No availability guarantee
 ❌ No refund promise
-❌ Zero Responsibility Model intact
+❌ Zero responsibility model intact
 
 10) BROKER-LISTED TRANSPARENCY RULE — 🔒 LOCKED (REFERENCE)
 
-• Broker-listed property ko neutral tag ke saath show kiya jayega (future)
-• User feedback–based transparency only
-• No verification, no penalty, no guarantee
-
-(Implementation later, principle locked)
+• Neutral broker tag (future)
+• Feedback-based transparency only
+• No verification / penalty / guarantee
 
 🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
 
-(⚠️ NO CHANGE BELOW THIS SECTION EXCEPT PRIORITY QUEUE)
+⚠️ NO CHANGE BELOW THIS SECTION EXCEPT PRIORITY QUEUE
 
 11) LISTINGS FILTER SYSTEM — ARCHITECTURE LOCKED ✅
 
-✅ FINAL DECISION: HYBRID FILTER MODEL
+✅ FINAL DECISION: Hybrid Filter Model
+(Primary always visible + Secondary via More Filters)
 
-(… rest of your listings, area/sector, pricing CSS, priorities, tomorrow start point
-👉 AS-IS REHTA HAI — NO CHANGE)
+🔢 UPDATED PRIORITY QUEUE (CLEANED)
+🟢 PRIORITY 1 — COMPLETED & LOCKED
 
-🔢 UPDATED PRIORITY QUEUE (UNCHANGED ORDER)
+✅ assets/styles.css
+• “PRICING — FINAL LOCK” block moved to VERY END
+• Pricing page tested
+• Override order stable
 
-🟠 PRIORITY 1 (TOMORROW FIRST STEP):
-styles.css — Move “PRICING — FINAL LOCK” block to VERY END
+🟠 PRIORITY 2 — NEXT STEP (ACTIVE)
 
-🟠 PRIORITY 2:
-styles.css — Controlled cleanup of duplicate Area dropdown blocks
+👉 assets/styles.css
+• Controlled cleanup of duplicate Area / Sector dropdown CSS blocks
+• Keep ONE final “ONE-SCROLL-ONLY” block
+• ❌ Do NOT touch Pricing block
 
-🟡 PRIORITY 3:
-Listings Area / Sector input (HTML + minimal JS)
+🟡 PRIORITY 3 — CONTINUES AFTER CSS CLEANUP
 
-🟡 PRIORITY 4:
-SEO (ONLY after listings UI freeze)
+👉 Listings Area / Sector input
+• HTML structure finalized (Solution-1: search-first)
+• JS replacement in progress
+• Goal: no long dropdown, no More-Areas UI
 
-⚪ FUTURE (DO NOT START):
+🟡 PRIORITY 4 (LATER)
+
+SEO — ONLY after listings UI freeze
+
+⚪ FUTURE (DO NOT START)
+
 • Listings API
 • Dashboard
 • AI Assistant
 • Payments
 • Analytics
 
-▶️ WHERE WE START TOMORROW (VERY CLEAR)
+▶️ WHERE WE START NEXT (VERY CLEAR)
 
-👉 styles.css
-Move “PRICING — FINAL LOCK” block to the very end
-Test pricing page
-Then safe cleanup of duplicate dropdown CSS
+👉 assets/styles.css
+Step: Remove duplicate Area dropdown CSS blocks
+Rule: One file → one paste box → no deletions without approval
 
-✅ END — MASTER FILE v6.3 (UPDATED & ALIGNED)
-🔒 FINAL CONFIRMATION
+📝 PENDING (LATER — DO NOT FORGET)
 
-Deal Unlock Popup rule LOCKED
+• Listing status workflow: Auto-hide when rented
+• Owner renewal reminder → “Mark as Rented / Still Available”
+• User “Report Already Rented” request option
+• Owner verify-confirm link flow (token-based)
+• SMS / WhatsApp templates (≈5) — approval required
 
-Post-Unlock Availability rule LOCKED
+✅ END — MASTER FILE v6.4
 
-Pending tasks file successfully aligned with Master Policy
-
-Future implementation safe & guided
-
-PENDING (LATER) — Listing Status + Auto-Hide Workflow
-
-Add “Mark as Rented / Still Available” to owner renewal reminder flow
-
-Add user “Report Already Rented” request option on listing
-
-Build owner verify-confirm link flow (token-based)
-
-Define + get approval for SMS/WhatsApp templates (5 templates)
+🔒 CONFIRMED & CLEANED
+Nothing important deleted.
+Only DONE items locked.
+Next step unambiguous.
