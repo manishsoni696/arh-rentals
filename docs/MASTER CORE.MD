@@ -554,6 +554,148 @@ No conflict with any locked section.
 🔒 Copy frozen
 🔒 Mandatory in all unlock flows
 
+16) OWNER COMMUNICATION, STATUS UPDATES & EXPIRY REMINDERS (NEW — 🔒 LOCKED)
+16.1 PROPERTY LISTING CONFIRMATION MESSAGE (OWNER)
+
+Jab koi owner apni property ARH Rentals par successfully list karta hai:
+
+✔ Owner ko confirmation message (SMS / WhatsApp) milega
+✔ Message ka purpose:
+
+Listing acknowledgement
+
+Transparency
+
+Future communication base
+
+Message will include (short & clear):
+
+Confirmation that property is listed on ARH Rentals
+
+Platform name (ARH Rentals / Anjani Real Heights)
+
+Clear statement: “This is an advertisement listing only”
+
+16.2 TERMS & DISCLAIMER COMMUNICATION (SAFE APPROACH)
+
+SMS / WhatsApp me full Terms & Conditions dena practical nahi hai.
+
+Final approach (🔒 LOCKED):
+
+Message me short disclaimer line
+
+Saath me Terms & Legal page ka link
+
+Example intent (not copy):
+
+“By listing, you agree to platform terms. Read full terms here: [link]”
+
+✔ Legally safe
+✔ Readable
+✔ Industry-standard
+
+16.3 OWNER PROPERTY STATUS CHANGE (PLANNED — 🔒 LOCKED)
+
+Owner future me apni property ka status change kar sakta hai:
+
+Possible statuses:
+
+Available
+
+Rented
+
+Not available
+
+Rules:
+
+Status change owner ke control me rahega
+
+ARH Rentals status verify nahi karega
+
+Status sirf visibility control ke liye hoga
+
+16.4 EXPIRY REMINDER TO OWNER (IMPORTANT — 🔒 LOCKED)
+
+Property plan expiry se pehle reminder bheja jayega.
+
+Reminder intent:
+
+“Your property listing is about to expire”
+
+“If property is still available, you may renew”
+
+“If not renewed, listing will be automatically hidden”
+
+✔ No pressure
+✔ No misleading urgency
+✔ Clear outcome explained
+
+16.5 AUTO-EXPIRY BEHAVIOR (RECONFIRMATION)
+
+Agar owner:
+
+Renew nahi karta
+
+Ya property already rented hai
+
+To:
+
+Listing automatically portal se hide ho jayegi
+
+Public users ko visible nahi rahegi
+
+(No deletion promise, only visibility control)
+
+16.6 RENEW OPTION (PROPERTY-SPECIFIC — 🔒 LOCKED)
+
+Renewal:
+
+Same property ke liye hoga
+
+Same owner ke context me
+
+New plan = new validity
+
+Rules:
+
+No auto-renew (unless decided later)
+
+Owner ki explicit action required
+
+16.7 COMMUNICATION CHANNELS (FLEXIBLE)
+
+Future me use ho sakta hai:
+
+SMS
+
+WhatsApp
+
+On-site dashboard notification
+
+(Exact channel decision later)
+
+16.8 ZERO RESPONSIBILITY ALIGNMENT
+
+✔ ARH Rentals availability guarantee nahi karta
+✔ Owner decisions platform ke control me nahi
+✔ Reminders sirf information ke liye
+
+Legal & business position unchanged.
+
+16.9 STATUS
+
+🔒 PRINCIPLES & FLOW LOCKED
+🟡 Exact message copy & timing later decide honge
+🟡 Implementation future phase
+
+🔒 SUMMARY LINE (MASTER SAFE)
+
+Property list hone par owner ko confirmation message milega.
+Terms ke liye link diya jayega.
+Expiry se pehle reminder jayega.
+Renew na karne par listing automatically hide ho jayegi.
+Status control owner ke paas rahega.
+
 🔒 FINAL CONFIRMATION
 
 Section 14 LOCKED
@@ -575,3 +717,69 @@ Does NOT verify listings
 Does NOT change ARH Rentals’ legal position
 
 It exists only to improve user awareness.
+
+FEATURE (FUTURE) — LISTING STATUS + COMMUNITY REPORTING + AUTO-HIDE (REFERENCE ONLY — NOT ACTIVE)
+
+Goal:
+
+If property is rented, listing must be hidden fast to avoid bad user experience.
+
+Make it owner-driven by default, with a backup user-report flow.
+
+Keep everything automatic as much as possible, but business-safe.
+
+A) OWNER RENEW / STATUS REMINDER (AUTOMATION)
+
+When plan renewal reminder is sent, include a mandatory line:
+“If your property is already rented, update status on portal so it gets hidden.”
+
+Owner actions:
+
+“Mark as Rented” → Listing hidden from public listings immediately
+
+“Still Available” → Listing stays live + renewal flow continues
+
+B) USER REPORT FLOW (WHEN TENANT FINDS LISTING IS ALREADY RENTED)
+User option:
+
+“Report: Already Rented / Not Available” request submit on portal
+
+System behavior:
+
+Create a “Status Change Request” against that listing
+
+Notify owner via SMS/WhatsApp/email (final channel decision later)
+
+Owner must confirm:
+
+“Yes, rented” → listing hidden
+
+“No, still available” → listing remains, request closed
+
+Business-safety rules:
+
+No automatic hide on user report without owner confirmation (avoid misuse)
+
+Rate-limit reports per user/device
+
+Keep audit log: who reported + when + owner response
+
+Dependencies (later):
+
+Listing model needs: status (available/rented/hidden), lastVerifiedAt, reportCount
+
+Simple owner confirmation link flow (token-based)
+
+Admin fallback (manual override) only if needed
+
+SMS / WhatsApp Templates (APPROVAL REQUIRED — PENDING)
+
+Owner reminder + status check (Renewal)
+
+Owner confirmation request (User reported “Already rented”)
+
+Owner confirmation success (Listing hidden)
+
+Owner rejected report (Listing stays live)
+
+User acknowledgement (Report received; waiting owner confirmation)
