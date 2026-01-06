@@ -366,51 +366,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const filtersUI = document.querySelector(".filters-ui");
   const clearBtn = document.getElementById("filtersClearBtn");
 
-  /* ✅ NEW: Category-based visibility (Commercial filters only when Commercial selected) */
+  /* ✅ NEW: Category-based visibility (show only matching secondary filters) */
   const categorySelect = document.getElementById("fCategory");
 
-  function findCommercialGroup() {
-    const panel = document.querySelector(".filters-panel");
-    if (!panel) return null;
+  const secondaryGroups = Array.from(
+    document.querySelectorAll(".filters-panel [data-cat]")
+  );
 
-    const fieldsets = panel.querySelectorAll("fieldset");
-    for (const fs of fieldsets) {
-      const leg = fs.querySelector("legend");
-      if (leg && leg.textContent.trim().toLowerCase() === "commercial") return fs;
-    }
-
-    // Fallback (in case legend changes)
-    const comEl =
-      document.getElementById("fFloorCom") ||
-      document.getElementById("fFurnishCom");
-    return comEl ? comEl.closest("fieldset") : null;
+  function resetGroupInputs(group) {
+    group.querySelectorAll("select, input").forEach((el) => {
+      if (el.tagName === "SELECT") {
+        el.selectedIndex = 0;
+      } else if (el.type === "checkbox" || el.type === "radio") {
+        el.checked = false;
+      } else if ("value" in el) {
+        el.value = "";
+      }
+    });
   }
 
-  const commercialGroup = findCommercialGroup();
-
   function syncCommercialVisibility() {
-    const v = (categorySelect?.value || "").toLowerCase();
-    const isCommercial = v === "commercial";
+     if (!secondaryGroups.length) return;
+    const v = (categorySelect?.value || "residential").toLowerCase();
+    const activeCat = v === "commercial" ? "commercial" : "residential";
 
-    if (commercialGroup) {
-      commercialGroup.style.display = isCommercial ? "" : "none";
-    }
-
-    // When not commercial, reset commercial fields (so filters don't silently apply)
-    if (!isCommercial && commercialGroup) {
-      commercialGroup.querySelectorAll("select, input").forEach((el) => {
-        if (el.tagName === "SELECT") {
-          el.selectedIndex = 0;
-        } else if (el.type === "checkbox" || el.type === "radio") {
-          el.checked = false;
-        } else if ("value" in el) {
-          el.value = "";
-        }
-      });
-    }
+    secondaryGroups.forEach((group) => {
+      const groupCat = group.getAttribute("data-cat");
+      const show = groupCat === activeCat;
+      group.style.display = show ? "" : "none";
+      if (!show) resetGroupInputs(group);
+    });
   }
 
   if (!form || !listings.length) return;
+   
    function collapseMoreFiltersUI() {
     if (!filtersUI || !moreBtn) return;
     filtersUI.classList.remove("show-more");
