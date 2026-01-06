@@ -644,9 +644,9 @@ textarea.input:focus{
 .listings-page .primary-actions .btn-primary{
   flex:0 0 auto;
   width:clamp(200px, 25vw, 300px);
-  max-width:300px;      /* ✅ stop full width */
-  margin-left:auto;     /* ✅ push it to right */
+  max-width:300px;
 }
+
 
 .listings-page .primary-actions .btn-primary{
   flex:1;
