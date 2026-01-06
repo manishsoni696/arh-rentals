@@ -1073,6 +1073,64 @@ textarea.input:focus{
 .area-wrapper {
   position: relative;
 }
+/* ===== FINAL HARD FIX: Area / Sector Dropdown Anchor ===== */
+
+/* Force area field wrapper as anchor */
+.filter-row .area-field,
+.filter-row .area-wrapper,
+.filter-row .area-input-wrapper {
+  position: relative !important;
+}
+
+/* Force dropdown to align with input */
+.filter-row .area-suggestions,
+.filter-row #areaSuggestions,
+.filter-row .suggestions-box {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  transform: none !important;
+
+  background: #0b0f14;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 6px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  z-index: 99999;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* Suggestion chips */
+.filter-row .area-suggestions div,
+.filter-row #areaSuggestions div,
+.filter-row .area-suggestions button,
+.filter-row #areaSuggestions button {
+  background: rgba(255,255,255,0.06);
+  color: #f5f7fa;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-row .area-suggestions div:hover,
+.filter-row #areaSuggestions div:hover,
+.filter-row .area-suggestions button:hover,
+.filter-row #areaSuggestions button:hover {
+  background: #0a74b8;
+  border-color: #0a74b8;
+  color: #fff;
+}
 
 
 
