@@ -521,15 +521,6 @@
         cat.addEventListener("change", syncCategory);
       }
 
-      if (moreBtn && ui) {
-        moreBtn.addEventListener("click", function () {
-          ui.classList.toggle("show-more");
-          var open = ui.classList.contains("show-more");
-          moreBtn.setAttribute("aria-expanded", open ? "true" : "false");
-          moreBtn.textContent = open ? "− More Filters" : "+ More Filters";
-        });
-      }
-
       syncCategory();
     })();
   </script>
