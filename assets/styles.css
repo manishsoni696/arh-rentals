@@ -641,8 +641,11 @@ textarea.input:focus{
   margin-top: 12px;
 }
 .listings-page .primary-actions .btn-primary {
-  flex: 0 0 auto;
-  width: clamp(200px, 25vw, 300px); /* Button width ko thoda clean kiya */
+  flex: 0 0 auto;    /* Button failna nahi chahiye (Don't grow) */
+  width: auto;       /* Text ke hisaab se width (Natural width) */
+  min-width: 160px;  /* Kam se kam itni chaudai honi chahiye */
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 
