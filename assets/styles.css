@@ -630,10 +630,6 @@ textarea.input:focus{
 }
 /* ALSO: You currently have the Area FIX block repeated multiple times.
    KEEP ONLY THIS SINGLE FINAL VERSION (paste once). */
-
-.listings-page label.field[for="fArea"]{
-  position: relative;
-}
 .listings-page .primary-actions{
   display:flex;
   gap:10px;
@@ -1026,13 +1022,6 @@ textarea.input:focus{
 /* isolate Area field from grid stacking */
 .listings-page label.field[for="fArea"]{
   isolation: isolate;
-}
-
-/* ensure dropdown floats cleanly */
-.listings-page #areaPanel{
-  position: absolute;
-  inset: auto 0 auto 0;
-  top: 100%;
 }
 
 
