@@ -512,169 +512,173 @@ document.addEventListener("DOMContentLoaded", () => {
    - Scoped to listings page only
 ============================================================================= */
 (function () {
-  if (!document.body.classList.contains("listings-page")) return;
-
-  const areaInput = document.getElementById("fArea");
-  const areaPanel = document.getElementById("areaPanel");
-  const popularList = areaPanel ? areaPanel.querySelector(".area-options") : null;
-  const dataList = document.getElementById("hisarAreas");
-
-  if (!areaInput || !areaPanel || !popularList || !dataList) return;
-
-  // Build approved values from datalist (as data source only)
-  const approvedValues = Array.from(dataList.querySelectorAll("option"))
-    .map((o) => (o.value || "").trim())
-    .filter(Boolean);
-
-  // Unique + stable order
-  const seen = new Set();
-  const approvedUnique = approvedValues.filter((v) => {
-    const key = v.toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-
-  // Popular values = existing buttons in HTML
-  const popularValues = Array.from(popularList.querySelectorAll(".area-opt"))
-    .map((b) => (b.dataset.value || b.textContent || "").trim())
-    .filter(Boolean);
-
-  // Create / reuse suggestions container (below popular)
-  let suggestWrap = document.getElementById("areaSuggestWrap");
-  let suggestList = document.getElementById("areaSuggestOptions");
-
-  if (!suggestWrap) {
-    suggestWrap = document.createElement("div");
-    suggestWrap.id = "areaSuggestWrap";
-    suggestWrap.hidden = true;
-
-    const hr = document.createElement("div");
-    hr.className = "hr";
-    hr.setAttribute("role", "separator");
-    hr.setAttribute("aria-hidden", "true");
-
-    const title = document.createElement("span");
-    title.className = "small muted";
-    title.textContent = "Suggestions";
-
-    suggestList = document.createElement("div");
-    suggestList.id = "areaSuggestOptions";
-    suggestList.className = "area-options";
-    suggestList.setAttribute("role", "listbox");
-    suggestList.setAttribute("aria-label", "Area suggestions");
-
-    suggestWrap.appendChild(hr);
-    suggestWrap.appendChild(title);
-    suggestWrap.appendChild(suggestList);
-
-    areaPanel.appendChild(suggestWrap);
-  } else {
-    suggestList = document.getElementById("areaSuggestOptions");
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
   }
 
-  let isOpen = false;
+  ready(function () {
+    if (!document.body.classList.contains("listings-page")) return;
 
-  function openPanel() {
-    if (isOpen) return;
-    isOpen = true;
-    areaPanel.hidden = false;
-    areaInput.setAttribute("aria-expanded", "true");
-  }
+    const areaInput = document.getElementById("fArea");
+    const areaPanel = document.getElementById("areaPanel");
+    const popularList = areaPanel ? areaPanel.querySelector(".area-options") : null;
+    const dataList = document.getElementById("hisarAreas");
 
-  function closePanel() {
-    if (!isOpen) return;
-    isOpen = false;
-    areaPanel.hidden = true;
-    areaInput.setAttribute("aria-expanded", "false");
-    if (suggestWrap) suggestWrap.hidden = true;
-    if (suggestList) suggestList.innerHTML = "";
-  }
+    if (!areaInput || !areaPanel || !popularList || !dataList) return;
 
-  function setValue(val) {
-    areaInput.value = val;
-    closePanel();
-    areaInput.focus();
-  }
+    // Build approved values from datalist (as data source only)
+    const approvedValues = Array.from(dataList.querySelectorAll("option"))
+      .map((o) => (o.value || "").trim())
+      .filter(Boolean);
 
-  function safeContains(hay, needle) {
-    return hay.toLowerCase().includes(needle.toLowerCase());
-  }
-
-  function buildSuggestions(query) {
-    if (!suggestList || !suggestWrap) return;
-
-    const q = (query || "").trim();
-    if (q.length < 1) {
-      suggestList.innerHTML = "";
-      suggestWrap.hidden = true;
-      return;
-    }
-
-    // Filter from approved list
-    const matches = approvedUnique
-      .filter((v) => safeContains(v, q))
-      .slice(0, 8);
-
-    // Always include "Other" if nothing matches
-    if (!matches.length) matches.push("Other");
-
-    // Avoid duplicating popular items in suggestions
-    const popularSet = new Set(popularValues.map((v) => v.toLowerCase()));
-    const finalList = matches.filter((v) => !popularSet.has(v.toLowerCase())).slice(0, 8);
-
-    suggestList.innerHTML = "";
-    const frag = document.createDocumentFragment();
-
-    finalList.forEach((val) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "area-opt";
-      b.dataset.value = val;
-      b.textContent = val;
-      frag.appendChild(b);
+    // Unique + stable order
+    const seen = new Set();
+    const approvedUnique = approvedValues.filter((v) => {
+      const key = v.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
 
-    suggestList.appendChild(frag);
-    suggestWrap.hidden = finalList.length === 0;
-  }
+    // Popular values = existing buttons in HTML
+    const popularValues = Array.from(popularList.querySelectorAll(".area-opt"))
+      .map((b) => (b.dataset.value || b.textContent || "").trim())
+      .filter(Boolean);
 
-  // Open on focus/click
-  areaInput.addEventListener("focus", function () {
-    openPanel();
-    buildSuggestions(areaInput.value);
-  });
-  areaInput.addEventListener("click", function () {
-    openPanel();
-    buildSuggestions(areaInput.value);
-  });
+    // Create / reuse suggestions container (below popular)
+    let suggestWrap = document.getElementById("areaSuggestWrap");
+    let suggestList = document.getElementById("areaSuggestOptions");
 
-  // Type to search
-  areaInput.addEventListener("input", function () {
-    openPanel();
-    buildSuggestions(areaInput.value);
-  });
+    if (!suggestWrap) {
+      suggestWrap = document.createElement("div");
+      suggestWrap.id = "areaSuggestWrap";
+      suggestWrap.hidden = true;
 
-  // Click select (popular or suggestions)
-  areaPanel.addEventListener("click", function (e) {
-    const btn = e.target.closest(".area-opt");
-    if (!btn) return;
-    const val = (btn.dataset.value || btn.textContent || "").trim();
-    if (!val) return;
-    setValue(val);
-  });
+      const hr = document.createElement("div");
+      hr.className = "hr";
+      hr.setAttribute("role", "separator");
+      hr.setAttribute("aria-hidden", "true");
 
-  // Outside click closes
-  document.addEventListener("click", function (e) {
-    if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
+      const title = document.createElement("span");
+      title.className = "small muted";
+      title.textContent = "Suggestions";
+
+      suggestList = document.createElement("div");
+      suggestList.id = "areaSuggestOptions";
+      suggestList.className = "area-options";
+      suggestList.setAttribute("role", "listbox");
+      suggestList.setAttribute("aria-label", "Area suggestions");
+
+      suggestWrap.appendChild(hr);
+      suggestWrap.appendChild(title);
+      suggestWrap.appendChild(suggestList);
+
+      areaPanel.appendChild(suggestWrap);
+    } else {
+      suggestList = document.getElementById("areaSuggestOptions");
+    }
+
+    let isOpen = false;
+
+    function openPanel() {
+      if (isOpen) return;
+      isOpen = true;
+      areaPanel.hidden = false;
+      areaInput.setAttribute("aria-expanded", "true");
+    }
+
+    function closePanel() {
+      if (!isOpen) return;
+      isOpen = false;
+      areaPanel.hidden = true;
+      areaInput.setAttribute("aria-expanded", "false");
+      if (suggestWrap) suggestWrap.hidden = true;
+      if (suggestList) suggestList.innerHTML = "";
+    }
+
+    function setValue(val) {
+      areaInput.value = val;
+      closePanel();
+      areaInput.focus();
+    }
+
+    function safeContains(hay, needle) {
+      return hay.toLowerCase().includes(needle.toLowerCase());
+    }
+
+    function buildSuggestions(query) {
+      if (!suggestList || !suggestWrap) return;
+
+      const q = (query || "").trim();
+      if (q.length < 1) {
+        suggestList.innerHTML = "";
+        suggestWrap.hidden = true;
+        return;
+      }
+
+      const matches = approvedUnique
+        .filter((v) => safeContains(v, q))
+        .slice(0, 8);
+
+      if (!matches.length) matches.push("Other");
+
+      const popularSet = new Set(popularValues.map((v) => v.toLowerCase()));
+      const finalList = matches.filter((v) => !popularSet.has(v.toLowerCase())).slice(0, 8);
+
+      suggestList.innerHTML = "";
+      const frag = document.createDocumentFragment();
+
+      finalList.forEach((val) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "area-opt";
+        b.dataset.value = val;
+        b.textContent = val;
+        frag.appendChild(b);
+      });
+
+      suggestList.appendChild(frag);
+      suggestWrap.hidden = finalList.length === 0;
+    }
+
+    // Open on focus/click
+    areaInput.addEventListener("focus", function () {
+      openPanel();
+      buildSuggestions(areaInput.value);
+    });
+    areaInput.addEventListener("click", function () {
+      openPanel();
+      buildSuggestions(areaInput.value);
+    });
+
+    // Type to search
+    areaInput.addEventListener("input", function () {
+      openPanel();
+      buildSuggestions(areaInput.value);
+    });
+
+    // Click select (popular or suggestions)
+    areaPanel.addEventListener("click", function (e) {
+      const btn = e.target.closest(".area-opt");
+      if (!btn) return;
+      const val = (btn.dataset.value || btn.textContent || "").trim();
+      if (!val) return;
+      setValue(val);
+    });
+
+    // Outside click closes
+    document.addEventListener("click", function (e) {
+      if (areaPanel.contains(e.target) || areaInput.contains(e.target)) return;
+      closePanel();
+    });
+
+    // ESC closes
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closePanel();
+    });
+
+    // Start closed
     closePanel();
   });
-
-  // ESC closes
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closePanel();
-  });
-
-  // Start closed
-  closePanel();
 })();
