@@ -1065,11 +1065,6 @@ textarea.input:focus{
 .listings-page .primary-filters-card > .card-body{
   overflow: visible;
 }
-/* LISTINGS — AREA DROPDOWN (FINAL & SINGLE SOURCE OF TRUTH) */
-.listings-page label.field[for="fArea"]{ position: relative; }
-.listings-page #areaPanel{ ... }
-.listings-page #areaPanel .area-options{ ... }
-.listings-page #areaPanel .area-opt{ ... }
 /* ===== FINAL FIX: Area dropdown stacking over CSS Grid ===== */
 
 /* isolate Area field from grid stacking */
