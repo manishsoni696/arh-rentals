@@ -1070,6 +1070,19 @@ textarea.input:focus{
 .listings-page #areaPanel{ ... }
 .listings-page #areaPanel .area-options{ ... }
 .listings-page #areaPanel .area-opt{ ... }
+/* ===== FINAL FIX: Area dropdown stacking over CSS Grid ===== */
+
+/* isolate Area field from grid stacking */
+.listings-page label.field[for="fArea"]{
+  isolation: isolate;
+}
+
+/* ensure dropdown floats cleanly */
+.listings-page #areaPanel{
+  position: absolute;
+  inset: auto 0 auto 0;
+  top: 100%;
+}
 
 
 
