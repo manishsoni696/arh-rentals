@@ -628,23 +628,12 @@ textarea.input:focus{
   gap:10px;
   align-items:end;
 }
-
-/* ============ LISTINGS : AREA DROPDOWN — GRID CLIP FINAL FIX ============ */
-.listings-page .primary-filters-row{
-  align-items: stretch !important;
-}
-
 /* ALSO: You currently have the Area FIX block repeated multiple times.
    KEEP ONLY THIS SINGLE FINAL VERSION (paste once). */
 
 .listings-page label.field[for="fArea"]{
   position: relative;
 }
-
-#areaPanel{
-  z-index: 99999;
-}
-
 .listings-page .primary-actions{
   display:flex;
   gap:10px;
@@ -1076,6 +1065,11 @@ textarea.input:focus{
 .listings-page .primary-filters-card > .card-body{
   overflow: visible;
 }
+/* LISTINGS — AREA DROPDOWN (FINAL & SINGLE SOURCE OF TRUTH) */
+.listings-page label.field[for="fArea"]{ position: relative; }
+.listings-page #areaPanel{ ... }
+.listings-page #areaPanel .area-options{ ... }
+.listings-page #areaPanel .area-opt{ ... }
 
 
 
