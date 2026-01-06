@@ -103,7 +103,7 @@ textarea.input:focus{
 .site-header{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:1200;
   backdrop-filter:blur(10px);
   background:rgba(11,15,20,.72);
   border-bottom:1px solid var(--line);
