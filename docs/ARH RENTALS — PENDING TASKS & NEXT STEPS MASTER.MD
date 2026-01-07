@@ -137,15 +137,31 @@ styles.css cleanup — duplicate Listings & Area dropdown CSS blocks
 • Analytics
 
 📝 PENDING (LATER — REFERENCE ONLY)
-• Listing status workflow (auto-hide when rented)
+• Listing status workflow — STEP 2 (Not Available reports, auto-pause, owner re-confirm)
 • Owner renewal reminder → “Still Available / Rented”
-• User “Report Already Rented” option
+• User “Report Already Rented” option (UI)
 • Owner verify-confirm link (token-based)
 • SMS / WhatsApp templates (≈5) — approval required
 
-✅ END — MASTER FILE v6.7
+🧾 CHANGE LOG (LATEST)
+
+Date: Jan 7, 2026
+
+Status Workflow — STEP 1 (Logic Draft) ✅
+• Defined listing status states: Active, Rented, Expired, Paused
+• Finalized visibility rule (active + within expiry only)
+• Defined auto & manual status change triggers
+• No UI or backend changes made
+
+Status Workflow — STEP 2 (Logic Draft) ⏸️ PARKED
+• Tenant “Not Available / Already Rented” reporting logic drafted
+• Auto-pause threshold logic defined (2 reports / 7 days)
+• Owner re-confirm options defined (Reactivate / Close)
+• Anti-spam cooldown rule outlined
+• Moved to PENDING (future implementation)
+
+✅ END — MASTER FILE v6.7 (UPDATED)
 
 🔒 CONFIRMED
-Content phase completed and locked.
-Listings UI, Filters, Demo Mode remain FINAL LOCKED.
-Next step is unambiguous.
+No UI, wording, or business rules altered.
+STEP 2 parked safely for later execution.
