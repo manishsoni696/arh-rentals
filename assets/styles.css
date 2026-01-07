@@ -464,14 +464,14 @@ textarea.input:focus{
   .home-hero h1{ font-size:clamp(26px, 4vw, 34px); }
 }
 @media (max-width: 600px){
-  .home-hero h1{
+.home-hero h1{ font-size:26px; line-height:1.22; }
+}
+@media (min-width:1100px){
+ .home-hero h1{
     white-space:nowrap;
     font-size:clamp(28px, 2.4vw, 36px);
     letter-spacing:.3px;
   }
-}
-@media (min-width:1100px){
- .home-hero h1{ white-space:normal; max-width:860px; }
 }
 @media (max-width:1099px){
   .home-hero h1{ white-space:normal; }
