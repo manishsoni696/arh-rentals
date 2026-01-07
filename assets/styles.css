@@ -279,7 +279,11 @@ textarea.input:focus{
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> b90aaa19285573dcda67b087fe673329119e98c7
   body{ padding-top:var(--arh-header-h) !important; }
 
   /* Keep header-actions visible (hamburger often lives here / beside it) */

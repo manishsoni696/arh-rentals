@@ -30,6 +30,7 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <nav class="menu" id="primary-navigation" aria-label="Primary">
       <div class="container">
         <div class="nav-inner">
@@ -38,6 +39,180 @@
           <a href="/pricing">Plans</a>
           <a href="/legal">Legal</a>
           <a class="btn btn-primary menu-cta" href="/post">Post Property</a>
+=======
+<main class="container">
+  <section class="hero">
+    <h1>ARH Rentals — Hisar</h1>
+    <p>Owner-posted rental listings with smart search.</p>
+  </section>
+
+  <div class="listings-page-layout" aria-label="Listings with filters">
+    <form id="filtersForm" class="filters-shell" autocomplete="off">
+      <!-- PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) -->
+      <section class="card primary-filters-card" aria-label="Primary filters">
+        <div class="card-body primary-filters">
+          <div class="primary-filters-row">
+            <label class="field" for="fCity">
+              <span class="small">City</span>
+              <select class="input" id="fCity" name="city">
+                <option value="hisar">Hisar</option>
+              </select>
+            </label>
+
+            <label class="field" for="fCategory">
+              <span class="small">Property Category</span>
+              <select class="input" id="fCategory" name="category">
+                <option value="residential" selected>Residential</option>
+                <option value="commercial">Commercial</option>
+              </select>
+            </label>
+
+            <label class="field" for="fType">
+              <span class="small">Property Type</span>
+              <select class="input" id="fType" name="type">
+                <option value="">Any</option>
+                <option value="House">House</option>
+                <option value="Flat">Flat</option>
+                <option value="PG">PG</option>
+              </select>
+            </label>
+
+  <label class="field" for="fArea">
+  <span class="small">Area / Sector</span>
+
+  <input
+    class="input"
+    id="fArea"
+    name="area"
+    placeholder="Type to search area / sector (e.g. Sector 14, PLA, New Grain Market)"
+    autocomplete="off"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-controls="areaPanel"
+  />
+
+  <div id="areaPanel" class="area-panel" hidden>
+    <div class="area-panel-head">
+      <span class="small muted">Popular areas</span>
+      <span class="small muted">Type to search</span>
+    </div>
+
+    <div class="area-options" role="listbox" aria-label="Popular areas">
+      <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
+      <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
+      <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
+      <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
+      <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
+      <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
+      <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
+      <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">
+        Housing Board Colony (Sirsa Road)
+      </button>
+      <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
+      <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
+      <button type="button" class="area-opt" data-value="Other">Other</button>
+    </div>
+  </div>
+
+  <datalist id="hisarAreas">
+    <option value="Sector 1–4"></option>
+    <option value="Sector 3"></option>
+    <option value="Sector 5"></option>
+    <option value="Sector 9–11"></option>
+    <option value="Sector 13"></option>
+    <option value="Sector 14"></option>
+    <option value="Sector 15"></option>
+    <option value="Sector 16–17"></option>
+    <option value="Sector 24"></option>
+    <option value="Sector MGA"></option>
+    <option value="Sector 27–28"></option>
+    <option value="Sector 33"></option>
+    <option value="Sector-PLA"></option>
+
+    <option value="Model Town"></option>
+    <option value="Model Town Extension"></option>
+    <option value="Housing Board Colony (Sirsa Road)"></option>
+    <option value="Sundar Nagar"></option>
+    <option value="Vikas Nagar"></option>
+    <option value="Preeti Nagar"></option>
+    <option value="Professor Colony"></option>
+    <option value="Aggarwal Colony"></option>
+    <option value="Aggarsain Colony"></option>
+    <option value="Prem Nagar"></option>
+    <option value="Sant Nagar"></option>
+    <option value="Jawahar Nagar"></option>
+    <option value="Shastri Nagar"></option>
+    <option value="Azad Nagar"></option>
+    <option value="Indira Colony"></option>
+    <option value="Adarsh Nagar"></option>
+    <option value="Shanti Nagar"></option>
+    <option value="Vidut Nagar"></option>
+    <option value="Jindal Colony"></option>
+    <option value="Teachers Colony"></option>
+    <option value="Doctors Colony"></option>
+    <option value="Bank Colony"></option>
+    <option value="Police Lines"></option>
+    <option value="Camp Area"></option>
+
+    <option value="New Grain Market"></option>
+    <option value="Old Mandi Road"></option>
+    <option value="Nagori Gate"></option>
+    <option value="Main Market"></option>
+    <option value="Rajguru Market"></option>
+    <option value="Auto Market"></option>
+    <option value="Industrial Area"></option>
+    <option value="Industrial Area Phase 1"></option>
+    <option value="Industrial Area Phase 2"></option>
+    <option value="Delhi Road Market"></option>
+    <option value="Hansi Road Market"></option>
+    <option value="Tosham Road Market"></option>
+    <option value="Barwala Road Market"></option>
+    <option value="Railway Road Market"></option>
+    <option value="Bus Stand Area"></option>
+
+    <option value="Parav Chowk"></option>
+    <option value="Lahoria Chowk"></option>
+    <option value="Jindal Chowk"></option>
+    <option value="ITI Chowk"></option>
+    <option value="Dabra Chowk"></option>
+
+    <option value="Hisar Cantt Area"></option>
+    <option value="Mirzapur Road"></option>
+    <option value="Airport Road Area"></option>
+    <option value="Other"></option>
+  </datalist>
+</label>
+
+            <label class="field" for="fSize">
+              <span class="small">Size (<span id="sizeUnitLabel">Sq Yds</span>)</span>
+              <select class="input" id="fSize" name="size">
+                <option value="">Any</option>
+                <option value="0-50">Up to 50 sq yds</option>
+                <option value="51-100">51 – 100 sq yds</option>
+                <option value="101-200">101 – 200 sq yds</option>
+                <option value="201-350">201 – 350 sq yds</option>
+                <option value="351+">Above 350 sq yds</option>
+              </select>
+            </label>
+
+            <label class="field" for="fRent">
+              <span class="small">Rent Range</span>
+              <select class="input" id="fRent" name="rent">
+                <option value="">Any</option>
+                <option value="0-10000">Up to ₹10,000</option>
+                <option value="10001-14999">₹10,001 – ₹14,999</option>
+                <option value="15000-19999">₹15,000 – ₹19,999</option>
+                <option value="20000-25000">₹20,000 – ₹25,000</option>
+                <option value="25001+">Above ₹25,000</option>
+              </select>
+            </label>
+
+            <div class="primary-actions">
+              <button class="btn" type="button" id="filtersClearBtn">Clear</button>
+              <button class="btn btn-primary" type="button" id="filtersSearchBtn">Search Properties</button>
+            </div>
+          </div>
+>>>>>>> b90aaa19285573dcda67b087fe673329119e98c7
         </div>
       </div>
     </nav>
