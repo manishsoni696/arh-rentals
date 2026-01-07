@@ -875,6 +875,27 @@ textarea.input:focus {
   margin-top: 14px;
 }
 
+.listings-page .info-strip {
+  margin-top: 12px;
+}
+
+.listings-page .info-strip .card-body {
+  padding: 18px;
+}
+
+.listings-page .info-strip h2 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.listings-page .results-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  text-align: right;
+}
+
 @media (max-width:900px) {
   .listings-page .listings-layout {
     grid-template-columns: 1fr;
@@ -1008,10 +1029,48 @@ textarea.input:focus {
   border-radius: 14px;
 }
 
+.listings-page .listing-meta {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, .75);
+}
+
+.listings-page .listing-meta .label {
+  color: rgba(255, 255, 255, .55);
+  margin-right: 4px;
+}
+
+.listings-page .listing-contact,
+.listings-page .listing-expiry {
+  margin-top: 8px;
+}
+
+.listings-page .tenant-awareness {
+  margin-top: 18px;
+}
+
+.listings-page .tenant-awareness .card-body {
+  padding: 18px;
+}
+
 @media (max-width:600px) {
   .listings-page .listing>.btn {
     width: 100%;
     margin-top: 6px;
+  }
+
+  .listings-page .listing-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .listings-page .results-meta {
+    align-items: flex-start;
+    text-align: left;
   }
 }
 
