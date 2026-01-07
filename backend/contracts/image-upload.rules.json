@@ -1,0 +1,36 @@
+{
+  "scope": "owner_post_property_photos",
+  "max_images_per_property": 10,
+  "frontend_max_bytes": 1048576,
+  "backend_max_bytes": 1048576,
+  "allowed_mime_types": [
+    "image/jpeg",
+    "image/png"
+  ],
+  "processing": {
+    "resize": {
+      "max_dimension_px": 1600,
+      "maintain_aspect_ratio": true
+    },
+    "compression": {
+      "target_bytes": 512000,
+      "acceptable_range_bytes": {
+        "min": 307200,
+        "max": 614400
+      },
+      "hard_max_bytes": 1048576,
+      "on_oversize": "reduce_quality_or_error"
+    },
+    "watermark": {
+      "text": "ARH Rentals",
+      "position": "bottom-right",
+      "opacity": 0.25
+    }
+  },
+  "errors": {
+    "IMG_001": "invalid format",
+    "IMG_002": "size too large",
+    "IMG_003": "processing failed",
+    "IMG_004": "max image count exceeded"
+  }
+}
