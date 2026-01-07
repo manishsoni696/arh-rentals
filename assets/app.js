@@ -33,9 +33,9 @@ function formatHMS(ms) {
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  return `${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+  return `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
 }
-function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText="Send OTP") {
+function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText = "Send OTP") {
   sendOtpBtn.disabled = true;
   const tick = () => {
     const left = lockUntilMs - Date.now();
@@ -191,13 +191,13 @@ if (sendOtpBtn) {
       }
 
       // ✅ SUCCESS → ab 60 sec cooldown start karo (FIX 1)
-       // ✅ save 60s cooldown (survives refresh)
-const until = Date.now() + 60 * 1000; // 60 seconds
-localStorage.setItem("arh_otp_cooldown_until", String(until));
-       // ✅ mark: this mobile has received OTP at least once
-markOtpSentOnce(mobile);
-       
-startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
+      // ✅ save 60s cooldown (survives refresh)
+      const until = Date.now() + 60 * 1000; // 60 seconds
+      localStorage.setItem("arh_otp_cooldown_until", String(until));
+      // ✅ mark: this mobile has received OTP at least once
+      markOtpSentOnce(mobile);
+
+      startSendBtnCountdown(sendOtpBtn, until, otpBtnBaseTextForMobile(mobile));
       // store mobile for verify step
       sessionStorage.setItem("arh_mobile", mobile);
 
@@ -311,7 +311,7 @@ if (logoutBtn) {
 
       try {
         sessionStorage.setItem("arh_selected_plan", plan);
-      } catch (_) {}
+      } catch (_) { }
     }
 
     function resolvePlanFromTarget(target) {
@@ -324,7 +324,7 @@ if (logoutBtn) {
     try {
       const saved = sessionStorage.getItem("arh_selected_plan");
       if (saved && cards.some((c) => c.dataset.plan === saved)) startPlan = saved;
-    } catch (_) {}
+    } catch (_) { }
     applySelected(startPlan);
 
     // Event delegation (works for card + button clicks)
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function syncCommercialVisibility() {
-     if (!secondaryGroups.length) return;
+    if (!secondaryGroups.length) return;
     const v = (categorySelect?.value || "residential").toLowerCase();
     const activeCat = v === "commercial" ? "commercial" : "residential";
 
@@ -399,8 +399,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (!form || !listings.length) return;
-   
-   function collapseMoreFiltersUI() {
+
+  function collapseMoreFiltersUI() {
     if (!filtersUI || !moreBtn) return;
     filtersUI.classList.remove("show-more");
     moreBtn.textContent = "+ More Filters";
@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
     moreBtn.addEventListener("click", () => {
       const expanded = filtersUI.classList.toggle("show-more");
       moreBtn.textContent = expanded ? "− Less Filters" : "+ More Filters";
-        moreBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+      moreBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
 
       // ✅ NEW: if panel opened/closed, ensure correct visibility
       syncCommercialVisibility();
@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Collapse "More Filters" panel
       collapseMoreFiltersUI();
-       syncCommercialVisibility();
+      syncCommercialVisibility();
 
       // Re-apply
       applyFilters();
@@ -781,5 +781,429 @@ document.addEventListener("DOMContentLoaded", () => {
     // Init
     showPopularMode();
     closePanel();
+  });
+})();
+
+/* =========================================================
+   DEMO MODE — TESTING LISTINGS & FILTERS
+   Activated ONLY when URL contains ?demo=1
+   ========================================================= */
+(function () {
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+
+  ready(function () {
+    // Check if demo mode is active
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDemoMode = urlParams.get("demo") === "1";
+
+    if (!isDemoMode) return; // Exit if not in demo mode
+
+    // Only run on listings page
+    if (!document.body.classList.contains("listings-page")) return;
+
+    const listingWrap = document.getElementById("listingWrap");
+    if (!listingWrap) return;
+
+    // Demo listings data with proper variations for filter testing (18 listings)
+    const demoListings = [
+      {
+        title: "2 BHK Independent House",
+        area: "Sector 14",
+        type: "House",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 12000,
+        size: "101-200",
+        furnishing: "Semi-Furnished",
+        floor: "Ground",
+        amenities: ["parking", "powerBackup"],
+        images: [
+          "https://picsum.photos/800/600?random=1",
+          "https://picsum.photos/800/600?random=2",
+          "https://picsum.photos/800/600?random=3",
+          "https://picsum.photos/800/600?random=4"
+        ]
+      },
+      {
+        title: "1 BHK Flat",
+        area: "Sector 15",
+        type: "Flat",
+        category: "residential",
+        bhk: "1 BHK",
+        rent: 8000,
+        size: "51-100",
+        furnishing: "Unfurnished",
+        floor: "First",
+        amenities: ["lift", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=5",
+          "https://picsum.photos/800/600?random=6",
+          "https://picsum.photos/800/600?random=7",
+          "https://picsum.photos/800/600?random=8"
+        ]
+      },
+      {
+        title: "3 BHK Builder Floor",
+        area: "Sector 9–11",
+        type: "House",
+        category: "residential",
+        bhk: "3 BHK",
+        rent: 18000,
+        size: "201-350",
+        furnishing: "Furnished",
+        floor: "Second",
+        amenities: ["parking", "lift", "powerBackup", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=9",
+          "https://picsum.photos/800/600?random=10",
+          "https://picsum.photos/800/600?random=11",
+          "https://picsum.photos/800/600?random=12",
+          "https://picsum.photos/800/600?random=13"
+        ]
+      },
+      {
+        title: "2 BHK Flat with Parking",
+        area: "Sector 33",
+        type: "Flat",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 10500,
+        size: "101-200",
+        furnishing: "Semi-Furnished",
+        floor: "Third+",
+        amenities: ["parking", "lift"],
+        images: [
+          "https://picsum.photos/800/600?random=14",
+          "https://picsum.photos/800/600?random=15",
+          "https://picsum.photos/800/600?random=16",
+          "https://picsum.photos/800/600?random=17"
+        ]
+      },
+      {
+        title: "1 RK Budget Room",
+        area: "Sector-PLA",
+        type: "PG",
+        category: "residential",
+        bhk: "1 RK",
+        rent: 6500,
+        size: "0-50",
+        furnishing: "Furnished",
+        floor: "Ground",
+        amenities: ["security"],
+        images: [
+          "https://picsum.photos/800/600?random=18",
+          "https://picsum.photos/800/600?random=19",
+          "https://picsum.photos/800/600?random=20"
+        ]
+      },
+      {
+        title: "3 BHK Independent House",
+        area: "Sector 14",
+        type: "House",
+        category: "residential",
+        bhk: "3 BHK",
+        rent: 22000,
+        size: "201-350",
+        furnishing: "Unfurnished",
+        floor: "Ground",
+        amenities: ["parking", "powerBackup", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=21",
+          "https://picsum.photos/800/600?random=22",
+          "https://picsum.photos/800/600?random=23",
+          "https://picsum.photos/800/600?random=24",
+          "https://picsum.photos/800/600?random=25"
+        ]
+      },
+      {
+        title: "2 BHK Modern Apartment",
+        area: "Sector 15",
+        type: "Flat",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 14000,
+        size: "101-200",
+        furnishing: "Furnished",
+        floor: "Second",
+        amenities: ["parking", "lift", "ac", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=26",
+          "https://picsum.photos/800/600?random=27",
+          "https://picsum.photos/800/600?random=28",
+          "https://picsum.photos/800/600?random=29"
+        ]
+      },
+      {
+        title: "1 BHK Affordable Flat",
+        area: "Sector 33",
+        type: "Flat",
+        category: "residential",
+        bhk: "1 BHK",
+        rent: 7000,
+        size: "51-100",
+        furnishing: "Semi-Furnished",
+        floor: "First",
+        amenities: ["lift"],
+        images: [
+          "https://picsum.photos/800/600?random=30",
+          "https://picsum.photos/800/600?random=31",
+          "https://picsum.photos/800/600?random=32"
+        ]
+      },
+      {
+        title: "3 BHK Premium Builder Floor",
+        area: "Sector 9–11",
+        type: "House",
+        category: "residential",
+        bhk: "3 BHK",
+        rent: 25000,
+        size: "201-350",
+        furnishing: "Furnished",
+        floor: "First",
+        amenities: ["parking", "powerBackup", "lift", "security", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=33",
+          "https://picsum.photos/800/600?random=34",
+          "https://picsum.photos/800/600?random=35",
+          "https://picsum.photos/800/600?random=36"
+        ]
+      },
+      {
+        title: "2 BHK Family House",
+        area: "Sector-PLA",
+        type: "House",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 9500,
+        size: "101-200",
+        furnishing: "Unfurnished",
+        floor: "Ground",
+        amenities: ["parking", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=37",
+          "https://picsum.photos/800/600?random=38",
+          "https://picsum.photos/800/600?random=39",
+          "https://picsum.photos/800/600?random=40",
+          "https://picsum.photos/800/600?random=41"
+        ]
+      },
+      {
+        title: "1 BHK Cozy Apartment",
+        area: "Sector 13",
+        type: "Flat",
+        category: "residential",
+        bhk: "1 BHK",
+        rent: 8500,
+        size: "51-100",
+        furnishing: "Furnished",
+        floor: "Second",
+        amenities: ["lift", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=42",
+          "https://picsum.photos/800/600?random=43",
+          "https://picsum.photos/800/600?random=44",
+          "https://picsum.photos/800/600?random=45"
+        ]
+      },
+      {
+        title: "3 BHK Spacious House",
+        area: "Sector 16–17",
+        type: "House",
+        category: "residential",
+        bhk: "3 BHK",
+        rent: 20000,
+        size: "201-350",
+        furnishing: "Semi-Furnished",
+        floor: "Ground",
+        amenities: ["parking", "powerBackup", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=46",
+          "https://picsum.photos/800/600?random=47",
+          "https://picsum.photos/800/600?random=48"
+        ]
+      },
+      {
+        title: "2 BHK Budget Flat",
+        area: "Sector 14",
+        type: "Flat",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 9000,
+        size: "101-200",
+        furnishing: "Unfurnished",
+        floor: "First",
+        amenities: ["parking"],
+        images: [
+          "https://picsum.photos/800/600?random=49",
+          "https://picsum.photos/800/600?random=50",
+          "https://picsum.photos/800/600?random=51",
+          "https://picsum.photos/800/600?random=52"
+        ]
+      },
+      {
+        title: "1 RK Compact Studio",
+        area: "Sector 15",
+        type: "PG",
+        category: "residential",
+        bhk: "1 RK",
+        rent: 7500,
+        size: "0-50",
+        furnishing: "Furnished",
+        floor: "First",
+        amenities: ["security", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=53",
+          "https://picsum.photos/800/600?random=54",
+          "https://picsum.photos/800/600?random=55",
+          "https://picsum.photos/800/600?random=56",
+          "https://picsum.photos/800/600?random=57"
+        ]
+      },
+      {
+        title: "2 BHK Deluxe Flat",
+        area: "Sector 33",
+        type: "Flat",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 16000,
+        size: "101-200",
+        furnishing: "Furnished",
+        floor: "Third+",
+        amenities: ["parking", "lift", "powerBackup", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=58",
+          "https://picsum.photos/800/600?random=59",
+          "https://picsum.photos/800/600?random=60",
+          "https://picsum.photos/800/600?random=61"
+        ]
+      },
+      {
+        title: "3 BHK Luxury House",
+        area: "Sector 9–11",
+        type: "House",
+        category: "residential",
+        bhk: "3 BHK",
+        rent: 28000,
+        size: "351+",
+        furnishing: "Furnished",
+        floor: "Ground",
+        amenities: ["parking", "powerBackup", "lift", "security", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=62",
+          "https://picsum.photos/800/600?random=63",
+          "https://picsum.photos/800/600?random=64"
+        ]
+      },
+      {
+        title: "1 BHK Near Market",
+        area: "New Grain Market",
+        type: "Flat",
+        category: "residential",
+        bhk: "1 BHK",
+        rent: 9500,
+        size: "51-100",
+        furnishing: "Semi-Furnished",
+        floor: "Ground",
+        amenities: ["parking", "security"],
+        images: [
+          "https://picsum.photos/800/600?random=65",
+          "https://picsum.photos/800/600?random=66",
+          "https://picsum.photos/800/600?random=67",
+          "https://picsum.photos/800/600?random=68",
+          "https://picsum.photos/800/600?random=69"
+        ]
+      },
+      {
+        title: "2 BHK Premium Apartment",
+        area: "Sector-PLA",
+        type: "Flat",
+        category: "residential",
+        bhk: "2 BHK",
+        rent: 13500,
+        size: "101-200",
+        furnishing: "Furnished",
+        floor: "Second",
+        amenities: ["lift", "security", "ac"],
+        images: [
+          "https://picsum.photos/800/600?random=70",
+          "https://picsum.photos/800/600?random=71",
+          "https://picsum.photos/800/600?random=72",
+          "https://picsum.photos/800/600?random=73"
+        ]
+      }
+    ];
+
+    // Generate listing HTML
+    function createListingHTML(listing) {
+      const amenitiesText = listing.amenities.length
+        ? listing.amenities.map(a => {
+          const labels = {
+            parking: "Parking",
+            powerBackup: "Power Backup",
+            lift: "Lift",
+            security: "Security",
+            ac: "AC"
+          };
+          return labels[a] || a;
+        }).join(" • ")
+        : "No amenities listed";
+
+      return `
+        <div class="listing" 
+             data-city="hisar"
+             data-category="${listing.category}"
+             data-type="${listing.type}"
+             data-area="${listing.area.toLowerCase()}"
+             data-size="${listing.size}"
+             data-rent="${listing.rent}"
+             data-bhk="${listing.bhk}"
+             data-furnishing="${listing.furnishing}"
+             data-floor="${listing.floor}"
+             data-amenities="${listing.amenities.join(',')}">
+          <div>
+            <h3>${listing.title}</h3>
+            <p>${listing.area} • Hisar</p>
+            <div class="pills">
+              <span class="pill">${listing.type}</span>
+              <span class="pill">₹${listing.rent.toLocaleString()}/mo</span>
+              <span class="pill">${listing.bhk}</span>
+              <span class="pill">${listing.furnishing}</span>
+            </div>
+            <p class="small muted" style="margin-top: 8px;">${amenitiesText}</p>
+          </div>
+          <button class="btn">Unlock Details</button>
+          <div class="small muted listing-note">
+            🧪 Demo listing for testing filters
+          </div>
+        </div>
+      `;
+    }
+
+    // Inject demo listings into DOM
+    listingWrap.innerHTML = demoListings.map(createListingHTML).join("");
+
+    // Update results count
+    const resultsCount = document.getElementById("resultsCount");
+    if (resultsCount) {
+      resultsCount.textContent = `Showing ${demoListings.length} properties`;
+    }
+
+    // Add demo mode indicator to page
+    const hero = document.querySelector(".hero");
+    if (hero) {
+      const demoNotice = document.createElement("div");
+      demoNotice.style.cssText = "background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; padding: 12px; margin-top: 16px; font-size: 14px;";
+      demoNotice.innerHTML = `
+        <strong>🧪 Demo Mode Active</strong><br>
+        Showing ${demoListings.length} dummy listings for filter testing. 
+        <a href="${window.location.pathname}" style="color: #0066cc; text-decoration: underline;">Exit Demo Mode</a>
+      `;
+      hero.appendChild(demoNotice);
+    }
+
+    console.log(`✅ Demo mode active: ${demoListings.length} listings injected`);
   });
 })();
