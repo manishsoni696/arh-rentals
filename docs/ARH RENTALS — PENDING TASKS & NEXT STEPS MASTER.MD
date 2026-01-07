@@ -1,4 +1,4 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.6)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.7)
 
 Last Updated: Jan 2026 (Jan 7, 2026)
 
@@ -13,9 +13,9 @@ OVERALL GOAL (NON-NEGOTIABLE — 🔒 LOCKED)
 OVERALL PROJECT STATUS (CURRENT)
 
 🔒 Core System: STABLE & LOCKED
-🔒 Listings Page UI & Filters: FINAL LOCKED
-🔒 Demo Mode (?demo=1): VERIFIED, WORKING & LOCKED
-🟢 styles.css: CLEANUP COMPLETED & LOCKED
+🔒 Listings UI & Filters: FINAL & LOCKED
+🟢 Content & Messaging: COMPLETED & LOCKED
+🟠 styles.css Cleanup: PENDING (HIGH PRIORITY)
 🟢 Pricing CSS “FINAL LOCK”: DONE & LOCKED (END-OF-FILE CONFIRMED)
 🟢 Area / Sector input UX upgrade: DONE & LOCKED
 ⏳ SEO + Backend planning: DEFERRED (DO NOT TOUCH YET)
@@ -98,88 +98,54 @@ Then:
     • Feedback-based transparency only
     • No verification / penalty / guarantee
 
-🔒 LISTINGS PAGE — FINAL LOCK (NO ACTIVE WORK AREA)
-⚠️ NO UI / FILTER / DEMO CHANGES ALLOWED BELOW THIS LINE
+🟢 CONTENT PHASE — COMPLETED & LOCKED
 
-11. LISTINGS FILTER SYSTEM — 🔒 FINAL LOCK
-    ✅ Hybrid Filter Model (LOCKED)
-    • Primary Filters: Apply on “Search Properties”
-    • Secondary Filters (More Filters): Auto-apply on change
-    • No Apply button in secondary filters
+11. LISTINGS PAGE CONTENT — 🔒 LOCKED
+    • Top Info Strip (English)
+    • Tenant Advisory (single-line)
+    • Listing Expiry / Auto-Hide Notice
 
-12. DEMO MODE — 🔒 FINAL LOCK
-    Trigger:
-    • URL parameter `?demo=1` only
+Note:
+“Content finalized. No wording changes allowed unless explicitly unlocked by owner.”
 
-Features:
-• 10 dummy listings (Residential + Commercial)
-• Houses, Flats (1/2/3 BHK), PGs, Shops, Offices
-• Uses ONLY final-approved amenities
-• 3–5 images per listing
-• Sticky banner: “🧪 Demo Mode Active” with exit link
+12. OWNER COMMUNICATION MESSAGES — 🔒 LOCKED
+    • Property Listed Confirmation
+    • Expiry Reminder
+    • Post-Expiry Auto-Hide Message
 
-Rules:
-• Demo OFF by default
-• No impact on live users
-• Same filter logic as production
-• Internal testing only
+Note:
+“Content finalized. No wording changes allowed unless explicitly unlocked by owner.”
 
-✅ RECENT CHANGES COMPLETED (LOCKED)
+🔒 LISTINGS PAGE — FINAL LOCK
+⚠️ No UI, filter, demo, or content changes allowed unless explicitly unlocked
 
-A) Demo Mode Implementation — ✅ DONE
-File: assets/app.js
-• Demo listings injected
-• Conditional activation via `?demo=1`
-• Listings logic auto-detects demo vs normal mode
+🔢 NEXT STEPS (VERY CLEAR)
 
-B) Unified Filter Logic Upgrade — ✅ DONE
-File: assets/app.js
-• Single client-side filter engine
-• Supports all primary & secondary filters
-• Category-aware amenities filtering
-• Accurate “Showing X properties” count
-
-C) Filter UX Enhancement — ✅ DONE
-Files: assets/app.js, listings/index.html
-• Secondary filters auto-apply
-• Apply button removed from More Filters
-• Primary filters retain Search button behavior
-
-D) CSS Cleanup — ✅ DONE
-File: assets/styles.css
-• Duplicate Listings CSS removed
-• Duplicate Area/Sector CSS removed
-• Pricing FINAL LOCK preserved at end of file
-
-🔢 CURRENT PRIORITY QUEUE
-
-🟢 PRIORITY 1 — COMPLETED & LOCKED
-• Listings UI & Filters
-• Demo Mode
-• CSS Cleanup
-
-🟡 PRIORITY 2 — NEXT (LOGIC ONLY, LATER)
-• Listing status workflow (auto-hide when rented)
-• Owner renewal reminder (Still Available / Rented)
-• User “Report Already Rented” option
-• Owner verify-confirm link (token-based)
-
-🟡 PRIORITY 3 — LATER
-• Backend data contract (when unlocked)
+👉 NEXT PRIORITY (ACTIVE):
+styles.css cleanup — duplicate Listings & Area dropdown CSS blocks
+• Performance-only cleanup
+• No UI change
+• No layout change
+• Pricing FINAL LOCK must remain last
 
 🚫 DO NOT START
 • SEO
-• Listings API
+• Backend / API
 • Dashboard
 • Payments
 • AI Assistant
 • Analytics
 
-📝 PENDING (REFERENCE ONLY)
+📝 PENDING (LATER — REFERENCE ONLY)
+• Listing status workflow (auto-hide when rented)
+• Owner renewal reminder → “Still Available / Rented”
+• User “Report Already Rented” option
+• Owner verify-confirm link (token-based)
 • SMS / WhatsApp templates (≈5) — approval required
 
-✅ END — MASTER FILE v6.6
+✅ END — MASTER FILE v6.7
 
 🔒 CONFIRMED
-Listings Page, Filters & Demo Mode are FINAL LOCKED.
-No UI or logic changes allowed unless explicitly unlocked by owner.
+Content phase completed and locked.
+Listings UI, Filters, Demo Mode remain FINAL LOCKED.
+Next step is unambiguous.
