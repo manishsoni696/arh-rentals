@@ -374,6 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10 Dummy Listings
     const demoListings = [
       {
+          id: "demo-1",
         title: "2 BHK Independent House",
         area: "Sector 14",
         type: "House",
@@ -390,6 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=1", "https://picsum.photos/400/300?random=2", "https://picsum.photos/400/300?random=3"]
       },
       {
+         id: "demo-2",
         title: "1 BHK Flat",
         area: "Sector 15",
         type: "Flat",
@@ -406,6 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=4", "https://picsum.photos/400/300?random=5", "https://picsum.photos/400/300?random=6"]
       },
       {
+           id: "demo-3",
         title: "3 BHK Builder Floor",
         area: "Sector 9–11",
         type: "House",
@@ -422,6 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=7", "https://picsum.photos/400/300?random=8", "https://picsum.photos/400/300?random=9"]
       },
       {
+           id: "demo-3",
         title: "Shop in Market",
         area: "Main Market",
         type: "Shop",
@@ -436,6 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=10", "https://picsum.photos/400/300?random=11", "https://picsum.photos/400/300?random=12"]
       },
       {
+          id: "demo-5",
         title: "2 BHK Flat with Parking",
         area: "Sector 33",
         type: "Flat",
@@ -452,6 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=13", "https://picsum.photos/400/300?random=14", "https://picsum.photos/400/300?random=15"]
       },
       {
+          id: "demo-6",
         title: "1 RK Budget Room",
         area: "Sector-PLA",
         type: "PG",
@@ -468,6 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=16", "https://picsum.photos/400/300?random=17", "https://picsum.photos/400/300?random=18"]
       },
       {
+          id: "demo-7",
         title: "Office Space",
         area: "Red Square Market",
         type: "Office",
@@ -482,6 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=19", "https://picsum.photos/400/300?random=20"]
       },
       {
+          id: "demo-8",
         title: "3 BHK Independent House",
         area: "Sector 14",
         type: "House",
@@ -498,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=21", "https://picsum.photos/400/300?random=22", "https://picsum.photos/400/300?random=23"]
       },
       {
+           id: "demo-9",
         title: "2 BHK Modern Apartment",
         area: "Sector 15",
         type: "Flat",
@@ -514,6 +523,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=24", "https://picsum.photos/400/300?random=25"]
       },
       {
+           id: "demo-10",
         title: "1 BHK Affordable Flat",
         area: "Sector 33",
         type: "Flat",
@@ -546,6 +556,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const amText = (l.amenities || []).map(k => amenitiesLabels[k] || k).join(" • ") || "No amenities";
       return `
         <div class="listing"
+        data-listing-id="${l.id}"
              data-city="hisar"
              data-category="${l.category}"
              data-type="${l.type}"
@@ -583,6 +594,165 @@ document.addEventListener("DOMContentLoaded", () => {
   // Re-select listings to ensure we get the CURRENT DOM elements (whether static or newly injected)
   const listings = Array.from(document.querySelectorAll(".listing"));
 
+   const LISTING_STATE_KEY = "arh_listing_state_v1";
+  const REPORTER_LOG_KEY = "arh_listing_reporter_log_v1";
+  const REPORT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+  const REPORT_COOLDOWN_MS = 24 * 60 * 60 * 1000;
+
+  function loadStateMap() {
+    try {
+      return JSON.parse(localStorage.getItem(LISTING_STATE_KEY) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function saveStateMap(stateMap) {
+    localStorage.setItem(LISTING_STATE_KEY, JSON.stringify(stateMap));
+  }
+
+  function loadReporterLog() {
+    try {
+      return JSON.parse(localStorage.getItem(REPORTER_LOG_KEY) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function saveReporterLog(log) {
+    localStorage.setItem(REPORTER_LOG_KEY, JSON.stringify(log));
+  }
+
+  function getReporterId() {
+    const key = "arh_reporter_id";
+    let id = sessionStorage.getItem(key);
+    if (!id) {
+      id = `reporter_${Math.random().toString(36).slice(2, 10)}${Date.now().toString(36)}`;
+      sessionStorage.setItem(key, id);
+    }
+    return id;
+  }
+
+  function normalizeReportList(reports) {
+    if (!Array.isArray(reports)) return [];
+    return reports.map((ts) => Number(ts)).filter((ts) => Number.isFinite(ts) && ts > 0);
+  }
+
+  function pruneReports(reports, nowMs) {
+    const cutoff = nowMs - REPORT_WINDOW_MS;
+    return reports.filter((ts) => ts >= cutoff);
+  }
+
+  function findListingCardById(listingId) {
+    return listings.find((card) => card.dataset.listingId === listingId);
+  }
+
+  function ensureListingState(entry, fallbackStatus) {
+    const safeEntry = entry && typeof entry === "object" ? entry : {};
+    const reports = normalizeReportList(safeEntry.na_reports);
+    return {
+      status: safeEntry.status || fallbackStatus || "active",
+      na_reports_count: Number.isFinite(safeEntry.na_reports_count)
+        ? safeEntry.na_reports_count
+        : reports.length,
+      na_last_reported_at: safeEntry.na_last_reported_at || null,
+      na_reports: reports,
+      paused_reason: safeEntry.paused_reason || null,
+      owner_reconfirm_required: Boolean(safeEntry.owner_reconfirm_required),
+    };
+  }
+
+  function applyListingStateToCard(card, state) {
+    if (!card || !state) return;
+    card.dataset.status = state.status;
+    if (state.paused_reason) {
+      card.dataset.pausedReason = state.paused_reason;
+    } else {
+      delete card.dataset.pausedReason;
+    }
+  }
+
+  function syncListingStatusVisibility() {
+    if (typeof applyFilters === "function") {
+      applyFilters();
+    }
+  }
+
+  function updateListingState(listingId, updater) {
+    const stateMap = loadStateMap();
+    const card = findListingCardById(listingId);
+    const baseStatus = card?.dataset.status || "active";
+    const current = ensureListingState(stateMap[listingId], baseStatus);
+    const updated = updater(current) || current;
+    stateMap[listingId] = updated;
+    saveStateMap(stateMap);
+    if (card) applyListingStateToCard(card, updated);
+    syncListingStatusVisibility();
+    return updated;
+  }
+
+  function reportNotAvailable(listingId) {
+    const reporterId = getReporterId();
+    const nowMs = Date.now();
+    const reporterLog = loadReporterLog();
+    const reporterKey = `${listingId}:${reporterId}`;
+    const lastReported = Number(reporterLog[reporterKey] || 0);
+
+    if (lastReported && nowMs - lastReported < REPORT_COOLDOWN_MS) {
+      return { ignored: true, reason: "cooldown" };
+    }
+
+    reporterLog[reporterKey] = nowMs;
+    saveReporterLog(reporterLog);
+
+    const updated = updateListingState(listingId, (state) => {
+      const reports = pruneReports(normalizeReportList(state.na_reports), nowMs);
+      reports.push(nowMs);
+      const count = reports.length;
+      const shouldPause = count >= 2;
+      return {
+        ...state,
+        na_reports_count: count,
+        na_last_reported_at: new Date(nowMs).toISOString(),
+        na_reports: reports,
+        status: shouldPause ? "paused" : state.status,
+        paused_reason: shouldPause ? "not_available_reports" : state.paused_reason,
+        owner_reconfirm_required: shouldPause ? true : state.owner_reconfirm_required,
+      };
+    });
+
+    return { ignored: false, state: updated };
+  }
+
+  function ownerReactivateListing(listingId) {
+    return updateListingState(listingId, (state) => ({
+      ...state,
+      status: "active",
+      na_reports_count: 0,
+      na_last_reported_at: null,
+      na_reports: [],
+      paused_reason: null,
+      owner_reconfirm_required: false,
+    }));
+  }
+
+  function ownerCloseAsRented(listingId) {
+    return updateListingState(listingId, (state) => ({
+      ...state,
+      status: "rented",
+      paused_reason: null,
+      owner_reconfirm_required: false,
+    }));
+  }
+
+  if (typeof window !== "undefined") {
+    window.ARHListingStatus = {
+      reportNotAvailable,
+      ownerReactivateListing,
+      ownerCloseAsRented,
+    };
+  }
+
   const secondaryGroups = Array.from(document.querySelectorAll(".filters-panel [data-cat]"));
 
   function resetGroupInputs(group) {
@@ -608,6 +778,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form || !listings.length) return;
 
+   const initStateMap = loadStateMap();
+  listings.forEach((card, index) => {
+    if (!card.dataset.listingId) {
+      card.dataset.listingId = `listing-${index + 1}`;
+    }
+    const listingId = card.dataset.listingId;
+    const state = ensureListingState(initStateMap[listingId], card.dataset.status || "active");
+    const nowMs = Date.now();
+    const prunedReports = pruneReports(state.na_reports, nowMs);
+    const refreshedState = {
+      ...state,
+      na_reports: prunedReports,
+      na_reports_count: prunedReports.length,
+    };
+    if (refreshedState.na_reports_count >= 2) {
+      refreshedState.status = "paused";
+      refreshedState.paused_reason = "not_available_reports";
+      refreshedState.owner_reconfirm_required = true;
+    }
+    initStateMap[listingId] = refreshedState;
+    applyListingStateToCard(card, refreshedState);
+  });
+  saveStateMap(initStateMap);
+   
   function inRentRange(rent, range) {
     if (!range) return true;
     if (range.endsWith("+")) return rent >= Number(range.replace("+", ""));
