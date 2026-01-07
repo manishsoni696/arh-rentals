@@ -1,4 +1,4 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.5)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.6)
 
 Last Updated: Jan 2026 (Jan 7, 2026)
 
@@ -10,75 +10,74 @@ OVERALL GOAL (NON-NEGOTIABLE — 🔒 LOCKED)
 ✅ Mobile + Tablet + Desktop PERFECT (🔒 LOCKED FOREVER)
 ✅ No technical compromise at any layer
 
-
 OVERALL PROJECT STATUS (CURRENT)
 
 🔒 Core System: STABLE & LOCKED
-🟡 Listings UI: FINALIZATION IN PROGRESS (ACTIVE WORK ZONE)
-🟠 styles.css: FUNCTIONAL, cleanup pending (duplicate Listings + Area dropdown blocks)
+🔒 Listings Page UI & Filters: FINAL LOCKED
+🔒 Demo Mode (?demo=1): VERIFIED, WORKING & LOCKED
+🟢 styles.css: CLEANUP COMPLETED & LOCKED
 🟢 Pricing CSS “FINAL LOCK”: DONE & LOCKED (END-OF-FILE CONFIRMED)
-🟢 Area / Sector input UX upgrade: DONE (HTML + JS behavior locked as per last “PERFECT 100%” approval)
+🟢 Area / Sector input UX upgrade: DONE & LOCKED
 ⏳ SEO + Backend planning: DEFERRED (DO NOT TOUCH YET)
-
 
 ✅ COMPLETED & LOCKED (DO NOT TOUCH)
 
-1) WORKING RULES & EXECUTION PROCESS — 🔒 LOCKED
-• Single-chat workflow only
-• One task at a time
-• One file = one step = one paste box
-• Exact change + exact location only
-• Mobile + Tablet + Desktop mandatory (FOREVER)
+1. WORKING RULES & EXECUTION PROCESS — 🔒 LOCKED
+   • Single-chat workflow only
+   • One task at a time
+   • One file = one step = one paste box
+   • Exact change + exact location only
+   • Mobile + Tablet + Desktop mandatory (FOREVER)
 
-2) CORE UI FOUNDATION — 🔒 LOCKED
-• Dark SaaS theme finalized
-• Buttons, cards, spacing standardized
-• Visual hierarchy stable
+2. CORE UI FOUNDATION — 🔒 LOCKED
+   • Dark SaaS theme finalized
+   • Buttons, cards, spacing standardized
+   • Visual hierarchy stable
 
-3) MOBILE NAVIGATION — 🔒 LOGIC LOCKED
-Status: ✅ Verified & stable on ALL pages
-Rules (DO NOT CHANGE):
-• JS single source of truth
-• body.nav-open as state
-• .menu.is-open / #primary-navigation.is-open
-• .header-actions visible on mobile
-• .header-cta hidden on mobile
-• .nav-toggle always visible
-File: assets/app.js
+3. MOBILE NAVIGATION — 🔒 LOGIC LOCKED
+   Status: ✅ Verified & stable on ALL pages
+   Rules (DO NOT CHANGE):
+   • JS single source of truth
+   • body.nav-open as state
+   • .menu.is-open / #primary-navigation.is-open
+   • .header-actions visible on mobile
+   • .header-cta hidden on mobile
+   • .nav-toggle always visible
+   File: assets/app.js
 
-4) AUTHENTICATION & SESSIONS — 🔒 LOCKED
-• OTP = session confirmation only
-• PIN login allowed
-• Same-device session supported
-• No misleading language anywhere
+4. AUTHENTICATION & SESSIONS — 🔒 LOCKED
+   • OTP = session confirmation only
+   • PIN login allowed
+   • Same-device session supported
+   • No misleading language anywhere
 
-5) OTP BACKEND RULES — 🔒 LOCKED
-• Resend cooldown: 60 seconds
-• Max OTP: 3 per 4 hours
-• OTP validity: 5 minutes
+5. OTP BACKEND RULES — 🔒 LOCKED
+   • Resend cooldown: 60 seconds
+   • Max OTP: 3 per 4 hours
+   • OTP validity: 5 minutes
 
-6) LEGAL PAGE — 🔒 LOCKED
-• Disclaimer aligned
-• No banned / risky words
-• Responsive verified
+6. LEGAL PAGE — 🔒 LOCKED
+   • Disclaimer aligned
+   • No banned / risky words
+   • Responsive verified
 
-7) POST PROPERTY FLOW — 🔒 LOCKED
-Flow: PIN → OTP → Property → Plan
-• No false promises
-• No misleading text
+7. POST PROPERTY FLOW — 🔒 LOCKED
+   Flow: PIN → OTP → Property → Plan
+   • No false promises
+   • No misleading text
 
-8) HOME PAGE — 🔒 LOCKED
-• UI finalized
-• Responsive verified
+8. HOME PAGE — 🔒 LOCKED
+   • UI finalized
+   • Responsive verified
 
-9) DEAL UNLOCK RULES (PRE + POST) — 🔒 LOCKED
-A) Pre-Unlock Mandatory Popup — 🔒
-• Mandatory popup before deal unlock
-• Unlock = contact access only
-• Property availability NOT guaranteed
-• Property may already be rented / owner may decline
-• ARH Rentals = information-access platform only
-Popup acceptance mandatory before unlock.
+9. DEAL UNLOCK RULES (PRE + POST) — 🔒 LOCKED
+   A) Pre-Unlock Mandatory Popup — 🔒
+   • Mandatory popup before deal unlock
+   • Unlock = contact access only
+   • Property availability NOT guaranteed
+   • Property may already be rented / owner may decline
+   • ARH Rentals = information-access platform only
+   Popup acceptance mandatory before unlock.
 
 B) Post-Unlock Availability Handling — 🔒
 If after unlock:
@@ -94,100 +93,93 @@ Then:
 ❌ No refund promise
 ❌ Zero responsibility model intact
 
-10) BROKER-LISTED TRANSPARENCY RULE — 🔒 LOCKED (REFERENCE)
-• Neutral broker tag (future)
-• Feedback-based transparency only
-• No verification / penalty / guarantee
+10. BROKER-LISTED TRANSPARENCY RULE — 🔒 LOCKED (REFERENCE)
+    • Neutral broker tag (future)
+    • Feedback-based transparency only
+    • No verification / penalty / guarantee
 
+🔒 LISTINGS PAGE — FINAL LOCK (NO ACTIVE WORK AREA)
+⚠️ NO UI / FILTER / DEMO CHANGES ALLOWED BELOW THIS LINE
 
-🟡 LISTINGS PAGE — CURRENT ACTIVE WORK AREA
-⚠️ NO CHANGE BELOW THIS SECTION EXCEPT PRIORITY QUEUE
+11. LISTINGS FILTER SYSTEM — 🔒 FINAL LOCK
+    ✅ Hybrid Filter Model (LOCKED)
+    • Primary Filters: Apply on “Search Properties”
+    • Secondary Filters (More Filters): Auto-apply on change
+    • No Apply button in secondary filters
 
+12. DEMO MODE — 🔒 FINAL LOCK
+    Trigger:
+    • URL parameter `?demo=1` only
 
-11) LISTINGS FILTER SYSTEM — ARCHITECTURE LOCKED ✅
-✅ FINAL DECISION: Hybrid Filter Model
-(Primary always visible + Secondary via More Filters)
+Features:
+• 10 dummy listings (Residential + Commercial)
+• Houses, Flats (1/2/3 BHK), PGs, Shops, Offices
+• Uses ONLY final-approved amenities
+• 3–5 images per listing
+• Sticky banner: “🧪 Demo Mode Active” with exit link
 
+Rules:
+• Demo OFF by default
+• No impact on live users
+• Same filter logic as production
+• Internal testing only
 
-✅ RECENT CHANGES COMPLETED (THIS SESSION)
+✅ RECENT CHANGES COMPLETED (LOCKED)
 
-A) Listings Buttons Layout (Clear + Search) — ✅ DONE (CSS)
+A) Demo Mode Implementation — ✅ DONE
+File: assets/app.js
+• Demo listings injected
+• Conditional activation via `?demo=1`
+• Listings logic auto-detects demo vs normal mode
+
+B) Unified Filter Logic Upgrade — ✅ DONE
+File: assets/app.js
+• Single client-side filter engine
+• Supports all primary & secondary filters
+• Category-aware amenities filtering
+• Accurate “Showing X properties” count
+
+C) Filter UX Enhancement — ✅ DONE
+Files: assets/app.js, listings/index.html
+• Secondary filters auto-apply
+• Apply button removed from More Filters
+• Primary filters retain Search button behavior
+
+D) CSS Cleanup — ✅ DONE
 File: assets/styles.css
-• Primary actions row stabilized
-• Search button width controlled via clamp()
-• Removed “full-width/over-stretch” behavior
-• Goal achieved: buttons look premium and stable across Desktop/Tablet/Mobile
-NOTE (IMPORTANT):
-• If buttons ever appear “dur dur” (far apart), ensure:
-  - .primary-actions uses justify-content:flex-end
-  - DO NOT keep margin-left:auto on .btn-primary (unless intentionally spacing)
+• Duplicate Listings CSS removed
+• Duplicate Area/Sector CSS removed
+• Pricing FINAL LOCK preserved at end of file
 
-B) Select Dropdown Text / Options (Dark theme) — ✅ DONE (CSS)
-File: assets/styles.css
-• Added:
-  .listings-page select.input option { background:#0b0f14; color:#f5f7fa; }
-IMPORTANT LIMITATION (BROWSER):
-• Chrome/Edge native <select> dropdown styling can be OS-controlled.
-• Code is correct, but appearance may vary on some systems.
-
-C) Area / Sector dropdown UI stacking — ✅ DONE (CSS)
-File: assets/styles.css (end block)
-• Final “AREA DROPDOWN (SINGLE SOURCE OF TRUTH)” block kept at end
-• z-index + overflow fixes ensure panel shows above listings
-
-
-🔢 UPDATED PRIORITY QUEUE (CLEANED)
+🔢 CURRENT PRIORITY QUEUE
 
 🟢 PRIORITY 1 — COMPLETED & LOCKED
-✅ assets/styles.css
-• PRICING — FINAL LOCK stays at VERY END
-• Pricing page tested
-• Override order stable
+• Listings UI & Filters
+• Demo Mode
+• CSS Cleanup
 
-🟠 PRIORITY 2 — NEXT STEP (ACTIVE)  ✅ START HERE NEXT
-👉 assets/styles.css
-• Controlled cleanup of duplicate CSS blocks:
-  1) Duplicate “Listings (scoped by .listings-page)” blocks (keep ONE final)
-  2) Duplicate Area/Sector dropdown CSS blocks (keep ONE final at end)
-Rule:
-• One file → one paste box → NO deletions without approval
-• ❌ Do NOT touch PRICING — FINAL LOCK block at end
+🟡 PRIORITY 2 — NEXT (LOGIC ONLY, LATER)
+• Listing status workflow (auto-hide when rented)
+• Owner renewal reminder (Still Available / Rented)
+• User “Report Already Rented” option
+• Owner verify-confirm link (token-based)
 
-🟡 PRIORITY 3 — LATER (AFTER CSS CLEANUP)
-• Listings UI polish (only small safe improvements)
-• Card spacing, typography micro-tuning (no rewrites)
+🟡 PRIORITY 3 — LATER
+• Backend data contract (when unlocked)
 
-🟡 PRIORITY 4 (LATER)
-SEO — ONLY after listings UI freeze (explicit ask only)
-
-⚪ FUTURE (DO NOT START)
+🚫 DO NOT START
+• SEO
 • Listings API
 • Dashboard
-• AI Assistant
 • Payments
+• AI Assistant
 • Analytics
 
-
-▶️ WHERE WE START NEXT (VERY CLEAR)
-
-👉 assets/styles.css
-Step: Remove duplicate Listings + Area dropdown CSS blocks
-Rule: Keep ONE final block for each (single source of truth)
-Pricing lock must remain last line of file
-
-
-📝 PENDING (LATER — DO NOT FORGET)
-
-• Listing status workflow: Auto-hide when rented
-• Owner renewal reminder → “Mark as Rented / Still Available”
-• User “Report Already Rented” request option
-• Owner verify-confirm link flow (token-based)
+📝 PENDING (REFERENCE ONLY)
 • SMS / WhatsApp templates (≈5) — approval required
 
-
-✅ END — MASTER FILE v6.5
+✅ END — MASTER FILE v6.6
 
 🔒 CONFIRMED
-Nothing important deleted.
-Only DONE items locked.
-Next step unambiguous.
+Listings Page, Filters & Demo Mode are FINAL LOCKED.
+No UI or logic changes allowed unless explicitly unlocked by owner.
