@@ -667,10 +667,26 @@ document.addEventListener("DOMContentLoaded", () => {
   syncCommercialVisibility();
 
   const searchBtn = document.getElementById("filtersSearchBtn");
-  const applyBtn = document.getElementById("filtersApplyBtn");
+  if (searchBtn) {
+    searchBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      syncCommercialVisibility();
+      applyFilters();
+    });
+  }
 
-  if (searchBtn) searchBtn.addEventListener("click", (e) => { e.preventDefault(); syncCommercialVisibility(); applyFilters(); });
-  if (applyBtn) applyBtn.addEventListener("click", (e) => { e.preventDefault(); syncCommercialVisibility(); applyFilters(); });
+  // ✅ AUTO-APPLY FOR SECONDARY FILTERS (More Filters)
+  // Listen for changes on any select or input inside the filters-panel
+  const secondaryInputs = document.querySelectorAll(".filters-panel select, .filters-panel input");
+  secondaryInputs.forEach(el => {
+    el.addEventListener("change", () => {
+      applyFilters();
+    });
+    // For text inputs (if any in future) or immediate range response
+    el.addEventListener("input", () => {
+      applyFilters();
+    });
+  });
   if (clearBtn) clearBtn.addEventListener("click", (e) => {
     e.preventDefault();
     form.reset();
