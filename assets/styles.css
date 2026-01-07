@@ -456,7 +456,7 @@ textarea.input:focus{
   font-weight:800;
   letter-spacing:0;
   line-height:1.18;
-  max-width:880px;
+  max-width:100%;
   text-wrap:balance;
   font-size:clamp(26px, 2.8vw, 38px);
 }
