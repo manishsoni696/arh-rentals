@@ -274,6 +274,12 @@ textarea.input:focus{
     z-index:99999 !important;
   }
 
+  /* Increase padding for header container on mobile to avoid "stuck" look */
+  .site-header .container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
   body{ padding-top:var(--arh-header-h) !important; }
 
   /* Keep header-actions visible (hamburger often lives here / beside it) */

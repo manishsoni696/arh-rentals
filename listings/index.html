@@ -1,547 +1,539 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Listings • ARH Rentals</title>
-  <link rel="stylesheet" href="/assets/styles.css"/>
+  <link rel="stylesheet" href="/assets/styles.css" />
 </head>
+
 <body class="listings-page">
-<header class="site-header">
-  <div class="container">
-    <div class="navbar">
-      <a class="brand" href="/">
-        <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo" />
-        <div class="brand-title">
-          <strong>ARH Rentals</strong>
-          <span>by Anjani Real Heights</span>
-        </div>
-      </a>
-
-      <button class="nav-toggle"
-              type="button"
-              aria-label="Menu"
-              aria-controls="primary-navigation"
-              aria-expanded="false">
-        <span class="nav-toggle-icon" aria-hidden="true"></span>
-      </button>
-
-      <div class="header-actions">
-        <a class="btn btn-primary header-cta" href="/post">Post Property</a>
-      </div>
-    </div>
-  </div>
-
-  <nav class="menu" id="primary-navigation" aria-label="Primary">
+  <header class="site-header">
     <div class="container">
-      <div class="nav-inner">
-        <a href="/">Home</a>
-        <a class="active" href="/listings">Listings</a>
-        <a href="/pricing">Plans</a>
-        <a href="/legal">Legal</a>
-        <a class="btn btn-primary menu-cta" href="/post">Post Property</a>
+      <div class="navbar">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo" />
+          <div class="brand-title">
+            <strong>ARH Rentals</strong>
+            <span>by Anjani Real Heights</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <a class="btn btn-primary header-cta" href="/post">Post Property</a>
+          <button class="nav-toggle" type="button" aria-label="Menu" aria-controls="primary-navigation"
+            aria-expanded="false">
+            <span class="nav-toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
       </div>
     </div>
-  </nav>
-</header>
 
-<main class="container">
-  <section class="hero">
-    <h1>Hisar Rentals</h1>
-    <p>Premium listings with clean filters + search. Contact details unlock via plans (coming soon).</p>
-  </section>
-
-  <div class="listings-page-layout" aria-label="Listings with filters">
-    <form id="filtersForm" class="filters-shell" autocomplete="off">
-      <!-- PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) -->
-      <section class="card primary-filters-card" aria-label="Primary filters">
-        <div class="card-body primary-filters">
-          <div class="primary-filters-row">
-            <label class="field" for="fCity">
-              <span class="small">City</span>
-              <select class="input" id="fCity" name="city">
-                <option value="hisar">Hisar</option>
-              </select>
-            </label>
-
-            <label class="field" for="fCategory">
-              <span class="small">Property Category</span>
-              <select class="input" id="fCategory" name="category">
-                <option value="residential" selected>Residential</option>
-                <option value="commercial">Commercial</option>
-              </select>
-            </label>
-
-            <label class="field" for="fType">
-              <span class="small">Property Type</span>
-              <select class="input" id="fType" name="type">
-                <option value="">Any</option>
-                <option value="House">House</option>
-                <option value="Flat">Flat</option>
-                <option value="PG">PG</option>
-              </select>
-            </label>
-
-  <label class="field" for="fArea">
-  <span class="small">Area / Sector</span>
-
-  <input
-    class="input"
-    id="fArea"
-    name="area"
-    placeholder="Type to search area / sector (e.g. Sector 14, PLA, New Grain Market)"
-    autocomplete="off"
-    aria-autocomplete="list"
-    aria-expanded="false"
-    aria-controls="areaPanel"
-  />
-
-  <div id="areaPanel" class="area-panel" hidden>
-    <div class="area-panel-head">
-      <span class="small muted">Popular areas</span>
-      <span class="small muted">Type to search</span>
-    </div>
-
-    <div class="area-options" role="listbox" aria-label="Popular areas">
-      <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
-      <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
-      <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
-      <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
-      <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
-      <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
-      <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
-      <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">
-        Housing Board Colony (Sirsa Road)
-      </button>
-      <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
-      <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
-      <button type="button" class="area-opt" data-value="Other">Other</button>
-    </div>
-  </div>
-
-  <datalist id="hisarAreas">
-    <option value="Sector 1–4"></option>
-    <option value="Sector 3"></option>
-    <option value="Sector 5"></option>
-    <option value="Sector 9–11"></option>
-    <option value="Sector 13"></option>
-    <option value="Sector 14"></option>
-    <option value="Sector 15"></option>
-    <option value="Sector 16–17"></option>
-    <option value="Sector 24"></option>
-    <option value="Sector MGA"></option>
-    <option value="Sector 27–28"></option>
-    <option value="Sector 33"></option>
-    <option value="Sector-PLA"></option>
-
-    <option value="Model Town"></option>
-    <option value="Model Town Extension"></option>
-    <option value="Housing Board Colony (Sirsa Road)"></option>
-    <option value="Sundar Nagar"></option>
-    <option value="Vikas Nagar"></option>
-    <option value="Preeti Nagar"></option>
-    <option value="Professor Colony"></option>
-    <option value="Aggarwal Colony"></option>
-    <option value="Aggarsain Colony"></option>
-    <option value="Prem Nagar"></option>
-    <option value="Sant Nagar"></option>
-    <option value="Jawahar Nagar"></option>
-    <option value="Shastri Nagar"></option>
-    <option value="Azad Nagar"></option>
-    <option value="Indira Colony"></option>
-    <option value="Adarsh Nagar"></option>
-    <option value="Shanti Nagar"></option>
-    <option value="Vidut Nagar"></option>
-    <option value="Jindal Colony"></option>
-    <option value="Teachers Colony"></option>
-    <option value="Doctors Colony"></option>
-    <option value="Bank Colony"></option>
-    <option value="Police Lines"></option>
-    <option value="Camp Area"></option>
-
-    <option value="New Grain Market"></option>
-    <option value="Old Mandi Road"></option>
-    <option value="Nagori Gate"></option>
-    <option value="Main Market"></option>
-    <option value="Rajguru Market"></option>
-    <option value="Auto Market"></option>
-    <option value="Industrial Area"></option>
-    <option value="Industrial Area Phase 1"></option>
-    <option value="Industrial Area Phase 2"></option>
-    <option value="Delhi Road Market"></option>
-    <option value="Hansi Road Market"></option>
-    <option value="Tosham Road Market"></option>
-    <option value="Barwala Road Market"></option>
-    <option value="Railway Road Market"></option>
-    <option value="Bus Stand Area"></option>
-
-    <option value="Parav Chowk"></option>
-    <option value="Lahoria Chowk"></option>
-    <option value="Jindal Chowk"></option>
-    <option value="ITI Chowk"></option>
-    <option value="Dabra Chowk"></option>
-
-    <option value="Hisar Cantt Area"></option>
-    <option value="Mirzapur Road"></option>
-    <option value="Airport Road Area"></option>
-    <option value="Other"></option>
-  </datalist>
-</label>
-
-            <label class="field" for="fSize">
-              <span class="small">Size (<span id="sizeUnitLabel">Sq Yds</span>)</span>
-              <select class="input" id="fSize" name="size">
-                <option value="">Any</option>
-                <option value="0-50">Up to 50 sq yds</option>
-                <option value="51-100">51 – 100 sq yds</option>
-                <option value="101-200">101 – 200 sq yds</option>
-                <option value="201-350">201 – 350 sq yds</option>
-                <option value="351+">Above 350 sq yds</option>
-              </select>
-            </label>
-
-            <label class="field" for="fRent">
-              <span class="small">Rent Range</span>
-              <select class="input" id="fRent" name="rent">
-                <option value="">Any</option>
-                <option value="0-10000">Up to ₹10,000</option>
-                <option value="10001-14999">₹10,001 – ₹14,999</option>
-                <option value="15000-19999">₹15,000 – ₹19,999</option>
-                <option value="20000-25000">₹20,000 – ₹25,000</option>
-                <option value="25001+">Above ₹25,000</option>
-              </select>
-            </label>
-
-            <div class="primary-actions">
-              <button class="btn" type="button" id="filtersClearBtn">Clear</button>
-              <button class="btn btn-primary" type="button" id="filtersSearchBtn">Search Properties</button>
-            </div>
-          </div>
+    <nav class="menu" id="primary-navigation" aria-label="Primary">
+      <div class="container">
+        <div class="nav-inner">
+          <a href="/">Home</a>
+          <a class="active" href="/listings">Listings</a>
+          <a href="/pricing">Plans</a>
+          <a href="/legal">Legal</a>
+          <a class="btn btn-primary menu-cta" href="/post">Post Property</a>
         </div>
-      </section>
+      </div>
+    </nav>
+  </header>
 
-      <div class="listings-layout" aria-label="Listings layout">
-        <!-- SECONDARY FILTERS (SIDEBAR / MORE FILTERS) -->
-        <aside class="card filters-card" aria-label="More filters">
-          <div class="card-body filters-ui">
-            <div class="filters-head">
-              <h2>More Filters</h2>
-              <div class="filters-head-actions" aria-label="Filter actions">
-                <button class="btn" type="button" id="filtersApplyBtn">Apply</button>
-              </div>
-            </div>
+  <main class="container">
+    <section class="hero">
+      <h1>ARH Rentals — Hisar</h1>
+      <p>Owner-posted rental listings with smart search.</p>
+    </section>
 
-            <div class="hr" role="separator" aria-hidden="true"></div>
+    <div class="listings-page-layout" aria-label="Listings with filters">
+      <form id="filtersForm" class="filters-shell" autocomplete="off">
+        <!-- PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) -->
+        <section class="card primary-filters-card" aria-label="Primary filters">
+          <div class="card-body primary-filters">
+            <div class="primary-filters-row">
+              <label class="field" for="fCity">
+                <span class="small">City</span>
+                <select class="input" id="fCity" name="city">
+                  <option value="hisar">Hisar</option>
+                </select>
+              </label>
 
-            <button type="button" class="btn more-filters-btn" id="moreFiltersBtn" aria-expanded="false">
-              + More Filters
-            </button>
+              <label class="field" for="fCategory">
+                <span class="small">Property Category</span>
+                <select class="input" id="fCategory" name="category">
+                  <option value="residential" selected>Residential</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </label>
 
-            <div class="filters-panel" role="region" aria-label="Secondary filter options">
-              <fieldset class="filter-group secondary" data-cat="residential">
-                <legend>Residential</legend>
+              <label class="field" for="fType">
+                <span class="small">Property Type</span>
+                <select class="input" id="fType" name="type">
+                  <option value="">Any</option>
+                  <option value="House">House</option>
+                  <option value="Flat">Flat</option>
+                  <option value="PG">PG</option>
+                </select>
+              </label>
 
-                <label class="field" for="fBhk">
-                  <span class="small">BHK</span>
-                  <select class="input" id="fBhk" name="bhk">
-                    <option value="">Any</option>
-                    <option value="1 RK">1 RK</option>
-                    <option value="1 BHK">1 BHK</option>
-                    <option value="2 BHK">2 BHK</option>
-                    <option value="3 BHK">3 BHK</option>
-                    <option value="4+ BHK">4+ BHK</option>
-                  </select>
-                </label>
+              <label class="field" for="fArea">
+                <span class="small">Area / Sector</span>
 
-                <label class="field" for="fFloor">
-                  <span class="small">Floor</span>
-                  <select class="input" id="fFloor" name="floor">
-                    <option value="">Any</option>
-                    <option value="Ground">Ground</option>
-                    <option value="First">First</option>
-                    <option value="Second">Second</option>
-                    <option value="Third+">Third+</option>
-                  </select>
-                </label>
+                <input class="input" id="fArea" name="area"
+                  placeholder="Type to search area / sector (e.g. Sector 14, PLA, New Grain Market)" autocomplete="off"
+                  aria-autocomplete="list" aria-expanded="false" aria-controls="areaPanel" />
 
-                <label class="field" for="fFurnish">
-                  <span class="small">Furnishing</span>
-                  <select class="input" id="fFurnish" name="furnishing">
-                    <option value="">Any</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Furnished">Furnished</option>
-                  </select>
-                </label>
+                <div id="areaPanel" class="area-panel" hidden>
+                  <div class="area-panel-head">
+                    <span class="small muted">Popular areas</span>
+                    <span class="small muted">Type to search</span>
+                  </div>
 
-                <label class="field" for="fAge">
-                  <span class="small">Property Age</span>
-                  <select class="input" id="fAge" name="age">
-                    <option value="">Any</option>
-                    <option value="0-1">0–1 year</option>
-                    <option value="1-3">1–3 years</option>
-                    <option value="3-5">3–5 years</option>
-                    <option value="5-10">5–10 years</option>
-                    <option value="10+">10+ years</option>
-                  </select>
-                </label>
-
-                <div class="hr" role="separator" aria-hidden="true"></div>
-
-                <div class="small">Amenities</div>
-                <div class="amenities" role="group" aria-label="Amenities (Residential)">
-                  <label class="amenity">
-                    <input type="checkbox" name="amenities" value="parking" />
-                    <span>Parking</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenities" value="powerBackup" />
-                    <span>Power Backup</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenities" value="lift" />
-                    <span>Lift</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenities" value="security" />
-                    <span>Security</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenities" value="ac" />
-                    <span>AC</span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <fieldset class="filter-group secondary" data-cat="commercial">
-                <legend>Commercial</legend>
-
-                <label class="field" for="fFloorCom">
-                  <span class="small">Floor</span>
-                  <select class="input" id="fFloorCom" name="floorCommercial">
-                    <option value="">Any</option>
-                    <option value="Basement">Basement</option>
-                    <option value="Ground">Ground</option>
-                    <option value="First">First</option>
-                    <option value="Second">Second</option>
-                    <option value="Upper/Other">Upper / Other</option>
-                  </select>
-                </label>
-
-                <label class="field" for="fFurnishCom">
-                  <span class="small">Furnishing</span>
-                  <select class="input" id="fFurnishCom" name="furnishingCommercial">
-                    <option value="">Any</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Furnished">Furnished</option>
-                  </select>
-                </label>
-
-                <div class="hr" role="separator" aria-hidden="true"></div>
-
-                <div class="small">Amenities</div>
-                <div class="amenities" role="group" aria-label="Amenities (Commercial)">
-                  <label class="amenity">
-                    <input type="checkbox" name="amenitiesCommercial" value="parking" />
-                    <span>Parking</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenitiesCommercial" value="powerBackup" />
-                    <span>Power Backup</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenitiesCommercial" value="lift" />
-                    <span>Lift</span>
-                  </label>
-                  <label class="amenity">
-                    <input type="checkbox" name="amenitiesCommercial" value="security" />
-                    <span>Security</span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <div class="filters-footer">
-                <p class="small muted">
-                  Tip: Primary filters are always visible. More filters are UI-only for now.
-                </p>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- LISTINGS -->
-        <section class="card listings-card" aria-label="Listings">
-          <div class="card-body">
-            <div class="listings-head">
-              <div>
-                <h2>Listings</h2>
-                <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
-              </div>
-
-              <div class="results-meta" aria-label="Results summary">
-                <span class="small muted" id="resultsCount">Showing 3 properties</span>
-              </div>
-            </div>
-
-            <div id="listingWrap" class="listings listing-wrap">
-              <div class="listing" data-rent="12000">
-                <div>
-                  <h3>2 BHK House</h3>
-                  <p>Sector 14 • Hisar</p>
-                  <div class="pills">
-                    <span class="pill">House</span>
-                    <span class="pill">₹12,000</span>
-                    <span class="pill">125001</span>
+                  <div class="area-options" role="listbox" aria-label="Popular areas">
+                    <button type="button" class="area-opt" data-value="Sector 14">Sector 14</button>
+                    <button type="button" class="area-opt" data-value="Sector 15">Sector 15</button>
+                    <button type="button" class="area-opt" data-value="Sector 13">Sector 13</button>
+                    <button type="button" class="area-opt" data-value="Sector 16–17">Sector 16–17</button>
+                    <button type="button" class="area-opt" data-value="Sector 33">Sector 33</button>
+                    <button type="button" class="area-opt" data-value="Sector-PLA">Sector-PLA</button>
+                    <button type="button" class="area-opt" data-value="New Grain Market">New Grain Market</button>
+                    <button type="button" class="area-opt" data-value="Housing Board Colony (Sirsa Road)">
+                      Housing Board Colony (Sirsa Road)
+                    </button>
+                    <button type="button" class="area-opt" data-value="Sundar Nagar">Sundar Nagar</button>
+                    <button type="button" class="area-opt" data-value="Vikas Nagar">Vikas Nagar</button>
+                    <button type="button" class="area-opt" data-value="Other">Other</button>
                   </div>
                 </div>
-                <button class="btn">Unlock Details</button>
-                <div class="small muted listing-note">
-                  Contact details unlock will be available in a future update.
-                </div>
-              </div>
 
-              <div class="listing" data-rent="18000">
-                <div>
-                  <h3>Shop for Rent</h3>
-                  <p>Main Market Area</p>
-                  <div class="pills">
-                    <span class="pill">Shop</span>
-                    <span class="pill">₹18,000</span>
-                    <span class="pill">125001</span>
-                  </div>
-                </div>
-                <button class="btn">Unlock Details</button>
-                <div class="small muted listing-note">
-                  Contact details unlock will be available in a future update.
-                </div>
-              </div>
+                <datalist id="hisarAreas">
+                  <option value="Sector 1–4"></option>
+                  <option value="Sector 3"></option>
+                  <option value="Sector 5"></option>
+                  <option value="Sector 9–11"></option>
+                  <option value="Sector 13"></option>
+                  <option value="Sector 14"></option>
+                  <option value="Sector 15"></option>
+                  <option value="Sector 16–17"></option>
+                  <option value="Sector 24"></option>
+                  <option value="Sector MGA"></option>
+                  <option value="Sector 27–28"></option>
+                  <option value="Sector 33"></option>
+                  <option value="Sector-PLA"></option>
 
-              <div class="listing" data-rent="6500">
-                <div>
-                  <h3>1 RK</h3>
-                  <p>Near Income Tax Office</p>
-                  <div class="pills">
-                    <span class="pill">House</span>
-                    <span class="pill">₹6,500</span>
-                    <span class="pill">125005</span>
-                  </div>
-                </div>
-                <button class="btn">Unlock Details</button>
-                <div class="small muted listing-note">
-                  Contact details unlock will be available in a future update.
-                </div>
-              </div>
-            </div>
+                  <option value="Model Town"></option>
+                  <option value="Model Town Extension"></option>
+                  <option value="Housing Board Colony (Sirsa Road)"></option>
+                  <option value="Sundar Nagar"></option>
+                  <option value="Vikas Nagar"></option>
+                  <option value="Preeti Nagar"></option>
+                  <option value="Professor Colony"></option>
+                  <option value="Aggarwal Colony"></option>
+                  <option value="Aggarsain Colony"></option>
+                  <option value="Prem Nagar"></option>
+                  <option value="Sant Nagar"></option>
+                  <option value="Jawahar Nagar"></option>
+                  <option value="Shastri Nagar"></option>
+                  <option value="Azad Nagar"></option>
+                  <option value="Indira Colony"></option>
+                  <option value="Adarsh Nagar"></option>
+                  <option value="Shanti Nagar"></option>
+                  <option value="Vidut Nagar"></option>
+                  <option value="Jindal Colony"></option>
+                  <option value="Teachers Colony"></option>
+                  <option value="Doctors Colony"></option>
+                  <option value="Bank Colony"></option>
+                  <option value="Police Lines"></option>
+                  <option value="Camp Area"></option>
 
-            <div class="hr" role="separator" aria-hidden="true"></div>
-            <div class="notice">
-              Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
+                  <option value="New Grain Market"></option>
+                  <option value="Old Mandi Road"></option>
+                  <option value="Nagori Gate"></option>
+                  <option value="Main Market"></option>
+                  <option value="Rajguru Market"></option>
+                  <option value="Auto Market"></option>
+                  <option value="Industrial Area"></option>
+                  <option value="Industrial Area Phase 1"></option>
+                  <option value="Industrial Area Phase 2"></option>
+                  <option value="Delhi Road Market"></option>
+                  <option value="Hansi Road Market"></option>
+                  <option value="Tosham Road Market"></option>
+                  <option value="Barwala Road Market"></option>
+                  <option value="Railway Road Market"></option>
+                  <option value="Bus Stand Area"></option>
+
+                  <option value="Parav Chowk"></option>
+                  <option value="Lahoria Chowk"></option>
+                  <option value="Jindal Chowk"></option>
+                  <option value="ITI Chowk"></option>
+                  <option value="Dabra Chowk"></option>
+
+                  <option value="Hisar Cantt Area"></option>
+                  <option value="Mirzapur Road"></option>
+                  <option value="Airport Road Area"></option>
+                  <option value="Other"></option>
+                </datalist>
+              </label>
+
+              <label class="field" for="fSize">
+                <span class="small">Size (<span id="sizeUnitLabel">Sq Yds</span>)</span>
+                <select class="input" id="fSize" name="size">
+                  <option value="">Any</option>
+                  <option value="0-50">Up to 50 sq yds</option>
+                  <option value="51-100">51 – 100 sq yds</option>
+                  <option value="101-200">101 – 200 sq yds</option>
+                  <option value="201-350">201 – 350 sq yds</option>
+                  <option value="351+">Above 350 sq yds</option>
+                </select>
+              </label>
+
+              <label class="field" for="fRent">
+                <span class="small">Rent Range</span>
+                <select class="input" id="fRent" name="rent">
+                  <option value="">Any</option>
+                  <option value="0-10000">Up to ₹10,000</option>
+                  <option value="10001-14999">₹10,001 – ₹14,999</option>
+                  <option value="15000-19999">₹15,000 – ₹19,999</option>
+                  <option value="20000-25000">₹20,000 – ₹25,000</option>
+                  <option value="25001+">Above ₹25,000</option>
+                </select>
+              </label>
+
+              <div class="primary-actions">
+                <button class="btn" type="button" id="filtersClearBtn">Clear</button>
+                <button class="btn btn-primary" type="button" id="filtersSearchBtn">Search Properties</button>
+              </div>
             </div>
           </div>
         </section>
-      </div>
-    </form>
-  </div>
 
-  <script>
-    (function () {
-      var cat = document.getElementById("fCategory");
-      var type = document.getElementById("fType");
-      var size = document.getElementById("fSize");
-      var sizeUnit = document.getElementById("sizeUnitLabel");
-      var moreBtn = document.getElementById("moreFiltersBtn");
-      var ui = document.querySelector(".filters-ui");
+        <div class="listings-layout" aria-label="Listings layout">
+          <!-- SECONDARY FILTERS (SIDEBAR / MORE FILTERS) -->
+          <aside class="card filters-card" aria-label="More filters">
+            <div class="card-body filters-ui">
+              <div class="filters-head">
+                <h2>More Filters</h2>
+                <div class="filters-head-actions" aria-label="Filter actions">
+                  <button class="btn" type="button" id="filtersApplyBtn">Apply</button>
+                </div>
+              </div>
 
-      var resTypes = [
-        { v: "", t: "Any" },
-        { v: "House", t: "House" },
-        { v: "Flat", t: "Flat" },
-        { v: "PG", t: "PG" }
-      ];
+              <div class="hr" role="separator" aria-hidden="true"></div>
 
-      var comTypes = [
-        { v: "", t: "Any" },
-        { v: "Shop", t: "Shop" },
-        { v: "Office", t: "Office" },
-        { v: "Warehouse", t: "Warehouse" }
-      ];
+              <button type="button" class="btn more-filters-btn" id="moreFiltersBtn" aria-expanded="false">
+                + More Filters
+              </button>
 
-      var sizeRes = [
-        { v: "", t: "Any" },
-        { v: "0-50", t: "Up to 50 sq yds" },
-        { v: "51-100", t: "51 – 100 sq yds" },
-        { v: "101-200", t: "101 – 200 sq yds" },
-        { v: "201-350", t: "201 – 350 sq yds" },
-        { v: "351+", t: "Above 350 sq yds" }
-      ];
+              <div class="filters-panel" role="region" aria-label="Secondary filter options">
+                <fieldset class="filter-group secondary" data-cat="residential">
+                  <legend>Residential</legend>
 
-      var sizeCom = [
-        { v: "", t: "Any" },
-        { v: "0-500", t: "Up to 500 sq ft" },
-        { v: "501-800", t: "501 – 800 sq ft" },
-        { v: "801-1200", t: "801 – 1,200 sq ft" },
-        { v: "1201-1800", t: "1,201 – 1,800 sq ft" },
-        { v: "1801+", t: "Above 1,800 sq ft" }
-      ];
+                  <label class="field" for="fBhk">
+                    <span class="small">BHK</span>
+                    <select class="input" id="fBhk" name="bhk">
+                      <option value="">Any</option>
+                      <option value="1 RK">1 RK</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="4+ BHK">4+ BHK</option>
+                    </select>
+                  </label>
 
-      function setOptions(selectEl, items) {
-        if (!selectEl) return;
-        selectEl.innerHTML = "";
-        items.forEach(function (it) {
-          var o = document.createElement("option");
-          o.value = it.v;
-          o.textContent = it.t;
-          selectEl.appendChild(o);
-        });
-      }
+                  <label class="field" for="fFloor">
+                    <span class="small">Floor</span>
+                    <select class="input" id="fFloor" name="floor">
+                      <option value="">Any</option>
+                      <option value="Ground">Ground</option>
+                      <option value="First">First</option>
+                      <option value="Second">Second</option>
+                      <option value="Third+">Third+</option>
+                    </select>
+                  </label>
 
-      function setSecondaryVisibility(category) {
-        document.querySelectorAll("[data-cat]").forEach(function (el) {
-          el.style.display = (el.getAttribute("data-cat") === category) ? "" : "none";
-        });
-      }
+                  <label class="field" for="fFurnish">
+                    <span class="small">Furnishing</span>
+                    <select class="input" id="fFurnish" name="furnishing">
+                      <option value="">Any</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Semi-Furnished">Semi-Furnished</option>
+                      <option value="Furnished">Furnished</option>
+                    </select>
+                  </label>
 
-      function syncCategory() {
-        var v = (cat && cat.value) ? cat.value : "residential";
+                  <label class="field" for="fAge">
+                    <span class="small">Property Age</span>
+                    <select class="input" id="fAge" name="age">
+                      <option value="">Any</option>
+                      <option value="0-1">0–1 year</option>
+                      <option value="1-3">1–3 years</option>
+                      <option value="3-5">3–5 years</option>
+                      <option value="5-10">5–10 years</option>
+                      <option value="10+">10+ years</option>
+                    </select>
+                  </label>
 
-        if (v === "commercial") {
-          setOptions(type, comTypes);
-          setOptions(size, sizeCom);
-          if (sizeUnit) sizeUnit.textContent = "Sq Ft";
-          setSecondaryVisibility("commercial");
-        } else {
-          setOptions(type, resTypes);
-          setOptions(size, sizeRes);
-          if (sizeUnit) sizeUnit.textContent = "Sq Yds";
-          setSecondaryVisibility("residential");
-        }
-      }
+                  <div class="hr" role="separator" aria-hidden="true"></div>
 
-      if (cat) {
-        cat.addEventListener("change", syncCategory);
-      }
+                  <div class="small">Amenities</div>
+                  <div class="amenities" role="group" aria-label="Amenities (Residential)">
+                    <label class="amenity">
+                      <input type="checkbox" name="amenities" value="parking" />
+                      <span>Parking</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenities" value="powerBackup" />
+                      <span>Power Backup</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenities" value="lift" />
+                      <span>Lift</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenities" value="security" />
+                      <span>Security</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenities" value="ac" />
+                      <span>AC</span>
+                    </label>
+                  </div>
+                </fieldset>
 
-      syncCategory();
-    })();
-  </script>
+                <fieldset class="filter-group secondary" data-cat="commercial">
+                  <legend>Commercial</legend>
 
-  <footer class="footer">
-    <div class="container">
-      <div>
-        © <span id="year"></span> ARH Rentals •
-        <a href="/legal">Legal</a> •
-        <a href="/pricing">Plans</a>
-      </div>
+                  <label class="field" for="fFloorCom">
+                    <span class="small">Floor</span>
+                    <select class="input" id="fFloorCom" name="floorCommercial">
+                      <option value="">Any</option>
+                      <option value="Basement">Basement</option>
+                      <option value="Ground">Ground</option>
+                      <option value="First">First</option>
+                      <option value="Second">Second</option>
+                      <option value="Upper/Other">Upper / Other</option>
+                    </select>
+                  </label>
 
-      <div class="footer-disclaimer">
-        Disclaimer: ARH Rentals is an information-access platform only. We do not guarantee
-        leads, tenants, responses, or deal closure. Users must independently verify all details
-        before any transaction.
-      </div>
+                  <label class="field" for="fFurnishCom">
+                    <span class="small">Furnishing</span>
+                    <select class="input" id="fFurnishCom" name="furnishingCommercial">
+                      <option value="">Any</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Furnished">Furnished</option>
+                    </select>
+                  </label>
+
+                  <div class="hr" role="separator" aria-hidden="true"></div>
+
+                  <div class="small">Amenities</div>
+                  <div class="amenities" role="group" aria-label="Amenities (Commercial)">
+                    <label class="amenity">
+                      <input type="checkbox" name="amenitiesCommercial" value="parking" />
+                      <span>Parking</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenitiesCommercial" value="powerBackup" />
+                      <span>Power Backup</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenitiesCommercial" value="lift" />
+                      <span>Lift</span>
+                    </label>
+                    <label class="amenity">
+                      <input type="checkbox" name="amenitiesCommercial" value="security" />
+                      <span>Security</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="filters-footer">
+                  <p class="small muted">
+                    Tip: Primary filters are always visible. More filters are UI-only for now.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- LISTINGS -->
+          <section class="card listings-card" aria-label="Listings">
+            <div class="card-body">
+              <div class="listings-head">
+                <div>
+                  <h2>Listings</h2>
+                  <p class="muted">Demo UI (filters are UI-ready; DB integration next).</p>
+                </div>
+
+                <div class="results-meta" aria-label="Results summary">
+                  <span class="small muted" id="resultsCount">Showing 3 properties</span>
+                </div>
+              </div>
+
+              <div id="listingWrap" class="listings listing-wrap">
+                <div class="listing" data-rent="12000">
+                  <div>
+                    <h3>2 BHK House</h3>
+                    <p>Sector 14 • Hisar</p>
+                    <div class="pills">
+                      <span class="pill">House</span>
+                      <span class="pill">₹12,000</span>
+                      <span class="pill">125001</span>
+                    </div>
+                  </div>
+                  <button class="btn">Unlock Details</button>
+                  <div class="small muted listing-note">
+                    Contact details unlock will be available in a future update.
+                  </div>
+                </div>
+
+                <div class="listing" data-rent="18000">
+                  <div>
+                    <h3>Shop for Rent</h3>
+                    <p>Main Market Area</p>
+                    <div class="pills">
+                      <span class="pill">Shop</span>
+                      <span class="pill">₹18,000</span>
+                      <span class="pill">125001</span>
+                    </div>
+                  </div>
+                  <button class="btn">Unlock Details</button>
+                  <div class="small muted listing-note">
+                    Contact details unlock will be available in a future update.
+                  </div>
+                </div>
+
+                <div class="listing" data-rent="6500">
+                  <div>
+                    <h3>1 RK</h3>
+                    <p>Near Income Tax Office</p>
+                    <div class="pills">
+                      <span class="pill">House</span>
+                      <span class="pill">₹6,500</span>
+                      <span class="pill">125005</span>
+                    </div>
+                  </div>
+                  <button class="btn">Unlock Details</button>
+                  <div class="small muted listing-note">
+                    Contact details unlock will be available in a future update.
+                  </div>
+                </div>
+              </div>
+
+              <div class="hr" role="separator" aria-hidden="true"></div>
+              <div class="notice">
+                Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
+              </div>
+            </div>
+          </section>
+        </div>
+      </form>
     </div>
-  </footer>
-</main>
 
-<script src="/assets/app.js"></script>
+    <script>
+      (function () {
+        var cat = document.getElementById("fCategory");
+        var type = document.getElementById("fType");
+        var size = document.getElementById("fSize");
+        var sizeUnit = document.getElementById("sizeUnitLabel");
+        var moreBtn = document.getElementById("moreFiltersBtn");
+        var ui = document.querySelector(".filters-ui");
+
+        var resTypes = [
+          { v: "", t: "Any" },
+          { v: "House", t: "House" },
+          { v: "Flat", t: "Flat" },
+          { v: "PG", t: "PG" }
+        ];
+
+        var comTypes = [
+          { v: "", t: "Any" },
+          { v: "Shop", t: "Shop" },
+          { v: "Office", t: "Office" },
+          { v: "Warehouse", t: "Warehouse" }
+        ];
+
+        var sizeRes = [
+          { v: "", t: "Any" },
+          { v: "0-50", t: "Up to 50 sq yds" },
+          { v: "51-100", t: "51 – 100 sq yds" },
+          { v: "101-200", t: "101 – 200 sq yds" },
+          { v: "201-350", t: "201 – 350 sq yds" },
+          { v: "351+", t: "Above 350 sq yds" }
+        ];
+
+        var sizeCom = [
+          { v: "", t: "Any" },
+          { v: "0-500", t: "Up to 500 sq ft" },
+          { v: "501-800", t: "501 – 800 sq ft" },
+          { v: "801-1200", t: "801 – 1,200 sq ft" },
+          { v: "1201-1800", t: "1,201 – 1,800 sq ft" },
+          { v: "1801+", t: "Above 1,800 sq ft" }
+        ];
+
+        function setOptions(selectEl, items) {
+          if (!selectEl) return;
+          selectEl.innerHTML = "";
+          items.forEach(function (it) {
+            var o = document.createElement("option");
+            o.value = it.v;
+            o.textContent = it.t;
+            selectEl.appendChild(o);
+          });
+        }
+
+        function setSecondaryVisibility(category) {
+          document.querySelectorAll("[data-cat]").forEach(function (el) {
+            el.style.display = (el.getAttribute("data-cat") === category) ? "" : "none";
+          });
+        }
+
+        function syncCategory() {
+          var v = (cat && cat.value) ? cat.value : "residential";
+
+          if (v === "commercial") {
+            setOptions(type, comTypes);
+            setOptions(size, sizeCom);
+            if (sizeUnit) sizeUnit.textContent = "Sq Ft";
+            setSecondaryVisibility("commercial");
+          } else {
+            setOptions(type, resTypes);
+            setOptions(size, sizeRes);
+            if (sizeUnit) sizeUnit.textContent = "Sq Yds";
+            setSecondaryVisibility("residential");
+          }
+        }
+
+        if (cat) {
+          cat.addEventListener("change", syncCategory);
+        }
+
+        syncCategory();
+      })();
+    </script>
+
+    <footer class="footer">
+      <div class="container">
+        <div>
+          © <span id="year"></span> ARH Rentals •
+          <a href="/legal">Legal</a> •
+          <a href="/pricing">Plans</a>
+        </div>
+
+        <div class="footer-disclaimer">
+          Disclaimer: ARH Rentals is an information-access platform only. We do not guarantee
+          leads, tenants, responses, or deal closure. Users must independently verify all details
+          before any transaction.
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="/assets/app.js"></script>
 </body>
+
 </html>
