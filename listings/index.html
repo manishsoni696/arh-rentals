@@ -51,6 +51,18 @@
       <p>Owner-posted rental listings with smart search.</p>
     </section>
 
+        <section class="card info-strip" aria-label="How to use this page">
+      <div class="card-body">
+        <h2>How to Use This Page</h2>
+        <p class="muted">
+          Yahan Hisar ke owners dwara post ki gayi rental listings dikhayi ja rahi hain.
+          ARH Rentals sirf information access provide karta hai.
+          Property se related har deal directly owner–tenant ke beech hoti hai.
+        </p>
+        <p class="small muted">Currently serving rental listings across Hisar.</p>
+      </div>
+    </section>
+    
     <div class="listings-page-layout" aria-label="Listings with filters">
       <form id="filtersForm" class="filters-shell" autocomplete="off">
         <!-- PRIMARY FILTERS (TOP BAR — ALWAYS VISIBLE) -->
@@ -365,6 +377,7 @@
 
                 <div class="results-meta" aria-label="Results summary">
                   <span class="small muted" id="resultsCount">Showing 3 properties</span>
+                  <span class="small muted results-context">Showing active rental listings available on this portal.</span>
                 </div>
               </div>
 
@@ -373,6 +386,12 @@
                   <div>
                     <h3>2 BHK House</h3>
                     <p>Sector 14 • Hisar</p>
+                    <ul class="listing-meta">
+                      <li><span class="label">Property Type:</span> House</li>
+                      <li><span class="label">Area:</span> Sector 14 (Hisar)</li>
+                      <li><span class="label">Posted On:</span> 12/08</li>
+                      <li><span class="label">Valid Till:</span> 12/09</li>
+                    </ul>
                     <div class="pills">
                       <span class="pill">House</span>
                       <span class="pill">₹12,000</span>
@@ -380,8 +399,14 @@
                     </div>
                   </div>
                   <button class="btn">Unlock Details</button>
+                  <div class="small muted listing-contact">
+                    Contact is shared by the owner. ARH Rentals does not mediate or confirm responses.
+                  </div>
                   <div class="small muted listing-note">
                     Contact details unlock will be available in a future update.
+                  </div>
+                  <div class="small muted listing-expiry">
+                    This listing will auto-hide after expiry if not renewed. Owners can renew to keep listing visible.
                   </div>
                 </div>
 
@@ -389,6 +414,12 @@
                   <div>
                     <h3>Shop for Rent</h3>
                     <p>Main Market Area</p>
+                    <ul class="listing-meta">
+                      <li><span class="label">Property Type:</span> Shop</li>
+                      <li><span class="label">Area:</span> Main Market (Hisar)</li>
+                      <li><span class="label">Posted On:</span> 09/08</li>
+                      <li><span class="label">Valid Till:</span> 09/09</li>
+                    </ul>
                     <div class="pills">
                       <span class="pill">Shop</span>
                       <span class="pill">₹18,000</span>
@@ -396,8 +427,14 @@
                     </div>
                   </div>
                   <button class="btn">Unlock Details</button>
+                   <div class="small muted listing-contact">
+                    Contact is shared by the owner. ARH Rentals does not mediate or confirm responses.
+                  </div>
                   <div class="small muted listing-note">
                     Contact details unlock will be available in a future update.
+                  </div>
+                    <div class="small muted listing-expiry">
+                    This listing will auto-hide after expiry if not renewed. Owners can renew to keep listing visible.
                   </div>
                 </div>
 
@@ -405,6 +442,12 @@
                   <div>
                     <h3>1 RK</h3>
                     <p>Near Income Tax Office</p>
+                    <ul class="listing-meta">
+                      <li><span class="label">Property Type:</span> House</li>
+                      <li><span class="label">Area:</span> Income Tax Office (Hisar)</li>
+                      <li><span class="label">Posted On:</span> 03/08</li>
+                      <li><span class="label">Valid Till:</span> 03/09</li>
+                    </ul>
                     <div class="pills">
                       <span class="pill">House</span>
                       <span class="pill">₹6,500</span>
@@ -412,8 +455,14 @@
                     </div>
                   </div>
                   <button class="btn">Unlock Details</button>
+                  <div class="small muted listing-contact">
+                    Contact is shared by the owner. ARH Rentals does not mediate or confirm responses.
+                  </div>
                   <div class="small muted listing-note">
                     Contact details unlock will be available in a future update.
+                  </div>
+                   <div class="small muted listing-expiry">
+                    This listing will auto-hide after expiry if not renewed. Owners can renew to keep listing visible.
                   </div>
                 </div>
               </div>
@@ -422,11 +471,26 @@
               <div class="notice">
                 Filters UI is ready. Next step: connect Worker API to fetch real listings + apply filters server-side.
               </div>
+              <div class="future-ready" hidden>
+                <p>Report incorrect information.</p>
+                <p>Mark as rented.</p>
+                <p>Contact history is not tracked by ARH Rentals.</p>
+              </div>
             </div>
           </section>
         </div>
       </form>
     </div>
+
+    <section class="card tenant-awareness" aria-label="Tenant advisory">
+      <div class="card-body">
+        <h2>Tenant Advisory</h2>
+        <p class="muted">
+          Tenants are advised to personally verify property details, location, rent terms, and documents before
+          finalizing.
+        </p>
+      </div>
+    </section>
 
     <script>
       (function () {
