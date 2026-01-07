@@ -145,7 +145,57 @@ styles.css cleanup — duplicate Listings & Area dropdown CSS blocks
 
 🧾 CHANGE LOG (LATEST)
 
-Date: Jan 7, 2026
+🔐 Listings Page Content & Owner Communication — ✅ COMPLETED & LOCKED
+Date: Jan 2026
+
+1. Listings Page — Top Info Strip (CONTENT FINALIZED)
+   • Clarifies listings are posted by property owners in Hisar
+   • ARH Rentals positioned strictly as an information-access platform
+   • Owner–Tenant direct dealing clearly stated
+
+Final Locked Text:
+“This page displays rental listings posted by property owners in Hisar.
+ARH Rentals provides access to property information only.
+All property-related dealings take place directly between the owner and the tenant.”
+
+2. Tenant Advisory Notice (CONTENT FINALIZED)
+   • Tenant self-verification responsibility stated
+   • Zero responsibility model reinforced
+
+Final Locked Text:
+“Tenants are advised to personally verify property details, location, rent terms, and documents before finalizing.”
+
+3. Listing Expiry / Auto-Hide Notice (CONTENT FINALIZED)
+   • Transparent visibility rules
+   • No pressure or guarantee language
+
+Final Locked Text:
+“Listings automatically become hidden after expiry if not renewed by the owner.”
+
+4. Owner Communication — Property Listed Confirmation (LOCKED)
+
+Final Locked Text:
+“Your property listing has been successfully published on ARH Rentals.
+The listing will remain visible until its expiry date unless renewed.
+Please note that all rental discussions take place directly between you and the tenant.”
+
+5. Owner Communication — Expiry Reminder (LOCKED)
+
+Final Locked Text:
+“Reminder: Your property listing on ARH Rentals is nearing its expiry date.
+You may renew the listing to keep it visible on the platform.”
+
+6. Owner Communication — Post-Expiry Auto-Hide Message (LOCKED)
+
+Final Locked Text:
+“Your property listing on ARH Rentals has expired and is now hidden.
+You can renew the listing to make it visible again.”
+
+LOCKED RULES CONFIRMED:
+• No responsibility, no verification, no guarantees implied
+• No banned words used (Verified / Trusted / Approved / Guaranteed)
+• Content suitable for Website, SMS, WhatsApp, Email
+• Any future wording change requires explicit owner unlock
 
 Status Workflow — STEP 1 (Logic Draft) ✅
 • Defined listing status states: Active, Rented, Expired, Paused
@@ -163,5 +213,5 @@ Status Workflow — STEP 2 (Logic Draft) ⏸️ PARKED
 ✅ END — MASTER FILE v6.7 (UPDATED)
 
 🔒 CONFIRMED
+Listings content & owner communication are FINAL & LOCKED.
 No UI, wording, or business rules altered.
-STEP 2 parked safely for later execution.
