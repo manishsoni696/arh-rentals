@@ -197,6 +197,58 @@ LOCKED RULES CONFIRMED:
 • Content suitable for Website, SMS, WhatsApp, Email
 • Any future wording change requires explicit owner unlock
 
+🔧 Backend Module — Owner Property Image Upload — ✅ SAFE TO MERGE
+Date: Jan 2026
+
+1. New Service Added
+   backend/services/propertyImageStore.js
+   • Server-side trusted image count implemented
+   • getExistingPropertyImageCount(propertyId) introduced
+   • Client-side spoofing eliminated
+   • Sanitized propertyId + path traversal protection
+   • Returns 0 if property has no images
+   • Throws IMG_003 on processing failure
+
+2. Route Updated
+   backend/routes/propertyImages.js
+   • Integrated server-side image count check
+   • Enforced max 10 images per property (end-to-end)
+   • Strict MIME validation: image/jpeg, image/png only
+   • Centralized error handling:
+   IMG_001 invalid format
+   IMG_002 size too large
+   IMG_003 processing failed
+   IMG_004 max image count exceeded
+   • No UI / SEO / business text changes
+
+3. Image Processing Confirmed
+   backend/services/imageProcessor.js
+   • Input hard limit: 1 MB per image
+   • Resize max 1600px (aspect ratio preserved)
+   • Compression target ~500 KB (300–600 KB)
+   • Mandatory watermark: “ARH Rentals” bottom-right (~0.25 opacity)
+   • Unique filenames
+   • property_id based storage folders
+
+4. Contracts Finalized
+   backend/contracts/image-upload.rules.json
+   • Authoritative rules for formats, size, compression, watermark, errors
+
+backend/contracts/property.schema.json
+• Amenities validation aligned
+• Max 10 images enforced
+
+5. Security & Abuse Prevention
+   • Client-side image count spoofing eliminated
+   • Path traversal protection added
+   • Memory upload limits enforced
+   • Controlled error exposure (no leakage)
+
+Final Outcome:
+• Backend image upload flow secure & production-ready
+• Zero-responsibility model intact
+• No impact on Listings UI, SEO, or locked content
+
 Status Workflow — STEP 1 (Logic Draft) ✅
 • Defined listing status states: Active, Rented, Expired, Paused
 • Finalized visibility rule (active + within expiry only)
@@ -213,5 +265,5 @@ Status Workflow — STEP 2 (Logic Draft) ⏸️ PARKED
 ✅ END — MASTER FILE v6.7 (UPDATED)
 
 🔒 CONFIRMED
-Listings content & owner communication are FINAL & LOCKED.
+Backend image upload module logged and locked.
 No UI, wording, or business rules altered.
