@@ -991,10 +991,11 @@ textarea.input:focus {
 }
 
 /* Dropdown options (FIX dark theme) */
-.listings-page select.input option {
-  background: #0b0f14;
-  color: #f5f7fa;
+.listings-page select.input {
+  color-scheme: dark;
+  /* Force native dark dropdown */
 }
+
 
 .listings-page .input:focus {
   border-color: rgba(29, 161, 242, .55);
