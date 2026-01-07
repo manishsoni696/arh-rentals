@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ARH Rentals Property",
+  "type": "object",
+  "required": ["category", "property_type", "area", "rent"],
+  "properties": {
+    "city": {
+      "type": "string",
+      "const": "Hisar"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["residential", "commercial"]
+    },
+    "property_type": {
+      "type": "string"
+    },
+    "area": {
+      "type": "number",
+      "minimum": 0
+    },
+    "rent": {
+      "type": "number",
+      "minimum": 0
+    },
+    "floor_on_rent": {
+      "type": "string",
+      "enum": ["Ground", "Basement", "1", "2", "3", "4", "5"]
+    },
+    "furnishing": {
+      "type": "string"
+    },
+    "property_age": {
+      "type": "string"
+    },
+    "amenities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extra_notes": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10
+    }
+  }
+}
