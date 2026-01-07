@@ -381,6 +381,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "2 BHK",
         rent: 12000,
         size: "150",
+          status: "active",
+        expiry: "2025-12-31",
         furnishing: "Semi-Furnished",
         floor: "Ground",
         age: "5-10",
@@ -395,6 +397,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "1 BHK",
         rent: 8000,
         size: "90",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Unfurnished",
         floor: "First",
         age: "1-3",
@@ -409,6 +413,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "3 BHK",
         rent: 18000,
         size: "250",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Furnished",
         floor: "Second",
         age: "3-5",
@@ -422,6 +428,8 @@ document.addEventListener("DOMContentLoaded", () => {
         category: "commercial",
         rent: 15000,
         size: "200", // sq ft for commercial
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Unfurnished",
         floor: "Ground",
         amenities: ["parking", "security"], // commercial use main amenities field structure in data, normalized in usage
@@ -435,6 +443,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "2 BHK",
         rent: 10500,
         size: "120",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Semi-Furnished",
         floor: "Third+",
         age: "1-3",
@@ -449,6 +459,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "1 RK",
         rent: 6500,
         size: "40",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Furnished",
         floor: "Ground",
         age: "10+",
@@ -462,6 +474,8 @@ document.addEventListener("DOMContentLoaded", () => {
         category: "commercial",
         rent: 22000,
         size: "800",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Furnished",
         floor: "First",
         amenities: ["powerBackup", "bg", "ac"],
@@ -475,6 +489,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "3 BHK",
         rent: 22000,
         size: "300",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Unfurnished",
         floor: "Ground",
         age: "10+",
@@ -489,6 +505,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "2 BHK",
         rent: 14000,
         size: "130",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Furnished",
         floor: "Second",
         age: "0-1",
@@ -503,6 +521,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "1 BHK",
         rent: 7000,
         size: "85",
+        status: "active",
+        expiry: "2025-12-31",
         furnishing: "Semi-Furnished",
         floor: "First",
         age: "3-5",
@@ -532,6 +552,8 @@ document.addEventListener("DOMContentLoaded", () => {
              data-area="${l.area.toLowerCase()}"
              data-size="${l.size}"
              data-rent="${l.rent}"
+             data-status="${l.status}"
+             data-expiry="${l.expiry}"
              data-bhk="${l.bhk || ''}"
              data-floor="${l.floor}"
              data-furnishing="${l.furnishing}"
@@ -600,6 +622,32 @@ document.addEventListener("DOMContentLoaded", () => {
     return size >= min && size <= max;
   }
 
+   function toDateKey(date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function getListingVisibility(card, todayKey) {
+    const expiry = (card.dataset.expiry || "").trim();
+    const statusRaw = (card.dataset.status || "").trim();
+    const status = statusRaw.toLowerCase();
+
+    if (!status || !expiry) {
+      return false;
+    }
+
+    if (expiry < todayKey) {
+      if (status !== "expired") {
+        card.dataset.status = "expired";
+      }
+      return false;
+    }
+
+    return status === "active" && todayKey <= expiry;
+  }
+
   function applyFilters() {
     const fd = new FormData(form);
     const city = (fd.get("city") || "").toString().toLowerCase();
@@ -625,8 +673,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeAmenities = category === "commercial" ? amenitiesCom : amenities;
 
     let shown = 0;
+     const todayKey = toDateKey(new Date());
 
     listings.forEach((card) => {
+       const isVisible = getListingVisibility(card, todayKey);
+      if (!isVisible) {
+        card.style.display = "none";
+        return;
+      }
       // Basic Fields
       const cCity = (card.dataset.city || "").toLowerCase();
       const cCategory = (card.dataset.category || "").toLowerCase();
