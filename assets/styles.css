@@ -1226,6 +1226,84 @@ textarea.input:focus {
   color: #fff;
 }
 
+/* ============ Dashboard (scoped by .dashboard-page) ============ */
+.dashboard-page .dashboard-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dashboard-page .dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboard-page .dashboard-list {
+  display: grid;
+  gap: 14px;
+}
+
+.dashboard-page .dashboard-card {
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: rgba(12, 18, 26, .65);
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-page .dashboard-card h4 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.dashboard-page .dashboard-card .small {
+  margin: 0;
+}
+
+.dashboard-page .dashboard-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-page .dashboard-card-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dashboard-page .status-pill {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 161, 242, .45);
+  background: rgba(29, 161, 242, .15);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.dashboard-page .dashboard-empty {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, .15);
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .dashboard-page .dashboard-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* =========================================================
    PRICING — FINAL LOCK (MUST BE VERY END OF FILE)
    ========================================================= */
