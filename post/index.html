@@ -58,11 +58,48 @@
     </div>
   </section>
 
+  <div id="draftGate" style="margin-top:16px;display:none"></div>
+  
   <div id="step2" style="display:none">
+    <section class="card" style="margin-top:16px">
+    <div class="card-body" style="display:grid;gap:14px">
+      <div>
+        <h3 style="margin:0">2) Login to Continue</h3>
+        <p class="sub" style="margin:6px 0 10px">
+          Enter your mobile number to receive a login OTP. This is for session access only.
+        </p>
+      </div>
+      <div id="otpStep" style="display:none">
+        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <label class="field">
+            <span class="small">Mobile Number</span>
+            <input class="input" id="mobileInput" inputmode="numeric" maxlength="10" placeholder="e.g., 98XXXXXX10" />
+          </label>
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <button type="button" class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
+            <span id="otpMsg" class="small" aria-live="polite"></span>
+          </div>
+        </div>
+        <div id="otpVerifyBox" style="display:none;margin-top:12px">
+          <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+            <label class="field">
+              <span class="small">OTP</span>
+              <input class="input" id="otpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP" />
+            </label>
+            <div style="display:flex;align-items:flex-end;gap:10px">
+              <button type="button" class="btn btn-primary" id="verifyOtpBtn">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="afterLoginBox" style="display:none">
   <form id="postPropertyForm" class="card" style="margin-top:16px">
     <div class="card-body" style="display:grid;gap:18px">
       <section aria-labelledby="basics-title">
-         <h3 id="basics-title" style="margin:0">2) Property Basics</h3>
+          <h3 id="basics-title" style="margin:0">3) Property Basics</h3>
         <div class="grid" style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
           <label class="field">
             <span class="small">Category</span>
@@ -163,7 +200,7 @@
          </section>
 
         <section aria-labelledby="details-title">
-         <h3 id="details-title" style="margin:0">3) Details</h3>
+          <h3 id="details-title" style="margin:0">4) Details</h3>
         <div class="grid" style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
           <label class="field">
             <span class="small">Floor on Rent</span>
@@ -207,13 +244,13 @@
            </section>
 
          <section aria-labelledby="amenities-title">
-          <h3 id="amenities-title" style="margin:0">4) Amenities</h3>
+          <h3 id="amenities-title" style="margin:0">5) Amenities</h3>
         <p class="sub" style="margin:6px 0 10px">Amenities change based on category selection.</p>
         <div id="amenitiesContainer" class="amenities" role="group" aria-live="polite"></div>
       </section>
 
           <section aria-labelledby="photos-title">
-          <h3 id="photos-title" style="margin:0">5) Photos</h3>
+          <h3 id="photos-title" style="margin:0">6) Photos</h3>
         <p class="sub" style="margin:6px 0 10px">
            Upload 1–10 photos. JPG/JPEG/PNG only.
         </p>
@@ -234,7 +271,7 @@
       </section>
 
            <section aria-labelledby="notes-title">
-            <h3 id="notes-title" style="margin:0">6) Extra Notes</h3>
+            <h3 id="notes-title" style="margin:0">7) Extra Notes</h3>
         <textarea
           class="input"
           name="extra_notes"
@@ -246,7 +283,7 @@
       </section>
       
            <section aria-labelledby="declaration-title">
-         <h3 id="declaration-title" style="margin:0">7) Owner Declaration</h3>
+         <h3 id="declaration-title" style="margin:0">8) Owner Declaration</h3>
         <label class="amenity" style="align-items:flex-start;gap:10px">
           <input type="checkbox" id="declaration" required />
           <span>
@@ -264,6 +301,7 @@
       </section>
     </div>
  </form>
+     </div>
 </div>
   <footer class="footer">
     <div class="container">
