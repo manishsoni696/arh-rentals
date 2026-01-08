@@ -45,16 +45,16 @@
           Enter your property PIN code. If it's within our allowed cities, you can continue.
         </p>
       </div>
-      <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <form id="pinCheckForm" class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
         <label class="field">
           <span class="small">Property PIN Code</span>
           <input class="input" id="postPin" inputmode="numeric" maxlength="6" placeholder="e.g., 125001" />
         </label>
         <div style="display:flex;align-items:flex-end;gap:10px">
-          <button type="button" class="btn btn-primary" id="pinCheckBtn">Check PIN</button>
+          <button type="submit" class="btn btn-primary" id="pinCheckBtn">Check PIN</button>
           <span id="postPinMsg" class="small" aria-live="polite"></span>
         </div>
-      </div>
+       </form>
     </div>
   </section>
 
@@ -224,14 +224,11 @@
   <script src="/assets/app.js"></script>
 <script src="/assets/post-property.js"></script>
   <script>
-    const pinInput = document.getElementById("postPin");
-    const pinCheckBtn = document.getElementById("pinCheckBtn");
-    if (pinInput && pinCheckBtn) {
-      pinInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          pinCheckBtn.click();
-        }
+    const pinForm = document.getElementById("pinCheckForm");
+    if (pinForm) {
+      pinForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        document.getElementById("pinCheckBtn")?.click();
       });
     }
   </script>
