@@ -189,7 +189,7 @@
           return;
         }
         if (file.size > MAX_BYTES) {
-          errors.push(`${file.name}: ${bytesToKb(file.size)}KB (max 1024KB).`);
+          errors.push(`${file.name}: ${bytesToKb(file.size)}KB (max 1 MB).`);
           return;
         }
         previews.push(file);
