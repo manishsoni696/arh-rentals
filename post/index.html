@@ -26,7 +26,7 @@
       <a href="/legal">Legal</a>
       <div class="account-menu" data-account-menu hidden>
         <button class="account-trigger" type="button" aria-expanded="false" aria-controls="account-dropdown">
-          <span class="account-trigger-text">You're logged in</span>
+          <span class="account-trigger-text" data-account-status>Logged in</span>
           <span class="account-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="account-dropdown" id="account-dropdown" role="menu" hidden>
@@ -111,8 +111,7 @@
     <div id="afterLoginBox" style="display:none">
       <div id="sessionInfo" class="card" style="margin-top:16px;display:none">
         <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span id="sessionPhone" class="small muted">Logged in</span>
-          <button type="button" class="btn" id="logoutBtn">Logout</button>
+          <span id="sessionPhone" class="small muted">You are logged in on this device.</span>
         </div>
       </div>
       <form id="postPropertyForm" class="card" style="margin-top:16px">
