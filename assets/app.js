@@ -55,19 +55,19 @@ function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText = "Send OTP") {
   tick();
 }
 
-window.resetOtpTimer = function() {
+window.resetOtpTimer = function () {
   if (globalOtpTimerId) {
     clearTimeout(globalOtpTimerId);
     globalOtpTimerId = null;
   }
   localStorage.removeItem("arh_otp_cooldown_until");
-  
+
   const sendOtpBtn = document.getElementById("sendOtpBtn");
   if (sendOtpBtn) {
     sendOtpBtn.disabled = false;
-    sendOtpBtn.textContent = "Send OTP"; 
+    sendOtpBtn.textContent = "Send OTP";
   }
-  
+
   const msgEl = document.getElementById("otpMsg");
   if (msgEl) msgEl.textContent = "";
 };
@@ -207,10 +207,10 @@ window.initHeaderAuthUI = async function () {
   if (mobile) {
     localStorage.setItem(SESSION_MOBILE_KEY, mobile);
   }
-  
+
   // 3. Update UI Text
   updateHeaderAccountStatus();
-  
+
   // 4. Bind Events (only once)
   if (trigger && dropdown) {
     // Reset state initially
@@ -221,57 +221,57 @@ window.initHeaderAuthUI = async function () {
     // Simplified: we'll just overwrite onclick to be safe and simple for this context, 
     // or use a custom property to check if bound.
     if (!trigger.dataset.bound) {
-        trigger.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const isOpen = dropdown.hidden;
-            dropdown.hidden = !isOpen; // toggle
-            trigger.setAttribute("aria-expanded", String(isOpen));
-        });
-        trigger.dataset.bound = "true";
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const isOpen = dropdown.hidden;
+        dropdown.hidden = !isOpen; // toggle
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
+      trigger.dataset.bound = "true";
     }
   }
 
   if (!document.body.dataset.headerBound) {
-      document.addEventListener("click", (event) => {
-        if (!menu.contains(event.target) && dropdown) {
-            dropdown.hidden = true;
-            if (trigger) trigger.setAttribute("aria-expanded", "false");
-        }
-      });
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && dropdown) {
-            dropdown.hidden = true;
-            if (trigger) trigger.setAttribute("aria-expanded", "false");
-        }
-      });
-      document.body.dataset.headerBound = "true";
+    document.addEventListener("click", (event) => {
+      if (!menu.contains(event.target) && dropdown) {
+        dropdown.hidden = true;
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && dropdown) {
+        dropdown.hidden = true;
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.body.dataset.headerBound = "true";
   }
 
   if (logoutBtn && !logoutBtn.dataset.bound) {
     logoutBtn.addEventListener("click", () => {
-       const onDashboard = window.location.pathname.includes("/dashboard");
-       clearSession();
-       window.dispatchEvent(new Event("arh:logout"));
-       
-       // RESET OTP TIMER ON LOGOUT
-       if (window.resetOtpTimer) window.resetOtpTimer();
+      const onDashboard = window.location.pathname.includes("/dashboard");
+      clearSession();
+      window.dispatchEvent(new Event("arh:logout"));
 
-       menu.hidden = true;
-       if (dropdown) dropdown.hidden = true;
-       if (trigger) trigger.setAttribute("aria-expanded", "false");
+      // RESET OTP TIMER ON LOGOUT
+      if (window.resetOtpTimer) window.resetOtpTimer();
 
-       // Re-run init to ensure UI state is consistent (hidden)
-       window.initHeaderAuthUI().catch(() => {});
+      menu.hidden = true;
+      if (dropdown) dropdown.hidden = true;
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
 
-       if (onDashboard) {
+      // Re-run init to ensure UI state is consistent (hidden)
+      window.initHeaderAuthUI().catch(() => { });
+
+      if (onDashboard) {
         window.location.href = "/post/";
         return;
-       }
-       
-       if (typeof handlePostLogoutUI === "function") {
-         handlePostLogoutUI();
-       }
+      }
+
+      if (typeof handlePostLogoutUI === "function") {
+        handlePostLogoutUI();
+      }
     });
     logoutBtn.dataset.bound = "true";
   }
@@ -279,9 +279,9 @@ window.initHeaderAuthUI = async function () {
 
 // Initialize on load
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => window.initHeaderAuthUI());
+  document.addEventListener("DOMContentLoaded", () => window.initHeaderAuthUI());
 } else {
-    window.initHeaderAuthUI();
+  window.initHeaderAuthUI();
 }
 
 /* =========================================================
@@ -329,30 +329,30 @@ function hideSessionInfo() {
 }
 
 function showOtpStep() {
-   if (!otpGateEnabled) {
+  if (!otpGateEnabled) {
     showPostForm();
     return;
   }
   if (otpStepEl) otpStepEl.style.display = "block";
   if (afterLoginBox) afterLoginBox.style.display = "none";
-    hideSessionInfo();
+  hideSessionInfo();
 }
 
 function showPostForm() {
   if (afterLoginBox) afterLoginBox.style.display = "block";
   if (otpStepEl) otpStepEl.style.display = "none";
-   if (hasActiveSession()) showSessionInfo();
+  if (hasActiveSession()) showSessionInfo();
 }
 
 function resetPostGate() {
   if (otpStepEl) otpStepEl.style.display = "none";
   if (afterLoginBox) afterLoginBox.style.display = "none";
-   hideSessionInfo();
+  hideSessionInfo();
 }
 
 function handlePostLogoutUI() {
   if (!step2El) return;
-  setText(document.getElementById("otpMsg"), "Logged out");
+  // Don't show "Logged out" message - just reset UI silently
   if (sessionStorage.getItem("arh_pincode")) {
     showOtpStep();
   } else {
@@ -364,13 +364,13 @@ if (step2El) {
   // Clear PIN and mobile session data on page load/refresh
   sessionStorage.removeItem("arh_pincode");
   sessionStorage.removeItem("arh_mobile");
-  
+
   // Clear PIN input field
   if (pinEl) pinEl.value = "";
-  
+
   // Clear message fields
   if (pinMsgEl) pinMsgEl.textContent = "";
-  
+
   // Reset UI to initial state
   step2El.style.display = "none";
   resetPostGate();
@@ -380,20 +380,20 @@ async function handlePinCheck(event) {
   if (event) event.preventDefault();
   const msgEl = pinMsgEl;
 
-    const pincode = normalizePincode(pinEl?.value);
-      
-    if (pincode.length !== 6) {
+  const pincode = normalizePincode(pinEl?.value);
+
+  if (pincode.length !== 6) {
     setText(msgEl, "❌ Enter valid 6-digit PIN");
     if (step2El) step2El.style.display = "none";
-         resetPostGate();
-  return;
+    resetPostGate();
+    return;
   }
-   
-    setText(msgEl, "⏳ Checking...");
+
+  setText(msgEl, "⏳ Checking...");
   if (step2El) step2El.style.display = "none";
-resetPostGate();
-   
-      try {
+  resetPostGate();
+
+  try {
     const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
     const data = await res.json().catch(() => ({}));
 
@@ -401,7 +401,7 @@ resetPostGate();
       setText(msgEl, `✅ Service available for ${pincode}`);
       if (step2El) step2El.style.display = "block";
       sessionStorage.setItem("arh_pincode", pincode);
-       if (!otpGateEnabled || hasActiveSession()) {
+      if (!otpGateEnabled || hasActiveSession()) {
         showPostForm();
       } else {
         showOtpStep();
@@ -455,7 +455,7 @@ if (sendOtpBtn) {
       return;
     }
     if (!pincode) {
-       setText(msgEl, "❌ Please check PIN first");
+      setText(msgEl, "❌ Please check PIN first");
       return;
     }
 
@@ -510,6 +510,19 @@ if (sendOtpBtn) {
   });
 }
 
+// [NEW] Mobile Input: Send OTP on Enter key
+const mobileInput = document.getElementById("mobileInput");
+if (mobileInput && sendOtpBtn) {
+  mobileInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!sendOtpBtn.disabled) {
+        sendOtpBtn.click();
+      }
+    }
+  });
+}
+
 /* =========================================================
    VERIFY OTP (BACKEND)
 ========================================================= */
@@ -543,27 +556,40 @@ if (verifyOtpBtn) {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data.success || !data.token) {
-         setText(msgEl, `❌ ${data.message || "Invalid/Expired OTP"}`);
-      return;
-    }
+        setText(msgEl, `❌ ${data.message || "Invalid/Expired OTP"}`);
+        return;
+      }
 
       // ✅ store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
-       if (mobile) localStorage.setItem(SESSION_MOBILE_KEY, mobile);
+      if (mobile) localStorage.setItem(SESSION_MOBILE_KEY, mobile);
 
       // ✅ optional: successful login पर OTP lock clear कर दो
       clearLock(mobile);
       if (window.resetOtpTimer) window.resetOtpTimer();
 
-       setText(msgEl, "✅ Logged in");
-       // IMMEDIATELY UPDATE HEADER
-       if (window.initHeaderAuthUI) window.initHeaderAuthUI();
-       else updateHeaderAccountStatus();    
-       
+      setText(msgEl, "✅ Logged in");
+      // IMMEDIATELY UPDATE HEADER
+      if (window.initHeaderAuthUI) window.initHeaderAuthUI();
+      else updateHeaderAccountStatus();
+
       showPostForm();
     } catch (e) {
       console.error(e);
       setText(msgEl, "❌ Network error");
+    }
+  });
+}
+
+// [NEW] OTP Input: Verify OTP on Enter key
+const otpInput = document.getElementById("otpInput");
+if (otpInput && verifyOtpBtn) {
+  otpInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!verifyOtpBtn.disabled) {
+        verifyOtpBtn.click();
+      }
     }
   });
 }
@@ -662,7 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10 Dummy Listings
     const demoListings = [
       {
-          id: "demo-1",
+        id: "demo-1",
         title: "2 BHK Independent House",
         area: "Sector 14",
         type: "House",
@@ -670,7 +696,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bhk: "2 BHK",
         rent: 12000,
         size: "150",
-          status: "active",
+        status: "active",
         expiry: "2025-12-31",
         furnishing: "Semi-Furnished",
         floor: "Ground",
@@ -679,7 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=1", "https://picsum.photos/400/300?random=2", "https://picsum.photos/400/300?random=3"]
       },
       {
-         id: "demo-2",
+        id: "demo-2",
         title: "1 BHK Flat",
         area: "Sector 15",
         type: "Flat",
@@ -696,7 +722,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=4", "https://picsum.photos/400/300?random=5", "https://picsum.photos/400/300?random=6"]
       },
       {
-           id: "demo-3",
+        id: "demo-3",
         title: "3 BHK Builder Floor",
         area: "Sector 9–11",
         type: "House",
@@ -713,7 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=7", "https://picsum.photos/400/300?random=8", "https://picsum.photos/400/300?random=9"]
       },
       {
-           id: "demo-3",
+        id: "demo-3",
         title: "Shop in Market",
         area: "Main Market",
         type: "Shop",
@@ -728,7 +754,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=10", "https://picsum.photos/400/300?random=11", "https://picsum.photos/400/300?random=12"]
       },
       {
-          id: "demo-5",
+        id: "demo-5",
         title: "2 BHK Flat with Parking",
         area: "Sector 33",
         type: "Flat",
@@ -745,7 +771,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=13", "https://picsum.photos/400/300?random=14", "https://picsum.photos/400/300?random=15"]
       },
       {
-          id: "demo-6",
+        id: "demo-6",
         title: "1 RK Budget Room",
         area: "Sector-PLA",
         type: "PG",
@@ -762,7 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=16", "https://picsum.photos/400/300?random=17", "https://picsum.photos/400/300?random=18"]
       },
       {
-          id: "demo-7",
+        id: "demo-7",
         title: "Office Space",
         area: "Red Square Market",
         type: "Office",
@@ -777,7 +803,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=19", "https://picsum.photos/400/300?random=20"]
       },
       {
-          id: "demo-8",
+        id: "demo-8",
         title: "3 BHK Independent House",
         area: "Sector 14",
         type: "House",
@@ -794,7 +820,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=21", "https://picsum.photos/400/300?random=22", "https://picsum.photos/400/300?random=23"]
       },
       {
-           id: "demo-9",
+        id: "demo-9",
         title: "2 BHK Modern Apartment",
         area: "Sector 15",
         type: "Flat",
@@ -811,7 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
         images: ["https://picsum.photos/400/300?random=24", "https://picsum.photos/400/300?random=25"]
       },
       {
-           id: "demo-10",
+        id: "demo-10",
         title: "1 BHK Affordable Flat",
         area: "Sector 33",
         type: "Flat",
@@ -882,7 +908,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Re-select listings to ensure we get the CURRENT DOM elements (whether static or newly injected)
   const listings = Array.from(document.querySelectorAll(".listing"));
 
-   const LISTING_STATE_KEY = "arh_listing_state_v1";
+  const LISTING_STATE_KEY = "arh_listing_state_v1";
   const REPORTER_LOG_KEY = "arh_listing_reporter_log_v1";
   const REPORT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
   const REPORT_COOLDOWN_MS = 24 * 60 * 60 * 1000;
@@ -1066,7 +1092,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form || !listings.length) return;
 
-   const initStateMap = loadStateMap();
+  const initStateMap = loadStateMap();
   listings.forEach((card, index) => {
     if (!card.dataset.listingId) {
       card.dataset.listingId = `listing-${index + 1}`;
@@ -1089,7 +1115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     applyListingStateToCard(card, refreshedState);
   });
   saveStateMap(initStateMap);
-   
+
   function inRentRange(rent, range) {
     if (!range) return true;
     if (range.endsWith("+")) return rent >= Number(range.replace("+", ""));
@@ -1104,7 +1130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return size >= min && size <= max;
   }
 
-   function toDateKey(date) {
+  function toDateKey(date) {
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
@@ -1155,10 +1181,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeAmenities = category === "commercial" ? amenitiesCom : amenities;
 
     let shown = 0;
-     const todayKey = toDateKey(new Date());
+    const todayKey = toDateKey(new Date());
 
     listings.forEach((card) => {
-       const isVisible = getListingVisibility(card, todayKey);
+      const isVisible = getListingVisibility(card, todayKey);
       if (!isVisible) {
         card.style.display = "none";
         return;
