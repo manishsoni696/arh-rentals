@@ -83,6 +83,105 @@ function markOtpSentOnce(mobile) {
   localStorage.setItem(`arh_otp_sent_once_${mobile}`, "1");
 }
 
+/* ===============================
+   HEADER ACCOUNT DROPDOWN
+=============================== */
+(function () {
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+
+  const TOKEN_KEY = "arh_token";
+  const SESSION_MOBILE_KEY = "arh_mobile";
+  const SESSION_PIN_KEY = "arh_pincode";
+
+  function clearSession() {
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(SESSION_MOBILE_KEY);
+    sessionStorage.removeItem(SESSION_PIN_KEY);
+  }
+
+  function extractMobile(data) {
+    const raw =
+      data?.mobile ||
+      data?.phone ||
+      data?.phone_number ||
+      data?.mobile_number ||
+      sessionStorage.getItem(SESSION_MOBILE_KEY) ||
+      "";
+    return normalizeMobile(raw);
+  }
+
+  function setDropdownState(trigger, dropdown, isOpen) {
+    if (dropdown) dropdown.hidden = !isOpen;
+    if (trigger) trigger.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  async function fetchAccount(token) {
+    const res = await fetch(`${BACKEND}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Account fetch failed");
+    return res.json().catch(() => ({}));
+  }
+
+  ready(async function () {
+    const menu = document.querySelector("[data-account-menu]");
+    if (!menu) return;
+
+    const trigger = menu.querySelector(".account-trigger");
+    const dropdown = menu.querySelector(".account-dropdown");
+    const phoneEl = menu.querySelector("[data-account-phone]");
+    const logoutBtn = menu.querySelector("[data-account-logout]");
+
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      menu.hidden = true;
+      return;
+    }
+
+    try {
+      const data = await fetchAccount(token);
+      const mobile = extractMobile(data);
+      if (phoneEl) {
+        phoneEl.textContent = mobile ? `+91 ${mobile}` : "—";
+      }
+      menu.hidden = false;
+    } catch (error) {
+      console.error(error);
+      clearSession();
+      menu.hidden = true;
+      return;
+    }
+
+    setDropdownState(trigger, dropdown, false);
+
+    if (trigger && dropdown) {
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setDropdownState(trigger, dropdown, dropdown.hidden);
+      });
+    }
+
+    document.addEventListener("click", (event) => {
+      if (!menu.contains(event.target)) setDropdownState(trigger, dropdown, false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setDropdownState(trigger, dropdown, false);
+    });
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        clearSession();
+        window.location.href = "/";
+      });
+    }
+  });
+})();
+
 /* =========================================================
    POST PAGE : PIN CHECK (backend)
 ========================================================= */
