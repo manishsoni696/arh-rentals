@@ -1,124 +1,210 @@
 🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.8)
 
 Last Updated: Jan 2026 (Jan 8, 2026)
-(v6.7 content retained; only Post Property module updates added. No locked sections changed.)
+Note: v6.7 ka content fully retained.
+Sirf Post Property (Owner) module ke verified updates & pending items add kiye gaye hain.
+❌ Koi locked section change nahi hua.
 
-🟡 Post Property (Owner) Page — Frontend: IN PROGRESS (ACTIVE)
-✅ NEW CONFIRMED WORKING (Status Update)
+🟡 Post Property (Owner) Page — Frontend
 
-Post Property page flow is verified working:
+Status: IN PROGRESS (ACTIVE)
 
-PIN Check works correctly
+✅ CONFIRMED WORKING — STATUS UPDATE
 
-PIN check ke baad hi Property Details form unlock hota hai
+Post Property page ka access flow verified working hai:
 
-PIN backend check triggers:
+✅ PIN Code check correctly work kar raha hai
 
-Enter press on PIN input ✅
+✅ PIN verify ke baad hi Property Details form unlock hota hai
 
-Button click ✅
-(Both methods working fine and consistent.)
+PIN backend trigger methods (both working):
 
-Note: This is verified behavior; no auth/core changes required.
+Enter key press on PIN input ✅
 
-📁 NEW FILE STRUCTURE (Post Property Module) — ADDED & ACTIVE
-Module Files (Frontend only)
+“Check PIN” button click ✅
 
+📌 Note:
+Ye behavior fully verified hai.
+👉 Koi auth / core flow change required nahi hai.
+
+📁 NEW FILE STRUCTURE — Post Property Module
+
+Status: ADDED & ACTIVE
+(Frontend-only modularization)
+
+Module Files
 post/index.html
 
-Purpose: Post Property page ka HTML skeleton + form markup
+Purpose:
 
-Rule: No big inline JS (to avoid duplicate logic + conflicts)
+Post Property page ka HTML skeleton
+
+Complete form markup
+
+Rule (LOCKED):
+
+❌ No big inline JS
+
+Reason: duplicate logic + future conflicts avoid karna
 
 assets/post-property.js
 
-Purpose: Post Property page ka single source JS for:
+Purpose:
+Single-source JS for Post Property module:
 
-form logic
+Form logic
 
-draft save/restore
+Draft save / restore
 
-amenities rendering
+Amenities rendering
 
-photo validation
+Photo validation
 
-submit handling (frontend)
+Frontend submit handling
 
-Rule: Must not touch core auth; relies on existing flow via assets/app.js
+Rule (LOCKED):
 
-assets/styles.css (scoped)
+❌ Core auth logic ko touch nahi karega
 
-Purpose: UI styling only for Post Property page under:
+✅ Existing auth/session flow rely karega via assets/app.js
 
-.post-page ...
+assets/styles.css (Scoped)
 
-Rule: Pricing FINAL LOCK block untouched and remains last
+Purpose:
 
-✅ Why this new structure was created (Function/Reason)
+Sirf Post Property page ke UI styles
 
-Inline JS removal + long scripts in HTML avoid karne ke liye (Issue A fix discipline)
+Scope rule (LOCKED):
 
-Core file isolation:
+.post-page { ... }
 
-assets/app.js = global core auth/nav/session (LOCKED)
 
-assets/post-property.js = only Post Property module behavior (SAFE)
+❌ Listings / Pricing / other pages unaffected
 
-No cross-page CSS risk:
+🔒 Pricing FINAL LOCK block untouched and file ke end me hi rahega
 
-.post-page scoped CSS ensures Listings/Pricing unaffected
+✅ WHY THIS STRUCTURE WAS CREATED (RATIONALE)
+
+Inline JS removal discipline
+→ Issue A fix (duplicate & unsafe logic avoid)
+
+Clear separation of concerns:
+
+🔒 assets/app.js → Global auth / session / nav (LOCKED)
+
+🟡 assets/post-property.js → Post Property module only (SAFE)
+
+CSS isolation:
+
+.post-page scoped styles
+
+Zero cross-page CSS risk
 
 Future-ready:
 
-Later backend upload wiring / preview / plan selection integration will plug into module without touching locked core.
+Backend upload wiring
 
-🧾 CHANGE LOG (Add this under MASTER “Change Log / Status Updates” section)
-Change Log — Post Property (Owner) Frontend (Jan 8, 2026)
+Preview / plan integration
 
-Status: Active (Frontend finalize pending)
-Scope files: post/index.html, assets/post-property.js, assets/styles.css (scoped only)
+All can plug in without touching locked core
 
-✅ Confirmed Stable
+🧾 CHANGE LOG
 
-PIN check step unlock works.
+(Add under MASTER → “Change Log / Status Updates”)
 
-Backend PIN search triggers via Enter and Button click both working.
+Change Log — Post Property (Owner) Frontend
 
-🟡 Pending Changes (Must-fix before merge) — LOCKED DISCIPLINE
+Date: Jan 8, 2026
+Status: 🟡 Active (Frontend finalize pending)
 
-Remove inline JS from post/index.html (avoid duplicate logic)
+Scope Files:
 
-Amenities list must reuse FINAL amenities from Listings Filters (no invented keys/labels)
+post/index.html
 
-Add <body class="post-page"> so scoped CSS applies
+assets/post-property.js
 
-City value must be "Hisar" (Phase-1 only helper text)
+assets/styles.css (scoped only)
 
-Property Type option values must be contract-stable enums (display labels user-friendly)
+✅ CONFIRMED STABLE
 
-🟡 Newly Logged (Next after above) — Form Fields Changes
+PIN check step unlock works as expected
 
-Property Details form fields me customer/owner input details ke changes planned.
+Backend PIN validation triggers via:
 
-Scope: frontend fields/labels/options/validations only
+Enter key
 
-Core auth, listings, demo, pricing locked remain untouched.
+Button click
 
-Pending input needed to finalize field-changes changelog: exact list of field add/remove/rename/options/validations.
+🟡 PENDING CHANGES — MUST FIX BEFORE MERGE (🔒 DISCIPLINE)
 
-🔢 NEXT STEPS (ACTIVE) — Updated Notes
+❌ Remove inline JS from post/index.html
+(avoid duplicate logic)
 
-Priority remains same: Post Property (Owner) page frontend finalize (NO auth changes)
-Additional note added: PIN step behavior already verified working; changes only apply to the form layer.
+❌ Amenities list must reuse FINAL amenities from Listings Filters
+(no invented keys / labels)
 
-✅ END — v6.8 MASTER Update
+❌ Add <body class="post-page">
+(required for scoped CSS to apply)
 
-Confirmed:
+❌ City value must be “Hisar”
+(Phase-1 only; helper text allowed)
 
-No UI wording/business rules altered
+❌ Property Type option values must be:
 
-No core auth touched
+Contract-stable enums (backend safe)
 
-Listings/Filters/Demo untouched
+User-friendly display labels
 
-Scoped CSS safe
+🟡 NEWLY LOGGED — NEXT AFTER ABOVE
+Post Property Form Fields Changes (PLANNED)
+
+Scope: Frontend only
+
+Fields
+
+Labels
+
+Options
+
+Validations
+
+❌ Core auth / listings / demo / pricing remain LOCKED
+
+📌 Pending input required:
+Exact list of:
+
+Field add
+
+Field remove
+
+Rename
+
+Option changes
+
+Validation rules
+
+(Changelog will be finalized after this input.)
+
+🔢 NEXT STEPS — ACTIVE NOTES (UPDATED)
+
+🔥 Priority unchanged:
+Post Property (Owner) page frontend finalize
+
+🔒 Auth untouched
+
+🔒 PIN behavior already verified working
+
+Changes apply only to form layer
+
+✅ END — v6.8 MASTER UPDATE CONFIRMED
+🔐 CONFIRMATIONS
+
+❌ No UI wording / business rule changes
+
+❌ No core auth changes
+
+❌ Listings / Filters / Demo untouched
+
+✅ Scoped CSS safe
+
+✅ Modular structure active
