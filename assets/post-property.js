@@ -86,7 +86,7 @@
       <button type="button" class="btn" id="restoreDraftBtn">Restore Draft</button>
       <button type="button" class="btn" id="clearDraftBtn">Clear Draft</button>
     `;
-     if (draftGate) {
+    if (draftGate) {
       draftGate.appendChild(draftNotice);
     } else {
       form.querySelector(".card-body")?.prepend(draftNotice);
@@ -301,13 +301,13 @@
       updateNotesCount();
     };
 
-     const toggleDraftNotice = (show) => {
+    const toggleDraftNotice = (show) => {
       draftNotice.style.display = show ? "flex" : "none";
       if (draftGate) {
         draftGate.style.display = show ? "block" : "none";
       }
     };
-    
+
     const saveDraft = () => {
       const payload = getFormData();
       localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
@@ -315,7 +315,7 @@
       setTimeout(() => {
         formMsg.textContent = "";
       }, 3000);
-       toggleDraftNotice(true);
+      toggleDraftNotice(true);
     };
 
     const clearDraft = () => {
@@ -442,7 +442,7 @@
 
     const existingDraft = localStorage.getItem(DRAFT_KEY);
     if (existingDraft) {
-       toggleDraftNotice(true);
+      toggleDraftNotice(true);
     }
 
     renderPropertyTypes();
@@ -450,6 +450,50 @@
     renderAmenities();
     updateNotesCount();
     renderPhotoErrors([]);
+
+    // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
+    window.addEventListener("arh:logout", () => {
+      const pinIn = document.getElementById("postPin");
+      const mobIn = document.getElementById("mobileInput");
+      const otpIn = document.getElementById("otpInput");
+      const step2 = document.getElementById("step2"); // "Service available" msg wrapper
+      const afterLogin = document.getElementById("afterLoginBox");
+      const otpStep = document.getElementById("otpStep"); // Mobile/OTP container
+      const pinMsg = document.getElementById("postPinMsg");
+      const otpMsg = document.getElementById("otpMsg");
+
+      // 1. Clear field values
+      if (pinIn) pinIn.value = "";
+      if (mobIn) mobIn.value = "";
+      if (otpIn) otpIn.value = "";
+
+      // 2. Clear auth-gate session data
+      sessionStorage.removeItem("arh_pincode");
+      sessionStorage.removeItem("arh_mobile");
+
+      // 3. Reset UI visibility (redundant safety for app.js resetPostGate)
+      if (step2) step2.style.display = "none";
+      if (afterLogin) afterLogin.style.display = "none";
+      if (otpStep) otpStep.style.display = "none";
+
+      // 4. Clear status messages
+      if (pinMsg) pinMsg.textContent = "";
+      if (otpMsg) otpMsg.textContent = "";
+    });
+
+    // [New] ISSUE 2: OTP Submit on Enter
+    const otpInputEl = document.getElementById("otpInput");
+    if (otpInputEl) {
+      otpInputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const vBtn = document.getElementById("verifyOtpBtn");
+          if (vBtn && !vBtn.disabled) {
+            vBtn.click();
+          }
+        }
+      });
+    }
   };
 
   if (document.readyState === "loading") {

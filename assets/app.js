@@ -252,6 +252,7 @@ window.initHeaderAuthUI = async function () {
     logoutBtn.addEventListener("click", () => {
        const onDashboard = window.location.pathname.includes("/dashboard");
        clearSession();
+       window.dispatchEvent(new Event("arh:logout"));
        
        // RESET OTP TIMER ON LOGOUT
        if (window.resetOtpTimer) window.resetOtpTimer();
