@@ -1361,6 +1361,20 @@ textarea.input:focus {
   transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
+.post-page input[type="number"]::-webkit-outer-spin-button,
+.post-page input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.post-page input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.post-page textarea.input {
+  resize: none;
+}
+
 .post-page .input::placeholder,
 .post-page textarea.input::placeholder {
   color: rgba(255, 255, 255, .45);
@@ -1405,6 +1419,7 @@ textarea.input:focus {
 
 .post-page #photoErrors,
 .post-page #formErrorSummary {
+   display: none;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid rgba(255, 99, 99, .35);
