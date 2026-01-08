@@ -1,144 +1,146 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard • ARH Rentals</title>
-  <link rel="stylesheet" href="/assets/styles.css"/>
+  <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 
 <body class="dashboard-page">
-<header class="site-header">
-  <div class="container navbar">
-    <a class="brand" href="/">
-      <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
-      <div class="brand-title">
-        <strong>ARH Rentals</strong>
-        <span>by Anjani Real Heights</span>
-      </div>
-    </a>
-
-    <nav class="menu" id="primary-navigation" aria-label="Primary">
-      <a href="/">Home</a>
-      <a href="/listings">Listings</a>
-      <a href="/pricing">Plans</a>
-      <a href="/legal">Legal</a>
-      <div class="account-menu" data-account-menu hidden>
-        <button class="account-trigger" type="button" aria-expanded="false" aria-controls="account-dropdown">
-          <span class="account-trigger-text" data-account-status>Logged in</span>
-          <span class="account-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="account-dropdown" id="account-dropdown" role="menu" hidden>
-          <div class="account-meta">
-            <span class="small muted">You're logged in using</span>
-            <span class="account-phone" data-account-phone>—</span>
-          </div>
-          <div class="account-links">
-            <a href="/dashboard/" class="account-link" role="menuitem">My Listings</a>
-            <button type="button" class="account-link" data-account-logout>Logout</button>
-          </div>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/">
+        <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
+        <div class="brand-title">
+          <strong>ARH Rentals</strong>
+          <span>by Anjani Real Heights</span>
         </div>
-      </div>
-      <a class="btn btn-primary" href="/post">Post Property</a>
-    </nav>
-  </div>
-</header>
+      </a>
 
-<main class="container">
-  <section class="hero">
-    <h2 style="margin:0">Dashboard</h2>
-    <p class="sub" style="margin-top:8px">
-      Access and manage rental listings linked to this mobile number.
-    </p>
-  </section>
-
-  <!-- Quick Actions Section -->
-  <section class="dashboard-quick-actions" style="margin-top:24px">
-    <div class="quick-action-card">
-      <div class="quick-action-content">
-        <h3>My Listings</h3>
-        <p class="small">View properties posted using this number</p>
-      </div>
-    </div>
-    <div class="quick-action-card">
-      <div class="quick-action-content">
-        <h3>Listing Status</h3>
-        <p class="small">Active and expired listings are shown separately</p>
-      </div>
-    </div>
-    <div class="quick-action-card">
-      <div class="quick-action-content">
-        <h3>Post New Property</h3>
-        <p class="small">Add your rental listing to reach tenants</p>
-      </div>
-      <a class="btn btn-primary" href="/post/" style="margin-top:10px">Post Property</a>
-    </div>
-  </section>
-
-  <section class="card" id="dashboardLogin" style="margin-top:16px;display:none">
-    <div class="card-body" style="display:grid;gap:14px">
-      <div>
-        <h3 style="margin:0">Login to Continue</h3>
-        <p class="sub" style="margin:6px 0 10px">
-          Enter your mobile number to receive a login OTP. This is for session access only.
-        </p>
-      </div>
-      <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-        <label class="field">
-          <span class="small">Mobile Number</span>
-          <input class="input" id="dashMobileInput" inputmode="numeric" maxlength="10" placeholder="e.g., 98XXXXXX10"/>
-        </label>
-        <div style="display:flex;align-items:flex-end;gap:10px">
-          <button type="button" class="btn btn-primary" id="dashSendOtpBtn">Send OTP</button>
-          <span id="dashOtpMsg" class="small" aria-live="polite"></span>
-        </div>
-      </div>
-      <div id="dashOtpVerifyBox" style="display:none;margin-top:12px">
-        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-          <label class="field">
-            <span class="small">OTP</span>
-            <input class="input" id="dashOtpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP"/>
-          </label>
-          <div style="display:flex;align-items:flex-end;gap:10px">
-            <button type="button" class="btn btn-primary" id="dashVerifyOtpBtn">Login</button>
+      <nav class="menu" id="primary-navigation" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/listings">Listings</a>
+        <a href="/pricing">Plans</a>
+        <a href="/legal">Legal</a>
+        <div class="account-menu" data-account-menu hidden>
+          <button class="account-trigger" type="button" aria-expanded="false" aria-controls="account-dropdown">
+            <span class="account-trigger-text" data-account-status>Logged in</span>
+            <span class="account-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="account-dropdown" id="account-dropdown" role="menu" hidden>
+            <div class="account-meta">
+              <span class="small muted">You're logged in using</span>
+              <span class="account-phone" data-account-phone>—</span>
+            </div>
+            <div class="account-links">
+              <a href="/dashboard/" class="account-link" role="menuitem">My Listings</a>
+              <button type="button" class="account-link" data-account-logout>Logout</button>
+            </div>
           </div>
         </div>
-      </div>
+        <a class="btn btn-primary" href="/post">Post Property</a>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <section class="card" id="dashboardListings" style="margin-top:16px;display:none">
-    <div class="card-body" style="display:grid;gap:14px">
-      <div class="dashboard-head">
-        <div>
-          <h3 style="margin:0">Your Posted Properties</h3>
-          <p class="sub" style="margin:6px 0 0">
-            Properties listed using this mobile number.
-          </p>
-        </div>
-        <div class="dashboard-actions">
-          <a class="btn btn-primary" href="/post/">Post New Property</a>
-          <button type="button" class="btn" id="dashboardLogout">Logout</button>
+  <main class="container">
+    <section class="hero">
+      <h2 style="margin:0">Dashboard</h2>
+      <p class="sub" style="margin-top:8px">
+        Access and manage rental listings linked to this mobile number.
+      </p>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="dashboard-quick-actions" style="margin-top:24px">
+      <div class="quick-action-card">
+        <div class="quick-action-content">
+          <h3>My Listings</h3>
+          <p class="small">View properties posted using this number</p>
         </div>
       </div>
-      <div id="dashboardStatus" class="small" aria-live="polite"></div>
-      <div id="dashboardList" class="dashboard-list"></div>
-      <div id="dashboardEmpty" class="dashboard-empty-enhanced" style="display:none">
-        <div class="empty-state-icon">📦</div>
-        <h4>You have not posted any properties yet.</h4>
-        <p class="sub">Start by adding your first rental listing.</p>
+      <div class="quick-action-card">
+        <div class="quick-action-content">
+          <h3>Listing Status</h3>
+          <p class="small">Active and expired listings are shown separately</p>
+        </div>
+      </div>
+      <div class="quick-action-card">
+        <div class="quick-action-content">
+          <h3>Post New Property</h3>
+          <p class="small">Add your rental listing to reach tenants</p>
+        </div>
         <a class="btn btn-primary" href="/post/" style="margin-top:10px">Post Property</a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer Info -->
-  <section class="dashboard-footer-info" style="margin-top:32px">
-    <p class="small" style="margin:0;text-align:center">ARH Rentals provides access to property information only.</p>
-  </section>
-</main>
+    <section class="card" id="dashboardLogin" style="margin-top:16px;display:none">
+      <div class="card-body" style="display:grid;gap:14px">
+        <div>
+          <h3 style="margin:0">Login to Continue</h3>
+          <p class="sub" style="margin:6px 0 10px">
+            Enter your mobile number to receive a login OTP. This is for session access only.
+          </p>
+        </div>
+        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <label class="field">
+            <span class="small">Mobile Number</span>
+            <input class="input" id="dashMobileInput" inputmode="numeric" maxlength="10"
+              placeholder="e.g., 98XXXXXX10" />
+          </label>
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <button type="button" class="btn btn-primary" id="dashSendOtpBtn">Send OTP</button>
+            <span id="dashOtpMsg" class="small" aria-live="polite"></span>
+          </div>
+        </div>
+        <div id="dashOtpVerifyBox" style="display:none;margin-top:12px">
+          <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+            <label class="field">
+              <span class="small">OTP</span>
+              <input class="input" id="dashOtpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP" />
+            </label>
+            <div style="display:flex;align-items:flex-end;gap:10px">
+              <button type="button" class="btn btn-primary" id="dashVerifyOtpBtn">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<script src="/assets/app.js"></script>
-<script src="/assets/dashboard.js"></script>
+    <section class="card" id="dashboardListings" style="margin-top:16px;display:block">
+      <div class="card-body" style="display:grid;gap:14px">
+        <div class="dashboard-head">
+          <div>
+            <h3 style="margin:0">Your Posted Properties</h3>
+            <p class="sub" style="margin:6px 0 0">
+              Properties listed using this mobile number.
+            </p>
+          </div>
+          <div class="dashboard-actions">
+            <a class="btn btn-primary" href="/post/">Post New Property</a>
+          </div>
+        </div>
+        <div id="dashboardStatus" class="small" aria-live="polite"></div>
+        <div id="dashboardList" class="dashboard-list"></div>
+        <div id="dashboardEmpty" class="dashboard-empty-enhanced" style="display:block">
+          <div class="empty-state-icon">📦</div>
+          <h4>You have not posted any properties yet.</h4>
+          <p class="sub">Start by adding your first rental listing.</p>
+          <a class="btn btn-primary" href="/post/" style="margin-top:10px">Post Property</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Info -->
+    <section class="dashboard-footer-info" style="margin-top:32px">
+      <p class="small" style="margin:0;text-align:center">ARH Rentals provides access to property information only.</p>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+  <script src="/assets/dashboard.js"></script>
 </body>
+
 </html>
