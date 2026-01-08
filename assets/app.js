@@ -405,6 +405,11 @@ async function handlePinCheck(event) {
         showPostForm();
       } else {
         showOtpStep();
+        // Auto-focus mobile input after PIN verification
+        setTimeout(() => {
+          const mobileInput = document.getElementById("mobileInput");
+          if (mobileInput) mobileInput.focus();
+        }, 100);
       }
     } else {
       setText(msgEl, `❌ Service not available for ${pincode}`);
@@ -503,6 +508,11 @@ if (sendOtpBtn) {
 
       setText(msgEl, "✅ OTP sent. Please enter OTP.");
       if (verifyBox) verifyBox.style.display = "block";
+      // Auto-focus OTP input after Send OTP succeeds
+      setTimeout(() => {
+        const otpInput = document.getElementById("otpInput");
+        if (otpInput) otpInput.focus();
+      }, 100);
     } catch (e) {
       console.error(e);
       setText(msgEl, "❌ Network error");
