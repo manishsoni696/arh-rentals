@@ -230,6 +230,17 @@
                   <select class="input" name="floor_on_rent" required></select>
                 </label>
                 <label class="field">
+                  <span class="small">Number of Rooms</span>
+                  <select class="input" name="number_of_rooms" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">1 Room</option>
+                    <option value="2">2 Rooms</option>
+                    <option value="3">3 Rooms</option>
+                    <option value="4">4 Rooms</option>
+                    <option value="5+">5+ Rooms</option>
+                  </select>
+                </label>
+                <label class="field">
                   <span class="small">Size</span>
                   <div style="display:flex;gap:10px">
                     <input class="input" name="size" type="number" min="0" step="1" placeholder="e.g., 1200" required />
