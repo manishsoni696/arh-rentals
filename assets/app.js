@@ -87,6 +87,7 @@ function markOtpSentOnce(mobile) {
    POST PAGE : PIN CHECK (backend)
 ========================================================= */
 const pinBtn = document.getElementById("pinCheckBtn");
+const pinForm = document.getElementById("pinCheckForm");
 const pinEl = document.getElementById("postPin");
 const pinMsgEl = document.getElementById("postPinMsg");
 const step2El = document.getElementById("step2");
@@ -100,38 +101,44 @@ if (step2El) {
   }
 }
 
-if (pinBtn) {
-  pinBtn.addEventListener("click", async () => {
-    const msgEl = pinMsgEl;
+async function handlePinCheck(event) {
+  if (event) event.preventDefault();
+  const msgEl = pinMsgEl;
 
     const pincode = normalizePincode(pinEl?.value);
-
+      
     if (pincode.length !== 6) {
-      setText(msgEl, "❌ Enter valid 6-digit PIN");
-      if (step2El) step2El.style.display = "none";
-      return;
-    }
-
-    setText(msgEl, "⏳ Checking...");
+    setText(msgEl, "❌ Enter valid 6-digit PIN");
     if (step2El) step2El.style.display = "none";
+  return;
+  }
+   
+    setText(msgEl, "⏳ Checking...");
+  if (step2El) step2El.style.display = "none";
 
-    try {
-      const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
-      const data = await res.json();
+      try {
+    const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
+    const data = await res.json().catch(() => ({}));
 
-      if (data?.success && data?.allowed) {
-        setText(msgEl, `✅ Service available for ${pincode}`);
-        if (step2El) step2El.style.display = "block";
-        sessionStorage.setItem("arh_pincode", pincode);
-      } else {
-        setText(msgEl, `❌ Service not available for ${pincode}`);
-        sessionStorage.removeItem("arh_pincode");
-      }
-    } catch (e) {
-      console.error(e);
-      setText(msgEl, "❌ Backend not reachable");
+    if (data?.success && data?.allowed) {
+      setText(msgEl, `✅ Service available for ${pincode}`);
+      if (step2El) step2El.style.display = "block";
+      sessionStorage.setItem("arh_pincode", pincode);
+    } else {
+      setText(msgEl, `❌ Service not available for ${pincode}`);
+      sessionStorage.removeItem("arh_pincode");
     }
-  });
+  } catch (e) {
+    console.error(e);
+    setText(msgEl, "❌ Backend not reachable");
+  }
+}
+
+if (pinForm) {
+  pinForm.addEventListener("submit", handlePinCheck);
+}
+if (pinBtn) {
+  pinBtn.addEventListener("click", handlePinCheck);
 }
 
 /* =========================================================
