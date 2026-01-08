@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets/styles.css"/>
 </head>
 
-<body>
+<body class="post-page">
 
 <header class="site-header">
   <div class="container navbar">
@@ -54,13 +54,13 @@
             <span class="small">Property Type</span>
             <select name="property_type" class="input" required>
               <option value="" disabled selected>Select type</option>
-              <option>Apartment</option>
-              <option>Independent House</option>
-              <option>Builder Floor</option>
-              <option>Shop</option>
-              <option>Office</option>
-              <option>Showroom</option>
-              <option>Warehouse</option>
+              <option value="flat">Apartment</option>
+              <option value="house">Independent House</option>
+              <option value="pg">PG</option>
+              <option value="shop">Shop</option>
+              <option value="office">Office</option>
+              <option value="showroom">Showroom</option>
+              <option value="warehouse">Warehouse</option>
             </select>
           </label>
           <label class="field">
@@ -199,136 +199,9 @@
 
 </main>
 
+  <script src="/assets/app.js"></script>
 <script src="/assets/post-property.js"></script>
-<script>
-  const amenitiesMap = {
-    residential: [
-      { value: "parking", label: "Parking" },
-      { value: "powerBackup", label: "Power Backup" },
-      { value: "lift", label: "Lift" },
-      { value: "security", label: "Security" },
-      { value: "ac", label: "AC" }
-    ],
-    commercial: [
-      { value: "parking", label: "Parking" },
-      { value: "powerBackup", label: "Power Backup" },
-      { value: "lift", label: "Lift" },
-      { value: "security", label: "Security" }
-    ]
-  };
 
-  const amenitiesContainer = document.getElementById("amenitiesContainer");
-  const categorySelect = document.getElementById("categorySelect");
-  const photoInput = document.getElementById("photoInput");
-  const photoErrors = document.getElementById("photoErrors");
-  const photoPreview = document.getElementById("photoPreview");
-  const notesCount = document.getElementById("notesCount");
-  const extraNotes = document.querySelector("textarea[name='extra_notes']");
-  const form = document.getElementById("postPropertyForm");
-  const formMsg = document.getElementById("formMsg");
-  const saveDraftBtn = document.getElementById("saveDraftBtn");
-
-  const renderAmenities = (category) => {
-    amenitiesContainer.innerHTML = "";
-    if (!category || !amenitiesMap[category]) {
-      amenitiesContainer.innerHTML = "<div class=\"small\">Select a category to see amenities.</div>";
-      return;
-    }
-  amenitiesMap[category].forEach((item) => {
-      const label = document.createElement("label");
-      label.className = "amenity";
-      label.innerHTML = `<input type="checkbox" name="amenities" value="${item.value}"> ${item.label}`;
-      amenitiesContainer.appendChild(label);
-    });
-  };
-
-  const bytesToKb = (bytes) => Math.round(bytes / 1024);
-
-  const validatePhotos = (files) => {
-    const errors = [];
-    const previews = [];
-    const validTypes = ["image/jpeg", "image/png"];
-
-    if (files.length === 0) {
-      errors.push("Please upload at least 1 photo.");
-    }
-    if (files.length > 10) {
-      errors.push("You can upload up to 10 photos only.");
-    }
-
-    Array.from(files).forEach((file) => {
-      if (!validTypes.includes(file.type)) {
-        errors.push(`${file.name}: Only JPG/JPEG/PNG allowed.`);
-        return;
-      }
-      if (file.size > 1024 * 1024) {
-        errors.push(`${file.name}: ${bytesToKb(file.size)}KB (max 1024KB).`);
-        return;
-      }
-      previews.push(file);
-    });
-
-    return { errors, previews };
-  };
-
-  const showPhotoPreviews = (files) => {
-    photoPreview.innerHTML = "";
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = document.createElement("img");
-        img.src = event.target.result;
-        img.alt = file.name;
-        img.style.width = "100%";
-        img.style.height = "100px";
-        img.style.objectFit = "cover";
-        img.style.borderRadius = "8px";
-        photoPreview.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
-  categorySelect.addEventListener("change", (event) => {
-    renderAmenities(event.target.value);
-  });
-
-  photoInput.addEventListener("change", (event) => {
-    const { errors, previews } = validatePhotos(event.target.files);
-    photoErrors.textContent = errors.join(" ");
-    if (errors.length) {
-      photoPreview.innerHTML = "";
-      return;
-    }
-    showPhotoPreviews(previews);
-  });
-
-  extraNotes.addEventListener("input", (event) => {
-    notesCount.textContent = `${event.target.value.length} / 300`;
-  });
-
-  saveDraftBtn.addEventListener("click", () => {
-    formMsg.textContent = "Draft saved locally (demo).";
-    setTimeout(() => {
-      formMsg.textContent = "";
-    }, 3000);
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const { errors } = validatePhotos(photoInput.files);
-    if (errors.length) {
-      photoErrors.textContent = errors.join(" ");
-      return;
-    }
-    formMsg.textContent = "Submitted (demo)";
-    setTimeout(() => {
-      formMsg.textContent = "";
-    }, 4000);
-  });
-
-  renderAmenities("");
-</script>
 
 </body>
 </html>
