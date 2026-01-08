@@ -2,8 +2,26 @@
   const MAX_PHOTOS = 10;
   const MAX_BYTES = 1024 * 1024;
   const VALID_TYPES = ["image/jpeg", "image/png"];
-  const DRAFT_KEY = "arh_post_property_draft_v1";
+  const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
+  const CLOUD_DRAFT_KEY = "arh_cloud_draft_prompt_shown"; // Track if cloud draft prompt was shown
   const NOTES_LIMIT = 500;
+  const DASHBOARD_BACKEND = "https://arh-dashboard.manishsoni696.workers.dev";
+
+  // Helper: Get auth token
+  const getAuthToken = () => localStorage.getItem("arh_token") || "";
+
+  // Helper: Check if user is logged in
+  const isLoggedIn = () => Boolean(getAuthToken());
+
+  // Helper: Generate UUID
+  const generateUUID = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  };
+
 
   const amenitiesLists = {
     residential: [
@@ -376,125 +394,223 @@
       return true;
     };
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const isValid = validateForm();
-      if (!isValid) return;
-      validatePhotos();
-      formMsg.textContent = "Submitted (demo). Backend integration pending.";
-      setTimeout(() => {
-        formMsg.textContent = "";
-      }, 4000);
-    };
+  };
 
-    const handleCategoryChange = (event) => {
-      event.stopImmediatePropagation();
-      renderPropertyTypes();
-      renderFloorOptions();
-      renderAmenities();
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
 
-    const handlePropertyTypeChange = (event) => {
-      event.stopImmediatePropagation();
-      renderAmenities();
-    };
+    const isValid = validateForm();
+    if (!isValid) return;
 
-    const handlePhotoChange = (event) => {
-      event.stopImmediatePropagation();
-      validatePhotos();
-    };
+    const photoValidation = validatePhotos();
+    if (photoValidation.errors.length > 0) return;
 
-    const handleNotesInput = (event) => {
-      event.stopImmediatePropagation();
-      updateNotesCount();
-    };
-
-    const handleSaveDraft = (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      saveDraft();
-    };
-
-    categorySelect?.addEventListener("change", handleCategoryChange, true);
-    propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
-    photoInput?.addEventListener("change", handlePhotoChange, true);
-    extraNotes?.addEventListener("input", handleNotesInput, true);
-    saveDraftBtn?.addEventListener("click", handleSaveDraft, true);
-    form.addEventListener("submit", handleSubmit, true);
-
-    restoreDraftBtn?.addEventListener("click", () => {
-      const stored = localStorage.getItem(DRAFT_KEY);
-      if (!stored) return;
-      try {
-        const draft = JSON.parse(stored);
-        restoreDraft(draft);
-        formMsg.textContent = "Draft restored.";
-        setTimeout(() => {
-          formMsg.textContent = "";
-        }, 3000);
-      } catch (error) {
-        formMsg.textContent = "Unable to restore draft.";
-      }
-    });
-
-    clearDraftBtn?.addEventListener("click", clearDraft);
-
-    const existingDraft = localStorage.getItem(DRAFT_KEY);
-    if (existingDraft) {
-      toggleDraftNotice(true);
+    // Check if logged in
+    if (!isLoggedIn()) {
+      formMsg.textContent = "❌ Please login to submit listing";
+      return;
     }
 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    formMsg.textContent = "⏳ Uploading photos...";
+
+    try {
+      // Step 1: Upload photos to R2
+      const files = photoInput.files || [];
+      const listingId = generateUUID();
+      let uploadedPhotoKeys = [];
+
+      if (files.length > 0) {
+        // Get upload URLs
+        const fileTypes = Array.from(files).map(f => f.type);
+        const fileSizes = Array.from(files).map(f => f.size);
+
+        const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${getAuthToken()}`
+          },
+          body: JSON.stringify({
+            listingId,
+            fileCount: files.length,
+            fileTypes,
+            fileSizes
+          })
+        });
+
+        const initData = await initRes.json();
+        if (!initData.success) {
+          throw new Error(initData.message || "Upload init failed");
+        }
+
+        // Upload each photo to R2
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const upload = initData.uploads[i];
+
+          const uploadRes = await fetch(upload.uploadUrl, {
+            method: "PUT",
+            body: file,
+            headers: { "Content-Type": file.type }
+          });
+
+          if (!uploadRes.ok) {
+            throw new Error(`Photo ${i + 1} upload failed`);
+          }
+
+          uploadedPhotoKeys.push(upload.key);
+        }
+      }
+
+      // Step 2: Create listing
+      formMsg.textContent = "⏳ Creating listing...";
+
+      const formData = getFormData();
+      const listingData = {
+        ...formData,
+        photos: uploadedPhotoKeys,
+        city: "Hisar"
+      };
+
+      const createRes = await fetch(`${DASHBOARD_BACKEND}/api/listings/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`
+        },
+        body: JSON.stringify(listingData)
+      });
+
+      const createData = await createRes.json();
+      if (!createData.success) {
+        throw new Error(createData.message || "Listing creation failed");
+      }
+
+      // Success!
+      formMsg.textContent = "✅ Listing created successfully!";
+      localStorage.removeItem(DRAFT_KEY); // Clear local draft
+
+      // Redirect to dashboard after 2 seconds
+      setTimeout(() => {
+        window.location.href = "/dashboard/";
+      }, 2000);
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      formMsg.textContent = `❌ ${error.message}`;
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  };
+
+  const handleCategoryChange = (event) => {
+    event.stopImmediatePropagation();
     renderPropertyTypes();
     renderFloorOptions();
     renderAmenities();
-    updateNotesCount();
-    renderPhotoErrors([]);
-
-    // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
-    window.addEventListener("arh:logout", () => {
-      const pinIn = document.getElementById("postPin");
-      const mobIn = document.getElementById("mobileInput");
-      const otpIn = document.getElementById("otpInput");
-      const step2 = document.getElementById("step2"); // "Service available" msg wrapper
-      const afterLogin = document.getElementById("afterLoginBox");
-      const otpStep = document.getElementById("otpStep"); // Mobile/OTP container
-      const pinMsg = document.getElementById("postPinMsg");
-      const otpMsg = document.getElementById("otpMsg");
-
-      // 1. Clear field values
-      if (pinIn) pinIn.value = "";
-      if (mobIn) mobIn.value = "";
-      if (otpIn) otpIn.value = "";
-
-      // 2. Clear auth-gate session data
-      sessionStorage.removeItem("arh_pincode");
-      sessionStorage.removeItem("arh_mobile");
-
-      // 3. Reset UI visibility (redundant safety for app.js resetPostGate)
-      if (step2) step2.style.display = "none";
-      if (afterLogin) afterLogin.style.display = "none";
-      if (otpStep) otpStep.style.display = "none";
-
-      // 4. Clear status messages
-      if (pinMsg) pinMsg.textContent = "";
-      if (otpMsg) otpMsg.textContent = "";
-    });
-
-    // [New] ISSUE 2: OTP Submit on Enter
-    const otpInputEl = document.getElementById("otpInput");
-    if (otpInputEl) {
-      otpInputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          const vBtn = document.getElementById("verifyOtpBtn");
-          if (vBtn && !vBtn.disabled) {
-            vBtn.click();
-          }
-        }
-      });
-    }
   };
+
+  const handlePropertyTypeChange = (event) => {
+    event.stopImmediatePropagation();
+    renderAmenities();
+  };
+
+  const handlePhotoChange = (event) => {
+    event.stopImmediatePropagation();
+    validatePhotos();
+  };
+
+  const handleNotesInput = (event) => {
+    event.stopImmediatePropagation();
+    updateNotesCount();
+  };
+
+  const handleSaveDraft = (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    saveDraft();
+  };
+
+  categorySelect?.addEventListener("change", handleCategoryChange, true);
+  propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
+  photoInput?.addEventListener("change", handlePhotoChange, true);
+  extraNotes?.addEventListener("input", handleNotesInput, true);
+  saveDraftBtn?.addEventListener("click", handleSaveDraft, true);
+  form.addEventListener("submit", handleSubmit, true);
+
+  restoreDraftBtn?.addEventListener("click", () => {
+    const stored = localStorage.getItem(DRAFT_KEY);
+    if (!stored) return;
+    try {
+      const draft = JSON.parse(stored);
+      restoreDraft(draft);
+      formMsg.textContent = "Draft restored.";
+      setTimeout(() => {
+        formMsg.textContent = "";
+      }, 3000);
+    } catch (error) {
+      formMsg.textContent = "Unable to restore draft.";
+    }
+  });
+
+  clearDraftBtn?.addEventListener("click", clearDraft);
+
+  const existingDraft = localStorage.getItem(DRAFT_KEY);
+  if (existingDraft) {
+    toggleDraftNotice(true);
+  }
+
+  renderPropertyTypes();
+  renderFloorOptions();
+  renderAmenities();
+  updateNotesCount();
+  renderPhotoErrors([]);
+
+  // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
+  window.addEventListener("arh:logout", () => {
+    const pinIn = document.getElementById("postPin");
+    const mobIn = document.getElementById("mobileInput");
+    const otpIn = document.getElementById("otpInput");
+    const step2 = document.getElementById("step2"); // "Service available" msg wrapper
+    const afterLogin = document.getElementById("afterLoginBox");
+    const otpStep = document.getElementById("otpStep"); // Mobile/OTP container
+    const pinMsg = document.getElementById("postPinMsg");
+    const otpMsg = document.getElementById("otpMsg");
+
+    // 1. Clear field values
+    if (pinIn) pinIn.value = "";
+    if (mobIn) mobIn.value = "";
+    if (otpIn) otpIn.value = "";
+
+    // 2. Clear auth-gate session data
+    sessionStorage.removeItem("arh_pincode");
+    sessionStorage.removeItem("arh_mobile");
+
+    // 3. Reset UI visibility (redundant safety for app.js resetPostGate)
+    if (step2) step2.style.display = "none";
+    if (afterLogin) afterLogin.style.display = "none";
+    if (otpStep) otpStep.style.display = "none";
+
+    // 4. Clear status messages
+    if (pinMsg) pinMsg.textContent = "";
+    if (otpMsg) otpMsg.textContent = "";
+  });
+
+  // [New] ISSUE 2: OTP Submit on Enter
+  const otpInputEl = document.getElementById("otpInput");
+  if (otpInputEl) {
+    otpInputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const vBtn = document.getElementById("verifyOtpBtn");
+        if (vBtn && !vBtn.disabled) {
+          vBtn.click();
+        }
+      }
+    });
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
