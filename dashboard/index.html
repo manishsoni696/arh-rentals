@@ -48,8 +48,31 @@
   <section class="hero">
     <h2 style="margin:0">Dashboard</h2>
     <p class="sub" style="margin-top:8px">
-      Access your listings linked to this mobile login.
+      Access and manage rental listings linked to this mobile number.
     </p>
+  </section>
+
+  <!-- Quick Actions Section -->
+  <section class="dashboard-quick-actions" style="margin-top:24px">
+    <div class="quick-action-card">
+      <div class="quick-action-content">
+        <h3>My Listings</h3>
+        <p class="small">View properties posted using this number</p>
+      </div>
+    </div>
+    <div class="quick-action-card">
+      <div class="quick-action-content">
+        <h3>Listing Status</h3>
+        <p class="small">Active and expired listings are shown separately</p>
+      </div>
+    </div>
+    <div class="quick-action-card">
+      <div class="quick-action-content">
+        <h3>Post New Property</h3>
+        <p class="small">Add your rental listing to reach tenants</p>
+      </div>
+      <a class="btn btn-primary" href="/post/" style="margin-top:10px">Post Property</a>
+    </div>
   </section>
 
   <section class="card" id="dashboardLogin" style="margin-top:16px;display:none">
@@ -88,9 +111,9 @@
     <div class="card-body" style="display:grid;gap:14px">
       <div class="dashboard-head">
         <div>
-          <h3 style="margin:0">My Listings</h3>
+          <h3 style="margin:0">Your Posted Properties</h3>
           <p class="sub" style="margin:6px 0 0">
-            Listings submitted with this mobile are shown here.
+            Properties listed using this mobile number.
           </p>
         </div>
         <div class="dashboard-actions">
@@ -100,10 +123,18 @@
       </div>
       <div id="dashboardStatus" class="small" aria-live="polite"></div>
       <div id="dashboardList" class="dashboard-list"></div>
-      <div id="dashboardEmpty" class="dashboard-empty" style="display:none">
-        No listings found for this mobile.
+      <div id="dashboardEmpty" class="dashboard-empty-enhanced" style="display:none">
+        <div class="empty-state-icon">📦</div>
+        <h4>You have not posted any properties yet.</h4>
+        <p class="sub">Start by adding your first rental listing.</p>
+        <a class="btn btn-primary" href="/post/" style="margin-top:10px">Post Property</a>
       </div>
     </div>
+  </section>
+
+  <!-- Footer Info -->
+  <section class="dashboard-footer-info" style="margin-top:32px">
+    <p class="small" style="margin:0;text-align:center">ARH Rentals provides access to property information only.</p>
   </section>
 </main>
 
