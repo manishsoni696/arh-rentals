@@ -1,117 +1,134 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v7.0)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v7.1)
 
-Last Updated: Jan 2026 (Jan 9, 2026)
-Note: v6.9 core content retained.
-Sirf Post Property (Owner) + Dashboard + Backend Phase additions reflected.
-❌ Koi locked business / Listings UI / Pricing / Demo section change nahi hua.
+Last Updated: Jan 9, 2026
+Based on: v7.0 (cleaned & consolidated)
+Scope: Post Property (Owner) + Dashboard + Backend only
+❌ Listings UI / Pricing / Demo / Business wording untouched
 
-🟡 Post Property (Owner) Page — Frontend
+🧱 GLOBAL STATUS (NON-NEGOTIABLE)
 
-Status: IN PROGRESS (ACTIVE)
+✅ Static Frontend (GitHub Pages) — ACTIVE
+✅ Backend = Cloudflare Workers (native only)
+✅ Core Auth / Pricing / Legal — 🔒 LOCKED
+✅ Responsive (Desktop + Tablet + Mobile) — 🔒 MANDATORY
 
-✅ CONFIRMED WORKING — STATUS UPDATE (STABLE)
-✅ Access & Gating (LOCKED)
+🟡 POST PROPERTY (OWNER) — FRONTEND
+STATUS: IN PROGRESS (ACTIVE)
+✅ CONFIRMED & VERIFIED — 🔒 LOCKED
+🔐 Access & Gating (STABLE)
 
-✅ PIN Code check correctly work kar raha hai
+✅ PIN Code check working
 
-✅ PIN verify ke baad hi Property Details form unlock hota hai
+✅ PIN verify ke baad hi Property Details unlock
 
-✅ Phone number / OTP PIN ke baad hi maanga jata hai
+✅ Phone number + OTP PIN ke baad hi maanga jata hai
 
-✅ PIN Backend Trigger (LOCKED)
+✅ PIN backend trigger:
 
-Enter key press on PIN input ✅
+Enter key press ✅
 
 “Check PIN” button click ✅
 
-📌 Note:
-Ye behavior fully verified hai.
-👉 Koi core auth change required nahi hai.
+📌 NOTE (LOCKED)
+Core auth logic bilkul sahi hai
+👉 ❌ Koi auth change allowed nahi
 
-📁 Post Property Module — FILE STRUCTURE
-
-Status: ADDED, ACTIVE & CONFIRMED (LOCKED)
-
-post/index.html
+📁 POST PROPERTY MODULE — FILE STRUCTURE (LOCKED)
+/post/index.html
 
 Purpose: HTML skeleton + complete form markup
 
 🔒 Rule: ❌ No big inline JS
 
-assets/post-property.js
+/assets/post-property.js
 
-Purpose (single source): form logic, local draft, amenities render, photo validation, submit handling, auth-gate UI (PIN/OTP layer only)
+Purpose (single source):
 
-🔒 Rule: ❌ core auth touch nahi karega; relies on assets/app.js
+Form logic
 
-assets/styles.css (Scoped)
+Local draft
 
-Purpose: Post Property UI styling only
+Amenities render
 
-🔒 Rule: .post-page { ... } scoped; Pricing FINAL LOCK untouched & last
+Photo validation
 
-✅ NEW LOCKED DECISIONS (ADDED)
-🔒 Plans Flow (LOCKED)
+Submit handling
 
-✅ PIN + OTP login ke baad direct Property Details form open hoga
+PIN/OTP UI layer only
 
-✅ Plans / payment form submit ke baad show honge
+🔒 Rule: ❌ Core auth touch nahi karega
 
-❌ Plans form se pehle nahi dikhaye jaayenge
+Depends on: /assets/app.js
 
-🔒 Cloud Draft (Cross-device) — LOCKED RULES
+/assets/styles.css
 
-Cloud draft save sirf PIN ✅ + OTP ✅ ke baad
+Post page styles scoped only
+
+🔒 Rule:
+
+.post-page { ... } only
+
+Pricing FINAL LOCK block last & untouched
+
+🔒 LOCKED FLOW DECISIONS (FINAL)
+🧾 Plans Flow
+
+✅ PIN + OTP ke baad direct Property Details
+
+✅ Plans / Payment submit ke baad show honge
+
+❌ Plans pehle nahi dikhenge
+
+🔒 CLOUD DRAFT — FINAL RULES
+
+Save allowed only after: PIN ✅ + OTP ✅
 
 Draft identity = logged-in mobile number
 
-Draft scope = 1 draft per mobile (LOCKED)
+Draft scope = 1 draft per mobile
 
-Storage = Cloudflare D1 (LOCKED)
+Storage = Cloudflare D1
 
-Retention = 3 days (LOCKED) → auto-delete after expiry
+Retention = 3 days (auto delete)
 
-Restore flow:
+Restore Flow
 
-PIN ✅ → OTP ✅ → draft check
+PIN → OTP → draft check
 
 Draft found → Restore / Discard
 
 No draft → normal form
 
-Logout se cloud draft delete nahi hoga (only discard or auto-expiry)
+📌 Logout par draft delete nahi hota
+(only discard or auto-expiry)
 
-🔒 Photos Backend Storage Structure (LOCKED)
+🔒 PHOTOS — BACKEND STORAGE STRUCTURE
 
-Storage = Cloudflare R2
+Storage: Cloudflare R2
 
-Folder-wise per listing:
+Path:
 
 photos/{listingId}/{uuid}.{ext}
 
+
 UUID filenames mandatory
 
-Original filenames reuse nahi honge
+Original filenames reuse ❌
 
-🧾 CHANGE LOG — Post Property & Auth UX
+🧾 CHANGE LOG — AUTH & UX (LOCKED)
+🔐 Auth / Session UX
 
-Date: Jan 9, 2026
-Status: 🟡 Active (Frontend finalize pending)
+Logged-in status → GLOBAL HEADER
 
-✅ COMPLETED & CONFIRMED (CLEANED)
-🔐 Auth & Session UX (LOCKED)
+Masked phone shown
 
-Logged-in status moved to GLOBAL HEADER (masked phone)
+Header dropdown active immediately after login
 
-Header dropdown becomes active immediately after login on same page
+Logout only via header
 
-Logout only in header
+Dashboard logout → instant redirect (guard enforced)
 
-Logout from dashboard redirects out instantly (protected route guard enforced)
-
-🔐 Post Property Logout Reset (FIXED)
-
-Logout on Post page:
+🔐 Post Property Logout Reset
 
 PIN cleared
 
@@ -123,87 +140,90 @@ OTP step hidden
 
 Form locked again
 
-Local draft not deleted automatically
+Local draft retained
 
-🔐 OTP UX Improvements (FIXED)
+🔐 OTP UX
 
-OTP verify: button click ✅ + Enter key ✅
+Verify via button + Enter key
 
-OTP resend timer resets on logout; quick login-logout me timer stuck nahi hota
+Resend timer resets on logout
 
-🟢 Dashboard — UI
+Quick login-logout issue fixed
 
-Status: ✅ COMPLETED & LOCKED (NEW)
+🟢 DASHBOARD — UI
+STATUS: COMPLETED & 🔒 LOCKED
 
-Dashboard UI upgraded (no longer plain)
+Dashboard UI upgraded
 
-Subtitle locked:
+Subtitle (LOCKED):
 
 “Access and manage rental listings linked to this mobile number.”
 
 Quick cards + empty state finalized
 
-No further dashboard UI changes unless explicitly unlocked
+❌ No UI change allowed unless explicitly unlocked
 
-🟡 PENDING (FRONTEND MUST-FIX BEFORE MERGE)
+🟡 PENDING — FRONTEND MUST-FIX (BEFORE MERGE)
 
-❌ Remove inline JS from post/index.html
+⚠️ These are the ONLY active frontend tasks
 
-❌ Amenities list must reuse FINAL amenities from Listings Filters
+❌ Remove inline JS from /post/index.html
 
-❌ Add <body class="post-page"> for scoped CSS
+❌ Amenities list must reuse FINAL Listings Filters amenities
 
-❌ City value must be “Hisar” (Phase-1 only)
+❌ Add <body class="post-page">
 
-❌ Property Type option values:
+❌ City value hard-lock = “Hisar”
 
-contract-stable enums (backend safe)
+❌ Property Type:
 
-user-friendly labels
+Backend-safe enum values
 
-🟠 NEXT PHASE (BACKEND INTEGRATIONS) — ADDED
-🟠 Phase-1: Backend Upload Link (NO compression)
+User-friendly labels
 
-Goal: Real backend upload pipeline live
+🟠 NEXT PHASE — BACKEND (ACTIVE BUT NOT STARTED)
+🟠 Phase-1: Photo Upload (NO Compression)
 
-R2 pre-signed upload (/api/uploads/init)
+Goal: Real backend upload pipeline
+
+/api/uploads/init → R2 pre-signed upload
 
 Direct upload to R2
 
-Listing create (/api/listings/create) saves photo keys
+/api/listings/create
 
 Server-side re-validation (type/size/count)
 
-Partial upload fail → listing NOT created
+Partial upload fail → ❌ listing not created
 
-❌ No compression in Phase-1 (LOCKED)
+❌ Compression NOT allowed (LOCKED)
 
 🟠 Phase-1B: Cloud Draft Backend (D1)
 
-Goal: Cross-device draft restore
+/api/drafts/save (upsert)
 
-/api/drafts/save (upsert 1 draft per mobile)
+/api/drafts/latest
 
-/api/drafts/latest (restore prompt)
+/api/drafts/delete
 
-/api/drafts/delete (discard)
+Auto cleanup after 3 days
 
-Expiry cleanup (3 days) enforced
+🔒 Phase-2 (LATER — DO NOT IMPLEMENT NOW)
 
-🔒 Phase-2 (Later): Photo Compression (500KB target)
+Photo compression (~500KB target)
 
-LOCKED FOR LATER — Do not implement now
+Only after Phase-1 stable
 
-After Phase-1 stable, backend will generate compressed variant (~500KB max target)
+🟡 PLANNED (AFTER FRONTEND FINALIZE)
+Post Property Form Field Changes
 
-🟡 PLANNED — AFTER FRONTEND FINALIZE
-Post Property Form Fields Changes (PLANNED)
+Scope: Frontend only
 
-Scope: Frontend only (fields/labels/options/validations)
-📌 Pending input required: exact field list changes
+Fields / labels / validations
 
-✅ END — v7.0 MASTER UPDATE CONFIRMED
-🔐 CONFIRMATIONS
+📌 Pending exact field list from owner
+
+✅ FINAL CONFIRMATIONS — 🔒 LOCKED
 
 ❌ No business wording changes
 
@@ -213,6 +233,6 @@ Scope: Frontend only (fields/labels/options/validations)
 
 ✅ Scoped CSS safe
 
-✅ Modular Post Property structure active
+✅ Modular Post Property active
 
 ✅ Dashboard UI locked
