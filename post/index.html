@@ -23,6 +23,7 @@
       <a href="/">Home</a>
       <a href="/listings">Listings</a>
       <a href="/pricing">Plans</a>
+       <a href="/dashboard">Dashboard</a>
       <a href="/legal">Legal</a>
       <a class="btn btn-primary" href="/post">Post Property</a>
     </nav>
@@ -61,46 +62,8 @@
   <div id="draftGate" style="margin-top:16px;display:none"></div>
   
   <div id="step2" style="display:none">
-    <section class="card" style="margin-top:16px">
-    <div class="card-body" style="display:grid;gap:14px">
-      <div>
-        <h3 style="margin:0">2) Login to Continue</h3>
-        <p class="sub" style="margin:6px 0 10px">
-          Enter your mobile number to receive a login OTP. This is for session access only.
-        </p>
-      </div>
-      <div id="otpStep" style="display:none">
-        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-          <label class="field">
-            <span class="small">Mobile Number</span>
-            <input class="input" id="mobileInput" inputmode="numeric" maxlength="10" placeholder="e.g., 98XXXXXX10" />
-          </label>
-          <div style="display:flex;align-items:flex-end;gap:10px">
-            <button type="button" class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
-            <span id="otpMsg" class="small" aria-live="polite"></span>
-          </div>
-        </div>
-        <div id="otpVerifyBox" style="display:none;margin-top:12px">
-          <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-            <label class="field">
-              <span class="small">OTP</span>
-              <input class="input" id="otpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP" />
-            </label>
-            <div style="display:flex;align-items:flex-end;gap:10px">
-              <button type="button" class="btn btn-primary" id="verifyOtpBtn">Login</button>
-            </div>
-          </div>
-        </div>
-      </div>
-       <div id="sessionInfo" style="display:none;align-items:center;gap:10px;flex-wrap:wrap">
-        <span class="small" id="sessionPhone"></span>
-        <button type="button" class="btn" id="logoutBtn">Logout</button>
-      </div>
-    </div>
-  </section>
-
-  <div id="afterLoginBox" style="display:none">
-  <form id="postPropertyForm" class="card" style="margin-top:16px">
+    <div id="afterLoginBox" style="display:none">
+      <form id="postPropertyForm" class="card" style="margin-top:16px">
     <div class="card-body" style="display:grid;gap:18px">
       <section aria-labelledby="basics-title">
           <h3 id="basics-title" style="margin:0">3) Property Basics</h3>
@@ -304,8 +267,9 @@
         <span id="formMsg" class="small" style="align-self:center;color:var(--muted)"></span>
       </section>
     </div>
- </form>
-     </div>
+  </form>
+    </div>
+  </div>
 </div>
   <footer class="footer">
     <div class="container">
