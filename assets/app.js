@@ -83,8 +83,32 @@ function markOtpSentOnce(mobile) {
   localStorage.setItem(`arh_otp_sent_once_${mobile}`, "1");
 }
 
+function updateHeaderAccountStatus() {
+  const menu = document.querySelector("[data-account-menu]");
+  if (!menu) return;
+  const statusEl = menu.querySelector("[data-account-status]");
+  const phoneEl = menu.querySelector("[data-account-phone]");
+  const token = localStorage.getItem("arh_token");
+  if (!token) {
+    menu.hidden = true;
+    return;
+  }
+  const mobile =
+    localStorage.getItem("arh_session_mobile") ||
+    sessionStorage.getItem("arh_mobile") ||
+    "";
+  const masked = formatMaskedMobile(mobile);
+  if (statusEl) {
+    statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+  }
+  if (phoneEl) {
+    phoneEl.textContent = masked || "—";
+  }
+  menu.hidden = false;
+}
+
 /* ===============================
-   HEADER ACCOUNT DROPDOWN
+   HEADER ACCOUNT STATUS
 =============================== */
 (function () {
   function ready(fn) {
@@ -93,13 +117,21 @@ function markOtpSentOnce(mobile) {
   }
 
   const TOKEN_KEY = "arh_token";
-  const SESSION_MOBILE_KEY = "arh_mobile";
-  const SESSION_PIN_KEY = "arh_pincode";
+  const SESSION_MOBILE_KEY = "arh_session_mobile";
+  const SESSION_MOBILE_TEMP_KEY = "arh_mobile";
 
   function clearSession() {
     localStorage.removeItem(TOKEN_KEY);
-    sessionStorage.removeItem(SESSION_MOBILE_KEY);
-    sessionStorage.removeItem(SESSION_PIN_KEY);
+    localStorage.removeItem(SESSION_MOBILE_KEY);
+    sessionStorage.removeItem(SESSION_MOBILE_TEMP_KEY);
+  }
+
+  function getStoredMobile() {
+    const raw =
+      localStorage.getItem(SESSION_MOBILE_KEY) ||
+      sessionStorage.getItem(SESSION_MOBILE_TEMP_KEY) ||
+      "";
+    return normalizeMobile(raw);
   }
 
   function extractMobile(data) {
@@ -108,14 +140,9 @@ function markOtpSentOnce(mobile) {
       data?.phone ||
       data?.phone_number ||
       data?.mobile_number ||
-      sessionStorage.getItem(SESSION_MOBILE_KEY) ||
+      getStoredMobile() ||
       "";
     return normalizeMobile(raw);
-  }
-
-  function setDropdownState(trigger, dropdown, isOpen) {
-    if (dropdown) dropdown.hidden = !isOpen;
-    if (trigger) trigger.setAttribute("aria-expanded", String(isOpen));
   }
 
   async function fetchAccount(token) {
@@ -132,7 +159,6 @@ function markOtpSentOnce(mobile) {
 
     const trigger = menu.querySelector(".account-trigger");
     const dropdown = menu.querySelector(".account-dropdown");
-    const phoneEl = menu.querySelector("[data-account-phone]");
     const logoutBtn = menu.querySelector("[data-account-logout]");
 
     const token = localStorage.getItem(TOKEN_KEY);
@@ -141,42 +167,58 @@ function markOtpSentOnce(mobile) {
       return;
     }
 
-    try {
-      const data = await fetchAccount(token);
-      const mobile = extractMobile(data);
-      if (phoneEl) {
-        phoneEl.textContent = mobile ? `+91 ${mobile}` : "—";
+    let mobile = getStoredMobile();
+    if (!mobile) {
+      try {
+        const data = await fetchAccount(token);
+        mobile = extractMobile(data);
+      } catch (error) {
+        console.error(error);
+        clearSession();
+        menu.hidden = true;
+        return;
       }
-      menu.hidden = false;
-    } catch (error) {
-      console.error(error);
-      clearSession();
-      menu.hidden = true;
-      return;
     }
 
-    setDropdownState(trigger, dropdown, false);
+    if (mobile) {
+      localStorage.setItem(SESSION_MOBILE_KEY, mobile);
+    }
+    updateHeaderAccountStatus();
+    if (dropdown) dropdown.hidden = true;
 
     if (trigger && dropdown) {
       trigger.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        setDropdownState(trigger, dropdown, dropdown.hidden);
+        const isOpen = dropdown.hidden;
+        dropdown.hidden = !isOpen;
+        trigger.setAttribute("aria-expanded", String(isOpen));
       });
     }
 
     document.addEventListener("click", (event) => {
-      if (!menu.contains(event.target)) setDropdownState(trigger, dropdown, false);
+      if (!menu.contains(event.target) && dropdown) {
+        dropdown.hidden = true;
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      }
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") setDropdownState(trigger, dropdown, false);
+     if (event.key === "Escape" && dropdown) {
+        dropdown.hidden = true;
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      }
     });
 
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
         clearSession();
-        window.location.href = "/";
+         menu.hidden = true;
+        if (dropdown) dropdown.hidden = true;
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+        if (typeof handlePostLogoutUI === "function") {
+          handlePostLogoutUI();
+        }
       });
     }
   });
@@ -215,7 +257,9 @@ function showSessionInfo() {
   if (!sessionInfoEl) return;
   const masked = formatMaskedMobile(getSessionMobile());
   if (sessionPhoneEl) {
-    sessionPhoneEl.textContent = masked ? `Logged in as: ${masked}` : "Logged in";
+    sessionPhoneEl.textContent = masked
+      ? `You are logged in on this device (${masked}).`
+      : "You are logged in on this device.";
   }
   sessionInfoEl.style.display = "flex";
 }
@@ -244,6 +288,16 @@ function resetPostGate() {
   if (otpStepEl) otpStepEl.style.display = "none";
   if (afterLoginBox) afterLoginBox.style.display = "none";
    hideSessionInfo();
+}
+
+function handlePostLogoutUI() {
+  if (!step2El) return;
+  setText(document.getElementById("otpMsg"), "Logged out");
+  if (sessionStorage.getItem("arh_pincode")) {
+    showOtpStep();
+  } else {
+    resetPostGate();
+  }
 }
 
 if (step2El) {
@@ -439,6 +493,7 @@ if (verifyOtpBtn) {
       clearLock(mobile);
 
        setText(msgEl, "✅ Logged in");
+        updateHeaderAccountStatus();
       showPostForm();
     } catch (e) {
       console.error(e);
@@ -447,29 +502,6 @@ if (verifyOtpBtn) {
   });
 }
 
-/* =========================================================
-   OPTIONAL: LOGOUT (FIX 2)
-========================================================= */
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    const m = sessionStorage.getItem("arh_mobile") || ""; // ✅ पहले mobile ले लो
-
-    localStorage.removeItem("arh_token");
-      localStorage.removeItem(SESSION_MOBILE_KEY);
-    sessionStorage.removeItem("arh_mobile");
-    // sessionStorage.removeItem("arh_pincode"); // optional
-
-    if (m) clearLock(m); // ✅ lock clear
-
-    setText(document.getElementById("otpMsg"), "Logged out");
-     if (sessionStorage.getItem("arh_pincode")) {
-      showOtpStep();
-    } else {
-      resetPostGate();
-    }
-  });
-}
 /* === PRICING (ARH Rentals): Card Select + Default Premium (OVERRIDE-SAFE) === */
 (function () {
   function initPricingSelect() {
