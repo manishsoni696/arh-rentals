@@ -361,17 +361,19 @@ function handlePostLogoutUI() {
 }
 
 if (step2El) {
-  const savedPincode = sessionStorage.getItem("arh_pincode");
-  if (savedPincode && savedPincode.length === 6) {
-    if (pinEl) pinEl.value = savedPincode;
-    setText(pinMsgEl, `✅ Service available for ${savedPincode}`);
-    step2El.style.display = "block";
-      if (!otpGateEnabled || hasActiveSession()) {
-      showPostForm();
-    } else {
-      showOtpStep();
-    }
-  }
+  // Clear PIN and mobile session data on page load/refresh
+  sessionStorage.removeItem("arh_pincode");
+  sessionStorage.removeItem("arh_mobile");
+  
+  // Clear PIN input field
+  if (pinEl) pinEl.value = "";
+  
+  // Clear message fields
+  if (pinMsgEl) pinMsgEl.textContent = "";
+  
+  // Reset UI to initial state
+  step2El.style.display = "none";
+  resetPostGate();
 }
 
 async function handlePinCheck(event) {
