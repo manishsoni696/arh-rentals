@@ -223,6 +223,18 @@
 
   <script src="/assets/app.js"></script>
 <script src="/assets/post-property.js"></script>
+  <script>
+    const pinInput = document.getElementById("postPin");
+    const pinCheckBtn = document.getElementById("pinCheckBtn");
+    if (pinInput && pinCheckBtn) {
+      pinInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          pinCheckBtn.click();
+        }
+      });
+    }
+  </script>
 
 
 </body>
