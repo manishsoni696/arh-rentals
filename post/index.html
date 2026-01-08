@@ -131,7 +131,12 @@
                 </label>
                 <label class="field">
                   <span class="small">Property Type</span>
-                  <select name="property_type" class="input" required></select>
+                  <select name="property_type" class="input" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="flat">Apartment</option>
+                    <option value="house">Independent House</option>
+                    <option value="pg">PG</option>
+                  </select>
                 </label>
                 <label class="field">
                   <span class="small">City</span>
@@ -227,7 +232,13 @@
                 style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
                 <label class="field">
                   <span class="small">Floor on Rent</span>
-                  <select class="input" name="floor_on_rent" required></select>
+                  <select class="input" name="floor_on_rent" required>
+                    <option value="" disabled selected>Select floor</option>
+                    <option value="Ground">Ground</option>
+                    <option value="First">First</option>
+                    <option value="Second">Second</option>
+                    <option value="Third+">Third+</option>
+                  </select>
                 </label>
                 <label class="field">
                   <span class="small">Number of Rooms</span>
