@@ -394,353 +394,351 @@
       return true;
     };
 
-  };
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
+      const isValid = validateForm();
+      if (!isValid) return;
 
-    const isValid = validateForm();
-    if (!isValid) return;
+      const photoValidation = validatePhotos();
+      if (photoValidation.errors.length > 0) return;
 
-    const photoValidation = validatePhotos();
-    if (photoValidation.errors.length > 0) return;
+      // Check if logged in
+      if (!isLoggedIn()) {
+        formMsg.textContent = "❌ Please login to submit listing";
+        return;
+      }
 
-    // Check if logged in
-    if (!isLoggedIn()) {
-      formMsg.textContent = "❌ Please login to submit listing";
-      return;
-    }
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      formMsg.textContent = "⏳ Uploading photos...";
 
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-    formMsg.textContent = "⏳ Uploading photos...";
+      try {
+        // Step 1: Upload photos to R2
+        const files = photoInput.files || [];
+        const listingId = generateUUID();
+        let uploadedPhotoKeys = [];
 
-    try {
-      // Step 1: Upload photos to R2
-      const files = photoInput.files || [];
-      const listingId = generateUUID();
-      let uploadedPhotoKeys = [];
+        if (files.length > 0) {
+          // Get upload URLs
+          const fileTypes = Array.from(files).map(f => f.type);
+          const fileSizes = Array.from(files).map(f => f.size);
 
-      if (files.length > 0) {
-        // Get upload URLs
-        const fileTypes = Array.from(files).map(f => f.type);
-        const fileSizes = Array.from(files).map(f => f.size);
+          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${getAuthToken()}`
+            },
+            body: JSON.stringify({
+              listingId,
+              fileCount: files.length,
+              fileTypes,
+              fileSizes
+            })
+          });
 
-        const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+          const initData = await initRes.json();
+          if (!initData.success) {
+            throw new Error(initData.message || "Upload init failed");
+          }
+
+          // Upload each photo to R2
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const upload = initData.uploads[i];
+
+            const uploadRes = await fetch(upload.uploadUrl, {
+              method: "PUT",
+              body: file,
+              headers: { "Content-Type": file.type }
+            });
+
+            if (!uploadRes.ok) {
+              throw new Error(`Photo ${i + 1} upload failed`);
+            }
+
+            uploadedPhotoKeys.push(upload.key);
+          }
+        }
+
+        // Step 2: Create listing
+        formMsg.textContent = "⏳ Creating listing...";
+
+        const formData = getFormData();
+        const listingData = {
+          ...formData,
+          photos: uploadedPhotoKeys,
+          city: "Hisar"
+        };
+
+        const createRes = await fetch(`${DASHBOARD_BACKEND}/api/listings/create`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${getAuthToken()}`
           },
-          body: JSON.stringify({
-            listingId,
-            fileCount: files.length,
-            fileTypes,
-            fileSizes
-          })
+          body: JSON.stringify(listingData)
         });
 
-        const initData = await initRes.json();
-        if (!initData.success) {
-          throw new Error(initData.message || "Upload init failed");
+        const createData = await createRes.json();
+        if (!createData.success) {
+          throw new Error(createData.message || "Listing creation failed");
         }
 
-        // Upload each photo to R2
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const upload = initData.uploads[i];
+        // Success!
+        formMsg.textContent = "✅ Listing created successfully!";
+        localStorage.removeItem(DRAFT_KEY); // Clear local draft
 
-          const uploadRes = await fetch(upload.uploadUrl, {
-            method: "PUT",
-            body: file,
-            headers: { "Content-Type": file.type }
-          });
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => {
+          window.location.href = "/dashboard/";
+        }, 2000);
 
-          if (!uploadRes.ok) {
-            throw new Error(`Photo ${i + 1} upload failed`);
-          }
-
-          uploadedPhotoKeys.push(upload.key);
-        }
+      } catch (error) {
+        console.error("Submission error:", error);
+        formMsg.textContent = `❌ ${error.message}`;
+        if (submitBtn) submitBtn.disabled = false;
       }
+    };
 
-      // Step 2: Create listing
-      formMsg.textContent = "⏳ Creating listing...";
+    const handleCategoryChange = (event) => {
+      event.stopImmediatePropagation();
+      renderPropertyTypes();
+      renderFloorOptions();
+      renderAmenities();
+    };
 
-      const formData = getFormData();
-      const listingData = {
-        ...formData,
-        photos: uploadedPhotoKeys,
-        city: "Hisar"
-      };
+    const handlePropertyTypeChange = (event) => {
+      event.stopImmediatePropagation();
+      renderAmenities();
+    };
 
-      const createRes = await fetch(`${DASHBOARD_BACKEND}/api/listings/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${getAuthToken()}`
-        },
-        body: JSON.stringify(listingData)
-      });
+    const handlePhotoChange = (event) => {
+      event.stopImmediatePropagation();
+      validatePhotos();
+    };
 
-      const createData = await createRes.json();
-      if (!createData.success) {
-        throw new Error(createData.message || "Listing creation failed");
+    const handleNotesInput = (event) => {
+      event.stopImmediatePropagation();
+      updateNotesCount();
+    };
+
+    const handleSaveDraft = (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      saveDraft();
+    };
+
+    categorySelect?.addEventListener("change", handleCategoryChange, true);
+    propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
+    photoInput?.addEventListener("change", handlePhotoChange, true);
+    extraNotes?.addEventListener("input", handleNotesInput, true);
+    saveDraftBtn?.addEventListener("click", handleSaveDraft, true);
+    form.addEventListener("submit", handleSubmit, true);
+
+    restoreDraftBtn?.addEventListener("click", () => {
+      const stored = localStorage.getItem(DRAFT_KEY);
+      if (!stored) return;
+      try {
+        const draft = JSON.parse(stored);
+        restoreDraft(draft);
+        formMsg.textContent = "Draft restored.";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      } catch (error) {
+        formMsg.textContent = "Unable to restore draft.";
       }
+    });
 
-      // Success!
-      formMsg.textContent = "✅ Listing created successfully!";
-      localStorage.removeItem(DRAFT_KEY); // Clear local draft
+    clearDraftBtn?.addEventListener("click", clearDraft);
 
-      // Redirect to dashboard after 2 seconds
-      setTimeout(() => {
-        window.location.href = "/dashboard/";
-      }, 2000);
-
-    } catch (error) {
-      console.error("Submission error:", error);
-      formMsg.textContent = `❌ ${error.message}`;
-      if (submitBtn) submitBtn.disabled = false;
+    const existingDraft = localStorage.getItem(DRAFT_KEY);
+    if (existingDraft) {
+      toggleDraftNotice(true);
     }
-  };
 
-  const handleCategoryChange = (event) => {
-    event.stopImmediatePropagation();
     renderPropertyTypes();
     renderFloorOptions();
     renderAmenities();
-  };
-
-  const handlePropertyTypeChange = (event) => {
-    event.stopImmediatePropagation();
-    renderAmenities();
-  };
-
-  const handlePhotoChange = (event) => {
-    event.stopImmediatePropagation();
-    validatePhotos();
-  };
-
-  const handleNotesInput = (event) => {
-    event.stopImmediatePropagation();
     updateNotesCount();
-  };
+    renderPhotoErrors([]);
 
-  const handleSaveDraft = (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    saveDraft();
-  };
+    // =========================================================================
+    // CLOUD DRAFT Functions
+    // =========================================================================
 
-  categorySelect?.addEventListener("change", handleCategoryChange, true);
-  propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
-  photoInput?.addEventListener("change", handlePhotoChange, true);
-  extraNotes?.addEventListener("input", handleNotesInput, true);
-  saveDraftBtn?.addEventListener("click", handleSaveDraft, true);
-  form.addEventListener("submit", handleSubmit, true);
-
-  restoreDraftBtn?.addEventListener("click", () => {
-    const stored = localStorage.getItem(DRAFT_KEY);
-    if (!stored) return;
-    try {
-      const draft = JSON.parse(stored);
-      restoreDraft(draft);
-      formMsg.textContent = "Draft restored.";
-      setTimeout(() => {
-        formMsg.textContent = "";
-      }, 3000);
-    } catch (error) {
-      formMsg.textContent = "Unable to restore draft.";
-    }
-  });
-
-  clearDraftBtn?.addEventListener("click", clearDraft);
-
-  const existingDraft = localStorage.getItem(DRAFT_KEY);
-  if (existingDraft) {
-    toggleDraftNotice(true);
-  }
-
-  renderPropertyTypes();
-  renderFloorOptions();
-  renderAmenities();
-  updateNotesCount();
-  renderPhotoErrors([]);
-
-  // =========================================================================
-  // CLOUD DRAFT Functions
-  // =========================================================================
-
-  const handleSaveCloudDraft = async () => {
-    if (!isLoggedIn()) {
-      formMsg.textContent = "❌ Please login (PIN + OTP) to save cloud draft";
-      return;
-    }
-
-    formMsg.textContent = "⏳ Saving cloud draft...";
-
-    try {
-      const draftData = getFormData();
-      const draftJson = JSON.stringify(draftData);
-
-      const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/save`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${getAuthToken()}`
-        },
-        body: JSON.stringify({ draft_json: draftJson })
-      });
-
-      const data = await res.json();
-      if (!data.success) {
-        throw new Error(data.message || "Cloud draft save failed");
+    const handleSaveCloudDraft = async () => {
+      if (!isLoggedIn()) {
+        formMsg.textContent = "❌ Please login (PIN + OTP) to save cloud draft";
+        return;
       }
 
-      formMsg.textContent = "✅ Cloud draft saved";
-      setTimeout(() => {
-        formMsg.textContent = "";
-      }, 3000);
-    } catch (error) {
-      console.error("Cloud draft save error:", error);
-      formMsg.textContent = `❌ ${error.message}`;
-    }
-  };
+      formMsg.textContent = "⏳ Saving cloud draft...";
 
-  const checkAndRestoreCloudDraft = async () => {
-    if (!isLoggedIn()) return;
+      try {
+        const draftData = getFormData();
+        const draftJson = JSON.stringify(draftData);
 
-    // Check if we already showed prompt in this session
-    const promptShown = sessionStorage.getItem(CLOUD_DRAFT_KEY);
-    if (promptShown) return;
+        const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/save`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${getAuthToken()}`
+          },
+          body: JSON.stringify({ draft_json: draftJson })
+        });
 
-    try {
-      const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/latest`, {
-        headers: {
-          "Authorization": `Bearer ${getAuthToken()}`
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.message || "Cloud draft save failed");
         }
-      });
 
-      const data = await res.json();
-      if (!data.success || !data.draft) return;
-
-      // Mark prompt as shown for this session
-      sessionStorage.setItem(CLOUD_DRAFT_KEY, "true");
-
-      // Show restore prompt
-      const confirmRestore = confirm(
-        "Cloud draft found from another device/session. Restore it?\n\n" +
-        "Click OK to restore, Cancel to keep current form."
-      );
-
-      if (confirmRestore) {
-        const draftData = JSON.parse(data.draft);
-        setFormData(draftData);
-        formMsg.textContent = "✅ Cloud draft restored";
+        formMsg.textContent = "✅ Cloud draft saved";
         setTimeout(() => {
           formMsg.textContent = "";
         }, 3000);
+      } catch (error) {
+        console.error("Cloud draft save error:", error);
+        formMsg.textContent = `❌ ${error.message}`;
       }
-    } catch (error) {
-      console.error("Cloud draft restore error:", error);
-    }
-  };
+    };
 
-  const deleteCloudDraft = async () => {
-    if (!isLoggedIn()) return;
+    const checkAndRestoreCloudDraft = async () => {
+      if (!isLoggedIn()) return;
 
-    try {
-      await fetch(`${DASHBOARD_BACKEND}/api/drafts/delete`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${getAuthToken()}`
+      // Check if we already showed prompt in this session
+      const promptShown = sessionStorage.getItem(CLOUD_DRAFT_KEY);
+      if (promptShown) return;
+
+      try {
+        const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/latest`, {
+          headers: {
+            "Authorization": `Bearer ${getAuthToken()}`
+          }
+        });
+
+        const data = await res.json();
+        if (!data.success || !data.draft) return;
+
+        // Mark prompt as shown for this session
+        sessionStorage.setItem(CLOUD_DRAFT_KEY, "true");
+
+        // Show restore prompt
+        const confirmRestore = confirm(
+          "Cloud draft found from another device/session. Restore it?\n\n" +
+          "Click OK to restore, Cancel to keep current form."
+        );
+
+        if (confirmRestore) {
+          const draftData = JSON.parse(data.draft);
+          setFormData(draftData);
+          formMsg.textContent = "✅ Cloud draft restored";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 3000);
+        }
+      } catch (error) {
+        console.error("Cloud draft restore error:", error);
+      }
+    };
+
+    const deleteCloudDraft = async () => {
+      if (!isLoggedIn()) return;
+
+      try {
+        await fetch(`${DASHBOARD_BACKEND}/api/drafts/delete`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${getAuthToken()}`
+          }
+        });
+      } catch (error) {
+        console.error("Cloud draft delete error:", error);
+      }
+    };
+
+    // Update save draft button to save both local + cloud
+    if (saveDraftBtn) {
+      saveDraftBtn.addEventListener("click", async () => {
+        // Always save local draft
+        const draftData = getFormData();
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+
+        // If logged in, also save to cloud
+        if (isLoggedIn()) {
+          await handleSaveCloudDraft();
+        } else {
+          formMsg.textContent = "Draft saved locally (login for cloud backup)";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 3000);
         }
       });
-    } catch (error) {
-      console.error("Cloud draft delete error:", error);
     }
-  };
 
-  // Update save draft button to save both local + cloud
-  if (saveDraftBtn) {
-    saveDraftBtn.addEventListener("click", async () => {
-      // Always save local draft
-      const draftData = getFormData();
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+    // Check for cloud draft after page load (when user is logged in)
+    // This runs after PIN + OTP login
+    setTimeout(() => {
+      checkAndRestoreCloudDraft();
+    }, 1000);
 
-      // If logged in, also save to cloud
-      if (isLoggedIn()) {
-        await handleSaveCloudDraft();
-      } else {
-        formMsg.textContent = "Draft saved locally (login for cloud backup)";
-        setTimeout(() => {
-          formMsg.textContent = "";
-        }, 3000);
-      }
+    // Restore Event Listeners
+    if (categorySelect) categorySelect.addEventListener("change", handleCategoryChange);
+    if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", handlePropertyTypeChange);
+    if (photoInput) photoInput.addEventListener("change", handlePhotoChange);
+    if (extraNotes) extraNotes.addEventListener("input", updateNotesCount);
+    form.addEventListener("submit", handleSubmit);
+
+    // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
+    window.addEventListener("arh:logout", () => {
+      const pinIn = document.getElementById("postPin");
+      const mobIn = document.getElementById("mobileInput");
+      const otpIn = document.getElementById("otpInput");
+      const step2 = document.getElementById("step2"); // "Service available" msg wrapper
+      const afterLogin = document.getElementById("afterLoginBox");
+      const otpStep = document.getElementById("otpStep"); // Mobile/OTP container
+      const pinMsg = document.getElementById("postPinMsg");
+      const otpMsg = document.getElementById("otpMsg");
+
+      // 1. Clear field values
+      if (pinIn) pinIn.value = "";
+      if (mobIn) mobIn.value = "";
+      if (otpIn) otpIn.value = "";
+
+      // 2. Clear auth-gate session data
+      sessionStorage.removeItem("arh_pincode");
+      sessionStorage.removeItem("arh_mobile");
+
+      // 3. Reset UI visibility (redundant safety for app.js resetPostGate)
+      if (step2) step2.style.display = "none";
+      if (afterLogin) afterLogin.style.display = "none";
+      if (otpStep) otpStep.style.display = "none";
+
+      // 4. Clear status messages
+      if (pinMsg) pinMsg.textContent = "";
+      if (otpMsg) otpMsg.textContent = "";
     });
-  }
 
-  // Check for cloud draft after page load (when user is logged in)
-  // This runs after PIN + OTP login
-  setTimeout(() => {
-    checkAndRestoreCloudDraft();
-  }, 1000);
-
-  // Restore Event Listeners
-  if (categorySelect) categorySelect.addEventListener("change", handleCategoryChange);
-  if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", handlePropertyTypeChange);
-  if (photoInput) photoInput.addEventListener("change", handlePhotoChange);
-  if (extraNotes) extraNotes.addEventListener("input", updateNotesCount);
-  form.addEventListener("submit", handleSubmit);
-
-  // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
-  window.addEventListener("arh:logout", () => {
-    const pinIn = document.getElementById("postPin");
-    const mobIn = document.getElementById("mobileInput");
-    const otpIn = document.getElementById("otpInput");
-    const step2 = document.getElementById("step2"); // "Service available" msg wrapper
-    const afterLogin = document.getElementById("afterLoginBox");
-    const otpStep = document.getElementById("otpStep"); // Mobile/OTP container
-    const pinMsg = document.getElementById("postPinMsg");
-    const otpMsg = document.getElementById("otpMsg");
-
-    // 1. Clear field values
-    if (pinIn) pinIn.value = "";
-    if (mobIn) mobIn.value = "";
-    if (otpIn) otpIn.value = "";
-
-    // 2. Clear auth-gate session data
-    sessionStorage.removeItem("arh_pincode");
-    sessionStorage.removeItem("arh_mobile");
-
-    // 3. Reset UI visibility (redundant safety for app.js resetPostGate)
-    if (step2) step2.style.display = "none";
-    if (afterLogin) afterLogin.style.display = "none";
-    if (otpStep) otpStep.style.display = "none";
-
-    // 4. Clear status messages
-    if (pinMsg) pinMsg.textContent = "";
-    if (otpMsg) otpMsg.textContent = "";
-  });
-
-  // [New] ISSUE 2: OTP Submit on Enter
-  const otpInputEl = document.getElementById("otpInput");
-  if (otpInputEl) {
-    otpInputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const vBtn = document.getElementById("verifyOtpBtn");
-        if (vBtn && !vBtn.disabled) {
-          vBtn.click();
+    // [New] ISSUE 2: OTP Submit on Enter
+    const otpInputEl = document.getElementById("otpInput");
+    if (otpInputEl) {
+      otpInputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const vBtn = document.getElementById("verifyOtpBtn");
+          if (vBtn && !vBtn.disabled) {
+            vBtn.click();
+          }
         }
-      }
-    });
-  }
+      });
+    }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  })();
