@@ -93,24 +93,53 @@ const pinMsgEl = document.getElementById("postPinMsg");
 const step2El = document.getElementById("step2");
 const otpStepEl = document.getElementById("otpStep");
 const afterLoginBox = document.getElementById("afterLoginBox");
+const sessionInfoEl = document.getElementById("sessionInfo");
+const sessionPhoneEl = document.getElementById("sessionPhone");
+const SESSION_MOBILE_KEY = "arh_session_mobile"; // stored in localStorage for login display
 
 function hasActiveSession() {
   return Boolean(localStorage.getItem("arh_token"));
 }
 
+function getSessionMobile() {
+  return localStorage.getItem(SESSION_MOBILE_KEY) || sessionStorage.getItem("arh_mobile") || "";
+}
+
+function formatMaskedMobile(mobile) {
+  const normalized = normalizeMobile(mobile);
+  if (normalized.length !== 10) return "";
+  return `+91 •••••• ${normalized.slice(-4)}`;
+}
+
+function showSessionInfo() {
+  if (!sessionInfoEl) return;
+  const masked = formatMaskedMobile(getSessionMobile());
+  if (sessionPhoneEl) {
+    sessionPhoneEl.textContent = masked ? `Logged in as: ${masked}` : "Logged in";
+  }
+  sessionInfoEl.style.display = "flex";
+}
+
+function hideSessionInfo() {
+  if (sessionInfoEl) sessionInfoEl.style.display = "none";
+}
+
 function showOtpStep() {
   if (otpStepEl) otpStepEl.style.display = "block";
   if (afterLoginBox) afterLoginBox.style.display = "none";
+    hideSessionInfo();
 }
 
 function showPostForm() {
   if (afterLoginBox) afterLoginBox.style.display = "block";
   if (otpStepEl) otpStepEl.style.display = "none";
+   if (hasActiveSession()) showSessionInfo();
 }
 
 function resetPostGate() {
   if (otpStepEl) otpStepEl.style.display = "none";
   if (afterLoginBox) afterLoginBox.style.display = "none";
+   hideSessionInfo();
 }
 
 if (step2El) {
@@ -300,6 +329,7 @@ if (verifyOtpBtn) {
 
       // ✅ store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
+       if (mobile) localStorage.setItem(SESSION_MOBILE_KEY, mobile);
 
       // ✅ optional: successful login पर OTP lock clear कर दो
       clearLock(mobile);
@@ -322,6 +352,7 @@ if (logoutBtn) {
     const m = sessionStorage.getItem("arh_mobile") || ""; // ✅ पहले mobile ले लो
 
     localStorage.removeItem("arh_token");
+      localStorage.removeItem(SESSION_MOBILE_KEY);
     sessionStorage.removeItem("arh_mobile");
     // sessionStorage.removeItem("arh_pincode"); // optional
 
