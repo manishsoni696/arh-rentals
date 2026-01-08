@@ -70,6 +70,7 @@
     errorSummary.setAttribute("role", "alert");
     form.querySelector(".card-body")?.prepend(errorSummary);
 
+    const draftGate = document.getElementById("draftGate");
     const draftNotice = document.createElement("div");
     draftNotice.id = "draftNotice";
     draftNotice.className = "small";
@@ -85,7 +86,11 @@
       <button type="button" class="btn" id="restoreDraftBtn">Restore Draft</button>
       <button type="button" class="btn" id="clearDraftBtn">Clear Draft</button>
     `;
-    form.querySelector(".card-body")?.prepend(draftNotice);
+     if (draftGate) {
+      draftGate.appendChild(draftNotice);
+    } else {
+      form.querySelector(".card-body")?.prepend(draftNotice);
+    }
 
     const restoreDraftBtn = draftNotice.querySelector("#restoreDraftBtn");
     const clearDraftBtn = draftNotice.querySelector("#clearDraftBtn");
@@ -296,6 +301,13 @@
       updateNotesCount();
     };
 
+     const toggleDraftNotice = (show) => {
+      draftNotice.style.display = show ? "flex" : "none";
+      if (draftGate) {
+        draftGate.style.display = show ? "block" : "none";
+      }
+    };
+    
     const saveDraft = () => {
       const payload = getFormData();
       localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
@@ -303,12 +315,12 @@
       setTimeout(() => {
         formMsg.textContent = "";
       }, 3000);
-      draftNotice.style.display = "flex";
+       toggleDraftNotice(true);
     };
 
     const clearDraft = () => {
       localStorage.removeItem(DRAFT_KEY);
-      draftNotice.style.display = "none";
+      toggleDraftNotice(false);
       formMsg.textContent = "Draft cleared.";
       setTimeout(() => {
         formMsg.textContent = "";
@@ -430,7 +442,7 @@
 
     const existingDraft = localStorage.getItem(DRAFT_KEY);
     if (existingDraft) {
-      draftNotice.style.display = "flex";
+       toggleDraftNotice(true);
     }
 
     renderPropertyTypes();
