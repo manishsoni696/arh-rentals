@@ -212,10 +212,17 @@ function updateHeaderAccountStatus() {
 
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
+         const onDashboard = window.location.pathname.includes("/dashboard");
         clearSession();
          menu.hidden = true;
         if (dropdown) dropdown.hidden = true;
         if (trigger) trigger.setAttribute("aria-expanded", "false");
+
+         if (onDashboard) {
+          window.location.href = "/post/";
+          return;
+        }
+         
         if (typeof handlePostLogoutUI === "function") {
           handlePostLogoutUI();
         }
