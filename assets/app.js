@@ -91,6 +91,27 @@ const pinForm = document.getElementById("pinCheckForm");
 const pinEl = document.getElementById("postPin");
 const pinMsgEl = document.getElementById("postPinMsg");
 const step2El = document.getElementById("step2");
+const otpStepEl = document.getElementById("otpStep");
+const afterLoginBox = document.getElementById("afterLoginBox");
+
+function hasActiveSession() {
+  return Boolean(localStorage.getItem("arh_token"));
+}
+
+function showOtpStep() {
+  if (otpStepEl) otpStepEl.style.display = "block";
+  if (afterLoginBox) afterLoginBox.style.display = "none";
+}
+
+function showPostForm() {
+  if (afterLoginBox) afterLoginBox.style.display = "block";
+  if (otpStepEl) otpStepEl.style.display = "none";
+}
+
+function resetPostGate() {
+  if (otpStepEl) otpStepEl.style.display = "none";
+  if (afterLoginBox) afterLoginBox.style.display = "none";
+}
 
 if (step2El) {
   const savedPincode = sessionStorage.getItem("arh_pincode");
@@ -98,6 +119,11 @@ if (step2El) {
     if (pinEl) pinEl.value = savedPincode;
     setText(pinMsgEl, `✅ Service available for ${savedPincode}`);
     step2El.style.display = "block";
+      if (hasActiveSession()) {
+      showPostForm();
+    } else {
+      showOtpStep();
+    }
   }
 }
 
@@ -110,12 +136,14 @@ async function handlePinCheck(event) {
     if (pincode.length !== 6) {
     setText(msgEl, "❌ Enter valid 6-digit PIN");
     if (step2El) step2El.style.display = "none";
+         resetPostGate();
   return;
   }
    
     setText(msgEl, "⏳ Checking...");
   if (step2El) step2El.style.display = "none";
-
+resetPostGate();
+   
       try {
     const res = await fetch(`${BACKEND}/check-pincode?pincode=${encodeURIComponent(pincode)}`);
     const data = await res.json().catch(() => ({}));
@@ -124,6 +152,11 @@ async function handlePinCheck(event) {
       setText(msgEl, `✅ Service available for ${pincode}`);
       if (step2El) step2El.style.display = "block";
       sessionStorage.setItem("arh_pincode", pincode);
+       if (hasActiveSession()) {
+        showPostForm();
+      } else {
+        showOtpStep();
+      }
     } else {
       setText(msgEl, `❌ Service not available for ${pincode}`);
       sessionStorage.removeItem("arh_pincode");
@@ -173,7 +206,7 @@ if (sendOtpBtn) {
       return;
     }
     if (!pincode) {
-      setText(msgEl, "❌ Please verify PIN first");
+       setText(msgEl, "❌ Please check PIN first");
       return;
     }
 
@@ -236,7 +269,6 @@ if (verifyOtpBtn) {
   verifyOtpBtn.addEventListener("click", async () => {
     const otpEl = document.getElementById("otpInput");
     const msgEl = document.getElementById("otpMsg");
-    const afterLoginBox = document.getElementById("afterLoginBox"); // optional
 
     const mobile = sessionStorage.getItem("arh_mobile") || "";
     const otp = normalizeOtp(otpEl?.value);
@@ -250,7 +282,7 @@ if (verifyOtpBtn) {
       return;
     }
 
-    setText(msgEl, "⏳ Verifying OTP...");
+    setText(msgEl, "⏳ Checking OTP...");
 
     try {
       const res = await fetch(`${BACKEND}/verify-otp`, {
@@ -262,9 +294,9 @@ if (verifyOtpBtn) {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data.success || !data.token) {
-        setText(msgEl, `❌ ${data.message || "Invalid/Expired OTP"}`);
-        return;
-      }
+         setText(msgEl, `❌ ${data.message || "Invalid/Expired OTP"}`);
+      return;
+    }
 
       // ✅ store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
@@ -272,8 +304,8 @@ if (verifyOtpBtn) {
       // ✅ optional: successful login पर OTP lock clear कर दो
       clearLock(mobile);
 
-      setText(msgEl, "✅ Verified & Logged in");
-      if (afterLoginBox) afterLoginBox.style.display = "block";
+       setText(msgEl, "✅ Logged in");
+      showPostForm();
     } catch (e) {
       console.error(e);
       setText(msgEl, "❌ Network error");
@@ -296,6 +328,11 @@ if (logoutBtn) {
     if (m) clearLock(m); // ✅ lock clear
 
     setText(document.getElementById("otpMsg"), "Logged out");
+     if (sessionStorage.getItem("arh_pincode")) {
+      showOtpStep();
+    } else {
+      resetPostGate();
+    }
   });
 }
 /* === PRICING (ARH Rentals): Card Select + Default Premium (OVERRIDE-SAFE) === */
