@@ -35,20 +35,42 @@ function formatHMS(ms) {
   const s = total % 60;
   return `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
 }
+let globalOtpTimerId = null;
+
 function startSendBtnCountdown(sendOtpBtn, lockUntilMs, baseText = "Send OTP") {
   sendOtpBtn.disabled = true;
+  if (globalOtpTimerId) clearTimeout(globalOtpTimerId);
+
   const tick = () => {
     const left = lockUntilMs - Date.now();
     if (left <= 0) {
       sendOtpBtn.disabled = false;
       sendOtpBtn.textContent = baseText;
+      globalOtpTimerId = null;
       return;
     }
     sendOtpBtn.textContent = `Try after ${formatHMS(left)}`;
-    setTimeout(tick, 1000);
+    globalOtpTimerId = setTimeout(tick, 1000);
   };
   tick();
 }
+
+window.resetOtpTimer = function() {
+  if (globalOtpTimerId) {
+    clearTimeout(globalOtpTimerId);
+    globalOtpTimerId = null;
+  }
+  localStorage.removeItem("arh_otp_cooldown_until");
+  
+  const sendOtpBtn = document.getElementById("sendOtpBtn");
+  if (sendOtpBtn) {
+    sendOtpBtn.disabled = false;
+    sendOtpBtn.textContent = "Send OTP"; 
+  }
+  
+  const msgEl = document.getElementById("otpMsg");
+  if (msgEl) msgEl.textContent = "";
+};
 
 /* ===============================
    COMMON
@@ -110,15 +132,14 @@ function updateHeaderAccountStatus() {
 /* ===============================
    HEADER ACCOUNT STATUS
 =============================== */
-(function () {
-  function ready(fn) {
-    if (document.readyState !== "loading") fn();
-    else document.addEventListener("DOMContentLoaded", fn);
-  }
-
+/* ===============================
+   HEADER ACCOUNT STATUS (REUSABLE)
+=============================== */
+window.initHeaderAuthUI = async function () {
   const TOKEN_KEY = "arh_token";
   const SESSION_MOBILE_KEY = "arh_session_mobile";
   const SESSION_MOBILE_TEMP_KEY = "arh_mobile";
+  const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
 
   function clearSession() {
     localStorage.removeItem(TOKEN_KEY);
@@ -153,83 +174,114 @@ function updateHeaderAccountStatus() {
     return res.json().catch(() => ({}));
   }
 
-  ready(async function () {
-    const menu = document.querySelector("[data-account-menu]");
-    if (!menu) return;
+  const menu = document.querySelector("[data-account-menu]");
+  if (!menu) return;
 
-    const trigger = menu.querySelector(".account-trigger");
-    const dropdown = menu.querySelector(".account-dropdown");
-    const logoutBtn = menu.querySelector("[data-account-logout]");
+  const trigger = menu.querySelector(".account-trigger");
+  const dropdown = menu.querySelector(".account-dropdown");
+  const logoutBtn = menu.querySelector("[data-account-logout]");
 
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  // 1. If no token, hide everything and return
+  if (!token) {
+    menu.hidden = true;
+    if (dropdown) dropdown.hidden = true;
+    return;
+  }
+
+  // 2. We have a token. Try to get mobile.
+  let mobile = getStoredMobile();
+  if (!mobile) {
+    try {
+      const data = await fetchAccount(token);
+      mobile = extractMobile(data);
+    } catch (error) {
+      console.error(error);
+      clearSession();
       menu.hidden = true;
       return;
     }
+  }
 
-    let mobile = getStoredMobile();
-    if (!mobile) {
-      try {
-        const data = await fetchAccount(token);
-        mobile = extractMobile(data);
-      } catch (error) {
-        console.error(error);
-        clearSession();
-        menu.hidden = true;
+  if (mobile) {
+    localStorage.setItem(SESSION_MOBILE_KEY, mobile);
+  }
+  
+  // 3. Update UI Text
+  updateHeaderAccountStatus();
+  
+  // 4. Bind Events (only once)
+  if (trigger && dropdown) {
+    // Reset state initially
+    dropdown.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+
+    // Remove old listener if possible or use a flag. 
+    // Simplified: we'll just overwrite onclick to be safe and simple for this context, 
+    // or use a custom property to check if bound.
+    if (!trigger.dataset.bound) {
+        trigger.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const isOpen = dropdown.hidden;
+            dropdown.hidden = !isOpen; // toggle
+            trigger.setAttribute("aria-expanded", String(isOpen));
+        });
+        trigger.dataset.bound = "true";
+    }
+  }
+
+  if (!document.body.dataset.headerBound) {
+      document.addEventListener("click", (event) => {
+        if (!menu.contains(event.target) && dropdown) {
+            dropdown.hidden = true;
+            if (trigger) trigger.setAttribute("aria-expanded", "false");
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && dropdown) {
+            dropdown.hidden = true;
+            if (trigger) trigger.setAttribute("aria-expanded", "false");
+        }
+      });
+      document.body.dataset.headerBound = "true";
+  }
+
+  if (logoutBtn && !logoutBtn.dataset.bound) {
+    logoutBtn.addEventListener("click", () => {
+       const onDashboard = window.location.pathname.includes("/dashboard");
+       clearSession();
+       
+       // RESET OTP TIMER ON LOGOUT
+       if (window.resetOtpTimer) window.resetOtpTimer();
+
+       menu.hidden = true;
+       if (dropdown) dropdown.hidden = true;
+       if (trigger) trigger.setAttribute("aria-expanded", "false");
+
+       // Re-run init to ensure UI state is consistent (hidden)
+       window.initHeaderAuthUI().catch(() => {});
+
+       if (onDashboard) {
+        window.location.href = "/post/";
         return;
-      }
-    }
-
-    if (mobile) {
-      localStorage.setItem(SESSION_MOBILE_KEY, mobile);
-    }
-    updateHeaderAccountStatus();
-    if (dropdown) dropdown.hidden = true;
-
-    if (trigger && dropdown) {
-      trigger.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const isOpen = dropdown.hidden;
-        dropdown.hidden = !isOpen;
-        trigger.setAttribute("aria-expanded", String(isOpen));
-      });
-    }
-
-    document.addEventListener("click", (event) => {
-      if (!menu.contains(event.target) && dropdown) {
-        dropdown.hidden = true;
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-      }
+       }
+       
+       if (typeof handlePostLogoutUI === "function") {
+         handlePostLogoutUI();
+       }
     });
+    logoutBtn.dataset.bound = "true";
+  }
+};
 
-    document.addEventListener("keydown", (event) => {
-     if (event.key === "Escape" && dropdown) {
-        dropdown.hidden = true;
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-      }
-    });
-
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-         const onDashboard = window.location.pathname.includes("/dashboard");
-        clearSession();
-         menu.hidden = true;
-        if (dropdown) dropdown.hidden = true;
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-
-         if (onDashboard) {
-          window.location.href = "/post/";
-          return;
-        }
-         
-        if (typeof handlePostLogoutUI === "function") {
-          handlePostLogoutUI();
-        }
-      });
-    }
-  });
-})();
+// Initialize on load
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => window.initHeaderAuthUI());
+} else {
+    window.initHeaderAuthUI();
+}
 
 /* =========================================================
    POST PAGE : PIN CHECK (backend)
@@ -498,9 +550,13 @@ if (verifyOtpBtn) {
 
       // ✅ optional: successful login पर OTP lock clear कर दो
       clearLock(mobile);
+      if (window.resetOtpTimer) window.resetOtpTimer();
 
        setText(msgEl, "✅ Logged in");
-        updateHeaderAccountStatus();
+       // IMMEDIATELY UPDATE HEADER
+       if (window.initHeaderAuthUI) window.initHeaderAuthUI();
+       else updateHeaderAccountStatus();    
+       
       showPostForm();
     } catch (e) {
       console.error(e);
