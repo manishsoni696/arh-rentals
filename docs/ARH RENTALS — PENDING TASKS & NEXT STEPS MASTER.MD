@@ -1,23 +1,27 @@
-🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.8)
+🔐 ARH RENTALS — UPDATED PENDING TASKS & NEXT STEPS MASTER (v6.9)
 
-Last Updated: Jan 2026 (Jan 8, 2026)
-Note: v6.7 ka content fully retained.
-Sirf Post Property (Owner) module ke verified updates & pending items add kiye gaye hain.
-❌ Koi locked section change nahi hua.
+Last Updated: Jan 2026 (Jan 9, 2026)
+Note: v6.8 ka core content retained.
+Sirf Post Property (Owner) module + Auth Session UX ke updates reflected.
+❌ Koi locked business / UI section change nahi hua.
 
 🟡 Post Property (Owner) Page — Frontend
 
 Status: IN PROGRESS (ACTIVE)
 
-✅ CONFIRMED WORKING — STATUS UPDATE
+✅ CONFIRMED WORKING — STATUS UPDATE (UPDATED)
 
-Post Property page ka access flow verified working hai:
+Post Property page ka end-to-end gated flow verified & stable hai:
+
+✅ Access & Gating
 
 ✅ PIN Code check correctly work kar raha hai
 
 ✅ PIN verify ke baad hi Property Details form unlock hota hai
 
-PIN backend trigger methods (both working):
+✅ Phone number / OTP PIN ke baad hi maanga jata hai
+
+✅ PIN Backend Trigger
 
 Enter key press on PIN input ✅
 
@@ -27,12 +31,11 @@ Enter key press on PIN input ✅
 Ye behavior fully verified hai.
 👉 Koi auth / core flow change required nahi hai.
 
-📁 NEW FILE STRUCTURE — Post Property Module
+📁 Post Property Module — FILE STRUCTURE
 
-Status: ADDED & ACTIVE
-(Frontend-only modularization)
+Status: ADDED, ACTIVE & CONFIRMED
 
-Module Files
+Module Files (Frontend Only)
 post/index.html
 
 Purpose:
@@ -41,16 +44,15 @@ Post Property page ka HTML skeleton
 
 Complete form markup
 
-Rule (LOCKED):
+Rule (🔒 LOCKED):
 
 ❌ No big inline JS
 
-Reason: duplicate logic + future conflicts avoid karna
+Reason: duplicate logic & future conflicts avoid karna
 
 assets/post-property.js
 
-Purpose:
-Single-source JS for Post Property module:
+Purpose (Single Source JS):
 
 Form logic
 
@@ -62,11 +64,13 @@ Photo validation
 
 Frontend submit handling
 
-Rule (LOCKED):
+Auth-gate UI handling (PIN / OTP layer only)
 
-❌ Core auth logic ko touch nahi karega
+Rule (🔒 LOCKED):
 
-✅ Existing auth/session flow rely karega via assets/app.js
+❌ Core auth logic touch nahi karega
+
+✅ Existing session/auth flow rely karega via assets/app.js
 
 assets/styles.css (Scoped)
 
@@ -74,88 +78,109 @@ Purpose:
 
 Sirf Post Property page ke UI styles
 
-Scope rule (LOCKED):
+Scope Rule (🔒 LOCKED):
 
 .post-page { ... }
 
 
-❌ Listings / Pricing / other pages unaffected
+❌ Listings / Pricing / Demo unaffected
 
-🔒 Pricing FINAL LOCK block untouched and file ke end me hi rahega
+🔒 Pricing FINAL LOCK block untouched & file ke end me hi rahega
 
-✅ WHY THIS STRUCTURE WAS CREATED (RATIONALE)
+✅ WHY THIS STRUCTURE EXISTS (CONFIRMED)
 
 Inline JS removal discipline
-→ Issue A fix (duplicate & unsafe logic avoid)
 
-Clear separation of concerns:
+Core isolation:
 
-🔒 assets/app.js → Global auth / session / nav (LOCKED)
+🔒 assets/app.js → Global auth / session / header (LOCKED)
 
-🟡 assets/post-property.js → Post Property module only (SAFE)
+🟡 assets/post-property.js → Post Property only (SAFE)
 
-CSS isolation:
+CSS isolation via .post-page
 
-.post-page scoped styles
+Zero cross-page risk
 
-Zero cross-page CSS risk
-
-Future-ready:
+Future-ready for:
 
 Backend upload wiring
 
-Preview / plan integration
+Preview / plan selection
 
-All can plug in without touching locked core
+Without touching locked core
 
-🧾 CHANGE LOG
+🧾 CHANGE LOG — Post Property & Auth UX
 
-(Add under MASTER → “Change Log / Status Updates”)
+(MASTER → Change Log / Status Updates)
 
-Change Log — Post Property (Owner) Frontend
+📅 Date: Jan 9, 2026
 
-Date: Jan 8, 2026
 Status: 🟡 Active (Frontend finalize pending)
 
-Scope Files:
+✅ NEWLY COMPLETED & CONFIRMED
+🔐 Auth & Session UX
 
-post/index.html
+Global Logged-in status moved to HEADER (masked phone number)
 
-assets/post-property.js
+Header dropdown becomes active immediately after login on same page
 
-assets/styles.css (scoped only)
+No page navigation required to activate header auth UI
 
-✅ CONFIRMED STABLE
+Logout available only in header (not inside Post Property steps)
 
-PIN check step unlock works as expected
+🔐 Logout Behavior (FIXED)
 
-Backend PIN validation triggers via:
+Logout clears active session instantly
 
-Enter key
+On logout from Dashboard / My Listings:
 
-Button click
+User is immediately redirected out (protected route guard enforced)
 
-🟡 PENDING CHANGES — MUST FIX BEFORE MERGE (🔒 DISCIPLINE)
+Protected pages never remain accessible after logout
+
+🔐 Post Property Page — Logout Reset (FIXED)
+
+On logout while staying on Post Property page:
+
+PIN input cleared
+
+Phone number cleared
+
+OTP input cleared
+
+OTP step hidden
+
+Form locked again
+
+Draft data NOT deleted (remains intact)
+
+🔐 OTP UX Improvements (FIXED)
+
+OTP verification works via:
+
+Button click ✅
+
+Enter key press inside OTP input ✅
+
+OTP resend timer:
+
+Properly resets on logout
+
+Does not remain active after quick login-logout
+
+🟡 PENDING CHANGES — MUST FIX BEFORE MERGE (UPDATED)
 
 ❌ Remove inline JS from post/index.html
-(avoid duplicate logic)
-
 ❌ Amenities list must reuse FINAL amenities from Listings Filters
-(no invented keys / labels)
-
-❌ Add <body class="post-page">
-(required for scoped CSS to apply)
-
-❌ City value must be “Hisar”
-(Phase-1 only; helper text allowed)
-
-❌ Property Type option values must be:
+❌ Add <body class="post-page"> for scoped CSS
+❌ City value must be “Hisar” (Phase-1 only)
+❌ Property Type option values:
 
 Contract-stable enums (backend safe)
 
-User-friendly display labels
+User-friendly labels
 
-🟡 NEWLY LOGGED — NEXT AFTER ABOVE
+🟡 PLANNED — NEXT AFTER ABOVE
 Post Property Form Fields Changes (PLANNED)
 
 Scope: Frontend only
@@ -168,7 +193,7 @@ Options
 
 Validations
 
-❌ Core auth / listings / demo / pricing remain LOCKED
+❌ Core auth / listings / demo / pricing remain 🔒 LOCKED
 
 📌 Pending input required:
 Exact list of:
@@ -183,23 +208,21 @@ Option changes
 
 Validation rules
 
-(Changelog will be finalized after this input.)
-
-🔢 NEXT STEPS — ACTIVE NOTES (UPDATED)
+🔢 NEXT STEPS — ACTIVE NOTES (CLEANED)
 
 🔥 Priority unchanged:
 Post Property (Owner) page frontend finalize
 
 🔒 Auth untouched
 
-🔒 PIN behavior already verified working
+🔒 PIN behavior verified & locked
 
 Changes apply only to form layer
 
-✅ END — v6.8 MASTER UPDATE CONFIRMED
+✅ END — v6.9 MASTER UPDATE CONFIRMED
 🔐 CONFIRMATIONS
 
-❌ No UI wording / business rule changes
+❌ No business wording changes
 
 ❌ No core auth changes
 
@@ -207,4 +230,4 @@ Changes apply only to form layer
 
 ✅ Scoped CSS safe
 
-✅ Modular structure active
+✅ Modular Post Property structure active
