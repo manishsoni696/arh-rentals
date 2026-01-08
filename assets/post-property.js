@@ -687,6 +687,13 @@
     checkAndRestoreCloudDraft();
   }, 1000);
 
+  // Restore Event Listeners
+  if (categorySelect) categorySelect.addEventListener("change", handleCategoryChange);
+  if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", handlePropertyTypeChange);
+  if (photoInput) photoInput.addEventListener("change", handlePhotoChange);
+  if (extraNotes) extraNotes.addEventListener("input", updateNotesCount);
+  form.addEventListener("submit", handleSubmit);
+
   // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
   window.addEventListener("arh:logout", () => {
     const pinIn = document.getElementById("postPin");
