@@ -87,11 +87,22 @@ function markOtpSentOnce(mobile) {
    POST PAGE : PIN CHECK (backend)
 ========================================================= */
 const pinBtn = document.getElementById("pinCheckBtn");
+const pinEl = document.getElementById("postPin");
+const pinMsgEl = document.getElementById("postPinMsg");
+const step2El = document.getElementById("step2");
+
+if (step2El) {
+  const savedPincode = sessionStorage.getItem("arh_pincode");
+  if (savedPincode && savedPincode.length === 6) {
+    if (pinEl) pinEl.value = savedPincode;
+    setText(pinMsgEl, `✅ Service available for ${savedPincode}`);
+    step2El.style.display = "block";
+  }
+}
+
 if (pinBtn) {
   pinBtn.addEventListener("click", async () => {
-    const pinEl = document.getElementById("postPin");
-    const msgEl = document.getElementById("postPinMsg");
-    const step2El = document.getElementById("step2");
+    const msgEl = pinMsgEl;
 
     const pincode = normalizePincode(pinEl?.value);
 
