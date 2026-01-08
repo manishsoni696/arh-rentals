@@ -1,7 +1,9 @@
-🔐 ARH RENTALS — UPDATED MASTER (TASK 2 SOLVED + TRANSPARENCY PLANNING)
+🔐 ARH RENTALS — UPDATED MASTER CORE
+
+(Global Login + Dashboard + Modular Post Property Structure Integrated)
 
 Last Updated: Jan 2026
-Status: 🔒 CORE + 🔒 POST-UNLOCK RULES + 🔒 PRE-UNLOCK POPUP LOCKED
+Status: 🔒 CORE LOCKED + 🔒 POST-UNLOCK RULES LOCKED + 🔒 PRE-UNLOCK POPUP LOCKED
 
 0) PROJECT IDENTITY
 
@@ -117,13 +119,13 @@ Soft delete using deleted_at
 
 Hard delete buffer (7–15 days) → future decision
 
-5) OTP LOGIN SYSTEM (CURRENTLY IMPLEMENTED)
-5.1 PURPOSE (🔒 LOCKED)
+5) OTP LOGIN SYSTEM (CURRENT — 🔒 LOCKED)
+5.1 PURPOSE
 
 OTP is ONLY for login/session (phone ownership confirmation).
 OTP is NOT verification of owner or property.
 
-5.2 FLOW (SUMMARY)
+5.2 FLOW
 
 PIN check (Hisar only)
 
@@ -131,9 +133,9 @@ Send OTP
 
 Verify OTP
 
-Session token stored → localStorage.arh_token
+Session token → localStorage.arh_token
 
-5.3 OTP RULES (🔒 LOCKED)
+5.3 OTP RULES
 
 60 sec resend cooldown
 
@@ -141,9 +143,7 @@ Max 3 OTP in 4 hours per number
 
 OTP valid for 5 minutes
 
-Token stored locally
-
-5.4 FRONTEND STORAGE KEYS (🔒 LOCKED)
+5.4 FRONTEND STORAGE KEYS (LOCKED)
 
 localStorage
 
@@ -161,21 +161,111 @@ arh_pincode
 
 arh_mobile
 
+5A) GLOBAL LOGIN SYSTEM + DASHBOARD (NEW — 🔒 LOCKED)
+5A.1 PURPOSE
+
+Hisar eligibility enforce karna
+
+Owners ko apni sari listings ek jagah dikhana
+
+OTP ko sirf login/session tak limit rakhna
+
+❌ Verification nahi
+❌ Ownership certification nahi
+
+5A.2 MANDATORY ACCESS FLOW
+
+Strict order (non-negotiable):
+
+PIN Code Check (Hisar only)
+
+Mobile + OTP Login
+
+Dashboard Access
+
+❌ PIN ke bina login nahi
+❌ Login ke bina dashboard nahi
+
+5A.3 DIRECT /dashboard ACCESS GUARDS
+
+PIN missing → PIN Gate redirect
+
+PIN ok, token missing/invalid → OTP login
+
+PIN + valid token → Dashboard open
+
+5A.4 DASHBOARD SCOPE (LOCKED)
+
+Default View: My Listings
+
+Filter: owner_mobile = logged-in mobile
+
+Show:
+
+Plan type
+
+Expiry date
+
+Status:
+
+Active
+
+Hidden (expired)
+
+Rented / Not available (future)
+
+Rules:
+
+Same mobile = multiple listings allowed
+
+Each listing = separate plan
+
+Expired listings:
+
+Public → hidden
+
+Dashboard → visible
+
+5A.5 DASHBOARD ACTIONS
+
+Post New Property → /post
+
+Renew property (property-specific)
+
+View listing status
+
+❌ No verification
+❌ No guarantees
+
+5A.6 DASHBOARD FILE STRUCTURE
+/dashboard/index.html
+/assets/dashboard.js
+
+
+Rules:
+
+❌ No inline JS
+
+✅ Existing auth/session via assets/app.js
+
 6) FRONTEND FILE STRUCTURE (LIVE)
 /index.html              → Home
 /listings/index.html     → Listings
 /pricing/index.html      → Plans
-/post/index.html         → Post flow (PIN + OTP)
+/post/index.html         → Post Property (PIN + OTP)
+/dashboard/index.html    → Owner Dashboard
 /legal/index.html        → Legal & disclaimers
 
 /assets/
-  app.js                 → OTP + PIN + pricing logic
-  styles.css             → All styling
+  app.js                 → Global auth / PIN / OTP / nav (LOCKED)
+  post-property.js       → Post Property module JS
+  dashboard.js           → Dashboard logic
+  styles.css             → All styling (scoped rules)
   arh-logo.png
 
 7) BACKEND (Cloudflare Worker)
 
-Endpoints
+Endpoints:
 
 GET /check-pincode?pincode=XXXXXX
 
@@ -185,601 +275,89 @@ POST /verify-otp
 
 GET /me
 
-Auth
+Auth:
 
 Authorization: Bearer <arh_token>
 
 8) PRICING PAGE — ✅ FIXED (TASK 2 SOLVED)
 
-File: /pricing/index.html
+(No change — LOCKED & WORKING)
 
-Required DOM (🔒 LOCKED)
-<section class="grid-3" id="pricingGrid">
-  <article class="card" data-plan="basic|premium|pro">
-    <button class="btn btn-primary select-btn" type="button">
-      Select Plan
-    </button>
-  </article>
-</section>
+9) MOBILE MENU STATUS (🔒 LOCKED & STABLE)
 
-Intended Behavior (NOW WORKING)
-
-Card OR button click:
-
-Adds .selected
-
-Button text → Selected
-
-Other cards reset
-
-Default on load:
-
-Premium selected
-
-Fix Applied:
-Selected-state CSS placed at END of styles.css as final override.
-
-✅ Selection works
-✅ Highlight visible
-
-9) MOBILE MENU STATUS (STABLE)
-
-Works on:
-
-Home ✅
-
-Pricing ✅
-
-Listings ✅
-
-Legal ✅
-
-Strategy (🔒 LOCKED):
+CSS-only using body.nav-open
 
 ❌ No HTML restructure
 
-❌ No new toggle JS
+❌ No new JS toggle
 
-✅ CSS-only visibility using body.nav-open
+10) LEGAL PAGE — FINAL (🔒 LOCKED)
 
-10) LEGAL PAGE — FINAL (READY)
+/legal/index.html
 
-File: /legal/index.html
+Disclaimer mandatory
 
-Content remains as locked master
+Copy frozen
 
-Disclaimer usage mandatory
+11) 📁 POST PROPERTY MODULE — MODULAR STRUCTURE (NEW — 🔒 LOCKED)
+Files
+/post/index.html
 
-11) NEXT PHASE (REFERENCE ONLY — NOT IMPLEMENTED)
+HTML skeleton + complete form markup
 
-Tables created: payments, credits, listings, users, sessions, otps
+❌ No big inline JS
 
-Payment → 1 credit → publish consumes credit
+/assets/post-property.js
 
-Expiry cron → future
+Single-source JS for:
 
-12) UPDATED PENDING TASKS (PRIORITY ORDER)
-🔴 PRIORITY 1 — STABILITY & SAFETY
+Form logic
 
-Freeze CSS base (add-only)
+Draft save / restore
 
-Session & OTP backend validation
+Amenities rendering
 
-Post flow validation & error feedback
+Photo validation
 
-🟠 PRIORITY 2 — CORE BUSINESS PAGES
-
-Legal page linking + footer path fixes
-
-Plans page copy polish (clarity + CTA intent)
-
-🟡 PRIORITY 3 — SEO & DISCOVERABILITY
-
-Google Search Console review
-
-On-page SEO audit
-
-🔵 PRIORITY 4 — UX BOOSTERS
-
-WhatsApp / Call CTA logic
-
-Micro-UX consistency (hover / disabled / loading)
-
-⚪ PRIORITY 5 — FUTURE (DO NOT START)
-
-Dashboard
-
-AI listing assistant
-
-Subscriptions
-
-Analytics
-
-13) BROKER-LISTED PROPERTY TRANSPARENCY (NEW — PLANNED)
-13.1 PROBLEM STATEMENT
-
-Sometimes a tenant unlocks contact and discovers:
-
-Property was posted by a broker
-
-Caller is not the owner
-
-This reduces trust and conflicts with ARH Rentals’ goal:
-Genuine Owner ↔ Genuine Tenant
-
-13.2 CORE PRINCIPLE (🔒 LOCKED)
-
-ARH Rentals will NOT auto-block brokers,
-but will enforce transparent disclosure when identified.
-
-No silent allowance.
-No false owner positioning.
-
-13.3 USER-REPORTED BROKER FLAG
-
-Tenants may optionally mark:
-
-“This property is listed by a broker, not an owner”
-
-Purpose:
-
-Transparency only
-
-No accusation
-
-No penalty
-
-13.4 LISTING VISIBILITY TAG
-
-After threshold (future logic):
-
-⚠️ This property is listed by a broker, not directly by the owner
-
-Neutral language only.
-No verification claim.
-
-13.5 DISCLAIMER WITH TAG (MANDATORY)
-
-ARH Rentals does not verify whether a listing is posted by an owner or broker.
-This label is based on user feedback and shown for transparency only.
-
-13.6 INTERNAL SIGNALS (FUTURE — INDICATIVE ONLY)
-
-Multiple tenant reports
-
-Same phone posting many listings
-
-High-volume posting patterns
-
-⚠️ Indicators only — NOT proof
-
-13.7 BUSINESS & LEGAL SAFETY
-
-✔ Zero-responsibility model preserved
-✔ No verification burden
-✔ No legal exposure
-✔ Improves trust naturally
-
-13.8 UI / UX IDEA (FUTURE)
-
-Small ⚠️ info badge
-
-Grey (not red)
-
-Tooltip explanation
-
-Visible before contact unlock
-
-❌ No popups
-❌ No blocking
-❌ No warnings
-
-13.9 OPTIONAL FUTURE IDEAS (REFERENCE ONLY)
-
-“Owner-posted” self-declaration checkbox
-
-Owner-like / Agent-like confidence hint
-
-Filter: “Prefer owner-posted listings”
-
-⚠️ None active or promised
-
-13.10 STATUS
-
-🟡 PLANNED — NOT IMPLEMENTED
-🟡 Logic & UX to be refined later
-🟡 May evolve with better data
-
-14) DEAL UNLOCK KE BAAD AVAILABILITY SCENARIOS (🔒 LOCKED)
-14.1 SCOPE
-
-Deal unlock ke baad agar:
-
-Property pehle hi rent pe chadh chuki ho, ya
-
-Owner ka rent dene ka decision change ho gaya ho
-
-to ye scenario valid mana jayega.
-
-14.2 CORE RULE (NON-NEGOTIABLE)
-
-Deal unlock sirf contact access deta hai.
-Property availability, owner intent ya deal outcome ki koi guarantee nahi hoti.
-
-ARH Rentals:
-
-Availability ka promise nahi karta
-
-Owner ke decision ke liye responsible nahi hota
-
-Timing ya market movement control nahi karta
-
-(Zero Responsibility Model fully applicable)
-
-14.3 TENANT FEEDBACK (POST-UNLOCK)
-
-Tenant ke paas simple options honge:
-
-“Property already rented”
-
-“Owner not interested in renting now”
-
-Purpose:
-
-Transparency
-
-Duplicate unlocks avoid karna
-
-Listing hygiene improve karna
-
-14.4 LISTING BEHAVIOR (SYSTEM)
-
-Agar listing “Not Available” mark hoti hai:
-
-Listing temporarily hidden / paused ho jayegi
-
-Public listing se remove ho jayegi
-
-Further unlocks avoid honge
-
-14.5 OWNER RE-CONFIRMATION
-
-Owner ko simple choice milegi:
-
-Still available – Reactivate listing
-
-Not available – Close listing
-
-❌ No verification
-❌ No penalty
-❌ No forced action
-
-14.6 REFUND / CREDIT (REFERENCE ONLY)
-
-Unlock = contact access only
-
-Availability guarantee nahi
-
-Optional future goodwill:
-
-Limited-time report ke case me small credit / coupon
-
-Not promised, not guaranteed
-
-14.7 LOCK STATUS
-
-🔒 RULE FINAL & LOCKED
-🔒 Implementation flexible, principle frozen
-
-🔒 SUMMARY (LOCKED)
-
-Deal unlock sirf contact access deta hai.
-Property availability owner ke control me hoti hai.
-Unavailable mark hone par listing temporarily hide kar di jati hai jab tak owner re-confirm na kare.
-
-15) DEAL UNLOCK SE PEHLE MANDATORY NOTICE (POPUP) (🔒 LOCKED)
-15.1 PURPOSE (LOCKED)
-
-Deal unlock se pehle tenant ko short, clear aur unavoidable notice dena mandatory hai taaki:
-
-Galat expectations na bane
-
-Availability guarantee na samjhi jaye
-
-Platform ki legal position clear rahe
-
-15.2 POPUP TRIGGER (LOCKED)
-
-Popup har baar dikhega jab user:
-
-👉 Deal Unlock / Contact Unlock par click kare
-
-Popup accept kiye bina unlock continue nahi hoga.
-
-15.3 POPUP CONTENT (FINAL — 🔒 LOCKED COPY)
-
-Title:
-🔔 Important Notice (Please Read)
-
-Message (short & readable):
-
-This unlock gives contact access only.
-
-Property availability is not guaranteed.
-
-Property may already be rented or owner may decline.
-
-ARH Rentals is an information-access platform only.
-
-Footer (small text):
-Users must independently verify all details.
-
-Buttons:
-✅ I Understand & Continue
-❌ Cancel
-
-15.4 DESIGN RULES (LOCKED)
-
-✔ Max 4 bullet points
-✔ No scrolling
-✔ Plain language
-✔ Mobile-friendly
-✔ Neutral tone
-
-❌ No long text
-❌ No hidden conditions
-❌ No aggressive warning
-
-15.5 LEGAL & BUSINESS SAFETY (LOCKED)
-
-✔ Explicit user consent before unlock
-✔ Zero-responsibility model reinforced
-✔ Refund / dispute risk minimized
-
-15.6 RELATION WITH OTHER RULES
-
-This popup supports and strengthens:
-
-Section 1 — Zero Responsibility Model
-
-Section 13 — Broker-Listed Transparency
-
-Section 14 — Post-Unlock Availability Rules
-
-No conflict with any locked section.
-
-15.7 LOCK STATUS
-
-🔒 FINAL & LOCKED
-🔒 Copy frozen
-🔒 Mandatory in all unlock flows
-
-16) OWNER COMMUNICATION, STATUS UPDATES & EXPIRY REMINDERS (NEW — 🔒 LOCKED)
-16.1 PROPERTY LISTING CONFIRMATION MESSAGE (OWNER)
-
-Jab koi owner apni property ARH Rentals par successfully list karta hai:
-
-✔ Owner ko confirmation message (SMS / WhatsApp) milega
-✔ Message ka purpose:
-
-Listing acknowledgement
-
-Transparency
-
-Future communication base
-
-Message will include (short & clear):
-
-Confirmation that property is listed on ARH Rentals
-
-Platform name (ARH Rentals / Anjani Real Heights)
-
-Clear statement: “This is an advertisement listing only”
-
-16.2 TERMS & DISCLAIMER COMMUNICATION (SAFE APPROACH)
-
-SMS / WhatsApp me full Terms & Conditions dena practical nahi hai.
-
-Final approach (🔒 LOCKED):
-
-Message me short disclaimer line
-
-Saath me Terms & Legal page ka link
-
-Example intent (not copy):
-
-“By listing, you agree to platform terms. Read full terms here: [link]”
-
-✔ Legally safe
-✔ Readable
-✔ Industry-standard
-
-16.3 OWNER PROPERTY STATUS CHANGE (PLANNED — 🔒 LOCKED)
-
-Owner future me apni property ka status change kar sakta hai:
-
-Possible statuses:
-
-Available
-
-Rented
-
-Not available
+Frontend submit handling
 
 Rules:
 
-Status change owner ke control me rahega
+❌ Core auth logic touch nahi karega
 
-ARH Rentals status verify nahi karega
+✅ assets/app.js par rely karega
 
-Status sirf visibility control ke liye hoga
+/assets/styles.css (Scoped)
 
-16.4 EXPIRY REMINDER TO OWNER (IMPORTANT — 🔒 LOCKED)
+.post-page { … } only
 
-Property plan expiry se pehle reminder bheja jayega.
+❌ Other pages affected nahi honge
 
-Reminder intent:
+🔒 Pricing FINAL LOCK block file ke end me untouched
 
-“Your property listing is about to expire”
+WHY THIS STRUCTURE (RATIONALE — LOCKED)
 
-“If property is still available, you may renew”
+Inline JS removal discipline
 
-“If not renewed, listing will be automatically hidden”
+Clear separation of concerns
 
-✔ No pressure
-✔ No misleading urgency
-✔ Clear outcome explained
+CSS isolation
 
-16.5 AUTO-EXPIRY BEHAVIOR (RECONFIRMATION)
+Zero cross-page risk
 
-Agar owner:
+Future backend-ready
 
-Renew nahi karta
+12) UPDATED PENDING TASKS (UNCHANGED)
 
-Ya property already rented hai
+Priority list same as before
+(Dashboard implementation future phase)
 
-To:
+🔒 FINAL MASTER CONFIRMATION
 
-Listing automatically portal se hide ho jayegi
+Zero Responsibility Model intact
 
-Public users ko visible nahi rahegi
+No verification / guarantee introduced
 
-(No deletion promise, only visibility control)
+Dashboard = convenience layer only
 
-16.6 RENEW OPTION (PROPERTY-SPECIFIC — 🔒 LOCKED)
-
-Renewal:
-
-Same property ke liye hoga
-
-Same owner ke context me
-
-New plan = new validity
-
-Rules:
-
-No auto-renew (unless decided later)
-
-Owner ki explicit action required
-
-16.7 COMMUNICATION CHANNELS (FLEXIBLE)
-
-Future me use ho sakta hai:
-
-SMS
-
-WhatsApp
-
-On-site dashboard notification
-
-(Exact channel decision later)
-
-16.8 ZERO RESPONSIBILITY ALIGNMENT
-
-✔ ARH Rentals availability guarantee nahi karta
-✔ Owner decisions platform ke control me nahi
-✔ Reminders sirf information ke liye
-
-Legal & business position unchanged.
-
-16.9 STATUS
-
-🔒 PRINCIPLES & FLOW LOCKED
-🟡 Exact message copy & timing later decide honge
-🟡 Implementation future phase
-
-🔒 SUMMARY LINE (MASTER SAFE)
-
-Property list hone par owner ko confirmation message milega.
-Terms ke liye link diya jayega.
-Expiry se pehle reminder jayega.
-Renew na karne par listing automatically hide ho jayegi.
-Status control owner ke paas rahega.
-
-🔒 FINAL CONFIRMATION
-
-Section 14 LOCKED
-
-Section 15 LOCKED
-
-Future changes sirf implementation level par ho sakte hain
-
-Principles, wording aur intent change nahi honge
-
-🔒 FINAL LOCK NOTE
-
-This transparency feature:
-
-Does NOT certify owners
-
-Does NOT verify listings
-
-Does NOT change ARH Rentals’ legal position
-
-It exists only to improve user awareness.
-
-FEATURE (FUTURE) — LISTING STATUS + COMMUNITY REPORTING + AUTO-HIDE (REFERENCE ONLY — NOT ACTIVE)
-
-Goal:
-
-If property is rented, listing must be hidden fast to avoid bad user experience.
-
-Make it owner-driven by default, with a backup user-report flow.
-
-Keep everything automatic as much as possible, but business-safe.
-
-A) OWNER RENEW / STATUS REMINDER (AUTOMATION)
-
-When plan renewal reminder is sent, include a mandatory line:
-“If your property is already rented, update status on portal so it gets hidden.”
-
-Owner actions:
-
-“Mark as Rented” → Listing hidden from public listings immediately
-
-“Still Available” → Listing stays live + renewal flow continues
-
-B) USER REPORT FLOW (WHEN TENANT FINDS LISTING IS ALREADY RENTED)
-User option:
-
-“Report: Already Rented / Not Available” request submit on portal
-
-System behavior:
-
-Create a “Status Change Request” against that listing
-
-Notify owner via SMS/WhatsApp/email (final channel decision later)
-
-Owner must confirm:
-
-“Yes, rented” → listing hidden
-
-“No, still available” → listing remains, request closed
-
-Business-safety rules:
-
-No automatic hide on user report without owner confirmation (avoid misuse)
-
-Rate-limit reports per user/device
-
-Keep audit log: who reported + when + owner response
-
-Dependencies (later):
-
-Listing model needs: status (available/rented/hidden), lastVerifiedAt, reportCount
-
-Simple owner confirmation link flow (token-based)
-
-Admin fallback (manual override) only if needed
-
-SMS / WhatsApp Templates (APPROVAL REQUIRED — PENDING)
-
-Owner reminder + status check (Renewal)
-
-Owner confirmation request (User reported “Already rented”)
-
-Owner confirmation success (Listing hidden)
-
-Owner rejected report (Listing stays live)
-
-User acknowledgement (Report received; waiting owner confirmation)
+All LOCKED wording & intent preserved
