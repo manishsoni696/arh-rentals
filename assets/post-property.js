@@ -27,8 +27,8 @@ index 8b137891791fe96927ad78e64b0aad7bded08bdc..d9931953ac57144cc2f0527bb4261940
 +  };
 +
 +  const propertyTypeGroups = {
-+    residential: ["Apartment", "Independent House", "Builder Floor"],
-+    commercial: ["Shop", "Office", "Showroom", "Warehouse"]
++    residential: ["flat", "house", "pg"],
++    commercial: ["shop", "office", "showroom", "warehouse"]
 +  };
 +
 +  const bytesToKb = (bytes) => Math.round(bytes / 1024);
