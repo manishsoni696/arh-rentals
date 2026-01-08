@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard • ARH Rentals</title>
+  <link rel="stylesheet" href="/assets/styles.css"/>
+</head>
+
+<body class="dashboard-page">
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="/">
+      <img class="brand-logo" src="/assets/arh-logo.png" alt="ARH Rentals Logo">
+      <div class="brand-title">
+        <strong>ARH Rentals</strong>
+        <span>by Anjani Real Heights</span>
+      </div>
+    </a>
+
+    <nav class="menu" id="primary-navigation" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/listings">Listings</a>
+      <a href="/pricing">Plans</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/legal">Legal</a>
+      <a class="btn btn-primary" href="/post">Post Property</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h2 style="margin:0">Dashboard</h2>
+    <p class="sub" style="margin-top:8px">
+      Access your listings linked to this mobile login.
+    </p>
+  </section>
+
+  <section class="card" id="dashboardLogin" style="margin-top:16px;display:none">
+    <div class="card-body" style="display:grid;gap:14px">
+      <div>
+        <h3 style="margin:0">Login to Continue</h3>
+        <p class="sub" style="margin:6px 0 10px">
+          Enter your mobile number to receive a login OTP. This is for session access only.
+        </p>
+      </div>
+      <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+        <label class="field">
+          <span class="small">Mobile Number</span>
+          <input class="input" id="dashMobileInput" inputmode="numeric" maxlength="10" placeholder="e.g., 98XXXXXX10"/>
+        </label>
+        <div style="display:flex;align-items:flex-end;gap:10px">
+          <button type="button" class="btn btn-primary" id="dashSendOtpBtn">Send OTP</button>
+          <span id="dashOtpMsg" class="small" aria-live="polite"></span>
+        </div>
+      </div>
+      <div id="dashOtpVerifyBox" style="display:none;margin-top:12px">
+        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <label class="field">
+            <span class="small">OTP</span>
+            <input class="input" id="dashOtpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP"/>
+          </label>
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <button type="button" class="btn btn-primary" id="dashVerifyOtpBtn">Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="dashboardListings" style="margin-top:16px;display:none">
+    <div class="card-body" style="display:grid;gap:14px">
+      <div class="dashboard-head">
+        <div>
+          <h3 style="margin:0">My Listings</h3>
+          <p class="sub" style="margin:6px 0 0">
+            Listings submitted with this mobile are shown here.
+          </p>
+        </div>
+        <div class="dashboard-actions">
+          <a class="btn btn-primary" href="/post/">Post New Property</a>
+          <button type="button" class="btn" id="dashboardLogout">Logout</button>
+        </div>
+      </div>
+      <div id="dashboardStatus" class="small" aria-live="polite"></div>
+      <div id="dashboardList" class="dashboard-list"></div>
+      <div id="dashboardEmpty" class="dashboard-empty" style="display:none">
+        No listings found for this mobile.
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/assets/app.js"></script>
+<script src="/assets/dashboard.js"></script>
+</body>
+</html>
