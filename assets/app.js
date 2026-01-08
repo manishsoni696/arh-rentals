@@ -93,6 +93,7 @@ const pinMsgEl = document.getElementById("postPinMsg");
 const step2El = document.getElementById("step2");
 const otpStepEl = document.getElementById("otpStep");
 const afterLoginBox = document.getElementById("afterLoginBox");
+const otpGateEnabled = Boolean(otpStepEl);
 const sessionInfoEl = document.getElementById("sessionInfo");
 const sessionPhoneEl = document.getElementById("sessionPhone");
 const SESSION_MOBILE_KEY = "arh_session_mobile"; // stored in localStorage for login display
@@ -125,6 +126,10 @@ function hideSessionInfo() {
 }
 
 function showOtpStep() {
+   if (!otpGateEnabled) {
+    showPostForm();
+    return;
+  }
   if (otpStepEl) otpStepEl.style.display = "block";
   if (afterLoginBox) afterLoginBox.style.display = "none";
     hideSessionInfo();
@@ -148,7 +153,7 @@ if (step2El) {
     if (pinEl) pinEl.value = savedPincode;
     setText(pinMsgEl, `✅ Service available for ${savedPincode}`);
     step2El.style.display = "block";
-      if (hasActiveSession()) {
+      if (!otpGateEnabled || hasActiveSession()) {
       showPostForm();
     } else {
       showOtpStep();
@@ -181,7 +186,7 @@ resetPostGate();
       setText(msgEl, `✅ Service available for ${pincode}`);
       if (step2El) step2El.style.display = "block";
       sessionStorage.setItem("arh_pincode", pincode);
-       if (hasActiveSession()) {
+       if (!otpGateEnabled || hasActiveSession()) {
         showPostForm();
       } else {
         showOtpStep();
