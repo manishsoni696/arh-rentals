@@ -344,8 +344,15 @@ if (verifyOtpBtn) {
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     clearSession();
-    window.location.href = "/";
+    window.location.href = "/post/";
   });
 }
+
+// Ensure guard runs on back/forward navigation (BFCache)
+window.addEventListener("pageshow", (event) => {
+  // If persisted (from cache) or just normal load, re-run init logic
+  // "initDashboard" handles the checks safely
+  initDashboard();
+});
 
 document.addEventListener("DOMContentLoaded", initDashboard);
