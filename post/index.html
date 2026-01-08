@@ -77,7 +77,44 @@
   <div id="draftGate" style="margin-top:16px;display:none"></div>
   
   <div id="step2" style="display:none">
+     <section class="card" id="otpStep" style="margin-top:16px;display:none">
+      <div class="card-body" style="display:grid;gap:14px">
+        <div>
+          <h3 style="margin:0">2) Login with OTP</h3>
+          <p class="sub" style="margin:6px 0 10px">
+            PIN verify ke baad login zaroori hai. Apna mobile number dalein aur OTP se login karein.
+          </p>
+        </div>
+        <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <label class="field">
+            <span class="small">Mobile Number</span>
+            <input class="input" id="mobileInput" inputmode="numeric" maxlength="10" placeholder="e.g., 98XXXXXX10"/>
+          </label>
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <button type="button" class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
+            <span id="otpMsg" class="small" aria-live="polite"></span>
+          </div>
+        </div>
+        <div id="otpVerifyBox" style="display:none;margin-top:12px">
+          <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+            <label class="field">
+              <span class="small">OTP</span>
+              <input class="input" id="otpInput" inputmode="numeric" maxlength="6" placeholder="Enter OTP"/>
+            </label>
+            <div style="display:flex;align-items:flex-end;gap:10px">
+              <button type="button" class="btn btn-primary" id="verifyOtpBtn">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <div id="afterLoginBox" style="display:none">
+      <div id="sessionInfo" class="card" style="margin-top:16px;display:none">
+        <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span id="sessionPhone" class="small muted">Logged in</span>
+          <button type="button" class="btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
       <form id="postPropertyForm" class="card" style="margin-top:16px">
     <div class="card-body" style="display:grid;gap:18px">
       <section aria-labelledby="basics-title">
