@@ -140,6 +140,12 @@ textarea.input:focus {
   word-break: break-word;
 }
 
+/* Hide when empty to prevent "alien block" appearance */
+#otpMsg:empty,
+#postPinMsg:empty {
+  display: none;
+}
+
 /* ============ Header / Nav (works across pages) ============ */
 .site-header {
   position: sticky;
