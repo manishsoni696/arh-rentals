@@ -568,6 +568,125 @@
   updateNotesCount();
   renderPhotoErrors([]);
 
+  // =========================================================================
+  // CLOUD DRAFT Functions
+  // =========================================================================
+
+  const handleSaveCloudDraft = async () => {
+    if (!isLoggedIn()) {
+      formMsg.textContent = "❌ Please login (PIN + OTP) to save cloud draft";
+      return;
+    }
+
+    formMsg.textContent = "⏳ Saving cloud draft...";
+
+    try {
+      const draftData = getFormData();
+      const draftJson = JSON.stringify(draftData);
+
+      const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`
+        },
+        body: JSON.stringify({ draft_json: draftJson })
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Cloud draft save failed");
+      }
+
+      formMsg.textContent = "✅ Cloud draft saved";
+      setTimeout(() => {
+        formMsg.textContent = "";
+      }, 3000);
+    } catch (error) {
+      console.error("Cloud draft save error:", error);
+      formMsg.textContent = `❌ ${error.message}`;
+    }
+  };
+
+  const checkAndRestoreCloudDraft = async () => {
+    if (!isLoggedIn()) return;
+
+    // Check if we already showed prompt in this session
+    const promptShown = sessionStorage.getItem(CLOUD_DRAFT_KEY);
+    if (promptShown) return;
+
+    try {
+      const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/latest`, {
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`
+        }
+      });
+
+      const data = await res.json();
+      if (!data.success || !data.draft) return;
+
+      // Mark prompt as shown for this session
+      sessionStorage.setItem(CLOUD_DRAFT_KEY, "true");
+
+      // Show restore prompt
+      const confirmRestore = confirm(
+        "Cloud draft found from another device/session. Restore it?\n\n" +
+        "Click OK to restore, Cancel to keep current form."
+      );
+
+      if (confirmRestore) {
+        const draftData = JSON.parse(data.draft);
+        setFormData(draftData);
+        formMsg.textContent = "✅ Cloud draft restored";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      }
+    } catch (error) {
+      console.error("Cloud draft restore error:", error);
+    }
+  };
+
+  const deleteCloudDraft = async () => {
+    if (!isLoggedIn()) return;
+
+    try {
+      await fetch(`${DASHBOARD_BACKEND}/api/drafts/delete`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`
+        }
+      });
+    } catch (error) {
+      console.error("Cloud draft delete error:", error);
+    }
+  };
+
+  // Update save draft button to save both local + cloud
+  if (saveDraftBtn) {
+    saveDraftBtn.addEventListener("click", async () => {
+      // Always save local draft
+      const draftData = getFormData();
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+
+      // If logged in, also save to cloud
+      if (isLoggedIn()) {
+        await handleSaveCloudDraft();
+      } else {
+        formMsg.textContent = "Draft saved locally (login for cloud backup)";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      }
+    });
+  }
+
+  // Check for cloud draft after page load (when user is logged in)
+  // This runs after PIN + OTP login
+  setTimeout(() => {
+    checkAndRestoreCloudDraft();
+  }, 1000);
+
   // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
   window.addEventListener("arh:logout", () => {
     const pinIn = document.getElementById("postPin");
