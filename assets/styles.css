@@ -142,7 +142,8 @@ textarea.input:focus {
 
 /* Hide when empty to prevent "alien block" appearance */
 #otpMsg:empty,
-#postPinMsg:empty {
+#postPinMsg:empty,
+#dashOtpMsg:empty {
   display: none;
 }
 
@@ -1500,7 +1501,7 @@ button.account-link {
   gap: 18px;
 }
 
-.post-page #postPropertyForm .card-body > section {
+.post-page #postPropertyForm .card-body>section {
   border: 1px solid rgba(255, 255, 255, .08);
   border-radius: 16px;
   padding: 16px;
@@ -1508,10 +1509,10 @@ button.account-link {
   box-shadow: 0 14px 28px rgba(0, 0, 0, .25);
 }
 
-.post-page #postPropertyForm .card-body > section[aria-labelledby="amenities-title"],
-.post-page #postPropertyForm .card-body > section[aria-labelledby="photos-title"],
-.post-page #postPropertyForm .card-body > section[aria-labelledby="notes-title"],
-.post-page #postPropertyForm .card-body > section[aria-labelledby="declaration-title"],
+.post-page #postPropertyForm .card-body>section[aria-labelledby="amenities-title"],
+.post-page #postPropertyForm .card-body>section[aria-labelledby="photos-title"],
+.post-page #postPropertyForm .card-body>section[aria-labelledby="notes-title"],
+.post-page #postPropertyForm .card-body>section[aria-labelledby="declaration-title"],
 .post-page #postPropertyForm .actions {
   grid-column: 1 / -1;
 }
@@ -1598,7 +1599,7 @@ button.account-link {
 
 .post-page #photoErrors,
 .post-page #formErrorSummary {
-   display: none;
+  display: none;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid rgba(255, 99, 99, .35);
