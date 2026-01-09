@@ -249,7 +249,7 @@ export default {
             // ✅ Create session token with expiry (TESTING: 2 min | PRODUCTION: 2 hours)
             const token = crypto.randomUUID();
             const tokenHash = await sha256(token);
-            const expiresAt = now + (2 * 60 * 1000); // TESTING: 2 minutes (PRODUCTION: 2 * 60 * 60 * 1000)
+            const expiresAt = now + (2 * 60 * 60 * 1000); // 2 hours
 
             await env.DB.prepare(`
         INSERT INTO sessions (token_hash, phone, created_at, expires_at)
