@@ -525,10 +525,24 @@
       updateNotesCount();
     };
 
-    const handleSaveDraft = (event) => {
+    const handleSaveDraft = async (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
-      saveDraft();
+
+      // Always save local draft
+      const draftData = getFormData();
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+      toggleDraftNotice(true);
+
+      // If logged in, also save to cloud
+      if (isLoggedIn()) {
+        await handleSaveCloudDraft();
+      } else {
+        formMsg.textContent = "Draft saved locally (login for cloud backup)";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      }
     };
 
     categorySelect?.addEventListener("change", handleCategoryChange, true);
@@ -660,37 +674,11 @@
       }
     };
 
-    // Update save draft button to save both local + cloud
-    if (saveDraftBtn) {
-      saveDraftBtn.addEventListener("click", async () => {
-        // Always save local draft
-        const draftData = getFormData();
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
-
-        // If logged in, also save to cloud
-        if (isLoggedIn()) {
-          await handleSaveCloudDraft();
-        } else {
-          formMsg.textContent = "Draft saved locally (login for cloud backup)";
-          setTimeout(() => {
-            formMsg.textContent = "";
-          }, 3000);
-        }
-      });
-    }
-
     // Check for cloud draft after page load (when user is logged in)
     // This runs after PIN + OTP login
     setTimeout(() => {
       checkAndRestoreCloudDraft();
     }, 1000);
-
-    // Restore Event Listeners
-    if (categorySelect) categorySelect.addEventListener("change", handleCategoryChange);
-    if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", handlePropertyTypeChange);
-    if (photoInput) photoInput.addEventListener("change", handlePhotoChange);
-    if (extraNotes) extraNotes.addEventListener("input", updateNotesCount);
-    form.addEventListener("submit", handleSubmit);
 
     // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
     window.addEventListener("arh:logout", () => {
@@ -736,9 +724,20 @@
       });
     }
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
+    // [New] ISSUE 3: PIN Form Submit Prevention (moved from inline script)
+    const pinFormEl = document.getElementById("pinCheckForm");
+    if (pinFormEl) {
+      pinFormEl.addEventListener("submit", (event) => {
+        event.preventDefault();
+        document.getElementById("pinCheckBtn")?.click();
+      });
     }
-  })();
+  };
+
+  // Initialize on DOM ready or immediately if DOM is already loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
