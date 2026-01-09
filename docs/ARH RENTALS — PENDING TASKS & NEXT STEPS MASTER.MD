@@ -333,3 +333,21 @@ Status: 🟡 Pending
 
 हमारी chat में verify हुआ
 कुछ चीज़ें (जैसे domain replace apply हुआ या inline JS पूरी तरह हट गया) की final confirmation अभी आपके next reload + network status से होगी.
+
+✅ MARKED + LOCKED
+
+🔒 Cloudflare Worker (NEW) — LOCKED ENTRY
+
+Worker Name: arh-dashboard
+
+URL: https://arh-dashboard.manishsoni696.workers.dev
+
+Status: ✅ Created (confirmed)
+
+🔐 LOCK RULE (IMPORTANT)
+
+arh-dashboard ko Draft / Upload / Listings APIs ke base URL ke तौर पर use nahi karna (CSP me allow backend worker hi hai),
+
+Jab tak owner explicitly na bole ki APIs isi worker par shift करनी हैं.
+
+Aage se master / tracking me isko LOCKED component maan kar hi treat karunga.
