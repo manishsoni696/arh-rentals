@@ -298,6 +298,12 @@ if (document.readyState === "loading") {
 
   function getLastActivity() {
     const timestamp = localStorage.getItem(ACTIVITY_KEY);
+    if (!timestamp && localStorage.getItem("arh_token")) {
+      // Defensive: token exists but no activity timestamp - initialize now
+      const now = Date.now();
+      localStorage.setItem(ACTIVITY_KEY, String(now));
+      return now;
+    }
     return timestamp ? Number(timestamp) : Date.now();
   }
 
@@ -305,7 +311,7 @@ if (document.readyState === "loading") {
     const now = Date.now();
     // Throttle updates to reduce localStorage writes
     if (now - lastUpdateTime < ACTIVITY_THROTTLE_MS) return;
-    
+
     lastUpdateTime = now;
     localStorage.setItem(ACTIVITY_KEY, String(now));
   }
@@ -320,7 +326,7 @@ if (document.readyState === "loading") {
     if (elapsed >= IDLE_TIMEOUT_MS) {
       // Timeout occurred - logout
       console.log("Session timeout due to inactivity");
-      
+
       // Clear session
       localStorage.removeItem("arh_token");
       localStorage.removeItem("arh_session_mobile");
@@ -342,7 +348,7 @@ if (document.readyState === "loading") {
 
   // Activity listeners
   const activityEvents = ["mousemove", "click", "keydown", "scroll", "touchstart"];
-  
+
   activityEvents.forEach((event) => {
     document.addEventListener(event, updateLastActivity, { passive: true });
   });
@@ -648,6 +654,9 @@ if (verifyOtpBtn) {
       // ✅ store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
       if (mobile) localStorage.setItem(SESSION_MOBILE_KEY, mobile);
+
+      // ✅ INITIALIZE ACTIVITY TIMESTAMP ON LOGIN (Auto-logout timer)
+      localStorage.setItem("arh_last_activity", String(Date.now()));
 
       // ✅ optional: successful login पर OTP lock clear कर दो
       clearLock(mobile);
