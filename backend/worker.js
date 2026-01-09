@@ -45,17 +45,31 @@ function getToken(request) {
   return token.trim();
 }
 
+// SHA256 helper for token hashing
+async function sha256(input) {
+  const enc = new TextEncoder();
+  const buf = enc.encode(String(input));
+  const hashBuf = await crypto.subtle.digest("SHA-256", buf);
+  const hashArr = Array.from(new Uint8Array(hashBuf));
+  return hashArr.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 async function resolveMobileFromToken(request, env) {
   const token = getToken(request);
-  if (!token || !env.SESSIONS) return "";
-  const sessionValue = await env.SESSIONS.get(token);
-  if (!sessionValue) return "";
-  try {
-    const parsed = JSON.parse(sessionValue);
-    return parsed.mobile || "";
-  } catch {
-    return sessionValue;
-  }
+  if (!token || !env.DB) return "";
+
+  const tokenHash = await sha256(token);
+  const now = Date.now();
+
+  const session = await env.DB.prepare(`
+    SELECT phone FROM sessions
+    WHERE token_hash = ?
+      AND expires_at > ?
+    LIMIT 1
+  `).bind(tokenHash, now).first();
+
+  if (!session) return "";
+  return session.phone || "";
 }
 
 // Generate UUID v4

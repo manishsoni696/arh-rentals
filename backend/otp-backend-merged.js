@@ -49,6 +49,13 @@ async function sha256(input) {
     return hashArr.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// Clean expired sessions
+async function cleanExpiredSessions(env) {
+    if (!env.DB) return;
+    const now = Date.now();
+    await env.DB.prepare("DELETE FROM sessions WHERE expires_at < ?").bind(now).run();
+}
+
 export default {
     async fetch(request, env) {
         // ✅ OPTIONS preflight
@@ -236,14 +243,18 @@ export default {
                 .bind(mobile)
                 .run();
 
-            // ✅ Create session token
+            // Clean expired sessions
+            await cleanExpiredSessions(env);
+
+            // ✅ Create session token with expiry (TESTING: 2 min | PRODUCTION: 2 hours)
             const token = crypto.randomUUID();
             const tokenHash = await sha256(token);
+            const expiresAt = now + (2 * 60 * 1000); // TESTING: 2 minutes (PRODUCTION: 2 * 60 * 60 * 1000)
 
             await env.DB.prepare(`
-        INSERT INTO sessions (token_hash, phone, created_at)
-        VALUES (?, ?, datetime('now'))
-      `).bind(tokenHash, mobile).run();
+        INSERT INTO sessions (token_hash, phone, created_at, expires_at)
+        VALUES (?, ?, ?, ?)
+      `).bind(tokenHash, mobile, now, expiresAt).run();
 
             return json({ success: true, verified: true, token }, 200, request);
         }
@@ -255,11 +266,13 @@ export default {
             if (!token) return json({ success: false, message: "Missing token" }, 401, request);
 
             const tokenHash = await sha256(token);
+            const now = Date.now();
             const s = await env.DB.prepare(`
-        SELECT phone, created_at FROM sessions
+        SELECT phone, created_at, expires_at FROM sessions
         WHERE token_hash = ?
+          AND expires_at > ?
         LIMIT 1
-      `).bind(tokenHash).first();
+      `).bind(tokenHash, now).first();
 
             if (!s) return json({ success: false, message: "Invalid session" }, 401, request);
 

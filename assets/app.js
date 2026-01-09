@@ -324,7 +324,7 @@ if (document.readyState === "loading") {
     const elapsed = Date.now() - lastActivity;
 
     if (elapsed >= IDLE_TIMEOUT_MS) {
-      // Timeout occurred - logout
+      // Timeout occurred - SILENT logout (NO ALERT/POPUP)
       console.log("Session timeout due to inactivity");
 
       // Clear session
@@ -340,8 +340,12 @@ if (document.readyState === "loading") {
       // Reset OTP timer
       if (window.resetOtpTimer) window.resetOtpTimer();
 
-      // Redirect to home
-      alert("आपका सेशन 2 घंटे की निष्क्रियता के कारण समाप्त हो गया है। कृपया फिर से लॉगिन करें।");
+      // Update header immediately
+      if (window.initHeaderAuthUI) {
+        window.initHeaderAuthUI().catch(() => { });
+      }
+
+      // SILENT redirect (NO ALERT)
       window.location.href = "/";
     }
   }
@@ -362,6 +366,13 @@ if (document.readyState === "loading") {
 
   // Check immediately on load
   checkTimeout();
+
+  // Check on visibility change (tab becomes visible)
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      checkTimeout();
+    }
+  });
 })();
 
 /* =========================================================
