@@ -351,3 +351,36 @@ arh-dashboard ko Draft / Upload / Listings APIs ke base URL ke तौर पर 
 Jab tak owner explicitly na bole ki APIs isi worker par shift करनी हैं.
 
 Aage se master / tracking me isko LOCKED component maan kar hi treat karunga.
+
+✅ LOCKED — CONFIRMED
+
+🔐 OTP RESEND TIMER UX — FINAL & LOCKED
+
+Status: ✅ Implemented + Verified
+
+What is now LOCKED (no further changes):
+
+OTP resend timer phone-number scoped hai
+
+otpLastSentAt + otpLastSentPhone binding active
+
+Phone number change → timer instantly reset
+
+Page refresh ke baad bhi timer sirf same phone number ke liye resume hota hai
+
+Different number = resend immediately allowed
+
+❌ No global timer bleed
+
+❌ No stuck 60-sec issue
+
+UX Outcome (FINAL):
+
+Number A → Send OTP → timer runs
+
+Number change to B → timer clears → Send OTP enabled
+
+Refresh → behavior preserved correctly (per-number)
+
+Isko main PROJECT MASTER + CHANGELOG me LOCKED FIX maan kar treat karunga.
+Aage koi accidental regression allow nahi hogi.
