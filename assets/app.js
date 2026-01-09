@@ -289,9 +289,9 @@ if (document.readyState === "loading") {
    Auto-logout after 2 hours of inactivity
 ========================================================= */
 (function () {
-  const IDLE_TIMEOUT_MS = 2 * 60 * 60 * 1000; // 2 hours
+  const IDLE_TIMEOUT_MS = 2 * 60 * 1000; // TESTING: 2 minutes (normally: 2 * 60 * 60 * 1000)
   const ACTIVITY_KEY = "arh_last_activity";
-  const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+  const CHECK_INTERVAL_MS = 5 * 1000; // TESTING: Check every 5 seconds (normally: 60 * 1000)
   const ACTIVITY_THROTTLE_MS = 60 * 1000; // Update timestamp max once per minute
 
   let lastUpdateTime = 0;
@@ -353,10 +353,9 @@ if (document.readyState === "loading") {
     document.addEventListener(event, updateLastActivity, { passive: true });
   });
 
-  // Initialize last activity on load
-  if (localStorage.getItem("arh_token")) {
-    updateLastActivity();
-  }
+  // DON'T initialize on load - only the defensive check in getLastActivity() should do this
+  // This was causing the timer to reset on every page load/refresh!
+  // Removed: if (localStorage.getItem("arh_token")) { updateLastActivity(); }
 
   // Check timeout periodically
   setInterval(checkTimeout, CHECK_INTERVAL_MS);
