@@ -285,6 +285,81 @@ if (document.readyState === "loading") {
 }
 
 /* =========================================================
+   IDLE TIMEOUT MANAGER (2 HOURS)
+   Auto-logout after 2 hours of inactivity
+========================================================= */
+(function () {
+  const IDLE_TIMEOUT_MS = 2 * 60 * 60 * 1000; // 2 hours
+  const ACTIVITY_KEY = "arh_last_activity";
+  const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+  const ACTIVITY_THROTTLE_MS = 60 * 1000; // Update timestamp max once per minute
+
+  let lastUpdateTime = 0;
+
+  function getLastActivity() {
+    const timestamp = localStorage.getItem(ACTIVITY_KEY);
+    return timestamp ? Number(timestamp) : Date.now();
+  }
+
+  function updateLastActivity() {
+    const now = Date.now();
+    // Throttle updates to reduce localStorage writes
+    if (now - lastUpdateTime < ACTIVITY_THROTTLE_MS) return;
+    
+    lastUpdateTime = now;
+    localStorage.setItem(ACTIVITY_KEY, String(now));
+  }
+
+  function checkTimeout() {
+    // Skip if no active session
+    if (!localStorage.getItem("arh_token")) return;
+
+    const lastActivity = getLastActivity();
+    const elapsed = Date.now() - lastActivity;
+
+    if (elapsed >= IDLE_TIMEOUT_MS) {
+      // Timeout occurred - logout
+      console.log("Session timeout due to inactivity");
+      
+      // Clear session
+      localStorage.removeItem("arh_token");
+      localStorage.removeItem("arh_session_mobile");
+      sessionStorage.removeItem("arh_mobile");
+      sessionStorage.removeItem("arh_pincode");
+      localStorage.removeItem(ACTIVITY_KEY);
+
+      // Dispatch logout event
+      window.dispatchEvent(new Event("arh:logout"));
+
+      // Reset OTP timer
+      if (window.resetOtpTimer) window.resetOtpTimer();
+
+      // Redirect to home
+      alert("आपका सेशन 2 घंटे की निष्क्रियता के कारण समाप्त हो गया है। कृपया फिर से लॉगिन करें।");
+      window.location.href = "/";
+    }
+  }
+
+  // Activity listeners
+  const activityEvents = ["mousemove", "click", "keydown", "scroll", "touchstart"];
+  
+  activityEvents.forEach((event) => {
+    document.addEventListener(event, updateLastActivity, { passive: true });
+  });
+
+  // Initialize last activity on load
+  if (localStorage.getItem("arh_token")) {
+    updateLastActivity();
+  }
+
+  // Check timeout periodically
+  setInterval(checkTimeout, CHECK_INTERVAL_MS);
+
+  // Check immediately on load
+  checkTimeout();
+})();
+
+/* =========================================================
    POST PAGE : PIN CHECK (backend)
 ========================================================= */
 const pinBtn = document.getElementById("pinCheckBtn");
