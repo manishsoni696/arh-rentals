@@ -540,11 +540,37 @@ if (sendOtpBtn && mNow) {
   }
 }
 if (sendOtpBtn) {
-  // ✅ page load पर अगर lock चल रहा है तो button को lock mode में दिखाओ (optional but useful)
   const mobileElOnLoad = document.getElementById("mobileInput");
   const m0 = normalizeMobile(mobileElOnLoad?.value);
   const l0 = m0 ? getLockUntil(m0) : 0;
   if (m0 && l0 && Date.now() < l0) startSendBtnCountdown(sendOtpBtn, l0, "Send OTP");
+
+  // ✅ Real-time timer update when number changes
+  if (mobileElOnLoad) {
+    mobileElOnLoad.addEventListener("input", () => {
+      const mobile = normalizeMobile(mobileElOnLoad.value);
+
+      // Only check if we have a complete 10-digit number
+      if (mobile.length === 10) {
+        const cooldownKey = `arh_otp_cooldown_${mobile}`;
+        const cd = Number(localStorage.getItem(cooldownKey) || 0);
+
+        if (cd > Date.now()) {
+          // Timer active for this number - show countdown
+          startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mobile));
+        } else {
+          // No timer - reset button
+          if (cd > 0) localStorage.removeItem(cooldownKey);
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = otpBtnBaseTextForMobile(mobile);
+        }
+      } else {
+        // Incomplete number - reset button
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = "Send OTP";
+      }
+    });
+  }
 
   sendOtpBtn.addEventListener("click", async () => {
     const mobileEl = document.getElementById("mobileInput");

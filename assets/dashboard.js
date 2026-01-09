@@ -247,6 +247,29 @@ if (sendOtpBtn) {
     }
   }
 
+  // ✅ Real-time timer update when number changes
+  if (mobileInput) {
+    mobileInput.addEventListener("input", () => {
+      const mobile = normalizeMobile(mobileInput.value);
+
+      if (mobile.length === 10) {
+        const cooldownKey = `arh_otp_cooldown_${mobile}`;
+        const cd = Number(localStorage.getItem(cooldownKey) || 0);
+
+        if (cd > Date.now()) {
+          startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mobile));
+        } else {
+          if (cd > 0) localStorage.removeItem(cooldownKey);
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = otpBtnBaseTextForMobile(mobile);
+        }
+      } else {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = "Send OTP";
+      }
+    });
+  }
+
   sendOtpBtn.addEventListener("click", async () => {
     const mobile = normalizeMobile(mobileInput?.value);
     const pincode = sessionStorage.getItem(PIN_KEY);
