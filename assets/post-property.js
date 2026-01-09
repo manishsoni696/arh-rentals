@@ -525,6 +525,46 @@
       updateNotesCount();
     };
 
+    // =========================================================================
+    // CLOUD DRAFT Functions (MUST be defined BEFORE handleSaveDraft)
+    // =========================================================================
+
+    const handleSaveCloudDraft = async () => {
+      if (!isLoggedIn()) {
+        formMsg.textContent = "❌ Please login (PIN + OTP) to save cloud draft";
+        return;
+      }
+
+      formMsg.textContent = "⏳ Saving cloud draft...";
+
+      try {
+        const draftData = getFormData();
+        const draftJson = JSON.stringify(draftData);
+
+        const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/save`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${getAuthToken()}`
+          },
+          body: JSON.stringify({ draft_json: draftJson })
+        });
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.message || "Cloud draft save failed");
+        }
+
+        formMsg.textContent = "✅ Cloud draft saved";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      } catch (error) {
+        console.error("Cloud draft save error:", error);
+        formMsg.textContent = `❌ ${error.message}`;
+      }
+    };
+
     const handleSaveDraft = async (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -579,46 +619,6 @@
     renderAmenities();
     updateNotesCount();
     renderPhotoErrors([]);
-
-    // =========================================================================
-    // CLOUD DRAFT Functions
-    // =========================================================================
-
-    const handleSaveCloudDraft = async () => {
-      if (!isLoggedIn()) {
-        formMsg.textContent = "❌ Please login (PIN + OTP) to save cloud draft";
-        return;
-      }
-
-      formMsg.textContent = "⏳ Saving cloud draft...";
-
-      try {
-        const draftData = getFormData();
-        const draftJson = JSON.stringify(draftData);
-
-        const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/save`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${getAuthToken()}`
-          },
-          body: JSON.stringify({ draft_json: draftJson })
-        });
-
-        const data = await res.json();
-        if (!data.success) {
-          throw new Error(data.message || "Cloud draft save failed");
-        }
-
-        formMsg.textContent = "✅ Cloud draft saved";
-        setTimeout(() => {
-          formMsg.textContent = "";
-        }, 3000);
-      } catch (error) {
-        console.error("Cloud draft save error:", error);
-        formMsg.textContent = `❌ ${error.message}`;
-      }
-    };
 
     const checkAndRestoreCloudDraft = async () => {
       if (!isLoggedIn()) return;
