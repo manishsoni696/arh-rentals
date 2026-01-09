@@ -235,13 +235,16 @@ async function initDashboard() {
 }
 
 if (sendOtpBtn) {
-  const cd = Number(localStorage.getItem("arh_otp_cooldown_until") || 0);
-  if (cd > Date.now()) {
-    const mNow = normalizeMobile(mobileInput?.value);
-    startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
-  }
-  if (cd && cd <= Date.now()) {
-    localStorage.removeItem("arh_otp_cooldown_until");
+  // Check cooldown for current number on page load
+  const mNow = normalizeMobile(mobileInput?.value);
+  if (mNow) {
+    const cooldownKey = `arh_otp_cooldown_${mNow}`;
+    const cd = Number(localStorage.getItem(cooldownKey) || 0);
+    if (cd > Date.now()) {
+      startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
+    } else if (cd > 0) {
+      localStorage.removeItem(cooldownKey); // Clear expired timer
+    }
   }
 
   sendOtpBtn.addEventListener("click", async () => {
@@ -285,8 +288,10 @@ if (sendOtpBtn) {
         return;
       }
 
+      // Store cooldown specific to this mobile number
       const until = Date.now() + 60 * 1000;
-      localStorage.setItem("arh_otp_cooldown_until", String(until));
+      const cooldownKey = `arh_otp_cooldown_${mobile}`;
+      localStorage.setItem(cooldownKey, String(until));
       markOtpSentOnce(mobile);
       sessionStorage.setItem(MOBILE_KEY, mobile);
 

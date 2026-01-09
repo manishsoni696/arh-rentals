@@ -60,7 +60,12 @@ window.resetOtpTimer = function () {
     clearTimeout(globalOtpTimerId);
     globalOtpTimerId = null;
   }
-  localStorage.removeItem("arh_otp_cooldown_until");
+  // Clear all number-specific cooldown timers (regex cleanup)
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith("arh_otp_cooldown_")) {
+      localStorage.removeItem(key);
+    }
+  });
 
   const sendOtpBtn = document.getElementById("sendOtpBtn");
   if (sendOtpBtn) {
@@ -523,13 +528,16 @@ if (pinBtn) {
    SEND OTP (BACKEND - HISAR SMS)
 ========================================================= */
 const sendOtpBtn = document.getElementById("sendOtpBtn");
-const cd = Number(localStorage.getItem("arh_otp_cooldown_until") || 0);
-if (sendOtpBtn && cd > Date.now()) {
-  const mNow = normalizeMobile(document.getElementById("mobileInput")?.value);
-  startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
-}
-if (sendOtpBtn && cd && cd <= Date.now()) {
-  localStorage.removeItem("arh_otp_cooldown_until");
+// Check cooldown for current number on page load
+const mNow = normalizeMobile(document.getElementById("mobileInput")?.value);
+if (sendOtpBtn && mNow) {
+  const cooldownKey = `arh_otp_cooldown_${mNow}`;
+  const cd = Number(localStorage.getItem(cooldownKey) || 0);
+  if (cd > Date.now()) {
+    startSendBtnCountdown(sendOtpBtn, cd, otpBtnBaseTextForMobile(mNow));
+  } else if (cd > 0) {
+    localStorage.removeItem(cooldownKey); // Clear expired timer
+  }
 }
 if (sendOtpBtn) {
   // ✅ page load पर अगर lock चल रहा है तो button को lock mode में दिखाओ (optional but useful)
@@ -586,10 +594,11 @@ if (sendOtpBtn) {
         return;
       }
 
-      // ✅ SUCCESS → ab 60 sec cooldown start karo (FIX 1)
-      // ✅ save 60s cooldown (survives refresh)
+      // ✅ SUCCESS → 60 sec cooldown PER NUMBER
+      // Store cooldown specific to this mobile number
       const until = Date.now() + 60 * 1000; // 60 seconds
-      localStorage.setItem("arh_otp_cooldown_until", String(until));
+      const cooldownKey = `arh_otp_cooldown_${mobile}`;
+      localStorage.setItem(cooldownKey, String(until));
       // ✅ mark: this mobile has received OTP at least once
       markOtpSentOnce(mobile);
 
