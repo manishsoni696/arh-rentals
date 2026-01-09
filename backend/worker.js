@@ -1,21 +1,40 @@
 // ARH Rentals Backend Worker
 // Handles: Dashboard listings, Photo uploads (R2), Cloud drafts (D1)
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "https://rent.anjanirealheights.com",
-  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type,Authorization",
-};
+// Dynamic CORS based on origin
+function getCorsHeaders(request) {
+  const origin = request.headers.get("Origin") || "";
+  const allowedOrigins = [
+    "https://rent.anjanirealheights.com",
+    "https://manishsoni696.github.io",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500"
+  ];
+
+  const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
+  return {
+    "Access-Control-Allow-Origin": corsOrigin,
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type,Authorization",
+  };
+}
 
 const DRAFT_EXPIRY_DAYS = 3;
 const MAX_PHOTOS = 10;
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 const VALID_TYPES = ["image/jpeg", "image/png"];
 
-function jsonResponse(body, status = 200) {
+function jsonResponse(body, status = 200, request = null) {
+  const corsHeaders = request ? getCorsHeaders(request) : {
+    "Access-Control-Allow-Origin": "https://rent.anjanirealheights.com",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type,Authorization",
+  };
+
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    headers: { "Content-Type": "application/json", ...corsHeaders },
   });
 }
 
@@ -327,7 +346,7 @@ export default {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: CORS_HEADERS });
+      return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
 
     // EXISTING ROUTE
