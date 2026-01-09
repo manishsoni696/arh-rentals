@@ -236,3 +236,100 @@ Fields / labels / validations
 ✅ Modular Post Property active
 
 ✅ Dashboard UI locked
+
+✅ ARH Rentals — CHANGELOG (Recent Work)
+
+Date Range: Jan 9–10, 2026 (current session)
+Area: Post Property (Draft) + CSP + Auto-Logout (Testing)
+
+✅ FIXED / DONE
+1) Post Property JS Crash Fix (Critical)
+
+Issue: post-property.js:744 Uncaught SyntaxError: Unexpected token ')'
+
+Impact: पूरा post-property.js execute नहीं हो रहा था → Save Draft button के handlers attach नहीं हो रहे थे → Network call fire नहीं हो रही थी
+
+Status: ✅ Fixed (as per your update: error moved ahead to CSP connect-src block)
+
+2) Cloud Draft API Call Attempt Enabled (but CSP blocked)
+
+Observation: Save Draft click पर अब code fetch attempt कर रहा है (console में “Failed to fetch” etc.)
+
+Meaning: Button click handler अब attach हो चुका है और code execute हो रहा है
+
+Status: ✅ Progress confirmed
+
+3) CSP Connect-src Violation Identified (Root cause of “Failed to fetch”)
+
+Issue: Draft API call hit हो रही थी:
+
+https://arh-dashboard.manishsoni696.workers.dev/api/drafts/save
+
+But CSP allow था:
+
+'self' + https://arh-backend.manishsoni696.workers.dev
+
+Result: Browser ने request block कर दी
+
+Status: ✅ Identified + Fix action provided (domain replace)
+
+4) Fix Action Given: Correct Backend Domain Enforcement
+
+Change Required: Draft endpoints का base URL:
+
+❌ arh-dashboard... → ✅ arh-backend...
+
+Expected Result: CSP block हटेगा और Network में /api/drafts/save request दिखेगी
+
+Status: 🟡 Applied? (you haven’t confirmed after reload yet)
+
+🟠 NEW (Auto-Logout) — Testing Implementation Discussion
+5) Antigravity “Browser open rehne do” Popup/Message Appeared
+
+Issue: Testing mode में popup/alert जैसा message दिख रहा है (unprofessional)
+
+Status: 🟡 Needs removal (final UX rule)
+
+6) Final Decision Locked: Auto Logout Approach = OPTION 2
+
+✅ Approved Approach:
+Frontend lastActivityAt + Backend token expiry (Workers)
+
+Browser बंद होने पर JS नहीं चलता (normal)
+
+Next open पर time-diff check करके immediate logout
+
+Backend हर protected request पर expiry enforce करेगा (401 → logout)
+
+Status: ✅ Decision locked (Implementation to be done cleanly)
+
+🟡 PENDING / NEXT CHECKS (Immediate)
+A) Confirm Draft Save request now appears in Network
+
+After domain replace:
+
+Network → Fetch/XHR → Save Draft click → /api/drafts/save should appear
+
+Status code record करना है (200/400/401/500)
+
+B) Remove any remaining inline JS (CSP script-src issue)
+
+Earlier console में inline script CSP block दिखा था (post/:365)
+
+Status: 🟡 Not re-confirmed after latest changes
+(अगर अभी भी है, तो post/index.html से inline <script> हटाना पड़ेगा)
+
+C) Remove testing popup/alert related to auto-logout
+
+Final UX rule: ❌ no popups/alerts/instructional modals
+
+Status: 🟡 Pending
+
+📌 IMPORTANT NOTE (Honesty)
+
+मैंने changelog में वही लिखा है जो:
+
+आपके console/screenshots में आया
+
+हमारी chat में verify हुआ
+कुछ चीज़ें (जैसे domain replace apply हुआ या inline JS पूरी तरह हट गया) की final confirmation अभी आपके next reload + network status से होगी.
