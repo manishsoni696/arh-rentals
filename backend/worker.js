@@ -94,11 +94,11 @@ async function cleanExpiredDrafts(env) {
 async function handleMyListings(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.DB) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   const query = `
@@ -109,7 +109,7 @@ async function handleMyListings(request, env) {
   `;
 
   const result = await env.DB.prepare(query).bind(mobile).all();
-  return jsonResponse(result.results || []);
+  return jsonResponse(result.results || [], 200, request);
 }
 
 // =========================================================================
@@ -118,11 +118,11 @@ async function handleMyListings(request, env) {
 async function handleUploadInit(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.PHOTOS) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   try {
@@ -131,40 +131,45 @@ async function handleUploadInit(request, env) {
 
     // Validate
     if (!listingId || !Array.isArray(fileTypes) || !Array.isArray(fileSizes)) {
-      return jsonResponse({ success: false, message: "Invalid request" }, 400);
+      return jsonResponse({ success: false, message: "Invalid request" }, 400, request);
     }
 
     if (fileCount > MAX_PHOTOS || fileTypes.length > MAX_PHOTOS || fileSizes.length > MAX_PHOTOS) {
-      return jsonResponse({ success: false, message: `Maximum ${MAX_PHOTOS} photos allowed` }, 400);
+      return jsonResponse({ success: false, message: `Maximum ${MAX_PHOTOS} photos allowed` }, 400, request);
     }
 
     // Validate each file
     for (let i = 0; i < fileTypes.length; i++) {
       if (!VALID_TYPES.includes(fileTypes[i])) {
-        return jsonResponse({ success: false, message: "Only JPG/PNG allowed" }, 400);
+        return jsonResponse({ success: false, message: "Only JPG/PNG allowed" }, 400, request);
       }
       if (fileSizes[i] > MAX_FILE_SIZE) {
-        return jsonResponse({ success: false, message: "File too large (max 1 MB)" }, 400);
+        return jsonResponse({ success: false, message: "File too large (max 1 MB)" }, 400, request);
       }
     }
 
-    // Generate pre-signed URLs
+    // Generate upload keys and create upload tokens
     const uploads = [];
     for (let i = 0; i < fileCount; i++) {
       const uuid = generateUUID();
       const ext = fileTypes[i] === "image/png" ? "png" : "jpg";
       const key = `photos/${listingId}/${uuid}.${ext}`;
 
-      // Create R2 pre-signed PUT URL (1 hour expiry)
-      const uploadUrl = await env.PHOTOS.createMultipartUpload(key);
+      // For R2, we'll create a token that allows upload to this specific key
+      // Frontend will upload via our worker endpoint
+      const uploadToken = await sha256(`${key}-${Date.now()}-${mobile}`);
 
-      uploads.push({ key, uploadUrl: uploadUrl.toString() });
+      uploads.push({
+        key,
+        uploadToken,
+        uploadUrl: `${request.url.replace('/api/uploads/init', '')}/api/uploads/put?key=${encodeURIComponent(key)}&token=${uploadToken}`
+      });
     }
 
-    return jsonResponse({ success: true, uploads });
+    return jsonResponse({ success: true, uploads }, 200, request);
   } catch (error) {
     console.error("Upload init error:", error);
-    return jsonResponse({ success: false, message: "Upload init failed" }, 500);
+    return jsonResponse({ success: false, message: "Upload init failed" }, 500, request);
   }
 }
 
@@ -174,11 +179,11 @@ async function handleUploadInit(request, env) {
 async function handleCreateListing(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.DB) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   try {
@@ -188,14 +193,14 @@ async function handleCreateListing(request, env) {
     const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'photos'];
     for (const field of required) {
       if (!data[field]) {
-        return jsonResponse({ success: false, message: `Missing ${field}` }, 400);
+        return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
       }
     }
 
     // Validate photos array
     const photos = Array.isArray(data.photos) ? data.photos : [];
     if (photos.length === 0 || photos.length > MAX_PHOTOS) {
-      return jsonResponse({ success: false, message: "Invalid photo count" }, 400);
+      return jsonResponse({ success: false, message: "Invalid photo count" }, 400, request);
     }
 
     const now = Math.floor(Date.now() / 1000);
@@ -236,10 +241,10 @@ async function handleCreateListing(request, env) {
       expiresAt
     ).run();
 
-    return jsonResponse({ success: true, listingId });
+    return jsonResponse({ success: true, listingId }, 200, request);
   } catch (error) {
     console.error("Create listing error:", error);
-    return jsonResponse({ success: false, message: "Listing creation failed" }, 500);
+    return jsonResponse({ success: false, message: "Listing creation failed" }, 500, request);
   }
 }
 
@@ -249,17 +254,17 @@ async function handleCreateListing(request, env) {
 async function handleSaveDraft(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.DB) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   try {
     const { draft_json } = await request.json();
     if (!draft_json) {
-      return jsonResponse({ success: false, message: "No draft data" }, 400);
+      return jsonResponse({ success: false, message: "No draft data" }, 400, request);
     }
 
     // Clean expired drafts first
@@ -286,10 +291,10 @@ async function handleSaveDraft(request, env) {
       expiresAt
     ).run();
 
-    return jsonResponse({ success: true, message: "Draft saved" });
+    return jsonResponse({ success: true, message: "Draft saved" }, 200, request);
   } catch (error) {
     console.error("Save draft error:", error);
-    return jsonResponse({ success: false, message: "Draft save failed" }, 500);
+    return jsonResponse({ success: false, message: "Draft save failed" }, 500, request);
   }
 }
 
@@ -299,11 +304,11 @@ async function handleSaveDraft(request, env) {
 async function handleGetDraft(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.DB) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   try {
@@ -320,13 +325,13 @@ async function handleGetDraft(request, env) {
     const result = await env.DB.prepare(query).bind(mobile, now).first();
 
     if (!result) {
-      return jsonResponse({ success: true, draft: null });
+      return jsonResponse({ success: true, draft: null }, 200, request);
     }
 
-    return jsonResponse({ success: true, draft: result.draft_json });
+    return jsonResponse({ success: true, draft: result.draft_json }, 200, request);
   } catch (error) {
     console.error("Get draft error:", error);
-    return jsonResponse({ success: false, message: "Draft fetch failed" }, 500);
+    return jsonResponse({ success: false, message: "Draft fetch failed" }, 500, request);
   }
 }
 
@@ -336,19 +341,57 @@ async function handleGetDraft(request, env) {
 async function handleDeleteDraft(request, env) {
   const mobile = await resolveMobileFromToken(request, env);
   if (!mobile) {
-    return jsonResponse({ success: false, message: "Unauthorized" }, 401);
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
   }
 
   if (!env.DB) {
-    return jsonResponse({ success: false, message: "Storage not configured" }, 500);
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
   }
 
   try {
     await env.DB.prepare("DELETE FROM drafts WHERE mobile = ?").bind(mobile).run();
-    return jsonResponse({ success: true, message: "Draft deleted" });
+    return jsonResponse({ success: true, message: "Draft deleted" }, 200, request);
   } catch (error) {
     console.error("Delete draft error:", error);
-    return jsonResponse({ success: false, message: "Draft delete failed" }, 500);
+    return jsonResponse({ success: false, message: "Draft delete failed" }, 500, request);
+  }
+}
+
+// =========================================================================
+// NEW: R2 Upload Handler
+// =========================================================================
+async function handleR2Upload(request, env) {
+  const mobile = await resolveMobileFromToken(request, env);
+  if (!mobile) {
+    return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+  }
+
+  if (!env.PHOTOS) {
+    return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
+  }
+
+  try {
+    const url = new URL(request.url);
+    const key = url.searchParams.get("key");
+
+    if (!key || !key.startsWith("photos/")) {
+      return jsonResponse({ success: false, message: "Invalid key" }, 400, request);
+    }
+
+    // Get the file data from request body
+    const fileData = await request.arrayBuffer();
+
+    // Upload to R2
+    await env.PHOTOS.put(key, fileData, {
+      httpMetadata: {
+        contentType: request.headers.get("Content-Type") || "image/jpeg",
+      },
+    });
+
+    return jsonResponse({ success: true, key }, 200, request);
+  } catch (error) {
+    console.error("R2 upload error:", error);
+    return jsonResponse({ success: false, message: "Upload failed" }, 500, request);
   }
 }
 
@@ -373,6 +416,10 @@ export default {
       return handleUploadInit(request, env);
     }
 
+    if (url.pathname === "/api/uploads/r2" && request.method === "PUT") {
+      return handleR2Upload(request, env);
+    }
+
     if (url.pathname === "/api/listings/create" && request.method === "POST") {
       return handleCreateListing(request, env);
     }
@@ -389,6 +436,6 @@ export default {
       return handleDeleteDraft(request, env);
     }
 
-    return jsonResponse({ success: false, message: "Not found" }, 404);
+    return jsonResponse({ success: false, message: "Not found" }, 404, request);
   },
 };
