@@ -734,11 +734,15 @@
       }
     };
 
-    // Check for cloud draft after page load (when user is logged in)
-    // This runs after PIN + OTP login
-    setTimeout(() => {
-      checkAndRestoreCloudDraft();
-    }, 1000);
+    // Check for cloud draft after successful login
+    // This event is dispatched from app.js after OTP verification success
+    window.addEventListener("arh:login-success", () => {
+      // Small delay to ensure form is visible
+      setTimeout(() => {
+        checkAndRestoreCloudDraft();
+      }, 300);
+    });
+
 
     // [New] ISSUE 1: Handle Global Logout (Reset Inputs & Gates)
     window.addEventListener("arh:logout", () => {

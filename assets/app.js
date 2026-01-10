@@ -713,6 +713,9 @@ if (verifyOtpBtn) {
       else updateHeaderAccountStatus();
 
       showPostForm();
+
+      // Trigger cloud draft check (for post-property page)
+      window.dispatchEvent(new Event("arh:login-success"));
     } catch (e) {
       console.error(e);
       setText(msgEl, "❌ Network error");
