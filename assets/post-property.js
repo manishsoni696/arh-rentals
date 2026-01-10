@@ -360,6 +360,8 @@
         }
       }
       values.declaration = declarationCheckbox?.checked || false;
+      // Hard-lock city to Hisar (Phase-1 scope)
+      values.city = "Hisar";
       return values;
     };
 
