@@ -648,6 +648,9 @@
     };
 
     const showCloudDraftBanner = (draftJson) => {
+      if (document.getElementById("cloudDraftBanner")) {
+        return;
+      }
       // Create banner element
       const banner = document.createElement("div");
       banner.id = "cloudDraftBanner";
