@@ -915,6 +915,95 @@ button.account-link {
   color: var(--muted);
 }
 
+.plan-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.plan-list li {
+  margin: 4px 0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.plan-table th,
+.plan-table td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.plan-table th {
+  background: rgba(255, 255, 255, .06);
+  font-size: 12px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .85);
+}
+
+.plan-table td {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .82);
+}
+
+.pricing-notes {
+  margin-top: 16px;
+}
+
+.status-banner {
+  border-style: solid;
+  background: rgba(29, 161, 242, .12);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 16, .72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 2000;
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: linear-gradient(180deg, rgba(17, 26, 36, .96), rgba(10, 16, 24, .94));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .6);
+}
+
+.modal-body {
+  padding: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
 /* ============ Listings (scoped by .listings-page class) ============ */
 
 /* Primary filters (top bar) */

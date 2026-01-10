@@ -90,19 +90,71 @@
 
     <section class="grid-3" id="pricingGrid">
 
+      <article class="card" data-plan="free">
+        <div class="card-body">
+          <h2>Free Listing (Default)</h2>
+          <div class="price">₹0</div>
+          <p class="muted">Try the platform, build trust.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">Launch phase:</p>
+          <ul class="plan-list">
+            <li>Per mobile number → 2 FREE listings</li>
+            <li>Validity: 30 days each</li>
+            <li>Applicable till first 500 total listings</li>
+          </ul>
+
+          <p class="small" style="margin-top:10px">After launch phase:</p>
+          <ul class="plan-list">
+            <li>Per mobile number → 1 FREE listing</li>
+            <li>Validity: 30 days</li>
+          </ul>
+
+          <div class="hr"></div>
+          <p class="small">Includes:</p>
+          <ul class="plan-list">
+            <li>Listing visible on portal</li>
+            <li>Interior photos visible (as per privacy rules)</li>
+            <li>Appears in normal search results</li>
+            <li>Dashboard access + edit listing allowed</li>
+          </ul>
+
+          <p class="small" style="margin-top:10px">Not included:</p>
+          <ul class="plan-list">
+            <li>No priority placement</li>
+            <li>No highlight badge</li>
+            <li>No extended duration beyond 30 days</li>
+          </ul>
+
+          <div class="hr"></div>
+          <button class="btn btn-primary select-btn" type="button">Select Plan</button>
+          <div class="hr"></div>
+          <p class="small muted pricing-footnote">Free listing is limited by quota and validity.</p>
+        </div>
+      </article>
+
       <article class="card" data-plan="basic">
         <div class="card-body">
           <h2>Basic</h2>
           <div class="price">₹199</div>
-          <p class="muted">   Quick visibility for owners who want fast tenant enquiries. </p>
+          <p class="muted">Simple listing for short-term requirement.</p>
 
           <div class="hr"></div>
 
+          <p class="small">Best for:</p>
+          <ul class="plan-list">
+            <li>Owners posting 3rd listing onwards</li>
+            <li>After free quota is exhausted</li>
+          </ul>
+
+          <div class="hr"></div>
           <p class="small">Includes:</p>
           <div class="pills">
             <span class="pill">1 Property Listing</span>
             <span class="pill">Visible 15 Days</span>
-            <span class="pill">Auto-hide After Expiry</span>
+            <span class="pill">Standard Visibility</span>
+            <span class="pill">Edit Listing Allowed</span>
           </div>
 
           <p class="small muted" style="margin-top:10px">
@@ -123,7 +175,14 @@
         <div class="card-body">
           <h2>Premium</h2>
           <div class="price">₹349</div>
-          <p class="muted">   Balanced visibility with more time for genuine tenant responses. </p>
+          <p class="muted">Better visibility, faster leads.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">Best for:</p>
+          <ul class="plan-list">
+            <li>Owners who want faster response</li>
+          </ul>
 
           <div class="hr"></div>
 
@@ -131,7 +190,8 @@
           <div class="pills">
             <span class="pill">1 Property Listing</span>
             <span class="pill">Visible 30 Days</span>
-            <span class="pill">Higher Visibility</span>
+            <span class="pill">Priority Placement</span>
+            <span class="pill">Highlight Badge</span>
           </div>
 
           <p class="small muted" style="margin-top:10px">
@@ -152,7 +212,14 @@
         <div class="card-body">
           <h2>Pro</h2>
           <div class="price">₹599</div>
-          <p class="muted">Ideal for patient owners.</p>
+          <p class="muted">Maximum exposure for urgent rentals.</p>
+
+          <div class="hr"></div>
+
+          <p class="small">Best for:</p>
+          <ul class="plan-list">
+            <li>Owners with urgent requirement</li>
+          </ul>
 
           <div class="hr"></div>
 
@@ -160,7 +227,8 @@
           <div class="pills">
             <span class="pill">1 Property Listing</span>
             <span class="pill">Visible 60 Days</span>
-            <span class="pill">Longest Exposure</span>
+            <span class="pill">Top Placement</span>
+            <span class="pill">Premium Highlight Badge</span>
           </div>
 
           <p class="small muted" style="margin-top:10px">
@@ -184,54 +252,97 @@
 ================================ -->
 
 <section class="pricing-help">
-  <h3>Which plan is right for you?</h3>
-
-  <div class="pricing-help-grid">
-    <div class="pricing-help-card">
-      <h4>Basic – Best if</h4>
-      <ul>
-        <li>You are posting for the first time</li>
-        <li>You want short-term visibility</li>
-        <li>Your requirement is time-sensitive</li>
-      </ul>
-    </div>
-
-    <div class="pricing-help-card">
-      <h4>Premium – Best if</h4>
-      <ul>
-        <li>You want balanced visibility</li>
-        <li>Your property is in a normal-demand area</li>
-        <li>You want more time for genuine responses</li>
-      </ul>
-    </div>
-
-    <div class="pricing-help-card">
-      <h4>Pro – Best if</h4>
-      <ul>
-        <li>You want maximum visibility duration</li>
-        <li>Your property is premium or niche</li>
-        <li>You are comfortable waiting for the right tenant</li>
-      </ul>
-    </div>
+  <h3>Plan Comparison (Simple)</h3>
+  <div class="table-wrap">
+    <table class="plan-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Free</th>
+          <th>Basic</th>
+          <th>Premium</th>
+          <th>Pro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Validity</td>
+          <td>30 days</td>
+          <td>15 days</td>
+          <td>30 days</td>
+          <td>60 days</td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>₹0</td>
+          <td>₹199</td>
+          <td>₹349</td>
+          <td>₹599</td>
+        </tr>
+        <tr>
+          <td>Listing Visible</td>
+          <td>✅</td>
+          <td>✅</td>
+          <td>✅</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td>Search Priority</td>
+          <td>❌</td>
+          <td>❌</td>
+          <td>✅</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td>Highlight Badge</td>
+          <td>❌</td>
+          <td>❌</td>
+          <td>✅</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td>Top Placement</td>
+          <td>❌</td>
+          <td>❌</td>
+          <td>❌</td>
+          <td>✅</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="pricing-notes">
-    <h4>Important before you select</h4>
+    <h4>Important Rules (Locked)</h4>
     <ul>
-      <li>Each plan allows you to post <strong>only one property</strong>.</li>
-      <li>Posting another property (even from the same phone) requires a new plan.</li>
-      <li>ARH Rentals is an information-access platform only.</li>
-      <li>We do not act as a broker or mediator.</li>
-      <li>We do not guarantee tenants, responses, or deal closure.</li>
-      <li>Your listing is automatically hidden after plan expiry.</li>
+      <li>Free listing is always available (limited quota).</li>
+      <li>Plans apply only after free quota is used.</li>
+      <li>Payment never before posting.</li>
+      <li>Plans are listing-specific, not account-level.</li>
+      <li>No guarantees, no verification, no promises.</li>
+    </ul>
+  </div>
+
+  <div class="notice" style="margin-top:16px">
+    <strong>One-line explanation:</strong>
+    “Posting a property on ARH Rentals is free for a limited number of listings. Paid plans are optional and provide additional visibility.”
+  </div>
+
+  <div class="pricing-notes" style="margin-top:16px">
+    <h4>Why this plan structure works</h4>
+    <ul>
+      <li>Easy to understand</li>
+      <li>Matches Indian rental mindset</li>
+      <li>Transparent pricing</li>
+      <li>No hidden tricks</li>
+      <li>Scales well later</li>
     </ul>
   </div>
 </section>
 
     <section class="notice pricing-next">
-  <strong>Next step:</strong> Select a plan above, then continue to
+  <strong>Next step:</strong> Continue to
   <a href="../post/index.html"><u>Post Property</u></a> (PIN + OTP).
-  Your selection applies to <u>one property listing</u> only.
+  If you still have free quota, you can list without payment. Paid plans apply only after your free limit is used.
 </section>
 
   </main>

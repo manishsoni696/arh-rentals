@@ -410,6 +410,23 @@
       </div>
     </footer>
 
+    <div class="modal-overlay" id="submissionModal" hidden aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="submissionModalTitle">
+        <div class="modal-body">
+          <h3 id="submissionModalTitle" style="margin:0">Property Submission Started</h3>
+          <p class="sub" style="margin:0">
+            Your property details have been submitted successfully.<br />
+            Please note that your property has not been listed yet. The listing will be created only after you complete
+            the final submission.
+          </p>
+          <div class="modal-actions">
+            <button type="button" class="btn" id="editDetailsBtn">Edit Details</button>
+            <button type="button" class="btn btn-primary" id="proceedToListingBtn">Proceed to Listing</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <script src="../assets/app.js?v=fix5"></script>
