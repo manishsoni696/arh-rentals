@@ -22,8 +22,9 @@ function getCorsHeaders(request) {
 
 const DRAFT_EXPIRY_DAYS = 3;
 const MIN_INTERIOR_PHOTOS = 2;
-const MAX_INTERIOR_PHOTOS = 10;
-const MAX_EXTERIOR_PHOTOS = 3;
+const MAX_INTERIOR_PHOTOS = 8;  // Max 8 interior photos
+const MAX_EXTERIOR_PHOTOS = 2;  // Max 2 exterior photos
+const MAX_TOTAL_PHOTOS = 10;    // Total max: interior + exterior
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 const VALID_TYPES = ["image/jpeg", "image/png"];
 
@@ -204,16 +205,22 @@ async function handleCreateListing(request, env) {
       }
     }
 
-    // Validate interior photos (required: 2-10)
+    // Validate interior photos (required: 2-8)
     const interiorPhotos = Array.isArray(data.interior_photos) ? data.interior_photos : [];
     if (interiorPhotos.length < MIN_INTERIOR_PHOTOS || interiorPhotos.length > MAX_INTERIOR_PHOTOS) {
-      return jsonResponse({ success: false, message: `2-10 interior photos required (first 2 = master photos)` }, 400, request);
+      return jsonResponse({ success: false, message: `2-8 interior photos required (first 2 = master photos)` }, 400, request);
     }
 
-    // Validate exterior photos (optional: 0-3)
+    // Validate exterior photos (optional: 0-2)
     const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
     if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
       return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
+    }
+
+    // Validate total photo count (max 10)
+    const totalPhotos = interiorPhotos.length + exteriorPhotos.length;
+    if (totalPhotos > MAX_TOTAL_PHOTOS) {
+      return jsonResponse({ success: false, message: `Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotos} photos.` }, 400, request);
     }
 
     const now = Math.floor(Date.now() / 1000);

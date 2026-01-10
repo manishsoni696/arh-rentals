@@ -1,7 +1,8 @@
 (() => {
   const MIN_INTERIOR_PHOTOS = 2;  // At least 2 master photos required
-  const MAX_INTERIOR_PHOTOS = 10;
-  const MAX_EXTERIOR_PHOTOS = 3;
+  const MAX_INTERIOR_PHOTOS = 8;  // Max 8 interior photos
+  const MAX_EXTERIOR_PHOTOS = 2;  // Max 2 exterior photos
+  const MAX_TOTAL_PHOTOS = 10;    // Total max: interior + exterior
   const MAX_BYTES = 1024 * 1024;
   const VALID_TYPES = ["image/jpeg", "image/png"];
   const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
@@ -444,7 +445,7 @@
       const notesLength = (extraNotes?.value || "").length;
       ensure(notesLength <= NOTES_LIMIT, `Extra notes cannot exceed ${NOTES_LIMIT} characters.`, extraNotes);
 
-      // Validate interior photos (required: 2-10)
+      // Validate interior photos (required: 2-8)
       const interiorValidation = validateInteriorPhotos();
       if (interiorValidation.errors.length) {
         errors.push(...interiorValidation.errors);
@@ -458,11 +459,19 @@
         if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
       }
 
-      // Validate exterior photos (optional: 0-3)
+      // Validate exterior photos (optional: 0-2)
       const exteriorValidation = validateExteriorPhotos();
       if (exteriorValidation.errors.length) {
         errors.push(...exteriorValidation.errors);
         if (!firstInvalid && exteriorPhotoInput) firstInvalid = exteriorPhotoInput;
+      }
+
+      // Check total photo count (max 10)
+      const exteriorCount = (exteriorPhotoInput?.files || []).length;
+      const totalPhotoCount = interiorCount + exteriorCount;
+      if (totalPhotoCount > MAX_TOTAL_PHOTOS) {
+        errors.push(`Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotoCount} photos (${interiorCount} interior + ${exteriorCount} exterior).`);
+        if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
       }
 
       if (errors.length) {
