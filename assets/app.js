@@ -698,7 +698,12 @@ if (verifyOtpBtn) {
 
       // ✅ store session token returned by backend (persistent)
       localStorage.setItem("arh_token", data.token);
-      if (mobile) localStorage.setItem(SESSION_MOBILE_KEY, mobile);
+
+      // Ensure mobile is saved for header display (Robust Fix)
+      const finalMobile = normalizeMobile(mobile || document.getElementById("mobileInput")?.value);
+      if (finalMobile) {
+        localStorage.setItem("arh_session_mobile", finalMobile);
+      }
 
       // ✅ INITIALIZE ACTIVITY TIMESTAMP ON LOGIN (Auto-logout timer)
       localStorage.setItem("arh_last_activity", String(Date.now()));
