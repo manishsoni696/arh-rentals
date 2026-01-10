@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Listing Review • ARH Rentals</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+
+<body class="review-page">
+  <header class="site-header">
+    <div class="container">
+      <div class="navbar">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="../assets/arh-logo.png" alt="ARH Rentals Logo">
+          <div class="brand-title">
+            <strong>ARH Rentals</strong>
+            <span>by Anjani Real Heights</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <div class="account-menu" data-account-menu hidden>
+            <button class="account-trigger" type="button" aria-expanded="false" aria-controls="account-dropdown">
+              <span class="account-trigger-text" data-account-status>Logged in</span>
+              <span class="account-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div class="account-dropdown" id="account-dropdown" role="menu" hidden>
+              <div class="account-meta">
+                <span class="small muted">You're logged in using</span>
+                <span class="account-phone" data-account-phone>—</span>
+              </div>
+              <div class="account-links">
+                <a href="/dashboard/" class="account-link" role="menuitem">My Listings</a>
+                <button type="button" class="account-link" data-account-logout>Logout</button>
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-primary header-cta" href="/post">Post Property</a>
+
+          <button class="nav-toggle" type="button" aria-label="Menu" aria-controls="primary-navigation"
+            aria-expanded="false">
+            <span class="nav-toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="menu" id="primary-navigation" aria-label="Primary">
+      <div class="container nav-inner">
+        <a href="/">Home</a>
+        <a href="/listings">Listings</a>
+        <a href="/pricing">Plans</a>
+        <a href="/legal">Legal</a>
+        <a class="btn btn-primary menu-cta" href="/post">Post Property</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2 style="margin:0">Listing Review & Final Submit</h2>
+      <p class="sub" style="margin-top:8px">
+        This is a transparency step. This page is <strong>not a payment page</strong>.
+      </p>
+    </section>
+
+    <section class="notice status-banner" style="margin-top:16px">
+      <strong>Listing Status: Pending</strong><br />
+      Your property details have been submitted, but the property is not yet listed on ARH Rentals.
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="card-body" style="display:grid;gap:12px">
+        <h3 style="margin:0">Important Clarification</h3>
+        <p class="sub" style="margin:0">
+          Your property will be created in our system and become visible on ARH Rentals only after the final
+          submission is completed. Payment is never required before posting.
+        </p>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="card-body" style="display:grid;gap:12px">
+        <h3 style="margin:0">Free Listing Eligibility</h3>
+        <p class="sub" style="margin:0">You are eligible for a <strong>FREE listing</strong> under our startup launch offer.</p>
+        <p class="sub" style="margin:0">This listing will be active for <strong>30 days</strong>.</p>
+        <ul class="plan-list" style="margin-top:0">
+          <li>Your free listing count has not been consumed yet.</li>
+          <li>The free listing count will be consumed only after Final Submission.</li>
+          <li>After this submission, you will have 1 free listing remaining.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="card-body" style="display:grid;gap:10px">
+        <h3 style="margin:0">Free vs Paid Transparency</h3>
+        <p class="sub" style="margin:0">Paid plans will apply only after your free listing limit is exhausted.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:18px">
+      <h3 style="margin:0">Available Plans (Applicable after free listing limit)</h3>
+      <p class="sub" style="margin-top:6px">
+        You do not need to select a plan right now if you are eligible for a free listing. These plans are shown for
+        your information and will apply to future listings or additional visibility.
+      </p>
+
+      <div class="grid-3" style="margin-top:12px">
+        <article class="card" data-plan="basic">
+          <div class="card-body">
+            <h3>Basic</h3>
+            <div class="price">₹199</div>
+            <p class="muted">Simple listing for short-term requirement.</p>
+            <div class="pills">
+              <span class="pill">15 Days</span>
+              <span class="pill">Standard Visibility</span>
+              <span class="pill">Edit Allowed</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card featured" data-plan="premium">
+          <span class="tag">Most Popular</span>
+          <div class="card-body">
+            <h3>Premium</h3>
+            <div class="price">₹349</div>
+            <p class="muted">Better visibility, faster leads.</p>
+            <div class="pills">
+              <span class="pill">30 Days</span>
+              <span class="pill">Priority Placement</span>
+              <span class="pill">Highlight Badge</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-plan="pro">
+          <div class="card-body">
+            <h3>Pro</h3>
+            <div class="price">₹599</div>
+            <p class="muted">Maximum exposure for urgent rentals.</p>
+            <div class="pills">
+              <span class="pill">60 Days</span>
+              <span class="pill">Top Placement</span>
+              <span class="pill">Premium Highlight</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <div class="card-body" style="display:grid;gap:12px">
+        <h3 style="margin:0">Final Action</h3>
+        <button type="button" class="btn btn-primary" id="finalSubmitBtn">Final Submit &amp; List Property</button>
+        <p class="small" style="margin:0">
+          After final submission, this property will be listed on ARH Rentals, and this submission cannot be undone.
+        </p>
+      </div>
+    </section>
+
+    <section class="notice" id="successState" hidden style="margin-top:16px">
+      🎉 Your property has been listed successfully on ARH Rentals.<br />
+      Redirecting to Dashboard → My Listings...
+    </section>
+
+    <section class="notice" style="margin-top:16px">
+      <strong>Reminder:</strong> Continue ≠ Listing submission. Checkout page ≠ Payment. Final Submit = Single source
+      of truth.
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div>
+          © <span id="year"></span> ARH Rentals •
+          <a href="/legal">Legal</a> •
+          <a href="/pricing">Plans</a>
+        </div>
+
+        <div class="footer-disclaimer">
+          Disclaimer: ARH Rentals is an information-access platform only. We do not guarantee
+          leads, tenants, responses, or deal closure. Users must independently verify all details
+          before any transaction.
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    (() => {
+      const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+      const successState = document.getElementById("successState");
+
+      if (!finalSubmitBtn) return;
+
+      finalSubmitBtn.addEventListener("click", () => {
+        finalSubmitBtn.disabled = true;
+        if (successState) {
+          successState.hidden = false;
+          successState.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        setTimeout(() => {
+          window.location.href = "/dashboard/";
+        }, 2000);
+      });
+    })();
+  </script>
+</body>
+
+</html>

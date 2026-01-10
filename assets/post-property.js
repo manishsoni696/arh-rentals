@@ -16,16 +16,6 @@
   // Helper: Check if user is logged in
   const isLoggedIn = () => Boolean(getAuthToken());
 
-  // Helper: Generate UUID
-  const generateUUID = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  };
-
-
   const amenitiesLists = {
     residential: [
       { value: "parking", label: "Parking" },
@@ -94,6 +84,52 @@
     const notesCount = form.querySelector("#notesCount");
     const formMsg = form.querySelector("#formMsg");
     const saveDraftBtn = form.querySelector("#saveDraftBtn");
+    const submissionModal = document.getElementById("submissionModal");
+    const proceedToListingBtn = document.getElementById("proceedToListingBtn");
+    const editDetailsBtn = document.getElementById("editDetailsBtn");
+
+    const openSubmissionModal = () => {
+      if (!submissionModal) return;
+      submissionModal.hidden = false;
+      submissionModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      proceedToListingBtn?.focus();
+    };
+
+    const closeSubmissionModal = () => {
+      if (!submissionModal) return;
+      submissionModal.hidden = true;
+      submissionModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+    };
+
+    if (editDetailsBtn) {
+      editDetailsBtn.addEventListener("click", () => {
+        closeSubmissionModal();
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    if (proceedToListingBtn) {
+      proceedToListingBtn.addEventListener("click", () => {
+        closeSubmissionModal();
+        window.location.href = "/post/review.html";
+      });
+    }
+
+    if (submissionModal) {
+      submissionModal.addEventListener("click", (event) => {
+        if (event.target === submissionModal) {
+          closeSubmissionModal();
+        }
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && submissionModal && !submissionModal.hidden) {
+        closeSubmissionModal();
+      }
+    });
 
     const errorSummary = document.createElement("div");
     errorSummary.id = "formErrorSummary";
@@ -513,7 +549,7 @@
       return true;
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
 
@@ -526,191 +562,8 @@
         return;
       }
 
-      const submitBtn = form.querySelector('button[type="submit"]');
-      if (submitBtn) submitBtn.disabled = true;
-      formMsg.textContent = "⏳ Uploading master photos...";
-
-      try {
-        const listingId = generateUUID();
-        let masterPhotoKeys = [];
-        let additionalInteriorKeys = [];
-        let exteriorPhotoKeys = [];
-
-        // Step 1: Upload master photos (required - exactly 2, always public)
-        formMsg.textContent = "⏳ Uploading master photos...";
-        const masterFiles = masterPhotoInput.files || [];
-        if (masterFiles.length > 0) {
-          const fileTypes = Array.from(masterFiles).map(f => f.type);
-          const fileSizes = Array.from(masterFiles).map(f => f.size);
-
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${getAuthToken()}`
-            },
-            body: JSON.stringify({
-              listingId,
-              category: 'master',
-              fileCount: masterFiles.length,
-              fileTypes,
-              fileSizes
-            })
-          });
-
-          const initData = await initRes.json();
-          if (!initData.success) {
-            throw new Error(initData.message || "Master photo upload init failed");
-          }
-
-          for (let i = 0; i < masterFiles.length; i++) {
-            const file = masterFiles[i];
-            const upload = initData.uploads[i];
-
-            const uploadRes = await fetch(upload.uploadUrl, {
-              method: "PUT",
-              body: file,
-              headers: { "Content-Type": file.type }
-            });
-
-            if (!uploadRes.ok) {
-              throw new Error(`Master photo ${i + 1} upload failed`);
-            }
-
-            masterPhotoKeys.push(upload.key);
-          }
-        }
-
-        // Step 2: Upload additional interior photos (optional - 0-6, locked)
-        formMsg.textContent = "⏳ Uploading additional interior photos...";
-        const interiorFiles = interiorPhotoInput.files || [];
-        if (interiorFiles.length > 0) {
-          const fileTypes = Array.from(interiorFiles).map(f => f.type);
-          const fileSizes = Array.from(interiorFiles).map(f => f.size);
-
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${getAuthToken()}`
-            },
-            body: JSON.stringify({
-              listingId,
-              category: 'interior',
-              fileCount: interiorFiles.length,
-              fileTypes,
-              fileSizes
-            })
-          });
-
-          const initData = await initRes.json();
-          if (!initData.success) {
-            throw new Error(initData.message || "Additional interior photo upload init failed");
-          }
-
-          for (let i = 0; i < interiorFiles.length; i++) {
-            const file = interiorFiles[i];
-            const upload = initData.uploads[i];
-
-            const uploadRes = await fetch(upload.uploadUrl, {
-              method: "PUT",
-              body: file,
-              headers: { "Content-Type": file.type }
-            });
-
-            if (!uploadRes.ok) {
-              throw new Error(`Additional interior photo ${i + 1} upload failed`);
-            }
-
-            additionalInteriorKeys.push(upload.key);
-          }
-        }
-
-        // Step 3: Upload exterior photos (optional - 0-2, locked)
-        formMsg.textContent = "⏳ Uploading exterior photos...";
-        const exteriorFiles = exteriorPhotoInput.files || [];
-        if (exteriorFiles.length > 0) {
-          const fileTypes = Array.from(exteriorFiles).map(f => f.type);
-          const fileSizes = Array.from(exteriorFiles).map(f => f.size);
-
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${getAuthToken()}`
-            },
-            body: JSON.stringify({
-              listingId,
-              category: 'exterior',
-              fileCount: exteriorFiles.length,
-              fileTypes,
-              fileSizes
-            })
-          });
-
-          const initData = await initRes.json();
-          if (!initData.success) {
-            throw new Error(initData.message || "Exterior photo upload init failed");
-          }
-
-          for (let i = 0; i < exteriorFiles.length; i++) {
-            const file = exteriorFiles[i];
-            const upload = initData.uploads[i];
-
-            const uploadRes = await fetch(upload.uploadUrl, {
-              method: "PUT",
-              body: file,
-              headers: { "Content-Type": file.type }
-            });
-
-            if (!uploadRes.ok) {
-              throw new Error(`Exterior photo ${i + 1} upload failed`);
-            }
-
-            exteriorPhotoKeys.push(upload.key);
-          }
-        }
-
-        // Step 4: Create listing
-        formMsg.textContent = "⏳ Creating listing...";
-
-        const formData = getFormData();
-        const listingData = {
-          ...formData,
-          master_interior_photos: masterPhotoKeys,
-          additional_interior_photos: additionalInteriorKeys,
-          exterior_photos: exteriorPhotoKeys,
-          city: "Hisar"
-        };
-
-        const createRes = await fetch(`${DASHBOARD_BACKEND}/api/listings/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${getAuthToken()}`
-          },
-          body: JSON.stringify(listingData)
-        });
-
-        const createData = await createRes.json();
-        if (!createData.success) {
-          throw new Error(createData.message || "Listing creation failed");
-        }
-
-        // Success!
-        formMsg.textContent = "✅ Listing created successfully!";
-        localStorage.removeItem(DRAFT_KEY); // Clear local draft
-
-        // Redirect to dashboard after 2 seconds
-        setTimeout(() => {
-          window.location.href = "/dashboard/";
-        }, 2000);
-
-      } catch (error) {
-        console.error("Submission error:", error);
-        formMsg.textContent = `❌ ${error.message}`;
-        if (submitBtn) submitBtn.disabled = false;
-      }
+      formMsg.textContent = "✅ Details saved. Please review before final submission.";
+      openSubmissionModal();
     };
 
     const handleCategoryChange = (event) => {
