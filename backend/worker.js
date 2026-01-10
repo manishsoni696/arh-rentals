@@ -21,7 +21,9 @@ function getCorsHeaders(request) {
 }
 
 const DRAFT_EXPIRY_DAYS = 3;
-const MAX_PHOTOS = 10;
+const MIN_INTERIOR_PHOTOS = 2;
+const MAX_INTERIOR_PHOTOS = 10;
+const MAX_EXTERIOR_PHOTOS = 3;
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 const VALID_TYPES = ["image/jpeg", "image/png"];
 
@@ -127,15 +129,20 @@ async function handleUploadInit(request, env) {
 
   try {
     const body = await request.json();
-    const { listingId, fileCount, fileTypes, fileSizes } = body;
+    const { listingId, category, fileCount, fileTypes, fileSizes } = body;
 
     // Validate
-    if (!listingId || !Array.isArray(fileTypes) || !Array.isArray(fileSizes)) {
+    if (!listingId || !category || !Array.isArray(fileTypes) || !Array.isArray(fileSizes)) {
       return jsonResponse({ success: false, message: "Invalid request" }, 400, request);
     }
 
-    if (fileCount > MAX_PHOTOS || fileTypes.length > MAX_PHOTOS || fileSizes.length > MAX_PHOTOS) {
-      return jsonResponse({ success: false, message: `Maximum ${MAX_PHOTOS} photos allowed` }, 400, request);
+    if (!['interior', 'exterior'].includes(category)) {
+      return jsonResponse({ success: false, message: "Invalid category" }, 400, request);
+    }
+
+    const maxPhotos = category === 'interior' ? MAX_INTERIOR_PHOTOS : MAX_EXTERIOR_PHOTOS;
+    if (fileCount > maxPhotos || fileTypes.length > maxPhotos || fileSizes.length > maxPhotos) {
+      return jsonResponse({ success: false, message: `Maximum ${maxPhotos} ${category} photos allowed` }, 400, request);
     }
 
     // Validate each file
@@ -148,12 +155,12 @@ async function handleUploadInit(request, env) {
       }
     }
 
-    // Generate upload keys and create upload tokens
+    // Generate upload keys with category folder
     const uploads = [];
     for (let i = 0; i < fileCount; i++) {
       const uuid = generateUUID();
       const ext = fileTypes[i] === "image/png" ? "png" : "jpg";
-      const key = `photos/${listingId}/${uuid}.${ext}`;
+      const key = `photos/${listingId}/${category}/${uuid}.${ext}`;
 
       // For R2, we'll create a token that allows upload to this specific key
       // Frontend will upload via our worker endpoint
@@ -190,31 +197,42 @@ async function handleCreateListing(request, env) {
     const data = await request.json();
 
     // Validate required fields
-    const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'photos'];
+    const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'interior_photos'];
     for (const field of required) {
       if (!data[field]) {
         return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
       }
     }
 
-    // Validate photos array
-    const photos = Array.isArray(data.photos) ? data.photos : [];
-    if (photos.length === 0 || photos.length > MAX_PHOTOS) {
-      return jsonResponse({ success: false, message: "Invalid photo count" }, 400, request);
+    // Validate interior photos (required: 2-10)
+    const interiorPhotos = Array.isArray(data.interior_photos) ? data.interior_photos : [];
+    if (interiorPhotos.length < MIN_INTERIOR_PHOTOS || interiorPhotos.length > MAX_INTERIOR_PHOTOS) {
+      return jsonResponse({ success: false, message: `2-10 interior photos required (first 2 = master photos)` }, 400, request);
+    }
+
+    // Validate exterior photos (optional: 0-3)
+    const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
+    if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
+      return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
     }
 
     const now = Math.floor(Date.now() / 1000);
     const listingId = generateUUID();
     const expiresAt = now + (30 * 24 * 60 * 60); // 30 days
 
-    // Insert listing
+    // Split interior photos into master (first 2) and additional (rest)
+    const masterPhotos = interiorPhotos.slice(0, 2);
+    const additionalPhotos = interiorPhotos.slice(2);
+
+    // Insert listing with separate photo arrays
     const query = `
       INSERT INTO listings (
         id, mobile, category, property_type, city, area, rent, security_deposit,
         floor_on_rent, number_of_rooms, size, size_unit, furnishing, property_age,
-        available_from, amenities, extra_notes, photos, status, created_at, expires_at
+        available_from, amenities, extra_notes, master_interior_photos, additional_interior_photos, 
+        exterior_photos, status, created_at, expires_at
       ) VALUES (
-        ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, 'active', ?19, ?20
+        ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, 'active', ?21, ?22
       )
     `;
 
@@ -236,7 +254,9 @@ async function handleCreateListing(request, env) {
       data.available_from || null,
       data.amenities ? JSON.stringify(data.amenities) : null,
       data.extra_notes || null,
-      JSON.stringify(photos),
+      JSON.stringify(masterPhotos),
+      JSON.stringify(additionalPhotos),
+      JSON.stringify(exteriorPhotos),
       now,
       expiresAt
     ).run();

@@ -1,5 +1,7 @@
 (() => {
-  const MAX_PHOTOS = 10;
+  const MIN_INTERIOR_PHOTOS = 2;  // At least 2 master photos required
+  const MAX_INTERIOR_PHOTOS = 10;
+  const MAX_EXTERIOR_PHOTOS = 3;
   const MAX_BYTES = 1024 * 1024;
   const VALID_TYPES = ["image/jpeg", "image/png"];
   const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
@@ -71,9 +73,17 @@
     const floorSelect = form.querySelector("select[name='floor_on_rent']");
     const declarationCheckbox = form.querySelector("#declaration");
     const amenitiesContainer = form.querySelector("#amenitiesContainer");
-    const photoInput = form.querySelector("#photoInput");
-    const photoErrors = form.querySelector("#photoErrors");
-    const photoPreview = form.querySelector("#photoPreview");
+
+    // Interior photos
+    const interiorPhotoInput = form.querySelector("#interiorPhotoInput");
+    const interiorPhotoErrors = form.querySelector("#interiorPhotoErrors");
+    const interiorPhotoPreview = form.querySelector("#interiorPhotoPreview");
+
+    // Exterior photos
+    const exteriorPhotoInput = form.querySelector("#exteriorPhotoInput");
+    const exteriorPhotoErrors = form.querySelector("#exteriorPhotoErrors");
+    const exteriorPhotoPreview = form.querySelector("#exteriorPhotoPreview");
+
     const extraNotes = form.querySelector("textarea[name='extra_notes']");
     const notesCount = form.querySelector("#notesCount");
     const formMsg = form.querySelector("#formMsg");
@@ -189,17 +199,17 @@
       }
     };
 
-    const buildPhotoErrors = (files) => {
+    const buildPhotoErrors = (files, maxPhotos, photoType) => {
       const errors = [];
       const previews = [];
 
-      if (files.length > MAX_PHOTOS) {
-        errors.push(`You selected ${files.length} files. Max allowed is ${MAX_PHOTOS}.`);
+      if (files.length > maxPhotos) {
+        errors.push(`You selected ${files.length} ${photoType} files. Max allowed is ${maxPhotos}.`);
       }
 
       Array.from(files).forEach((file, index) => {
-        if (index >= MAX_PHOTOS) {
-          errors.push(`${file.name}: Exceeds the maximum of ${MAX_PHOTOS} files.`);
+        if (index >= maxPhotos) {
+          errors.push(`${file.name}: Exceeds the maximum of ${maxPhotos} files.`);
           return;
         }
         if (!VALID_TYPES.includes(file.type)) {
@@ -216,13 +226,13 @@
       return { errors, previews };
     };
 
-    const renderPhotoErrors = (errors) => {
-      photoErrors.innerHTML = "";
+    const renderPhotoErrors = (errorContainer, errors) => {
+      errorContainer.innerHTML = "";
       if (!errors.length) {
-        photoErrors.style.display = "none";
+        errorContainer.style.display = "none";
         return;
       }
-      photoErrors.style.display = "block";
+      errorContainer.style.display = "block";
       const list = document.createElement("ul");
       list.style.margin = "0";
       list.style.paddingLeft = "18px";
@@ -231,14 +241,17 @@
         item.textContent = message;
         list.appendChild(item);
       });
-      photoErrors.appendChild(list);
+      errorContainer.appendChild(list);
     };
 
-    const showPhotoPreviews = (files) => {
-      photoPreview.innerHTML = "";
-      files.forEach((file) => {
+    const showPhotoPreviews = (previewContainer, files, showMasterBadges = false) => {
+      previewContainer.innerHTML = "";
+      files.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (event) => {
+          const wrapper = document.createElement("div");
+          wrapper.style.position = "relative";
+
           const img = document.createElement("img");
           img.src = event.target.result;
           img.alt = file.name;
@@ -246,20 +259,79 @@
           img.style.height = "100px";
           img.style.objectFit = "cover";
           img.style.borderRadius = "8px";
-          photoPreview.appendChild(img);
+          wrapper.appendChild(img);
+
+          // Add badge for master photos or locked photos
+          if (showMasterBadges) {
+            const badge = document.createElement("div");
+            badge.style.position = "absolute";
+            badge.style.top = "4px";
+            badge.style.right = "4px";
+            badge.style.padding = "2px 6px";
+            badge.style.borderRadius = "4px";
+            badge.style.fontSize = "11px";
+            badge.style.fontWeight = "bold";
+
+            if (index < 2) {
+              // First 2 photos = Master (Public)
+              badge.textContent = "👁️ Public";
+              badge.style.background = "#10b981";
+              badge.style.color = "white";
+            } else {
+              // Photos 3+ = Locked
+              badge.textContent = "🔒 Locked";
+              badge.style.background = "#f59e0b";
+              badge.style.color = "white";
+            }
+            wrapper.appendChild(badge);
+          } else {
+            // Exterior photos - always locked
+            const badge = document.createElement("div");
+            badge.textContent = "🔒 Locked";
+            badge.style.position = "absolute";
+            badge.style.top = "4px";
+            badge.style.right = "4px";
+            badge.style.padding = "2px 6px";
+            badge.style.borderRadius = "4px";
+            badge.style.fontSize = "11px";
+            badge.style.fontWeight = "bold";
+            badge.style.background = "#ef4444";
+            badge.style.color = "white";
+            wrapper.appendChild(badge);
+          }
+
+          previewContainer.appendChild(wrapper);
         };
         reader.readAsDataURL(file);
       });
     };
 
-    const validatePhotos = () => {
-      if (!photoInput) return { errors: [], previews: [] };
-      const { errors, previews } = buildPhotoErrors(photoInput.files || []);
-      renderPhotoErrors(errors);
+    const validateInteriorPhotos = () => {
+      if (!interiorPhotoInput) return { errors: [], previews: [] };
+      const { errors, previews } = buildPhotoErrors(interiorPhotoInput.files || [], MAX_INTERIOR_PHOTOS, "interior");
+
+      // Check minimum requirement
+      if (previews.length > 0 && previews.length < MIN_INTERIOR_PHOTOS) {
+        errors.push(`At least ${MIN_INTERIOR_PHOTOS} interior photos required (for master photos).`);
+      }
+
+      renderPhotoErrors(interiorPhotoErrors, errors);
       if (!errors.length) {
-        showPhotoPreviews(previews);
+        showPhotoPreviews(interiorPhotoPreview, previews, true); // true = show master badges
       } else {
-        photoPreview.innerHTML = "";
+        interiorPhotoPreview.innerHTML = "";
+      }
+      return { errors, previews };
+    };
+
+    const validateExteriorPhotos = () => {
+      if (!exteriorPhotoInput) return { errors: [], previews: [] };
+      const { errors, previews } = buildPhotoErrors(exteriorPhotoInput.files || [], MAX_EXTERIOR_PHOTOS, "exterior");
+      renderPhotoErrors(exteriorPhotoErrors, errors);
+      if (!errors.length) {
+        showPhotoPreviews(exteriorPhotoPreview, previews, false); // false = always show locked badge
+      } else {
+        exteriorPhotoPreview.innerHTML = "";
       }
       return { errors, previews };
     };
@@ -372,10 +444,25 @@
       const notesLength = (extraNotes?.value || "").length;
       ensure(notesLength <= NOTES_LIMIT, `Extra notes cannot exceed ${NOTES_LIMIT} characters.`, extraNotes);
 
-      const { errors: photoValidationErrors } = buildPhotoErrors(photoInput?.files || []);
-      if (photoValidationErrors.length) {
-        errors.push(...photoValidationErrors);
-        if (!firstInvalid && photoInput) firstInvalid = photoInput;
+      // Validate interior photos (required: 2-10)
+      const interiorValidation = validateInteriorPhotos();
+      if (interiorValidation.errors.length) {
+        errors.push(...interiorValidation.errors);
+        if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
+      }
+
+      // Check if at least minimum interior photos
+      const interiorCount = (interiorPhotoInput?.files || []).length;
+      if (interiorCount < MIN_INTERIOR_PHOTOS) {
+        errors.push(`At least ${MIN_INTERIOR_PHOTOS} interior photos required (first 2 = master photos).`);
+        if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
+      }
+
+      // Validate exterior photos (optional: 0-3)
+      const exteriorValidation = validateExteriorPhotos();
+      if (exteriorValidation.errors.length) {
+        errors.push(...exteriorValidation.errors);
+        if (!firstInvalid && exteriorPhotoInput) firstInvalid = exteriorPhotoInput;
       }
 
       if (errors.length) {
@@ -401,9 +488,6 @@
       const isValid = validateForm();
       if (!isValid) return;
 
-      const photoValidation = validatePhotos();
-      if (photoValidation.errors.length > 0) return;
-
       // Check if logged in
       if (!isLoggedIn()) {
         formMsg.textContent = "❌ Please login to submit listing";
@@ -412,18 +496,18 @@
 
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
-      formMsg.textContent = "⏳ Uploading photos...";
+      formMsg.textContent = "⏳ Uploading interior photos...";
 
       try {
-        // Step 1: Upload photos to R2
-        const files = photoInput.files || [];
         const listingId = generateUUID();
-        let uploadedPhotoKeys = [];
+        let interiorPhotoKeys = [];
+        let exteriorPhotoKeys = [];
 
-        if (files.length > 0) {
-          // Get upload URLs
-          const fileTypes = Array.from(files).map(f => f.type);
-          const fileSizes = Array.from(files).map(f => f.size);
+        // Step 1: Upload interior photos (required)
+        const interiorFiles = interiorPhotoInput.files || [];
+        if (interiorFiles.length > 0) {
+          const fileTypes = Array.from(interiorFiles).map(f => f.type);
+          const fileSizes = Array.from(interiorFiles).map(f => f.size);
 
           const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
             method: "POST",
@@ -433,7 +517,8 @@
             },
             body: JSON.stringify({
               listingId,
-              fileCount: files.length,
+              category: 'interior',
+              fileCount: interiorFiles.length,
               fileTypes,
               fileSizes
             })
@@ -441,12 +526,12 @@
 
           const initData = await initRes.json();
           if (!initData.success) {
-            throw new Error(initData.message || "Upload init failed");
+            throw new Error(initData.message || "Interior photo upload init failed");
           }
 
-          // Upload each photo to R2
-          for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+          // Upload each interior photo to R2
+          for (let i = 0; i < interiorFiles.length; i++) {
+            const file = interiorFiles[i];
             const upload = initData.uploads[i];
 
             const uploadRes = await fetch(upload.uploadUrl, {
@@ -456,20 +541,67 @@
             });
 
             if (!uploadRes.ok) {
-              throw new Error(`Photo ${i + 1} upload failed`);
+              throw new Error(`Interior photo ${i + 1} upload failed`);
             }
 
-            uploadedPhotoKeys.push(upload.key);
+            interiorPhotoKeys.push(upload.key);
           }
         }
 
-        // Step 2: Create listing
+        // Step 2: Upload exterior photos (optional)
+        formMsg.textContent = "⏳ Uploading exterior photos...";
+        const exteriorFiles = exteriorPhotoInput.files || [];
+        if (exteriorFiles.length > 0) {
+          const fileTypes = Array.from(exteriorFiles).map(f => f.type);
+          const fileSizes = Array.from(exteriorFiles).map(f => f.size);
+
+          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${getAuthToken()}`
+            },
+            body: JSON.stringify({
+              listingId,
+              category: 'exterior',
+              fileCount: exteriorFiles.length,
+              fileTypes,
+              fileSizes
+            })
+          });
+
+          const initData = await initRes.json();
+          if (!initData.success) {
+            throw new Error(initData.message || "Exterior photo upload init failed");
+          }
+
+          // Upload each exterior photo to R2
+          for (let i = 0; i < exteriorFiles.length; i++) {
+            const file = exteriorFiles[i];
+            const upload = initData.uploads[i];
+
+            const uploadRes = await fetch(upload.uploadUrl, {
+              method: "PUT",
+              body: file,
+              headers: { "Content-Type": file.type }
+            });
+
+            if (!uploadRes.ok) {
+              throw new Error(`Exterior photo ${i + 1} upload failed`);
+            }
+
+            exteriorPhotoKeys.push(upload.key);
+          }
+        }
+
+        // Step 3: Create listing
         formMsg.textContent = "⏳ Creating listing...";
 
         const formData = getFormData();
         const listingData = {
           ...formData,
-          photos: uploadedPhotoKeys,
+          interior_photos: interiorPhotoKeys,
+          exterior_photos: exteriorPhotoKeys,
           city: "Hisar"
         };
 
@@ -515,9 +647,14 @@
       renderAmenities();
     };
 
-    const handlePhotoChange = (event) => {
+    const handleInteriorPhotoChange = (event) => {
       event.stopImmediatePropagation();
-      validatePhotos();
+      validateInteriorPhotos();
+    };
+
+    const handleExteriorPhotoChange = (event) => {
+      event.stopImmediatePropagation();
+      validateExteriorPhotos();
     };
 
     const handleNotesInput = (event) => {
@@ -587,7 +724,8 @@
 
     categorySelect?.addEventListener("change", handleCategoryChange, true);
     propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
-    photoInput?.addEventListener("change", handlePhotoChange, true);
+    interiorPhotoInput?.addEventListener("change", handleInteriorPhotoChange, true);
+    exteriorPhotoInput?.addEventListener("change", handleExteriorPhotoChange, true);
     extraNotes?.addEventListener("input", handleNotesInput, true);
     saveDraftBtn?.addEventListener("click", handleSaveDraft, true);
     form.addEventListener("submit", handleSubmit, true);
@@ -618,7 +756,9 @@
     renderFloorOptions();
     renderAmenities();
     updateNotesCount();
-    renderPhotoErrors([]);
+    // Initialize photo error containers
+    renderPhotoErrors(interiorPhotoErrors, []);
+    renderPhotoErrors(exteriorPhotoErrors, []);
 
     const checkAndRestoreCloudDraft = async () => {
       if (!isLoggedIn()) return;
