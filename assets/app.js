@@ -93,7 +93,7 @@ function normalizePincode(pin) {
   return String(pin || "").trim().replace(/\D/g, "").slice(0, 6);
 }
 function normalizeMobile(m) {
-  return String(m || "").trim().replace(/\D/g, "").slice(0, 10);
+  return String(m || "").trim().replace(/\D/g, "").slice(-10);
 }
 function normalizeOtp(o) {
   return String(o || "").trim().replace(/\D/g, "").slice(0, 6);
@@ -700,8 +700,16 @@ if (verifyOtpBtn) {
       localStorage.setItem("arh_token", data.token);
 
       // Ensure mobile is saved for header display (Robust Fix)
-      const finalMobile = normalizeMobile(mobile || document.getElementById("mobileInput")?.value);
-      if (finalMobile) {
+      let mobileToSave = mobile;
+      if (!mobileToSave) {
+        const inp = document.getElementById("mobileInput");
+        if (inp) mobileToSave = inp.value;
+      }
+      const finalMobile = normalizeMobile(mobileToSave);
+
+      console.log("ARH DEBUG: Saving mobile on login ->", finalMobile);
+
+      if (finalMobile && finalMobile.length === 10) {
         localStorage.setItem("arh_session_mobile", finalMobile);
       }
 
