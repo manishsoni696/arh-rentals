@@ -60,9 +60,9 @@ window.resetOtpTimer = function () {
     clearTimeout(globalOtpTimerId);
     globalOtpTimerId = null;
   }
-  // Clear all number-specific cooldown timers (regex cleanup)
+  // Clear all number-specific cooldown timers AND "sent once" flags
   Object.keys(localStorage).forEach(key => {
-    if (key.startsWith("arh_otp_cooldown_")) {
+    if (key.startsWith("arh_otp_cooldown_") || key.startsWith("arh_otp_sent_once_")) {
       localStorage.removeItem(key);
     }
   });

@@ -372,6 +372,14 @@ if (verifyOtpBtn) {
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     clearSession();
+
+    // Clear OTP cooldown timers and "sent once" flags
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith("arh_otp_cooldown_") || key.startsWith("arh_otp_sent_once_")) {
+        localStorage.removeItem(key);
+      }
+    });
+
     window.location.href = "/post/";
   });
 }
