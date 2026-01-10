@@ -98,7 +98,7 @@
     draftNotice.style.marginBottom = "8px";
     draftNotice.style.color = "var(--muted)";
     draftNotice.style.flexWrap = "wrap";
-    draftNotice.style.display = "flex";
+    // Keep display:none initially - will be shown only when draft exists AND user is logged in
     draftNotice.innerHTML = `
       <span>Draft found from your last session.</span>
       <button type="button" class="btn" id="restoreDraftBtn">Restore Draft</button>
