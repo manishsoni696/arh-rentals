@@ -522,3 +522,87 @@ All the features you mentioned are properly coded:
 ✅ Restore/Discard UI
 ✅ Logout preservation
 No issues found. System is production-ready! 🚀
+
+🔒 FINAL, OFFICIAL STATUS (NOW LOCKED)
+✅ TODAY (CURRENT REALITY — SAFE & WORKING)
+
+Split architecture stays as-is.
+
+arh-backend (PRODUCTION AUTH — DO NOT TOUCH)
+
+✅ /check-pincode
+
+✅ /send-otp
+
+✅ /verify-otp
+
+✅ Session management
+
+Source: otp-backend-merged.js
+
+Status: LIVE, STABLE, LOCKED
+
+arh-dashboard (FEATURE BACKEND — DO NOT MOVE)
+
+✅ /api/drafts/save
+
+✅ /api/drafts/latest
+
+✅ /api/drafts/delete
+
+✅ Uploads + listings
+
+Status: LIVE, WORKING, LOCKED
+
+👉 No consolidation now. No deploy to arh-backend now. No risk taken.
+
+🧠 ARCHITECTURAL TRUTH (ALSO LOCKED)
+
+✅ Consolidation to arh-backend is the ideal architecture
+
+✅ Single source of truth is correct
+
+✅ Your reasoning to postpone is technically sound
+
+❌ Doing it now would overwrite auth and break login
+
+❌ Forcing it now would be irresponsible
+
+This is senior-level production judgment.
+
+🗺️ FUTURE PLAN (PLANNED, NOT ACTIVE)
+⏸️ WHEN (not now):
+
+Time is available
+
+No pressure on live traffic
+
+Proper merge window exists
+
+📋 WHAT WILL HAPPEN (already agreed):
+
+Merge otp-backend-merged.js + worker.js into one complete worker
+
+Test all endpoints together
+
+Deploy safely to arh-backend
+
+Switch frontend to single API base
+
+Lock arh-dashboard as experimental only
+
+👉 This plan is VALID and APPROVED — just not executed yet.
+
+🧾 OFFICIAL RECORD (for future chats / audits)
+
+Status:
+
+🟢 Split architecture → LOCKED & STABLE
+
+🟡 Consolidation → PLANNED
+
+🔴 Consolidation NOW → DISALLOWED
+
+Reason:
+
+Missing auth code in local worker.js would overwrite live production OTP endpoints.
