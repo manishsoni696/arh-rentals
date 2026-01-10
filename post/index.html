@@ -307,22 +307,35 @@
             </section>
 
             <section aria-labelledby="amenities-title">
-              <h3 id="amenities-title" style="margin:0">5) Amenities</h3>
-              <p class="sub" style="margin:6px 0 10px">Amenities change based on category selection.</p>
-              <div id="amenitiesContainer" class="amenities" role="group" aria-live="polite"></div>
+            </section>
+
+            <section aria-labelledby="master-photos-title">
+              <h3 id="master-photos-title" style="margin:0">6) Master Interior Photos (Required - Always Public)</h3>
+              <p class="sub" style="margin:6px 0 10px">
+                Upload exactly 2 master interior photos (bedroom, living room, kitchen, etc.). <br>
+                <strong>👁️ These 2 photos will ALWAYS be publicly visible to everyone.</strong>
+              </p>
+              <input id="masterPhotoInput" class="input" type="file" name="master_photos" accept=".jpg,.jpeg,.png"
+                multiple aria-describedby="masterPhotoHelp" />
+              <div id="masterPhotoHelp" class="small" style="margin-top:6px">
+                JPG/JPEG/PNG only. Maximum size: 1 MB per photo. <strong>Exactly 2 photos required.</strong>
+              </div>
+              <div id="masterPhotoErrors" class="small" style="color:#b42318;margin-top:8px"></div>
+              <div id="masterPhotoPreview"
+                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px">
+              </div>
             </section>
 
             <section aria-labelledby="interior-photos-title">
-              <h3 id="interior-photos-title" style="margin:0">6) Interior Photos (Required)</h3>
+              <h3 id="interior-photos-title" style="margin:0">7) Additional Interior Photos (Optional - Locked)</h3>
               <p class="sub" style="margin:6px 0 10px">
-                Upload 2–8 interior photos (bedroom, kitchen, living room, washroom). <br>
-                <strong>👁️ First 2 photos will be publicly visible as 'Master Photos'.</strong><br>
-                🔒 Remaining photos will unlock after deal confirmation.
+                Upload up to 6 additional interior photos (other rooms, washroom, etc.). <br>
+                🔒 These will unlock <strong>ONLY after deal confirmation</strong>.
               </p>
               <input id="interiorPhotoInput" class="input" type="file" name="interior_photos" accept=".jpg,.jpeg,.png"
                 multiple aria-describedby="interiorPhotoHelp" />
               <div id="interiorPhotoHelp" class="small" style="margin-top:6px">
-                JPG/JPEG/PNG only. Maximum size: 1 MB per photo.
+                JPG/JPEG/PNG only. Maximum size: 1 MB per photo. (0-6 photos, optional)
               </div>
               <div id="interiorPhotoErrors" class="small" style="color:#b42318;margin-top:8px"></div>
               <div id="interiorPhotoPreview"
@@ -331,17 +344,17 @@
             </section>
 
             <section aria-labelledby="exterior-photos-title">
-              <h3 id="exterior-photos-title" style="margin:0">7) Exterior Photos (Optional - Locked Until Deal)</h3>
+              <h3 id="exterior-photos-title" style="margin:0">8) Exterior Photos (Optional - Locked)</h3>
               <p class="sub" style="margin:6px 0 10px">
                 Upload up to 2 exterior photos (front elevation, balcony, gate). <strong>Max 10 total
                   photos.</strong><br>
-                🔒 These will be visible <strong>ONLY after deal unlock</strong> to protect your privacy and prevent
+                🔒 These will unlock <strong>ONLY after deal confirmation</strong> to protect your privacy and prevent
                 exact location identification.
               </p>
               <input id="exteriorPhotoInput" class="input" type="file" name="exterior_photos" accept=".jpg,.jpeg,.png"
                 multiple aria-describedby="exteriorPhotoHelp" />
               <div id="exteriorPhotoHelp" class="small" style="margin-top:6px">
-                JPG/JPEG/PNG only. Maximum size: 1 MB per photo. (Optional)
+                JPG/JPEG/PNG only. Maximum size: 1 MB per photo. (0-2 photos, optional)
               </div>
               <div id="exteriorPhotoErrors" class="small" style="color:#b42318;margin-top:8px"></div>
               <div id="exteriorPhotoPreview"
@@ -350,14 +363,14 @@
             </section>
 
             <section aria-labelledby="notes-title">
-              <h3 id="notes-title" style="margin:0">8) Extra Notes</h3>
+              <h3 id="notes-title" style="margin:0">9) Extra Notes</h3>
               <textarea class="input" name="extra_notes" rows="4" maxlength="500"
                 placeholder="Optional notes about the property or tenant preferences (max 500 chars)."></textarea>
               <div class="small" id="notesCount" style="margin-top:6px;color:var(--muted)">0 / 500</div>
             </section>
 
             <section aria-labelledby="declaration-title">
-              <h3 id="declaration-title" style="margin:0">9) Owner Declaration</h3>
+              <h3 id="declaration-title" style="margin:0">10) Owner Declaration</h3>
               <label class="amenity" style="align-items:flex-start;gap:10px">
                 <input type="checkbox" id="declaration" required />
                 <span>

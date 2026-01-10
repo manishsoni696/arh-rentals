@@ -1,8 +1,8 @@
 (() => {
-  const MIN_INTERIOR_PHOTOS = 2;  // At least 2 master photos required
-  const MAX_INTERIOR_PHOTOS = 8;  // Max 8 interior photos
-  const MAX_EXTERIOR_PHOTOS = 2;  // Max 2 exterior photos
-  const MAX_TOTAL_PHOTOS = 10;    // Total max: interior + exterior
+  const MASTER_PHOTOS_REQUIRED = 2;  // Exactly 2 master photos (public)
+  const MAX_ADDITIONAL_INTERIOR = 6;  // Max 6 additional interior photos (locked)
+  const MAX_EXTERIOR_PHOTOS = 2;  // Max 2 exterior photos (locked)
+  const MAX_TOTAL_PHOTOS = 10;    // Total max: master + additional + exterior
   const MAX_BYTES = 1024 * 1024;
   const VALID_TYPES = ["image/jpeg", "image/png"];
   const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
@@ -75,12 +75,17 @@
     const declarationCheckbox = form.querySelector("#declaration");
     const amenitiesContainer = form.querySelector("#amenitiesContainer");
 
-    // Interior photos
+    // Master interior photos (2 required, always public)
+    const masterPhotoInput = form.querySelector("#masterPhotoInput");
+    const masterPhotoErrors = form.querySelector("#masterPhotoErrors");
+    const masterPhotoPreview = form.querySelector("#masterPhotoPreview");
+
+    // Additional interior photos (0-6, locked)
     const interiorPhotoInput = form.querySelector("#interiorPhotoInput");
     const interiorPhotoErrors = form.querySelector("#interiorPhotoErrors");
     const interiorPhotoPreview = form.querySelector("#interiorPhotoPreview");
 
-    // Exterior photos
+    // Exterior photos (0-2, locked)
     const exteriorPhotoInput = form.querySelector("#exteriorPhotoInput");
     const exteriorPhotoErrors = form.querySelector("#exteriorPhotoErrors");
     const exteriorPhotoPreview = form.querySelector("#exteriorPhotoPreview");
@@ -245,7 +250,7 @@
       errorContainer.appendChild(list);
     };
 
-    const showPhotoPreviews = (previewContainer, files, showMasterBadges = false) => {
+    const showPhotoPreviews = (previewContainer, files, badgeType = "locked") => {
       previewContainer.innerHTML = "";
       files.forEach((file, index) => {
         const reader = new FileReader();
@@ -262,63 +267,68 @@
           img.style.borderRadius = "8px";
           wrapper.appendChild(img);
 
-          // Add badge for master photos or locked photos
-          if (showMasterBadges) {
-            const badge = document.createElement("div");
-            badge.style.position = "absolute";
-            badge.style.top = "4px";
-            badge.style.right = "4px";
-            badge.style.padding = "2px 6px";
-            badge.style.borderRadius = "4px";
-            badge.style.fontSize = "11px";
-            badge.style.fontWeight = "bold";
+          // Add badge based on type
+          const badge = document.createElement("div");
+          badge.style.position = "absolute";
+          badge.style.top = "4px";
+          badge.style.right = "4px";
+          badge.style.padding = "2px 6px";
+          badge.style.borderRadius = "4px";
+          badge.style.fontSize = "11px";
+          badge.style.fontWeight = "bold";
 
-            if (index < 2) {
-              // First 2 photos = Master (Public)
-              badge.textContent = "👁️ Public";
-              badge.style.background = "#10b981";
-              badge.style.color = "white";
-            } else {
-              // Photos 3+ = Locked
-              badge.textContent = "🔒 Locked";
-              badge.style.background = "#f59e0b";
-              badge.style.color = "white";
-            }
-            wrapper.appendChild(badge);
-          } else {
-            // Exterior photos - always locked
-            const badge = document.createElement("div");
+          if (badgeType === "master") {
+            // Master photos - always public (green)
+            badge.textContent = "👁️ Public";
+            badge.style.background = "#10b981";
+            badge.style.color = "white";
+          } else if (badgeType === "locked") {
+            // Additional interior photos - locked (orange)
             badge.textContent = "🔒 Locked";
-            badge.style.position = "absolute";
-            badge.style.top = "4px";
-            badge.style.right = "4px";
-            badge.style.padding = "2px 6px";
-            badge.style.borderRadius = "4px";
-            badge.style.fontSize = "11px";
-            badge.style.fontWeight = "bold";
+            badge.style.background = "#f59e0b";
+            badge.style.color = "white";
+          } else if (badgeType === "exterior") {
+            // Exterior photos - locked (red)
+            badge.textContent = "🔒 Locked";
             badge.style.background = "#ef4444";
             badge.style.color = "white";
-            wrapper.appendChild(badge);
           }
 
+          wrapper.appendChild(badge);
           previewContainer.appendChild(wrapper);
         };
         reader.readAsDataURL(file);
       });
     };
 
+    const validateMasterPhotos = () => {
+      if (!masterPhotoInput) return { errors: [], previews: [] };
+      const { errors, previews } = buildPhotoErrors(masterPhotoInput.files || [], MASTER_PHOTOS_REQUIRED, "master");
+
+      // Check exact requirement (must be exactly 2)
+      if (previews.length > 0 && previews.length !== MASTER_PHOTOS_REQUIRED) {
+        errors.length = 0; // Clear previous errors
+        errors.push(`Exactly ${MASTER_PHOTOS_REQUIRED} master photos required (always public).`);
+      }
+
+      renderPhotoErrors(masterPhotoErrors, errors);
+      if (!errors.length && previews.length > 0) {
+        // Show master photo previews with green "Public" badge
+        showPhotoPreviews(masterPhotoPreview, previews, "master");
+      } else {
+        masterPhotoPreview.innerHTML = "";
+      }
+      return { errors, previews };
+    };
+
     const validateInteriorPhotos = () => {
       if (!interiorPhotoInput) return { errors: [], previews: [] };
-      const { errors, previews } = buildPhotoErrors(interiorPhotoInput.files || [], MAX_INTERIOR_PHOTOS, "interior");
-
-      // Check minimum requirement
-      if (previews.length > 0 && previews.length < MIN_INTERIOR_PHOTOS) {
-        errors.push(`At least ${MIN_INTERIOR_PHOTOS} interior photos required (for master photos).`);
-      }
+      const { errors, previews } = buildPhotoErrors(interiorPhotoInput.files || [], MAX_ADDITIONAL_INTERIOR, "additional interior");
 
       renderPhotoErrors(interiorPhotoErrors, errors);
       if (!errors.length) {
-        showPhotoPreviews(interiorPhotoPreview, previews, true); // true = show master badges
+        // Show interior photo previews with orange "Locked" badge
+        showPhotoPreviews(interiorPhotoPreview, previews, "locked");
       } else {
         interiorPhotoPreview.innerHTML = "";
       }
@@ -330,7 +340,8 @@
       const { errors, previews } = buildPhotoErrors(exteriorPhotoInput.files || [], MAX_EXTERIOR_PHOTOS, "exterior");
       renderPhotoErrors(exteriorPhotoErrors, errors);
       if (!errors.length) {
-        showPhotoPreviews(exteriorPhotoPreview, previews, false); // false = always show locked badge
+        // Show exterior photo previews with red "Locked" badge
+        showPhotoPreviews(exteriorPhotoPreview, previews, "exterior");
       } else {
         exteriorPhotoPreview.innerHTML = "";
       }
@@ -445,17 +456,25 @@
       const notesLength = (extraNotes?.value || "").length;
       ensure(notesLength <= NOTES_LIMIT, `Extra notes cannot exceed ${NOTES_LIMIT} characters.`, extraNotes);
 
-      // Validate interior photos (required: 2-8)
+
+      // Validate master photos (required: exactly 2)
+      const masterValidation = validateMasterPhotos();
+      if (masterValidation.errors.length) {
+        errors.push(...masterValidation.errors);
+        if (!firstInvalid && masterPhotoInput) firstInvalid = masterPhotoInput;
+      }
+
+      // Check if exactly 2 master photos
+      const masterCount = (masterPhotoInput?.files || []).length;
+      if (masterCount !== MASTER_PHOTOS_REQUIRED) {
+        errors.push(`Exactly ${MASTER_PHOTOS_REQUIRED} master photos required (always public).`);
+        if (!firstInvalid && masterPhotoInput) firstInvalid = masterPhotoInput;
+      }
+
+      // Validate additional interior photos (optional: 0-6)
       const interiorValidation = validateInteriorPhotos();
       if (interiorValidation.errors.length) {
         errors.push(...interiorValidation.errors);
-        if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
-      }
-
-      // Check if at least minimum interior photos
-      const interiorCount = (interiorPhotoInput?.files || []).length;
-      if (interiorCount < MIN_INTERIOR_PHOTOS) {
-        errors.push(`At least ${MIN_INTERIOR_PHOTOS} interior photos required (first 2 = master photos).`);
         if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
       }
 
@@ -467,12 +486,14 @@
       }
 
       // Check total photo count (max 10)
+      const interiorCount = (interiorPhotoInput?.files || []).length;
       const exteriorCount = (exteriorPhotoInput?.files || []).length;
-      const totalPhotoCount = interiorCount + exteriorCount;
+      const totalPhotoCount = masterCount + interiorCount + exteriorCount;
       if (totalPhotoCount > MAX_TOTAL_PHOTOS) {
-        errors.push(`Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotoCount} photos (${interiorCount} interior + ${exteriorCount} exterior).`);
-        if (!firstInvalid && interiorPhotoInput) firstInvalid = interiorPhotoInput;
+        errors.push(`Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotoCount} photos (${masterCount} master + ${interiorCount} additional + ${exteriorCount} exterior).`);
+        if (!firstInvalid && masterPhotoInput) firstInvalid = masterPhotoInput;
       }
+
 
       if (errors.length) {
         errorSummary.style.display = "block";
@@ -505,14 +526,61 @@
 
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
-      formMsg.textContent = "⏳ Uploading interior photos...";
+      formMsg.textContent = "⏳ Uploading master photos...";
 
       try {
         const listingId = generateUUID();
-        let interiorPhotoKeys = [];
+        let masterPhotoKeys = [];
+        let additionalInteriorKeys = [];
         let exteriorPhotoKeys = [];
 
-        // Step 1: Upload interior photos (required)
+        // Step 1: Upload master photos (required - exactly 2, always public)
+        formMsg.textContent = "⏳ Uploading master photos...";
+        const masterFiles = masterPhotoInput.files || [];
+        if (masterFiles.length > 0) {
+          const fileTypes = Array.from(masterFiles).map(f => f.type);
+          const fileSizes = Array.from(masterFiles).map(f => f.size);
+
+          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${getAuthToken()}`
+            },
+            body: JSON.stringify({
+              listingId,
+              category: 'master',
+              fileCount: masterFiles.length,
+              fileTypes,
+              fileSizes
+            })
+          });
+
+          const initData = await initRes.json();
+          if (!initData.success) {
+            throw new Error(initData.message || "Master photo upload init failed");
+          }
+
+          for (let i = 0; i < masterFiles.length; i++) {
+            const file = masterFiles[i];
+            const upload = initData.uploads[i];
+
+            const uploadRes = await fetch(upload.uploadUrl, {
+              method: "PUT",
+              body: file,
+              headers: { "Content-Type": file.type }
+            });
+
+            if (!uploadRes.ok) {
+              throw new Error(`Master photo ${i + 1} upload failed`);
+            }
+
+            masterPhotoKeys.push(upload.key);
+          }
+        }
+
+        // Step 2: Upload additional interior photos (optional - 0-6, locked)
+        formMsg.textContent = "⏳ Uploading additional interior photos...";
         const interiorFiles = interiorPhotoInput.files || [];
         if (interiorFiles.length > 0) {
           const fileTypes = Array.from(interiorFiles).map(f => f.type);
@@ -535,10 +603,9 @@
 
           const initData = await initRes.json();
           if (!initData.success) {
-            throw new Error(initData.message || "Interior photo upload init failed");
+            throw new Error(initData.message || "Additional interior photo upload init failed");
           }
 
-          // Upload each interior photo to R2
           for (let i = 0; i < interiorFiles.length; i++) {
             const file = interiorFiles[i];
             const upload = initData.uploads[i];
@@ -550,14 +617,14 @@
             });
 
             if (!uploadRes.ok) {
-              throw new Error(`Interior photo ${i + 1} upload failed`);
+              throw new Error(`Additional interior photo ${i + 1} upload failed`);
             }
 
-            interiorPhotoKeys.push(upload.key);
+            additionalInteriorKeys.push(upload.key);
           }
         }
 
-        // Step 2: Upload exterior photos (optional)
+        // Step 3: Upload exterior photos (optional - 0-2, locked)
         formMsg.textContent = "⏳ Uploading exterior photos...";
         const exteriorFiles = exteriorPhotoInput.files || [];
         if (exteriorFiles.length > 0) {
@@ -584,7 +651,6 @@
             throw new Error(initData.message || "Exterior photo upload init failed");
           }
 
-          // Upload each exterior photo to R2
           for (let i = 0; i < exteriorFiles.length; i++) {
             const file = exteriorFiles[i];
             const upload = initData.uploads[i];
@@ -603,13 +669,14 @@
           }
         }
 
-        // Step 3: Create listing
+        // Step 4: Create listing
         formMsg.textContent = "⏳ Creating listing...";
 
         const formData = getFormData();
         const listingData = {
           ...formData,
-          interior_photos: interiorPhotoKeys,
+          master_interior_photos: masterPhotoKeys,
+          additional_interior_photos: additionalInteriorKeys,
           exterior_photos: exteriorPhotoKeys,
           city: "Hisar"
         };
@@ -654,6 +721,11 @@
     const handlePropertyTypeChange = (event) => {
       event.stopImmediatePropagation();
       renderAmenities();
+    };
+
+    const handleMasterPhotoChange = (event) => {
+      event.stopImmediatePropagation();
+      validateMasterPhotos();
     };
 
     const handleInteriorPhotoChange = (event) => {
@@ -707,13 +779,12 @@
         }, 3000);
       } catch (error) {
         console.error("Cloud draft save error:", error);
-        formMsg.textContent = `❌ ${error.message}`;
+        formMsg.textContent = `❌ Cloud draft failed: ${error.message}`;
       }
     };
 
     const handleSaveDraft = async (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
+      event?.stopImmediatePropagation();
 
       // Always save local draft
       const draftData = getFormData();
@@ -733,6 +804,7 @@
 
     categorySelect?.addEventListener("change", handleCategoryChange, true);
     propertyTypeSelect?.addEventListener("change", handlePropertyTypeChange, true);
+    masterPhotoInput?.addEventListener("change", handleMasterPhotoChange, true);
     interiorPhotoInput?.addEventListener("change", handleInteriorPhotoChange, true);
     exteriorPhotoInput?.addEventListener("change", handleExteriorPhotoChange, true);
     extraNotes?.addEventListener("input", handleNotesInput, true);
@@ -766,6 +838,7 @@
     renderAmenities();
     updateNotesCount();
     // Initialize photo error containers
+    renderPhotoErrors(masterPhotoErrors, []);
     renderPhotoErrors(interiorPhotoErrors, []);
     renderPhotoErrors(exteriorPhotoErrors, []);
 

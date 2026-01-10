@@ -137,11 +137,20 @@ async function handleUploadInit(request, env) {
       return jsonResponse({ success: false, message: "Invalid request" }, 400, request);
     }
 
-    if (!['interior', 'exterior'].includes(category)) {
+    if (!['master', 'interior', 'exterior'].includes(category)) {
       return jsonResponse({ success: false, message: "Invalid category" }, 400, request);
     }
 
-    const maxPhotos = category === 'interior' ? MAX_INTERIOR_PHOTOS : MAX_EXTERIOR_PHOTOS;
+    // Set limits based on category
+    let maxPhotos;
+    if (category === 'master') {
+      maxPhotos = 2; // Exactly 2 master photos
+    } else if (category === 'interior') {
+      maxPhotos = MAX_ADDITIONAL_INTERIOR; // Up to 6 additional interior
+    } else {
+      maxPhotos = MAX_EXTERIOR_PHOTOS; // Up to 2 exterior
+    }
+
     if (fileCount > maxPhotos || fileTypes.length > maxPhotos || fileSizes.length > maxPhotos) {
       return jsonResponse({ success: false, message: `Maximum ${maxPhotos} ${category} photos allowed` }, 400, request);
     }
@@ -198,27 +207,33 @@ async function handleCreateListing(request, env) {
     const data = await request.json();
 
     // Validate required fields
-    const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'interior_photos'];
+    const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'master_interior_photos'];
     for (const field of required) {
       if (!data[field]) {
         return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
       }
     }
 
-    // Validate interior photos (required: 2-8)
-    const interiorPhotos = Array.isArray(data.interior_photos) ? data.interior_photos : [];
-    if (interiorPhotos.length < MIN_INTERIOR_PHOTOS || interiorPhotos.length > MAX_INTERIOR_PHOTOS) {
-      return jsonResponse({ success: false, message: `2-8 interior photos required (first 2 = master photos)` }, 400, request);
+    // Validate master interior photos (required: exactly 2, always public)
+    const masterPhotos = Array.isArray(data.master_interior_photos) ? data.master_interior_photos : [];
+    if (masterPhotos.length !== 2) {
+      return jsonResponse({ success: false, message: `Exactly 2 master photos required (always public)` }, 400, request);
     }
 
-    // Validate exterior photos (optional: 0-2)
+    // Validate additional interior photos (optional: 0-6, locked)
+    const additionalPhotos = Array.isArray(data.additional_interior_photos) ? data.additional_interior_photos : [];
+    if (additionalPhotos.length > MAX_ADDITIONAL_INTERIOR) {
+      return jsonResponse({ success: false, message: `Maximum ${MAX_ADDITIONAL_INTERIOR} additional interior photos allowed` }, 400, request);
+    }
+
+    // Validate exterior photos (optional: 0-2, locked)
     const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
     if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
       return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
     }
 
     // Validate total photo count (max 10)
-    const totalPhotos = interiorPhotos.length + exteriorPhotos.length;
+    const totalPhotos = masterPhotos.length + additionalPhotos.length + exteriorPhotos.length;
     if (totalPhotos > MAX_TOTAL_PHOTOS) {
       return jsonResponse({ success: false, message: `Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotos} photos.` }, 400, request);
     }
@@ -227,11 +242,7 @@ async function handleCreateListing(request, env) {
     const listingId = generateUUID();
     const expiresAt = now + (30 * 24 * 60 * 60); // 30 days
 
-    // Split interior photos into master (first 2) and additional (rest)
-    const masterPhotos = interiorPhotos.slice(0, 2);
-    const additionalPhotos = interiorPhotos.slice(2);
-
-    // Insert listing with separate photo arrays
+    // Insert listing with separate photo arrays (no splitting needed - frontend sends separately)
     const query = `
       INSERT INTO listings (
         id, mobile, category, property_type, city, area, rent, security_deposit,
