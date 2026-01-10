@@ -388,6 +388,7 @@ const pinForm = document.getElementById("pinCheckForm");
 const pinEl = document.getElementById("postPin");
 const pinMsgEl = document.getElementById("postPinMsg");
 const step2El = document.getElementById("step2");
+const pinSectionEl = document.getElementById("pinCheckSection");
 const otpStepEl = document.getElementById("otpStep");
 const afterLoginBox = document.getElementById("afterLoginBox");
 const otpGateEnabled = Boolean(otpStepEl);
@@ -424,6 +425,14 @@ function hideSessionInfo() {
   if (sessionInfoEl) sessionInfoEl.style.display = "none";
 }
 
+function hidePinSection() {
+  if (pinSectionEl) pinSectionEl.style.display = "none";
+}
+
+function showPinSection() {
+  if (pinSectionEl) pinSectionEl.style.display = "block";
+}
+
 function showOtpStep() {
   if (!otpGateEnabled) {
     showPostForm();
@@ -432,18 +441,21 @@ function showOtpStep() {
   if (otpStepEl) otpStepEl.style.display = "block";
   if (afterLoginBox) afterLoginBox.style.display = "none";
   hideSessionInfo();
+   showPinSection();
 }
 
 function showPostForm() {
   if (afterLoginBox) afterLoginBox.style.display = "block";
   if (otpStepEl) otpStepEl.style.display = "none";
-  if (hasActiveSession()) showSessionInfo();
+   hideSessionInfo();
+  hidePinSection();
 }
 
 function resetPostGate() {
   if (otpStepEl) otpStepEl.style.display = "none";
   if (afterLoginBox) afterLoginBox.style.display = "none";
   hideSessionInfo();
+   showPinSection();
 }
 
 function handlePostLogoutUI() {
