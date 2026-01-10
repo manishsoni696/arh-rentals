@@ -708,13 +708,31 @@
         }
       });
 
-      // Dismiss button handler
-      document.getElementById("dismissCloudDraftBtn")?.addEventListener("click", () => {
+      // Dismiss button handler - DELETE cloud draft
+      document.getElementById("dismissCloudDraftBtn")?.addEventListener("click", async () => {
         banner.remove();
-        formMsg.textContent = "Cloud draft dismissed";
-        setTimeout(() => {
-          formMsg.textContent = "";
-        }, 2000);
+        formMsg.textContent = "⏳ Deleting cloud draft...";
+
+        try {
+          // Delete from backend
+          await fetch(`${DASHBOARD_BACKEND}/api/drafts/delete`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${getAuthToken()}`
+            }
+          });
+
+          formMsg.textContent = "✅ Cloud draft deleted";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 2000);
+        } catch (error) {
+          console.error("Delete draft error:", error);
+          formMsg.textContent = "❌ Failed to delete draft";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 3000);
+        }
       });
     };
 
