@@ -640,24 +640,84 @@
         // Mark prompt as shown for this session
         sessionStorage.setItem(CLOUD_DRAFT_KEY, "true");
 
-        // Show restore prompt
-        const confirmRestore = confirm(
-          "Cloud draft found from another device/session. Restore it?\n\n" +
-          "Click OK to restore, Cancel to keep current form."
-        );
-
-        if (confirmRestore) {
-          const draftData = JSON.parse(data.draft);
-          setFormData(draftData);
-          formMsg.textContent = "✅ Cloud draft restored";
-          setTimeout(() => {
-            formMsg.textContent = "";
-          }, 3000);
-        }
+        // Create and show cloud draft banner
+        showCloudDraftBanner(data.draft);
       } catch (error) {
         console.error("Cloud draft restore error:", error);
       }
     };
+
+    const showCloudDraftBanner = (draftJson) => {
+      // Create banner element
+      const banner = document.createElement("div");
+      banner.id = "cloudDraftBanner";
+      banner.className = "card";
+      banner.style.cssText = `
+        margin-top: 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+      `;
+
+      banner.innerHTML = `
+        <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 200px;">
+            <h3 style="margin: 0 0 4px 0; color: white;">📋 Cloud Draft Found!</h3>
+            <p style="margin: 0; opacity: 0.95; font-size: 14px;">
+              Aapka pichla draft jo bich mein chod diya tha, wo cloud mein saved hai. Restore karna chahte hain?
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn" id="restoreCloudDraftBtn" 
+              style="background: white; color: #667eea; border: none;">
+              ✅ Restore Draft
+            </button>
+            <button type="button" class="btn" id="dismissCloudDraftBtn"
+              style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">
+              ❌ Dismiss
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Insert banner after PIN check section
+      const draftGate = document.getElementById("draftGate");
+      if (draftGate) {
+        draftGate.appendChild(banner);
+        draftGate.style.display = "block";
+      } else {
+        const pinSection = document.querySelector(".card");
+        if (pinSection) {
+          pinSection.after(banner);
+        }
+      }
+
+      // Restore button handler
+      document.getElementById("restoreCloudDraftBtn")?.addEventListener("click", () => {
+        try {
+          const draftData = JSON.parse(draftJson);
+          restoreDraft(draftData);
+          banner.remove();
+          formMsg.textContent = "✅ Cloud draft restored successfully!";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 3000);
+        } catch (error) {
+          console.error("Restore error:", error);
+          formMsg.textContent = "❌ Failed to restore draft";
+        }
+      });
+
+      // Dismiss button handler
+      document.getElementById("dismissCloudDraftBtn")?.addEventListener("click", () => {
+        banner.remove();
+        formMsg.textContent = "Cloud draft dismissed";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 2000);
+      });
+    };
+
 
     const deleteCloudDraft = async () => {
       if (!isLoggedIn()) return;
