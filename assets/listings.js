@@ -21,40 +21,40 @@
         /* Full Width Layout Override */
         .listings-page .container {
             max-width: 100% !important;
-            padding-left: 24px;
-            padding-right: 24px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
-        /* Professional Listing Card Styles */
+        /* Professional Listing Card Styles (Compact & Premium) */
         .listing-pro-card {
             background: var(--bg2);
             border: 1px solid var(--line);
-            border-radius: var(--radius);
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 24px;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            margin-bottom: 16px; /* Compact margin */
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             position: relative;
         }
         @media (min-width: 768px) {
-            .listing-pro-card { flex-direction: row; align-items: stretch; }
+            .listing-pro-card { flex-direction: row; height: 220px; } /* Fixed compact height on desktop */
         }
         .listing-pro-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             border-color: var(--blue);
         }
         
         /* Image Section */
         .listing-img-col {
             width: 100%;
-            height: 250px;
+            height: 200px;
             position: relative;
             background: #000;
         }
         @media (min-width: 768px) {
-            .listing-img-col { width: 340px; height: auto; min-height: 240px; flex-shrink: 0; }
+            .listing-img-col { width: 300px; height: 100%; flex-shrink: 0; }
         }
         .listing-img-wrapper {
             width: 100%;
@@ -72,140 +72,125 @@
             flex-shrink: 0;
             scroll-snap-align: center;
         }
-        .img-overlay-badges {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            display: flex;
-            gap: 8px;
-            z-index: 2;
-        }
-        .img-badge {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-        .img-badge.negotiable { background: #16a34a; } /* Green */
         .img-count {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
+            bottom: 8px;
+            right: 8px;
             background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
             color: #fff;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             padding: 2px 8px;
-            border-radius: 12px;
+            border-radius: 10px;
             z-index: 2;
         }
 
         /* Content Section */
         .listing-content-col {
             flex: 1;
-            padding: 20px 24px;
+            padding: 16px; /* Reduced padding */
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
         
-        /* Pricing Header */
-        .listing-pricing-row {
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-            gap: 20px 40px;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 16px;
-            margin-bottom: 16px;
+        /* Top Row: Title + Location */
+        .listing-header {
+            margin-bottom: 12px;
         }
-        .price-item { display: flex; flex-direction: column; }
-        .price-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.2;
-        }
-        .price-sub { font-size: 1.1rem; color: var(--text); font-weight: 600; }
-        .price-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
-        
-        .divider-v { width: 1px; height: 30px; background: var(--line); display: none; align-self: center; }
-        @media (min-width: 500px) { .divider-v { display: block; } }
-
-        /* Listing Info */
-        .listing-main-info { flex: 1; }
         .listing-card-title {
             font-size: 1.1rem; 
-            margin: 0 0 8px 0;
-            color: var(--blue2);
+            margin: 0 0 4px 0;
+            color: var(--text);
             font-weight: 600;
+            line-height: 1.3;
         }
         .listing-location {
-             display: flex; align-items: center; gap: 6px; 
-             color: var(--muted); font-size: 0.9rem; 
-             margin-bottom: 16px;
+             display: flex; align-items: center; gap: 4px; 
+             color: var(--muted); font-size: 0.85rem; 
         }
 
-        /* Grid Features */
-        .listing-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+        /* Pricing Row (Compact) */
+        .listing-stats-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 12px;
         }
-        @media (min-width: 900px) {
-            .listing-features { grid-template-columns: repeat(4, 1fr); }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-val {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--blue2); /* Highlight price */
+            line-height: 1.1;
         }
-        .feat-item { display: flex; align-items: center; gap: 12px; }
-        .feat-icon {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--line);
-            display: flex; align-items: center; justify-content: center;
+        .stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .v-sep { width: 1px; height: 24px; background: var(--line); }
+
+        /* Features Grid */
+        .listing-features-compact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            margin-bottom: auto; /* Push footer down */
+        }
+        .feat-c-item { display: flex; align-items: center; gap: 8px; }
+        .feat-c-icon {
             color: var(--muted);
-            flex-shrink: 0;
+            width: 16px; height: 16px;
         }
-        .feat-text { display: flex; flex-direction: column; }
-        .feat-val { font-size: 0.9rem; font-weight: 500; color: var(--text); }
-        .feat-lbl { font-size: 0.75rem; color: var(--muted); }
+        .feat-c-text { font-size: 0.85rem; color: #d1d5db; }
 
         /* Actions Footer */
         .listing-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: auto;
             gap: 12px;
+            margin-top: 12px;
         }
         .btn-owner {
-            background: #e11d48; /* Red/pinkish accent */
+            background: var(--blue);
             color: white;
             border: none;
             font-weight: 600;
+            font-size: 0.9rem;
+            height: 38px;
+            padding: 0 20px;
+            border-radius: 8px;
             flex: 1;
-            max-width: 280px;
+            transition: all 0.2s;
         }
-        .btn-owner:hover { background: #be123c; border-color: transparent; }
+        .btn-owner:hover { background: var(--blue2); transform: translateY(-1px); }
         
         .btn-icon-outline {
-            width: 44px; height: 44px;
+            width: 38px; height: 38px;
             padding: 0;
             display: inline-flex;
             align-items: center; 
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 8px;
             border: 1px solid var(--line);
             background: transparent;
             color: var(--muted);
-            font-size: 1.2rem;
         }
         .btn-icon-outline:hover {
             border-color: #e11d48;
             color: #e11d48;
             background: rgba(225, 29, 72, 0.1);
+        }
+        
+        .tag-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: var(--muted);
+            font-size: 0.7rem;
+            border: 1px solid var(--line);
         }
         `;
         const style = document.createElement('style');
@@ -375,9 +360,6 @@
         <div class="listing-pro-card" data-listing-id="${listing.id}">
             <!-- Left: Images -->
             <div class="listing-img-col">
-                <div class="img-overlay-badges">
-                   <span class="img-badge negotiable">₹ Negotiable Rent</span>
-                </div>
                 ${photoHTML}
                 <div class="img-count">
                     📷 1 / ${photoCount}
@@ -386,64 +368,50 @@
 
             <!-- Right: Content -->
             <div class="listing-content-col">
-                <!-- Pricing Row -->
-                <div class="listing-pricing-row">
-                    <div class="price-item">
-                        <div class="price-value">${rent}</div>
-                        <div class="price-label">Rent</div>
+                <div>
+                    <div class="listing-header">
+                        <h3 class="listing-card-title">${title}</h3>
+                        <div class="listing-location">
+                            <span>📍</span> ${listing.area || 'Hisar'} &bull; ${listing.city || 'Haryana'}
+                        </div>
                     </div>
-                    <div class="divider-v"></div>
-                    <div class="price-item">
-                        <div class="price-sub">₹0</div> 
-                        <div class="price-label">Deposit</div>
-                    </div>
-                    <div class="divider-v"></div>
-                     <div class="price-item">
-                        <div class="price-sub">${sizeVal} ${sizeUnit}</div>
-                        <div class="price-label">Builtup</div>
-                    </div>
-                </div>
 
-                <!-- Info Info -->
-                <div class="listing-main-info">
-                   <div class="listing-features">
-                        <!-- Furnished -->
-                        <div class="feat-item">
-                            <div class="feat-icon">${icons.sofa}</div>
-                            <div class="feat-text">
-                                <span class="feat-val">${furnishing}</span>
-                                <span class="feat-lbl">Furnishing</span>
-                            </div>
+                    <!-- Pricing Stats -->
+                    <div class="listing-stats-row">
+                        <div class="stat-item">
+                            <div class="stat-val">${rent}</div>
+                            <div class="stat-lbl">Rent</div>
                         </div>
-                        <!-- BHK -->
-                        <div class="feat-item">
-                            <div class="feat-icon">${icons.bed}</div>
-                            <div class="feat-text">
-                                <span class="feat-val">${bhk}</span>
-                                <span class="feat-lbl">Apartment Type</span>
-                            </div>
+                        <div class="v-sep"></div>
+                        <div class="stat-item">
+                            <div class="stat-val">₹0</div> 
+                            <div class="stat-lbl">Deposit</div>
                         </div>
-                         <!-- Tenant -->
-                        <div class="feat-item">
-                            <div class="feat-icon">${icons.users}</div>
-                            <div class="feat-text">
-                                <span class="feat-val">${tenantPref}</span>
-                                <span class="feat-lbl">Preferred Tenants</span>
-                            </div>
+                        <div class="v-sep"></div>
+                        <div class="stat-item">
+                            <div class="stat-val">${sizeVal}</div>
+                            <div class="stat-lbl">${sizeUnit}</div>
                         </div>
-                         <!-- Available -->
-                        <div class="feat-item">
-                            <div class="feat-icon">${icons.key}</div>
-                            <div class="feat-text">
-                                <span class="feat-val">Ready to Move</span>
-                                <span class="feat-lbl">Available From</span>
-                            </div>
+                    </div>
+
+                    <!-- Compact Features -->
+                    <div class="listing-features-compact">
+                        <div class="feat-c-item">
+                            ${icons.sofa.replace('width="18" height="18"', 'width="16" height="16" class="feat-c-icon"')} 
+                            <span class="feat-c-text">${furnishing}</span>
                         </div>
-                   </div>
-                </div>
-                
-                <div class="listing-location">
-                    <span>📍</span> ${listing.area || 'Hisar'}, near City Center
+                        <div class="feat-c-item">
+                            ${icons.bed.replace('width="18" height="18"', 'width="16" height="16" class="feat-c-icon"')}
+                            <span class="feat-c-text">${bhk}</span>
+                        </div>
+                        <div class="feat-c-item">
+                            ${icons.users.replace('width="18" height="18"', 'width="16" height="16" class="feat-c-icon"')}
+                            <span class="feat-c-text">Pref: ${tenantPref}</span>
+                        </div>
+                        <div class="feat-c-item">
+                            <span class="tag-pill">Available: ${availableFrom}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Footer Actions -->
