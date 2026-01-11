@@ -7,10 +7,10 @@
 
   // Constants (defined locally to avoid conflicts with app.js)
   const DASHBOARD_BACKEND = "https://arh-backend.manishsoni696.workers.dev";
-  const PIN_KEY = "arh_pincode";
   const TOKEN_KEY = "arh_token";
   const MOBILE_KEY = "arh_mobile";
   const OTP_LOCK_KEY = "arh_otp_lock_until";
+  const DASHBOARD_PINCODE = "125001";
 
 
   const loginCard = document.getElementById("dashboardLogin");
@@ -115,14 +115,9 @@
     if (listingsCard) listingsCard.style.display = "block";
   }
 
-  function redirectToPinGate() {
-    window.location.href = "/post/";
-  }
-
   function clearSession() {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem(MOBILE_KEY);
-    sessionStorage.removeItem(PIN_KEY);
   }
 
   function resolveArea(listing) {
@@ -228,13 +223,7 @@
   }
 
   async function initDashboard() {
-    const pin = sessionStorage.getItem(PIN_KEY);
-    if (!pin) {
-      redirectToPinGate();
-      return;
-    }
-
-    const token = localStorage.getItem(TOKEN_KEY);
+  const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
       showLogin();
       return;
@@ -289,18 +278,12 @@
 
     sendOtpBtn.addEventListener("click", async () => {
       const mobile = normalizeMobile(mobileInput?.value);
-      const pincode = sessionStorage.getItem(PIN_KEY);
 
       if (mobile.length !== 10) {
         setText(otpMsgEl, "❌ Enter valid 10-digit mobile number");
         return;
       }
-      if (!pincode) {
-        setText(otpMsgEl, "❌ Please check PIN first");
-        redirectToPinGate();
-        return;
-      }
-
+       
       const lockUntil = getLockUntil(mobile);
       if (lockUntil && Date.now() < lockUntil) {
         setText(otpMsgEl, `❌ OTP limit reached. Try after ${formatHMS(lockUntil - Date.now())}`);
@@ -314,7 +297,7 @@
         const res = await fetch(`${DASHBOARD_BACKEND}/send-otp`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mobile, pincode }),
+          body: JSON.stringify({ mobile, pincode: DASHBOARD_PINCODE }),
         });
         const data = await res.json().catch(() => ({}));
 
@@ -375,9 +358,13 @@
         }
 
         localStorage.setItem(TOKEN_KEY, data.token);
+         localStorage.setItem("arh_session_mobile", mobile);
         clearLock(mobile);
         setText(otpMsgEl, "✅ Logged in");
         showDashboard();
+         if (window.initHeaderAuthUI) {
+          window.initHeaderAuthUI();
+        }
         await loadListings(data.token);
       } catch (error) {
         console.error(error);
