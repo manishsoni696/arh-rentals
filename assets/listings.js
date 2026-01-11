@@ -6,6 +6,9 @@
     "use strict";
 
     const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
+    // TODO: Replace with your actual R2 public URL/CDN domain
+    // Format: https://pub-xxxxx.r2.dev or custom domain
+    const R2_PUBLIC_URL = "https://pub-YOUR-BUCKET-ID.r2.dev";
     const listingWrap = document.getElementById("listingWrap");
     const resultsCount = document.getElementById("resultsCount");
 
@@ -124,8 +127,36 @@
             new Date(listing.expires_at * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) :
             '—';
 
+        // Parse master interior photos (always public)
+        let photoGalleryHTML = '';
+        try {
+            const masterPhotos = listing.master_interior_photos ?
+                JSON.parse(listing.master_interior_photos) : [];
+
+            if (Array.isArray(masterPhotos) && masterPhotos.length > 0) {
+                const photoItems = masterPhotos.map((photoKey, index) => {
+                    const photoUrl = `${R2_PUBLIC_URL}/${photoKey}`;
+                    return `
+            <div class="listing-photo" style="min-width: 100%; scroll-snap-align: start;">
+              <img src="${photoUrl}" alt="${title} - Photo ${index + 1}" 
+                   style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;"
+                   onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%236b7280%22 font-family=%22sans-serif%22 font-size=%2216%22%3EPhoto Unavailable%3C/text%3E%3C/svg%3E';">
+            </div>`;
+                }).join('');
+
+                photoGalleryHTML = `
+          <div class="listing-photos" style="display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
+            ${photoItems}
+          </div>`;
+            }
+        } catch (error) {
+            console.error('Error parsing master photos:', error);
+            // Continue without photos if parsing fails
+        }
+
         return `
     <div class="listing" data-listing-id="${listing.id}" data-rent="${listing.rent || 0}" data-status="active">
+      ${photoGalleryHTML}
       <div>
         <h3>${title}</h3>
         <p>${listing.area || '—'} • Hisar</p>
