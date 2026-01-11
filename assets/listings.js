@@ -18,6 +18,13 @@
         if (document.getElementById(styleId)) return;
 
         const css = `
+        /* Full Width Layout Override */
+        .listings-page .container {
+            max-width: 100% !important;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
         /* Professional Listing Card Styles */
         .listing-pro-card {
             background: var(--bg2);
