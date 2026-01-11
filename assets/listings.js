@@ -8,7 +8,7 @@
     const BACKEND = "https://arh-backend.manishsoni696.workers.dev";
     // TODO: Replace with your actual R2 public URL/CDN domain
     // Format: https://pub-xxxxx.r2.dev or custom domain
-    const R2_PUBLIC_URL = "https://pub-YOUR-BUCKET-ID.r2.dev";
+    const R2_PUBLIC_URL = "https://pub-d896e48e886c4c3d88ec418b5db72f52.r2.dev";
     const listingWrap = document.getElementById("listingWrap");
     const resultsCount = document.getElementById("resultsCount");
 
