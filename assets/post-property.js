@@ -707,9 +707,9 @@
       }
     };
 
-    // Confirmation Popup
+    // Confirmation Popup - Modern Premium Design
     function showConfirmationPopup() {
-      // Create overlay
+      // Create overlay with animated gradient background
       const overlay = document.createElement("div");
       overlay.id = "confirmationOverlay";
       overlay.style.cssText = `
@@ -718,60 +718,285 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        backdrop-filter: blur(10px);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 9999;
+        animation: overlayFadeIn 0.3s ease-out;
       `;
 
-      // Create popup
+      // Add keyframes for animations
+      if (!document.getElementById("popupAnimations")) {
+        const style = document.createElement("style");
+        style.id = "popupAnimations";
+        style.textContent = `
+          @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes popupSlideIn {
+            from { 
+              opacity: 0;
+              transform: translateY(-30px) scale(0.95);
+            }
+            to { 
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+          @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+          }
+          .popup-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+          }
+          .popup-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+          }
+          .popup-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          .popup-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-1px);
+          }
+          .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Create popup with glassmorphic design
       const popup = document.createElement("div");
       popup.style.cssText = `
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 32px;
-        max-width: 540px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+        border-radius: 24px;
+        padding: 0;
+        max-width: 560px;
         width: 90%;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        box-shadow: 
+          0 20px 60px rgba(102, 126, 234, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+        animation: popupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
       `;
 
       popup.innerHTML = `
-        <h3 style="margin: 0 0 16px 0; color: var(--text); font-size: 1.5rem;">🚀 Property Submission Started!</h3>
-        <p style="margin: 0 0 12px 0; color: var(--text); line-height: 1.6;">
-          Your property details have been submitted successfully.
-        </p>
-        <div style="margin: 0 0 24px 0; padding: 16px; background: rgba(245, 158, 11, 0.15); border-left: 4px solid #f59e0b; border-radius: 6px;">
-          <p style="margin: 0; color: var(--text); line-height: 1.6;">
-            <strong style="color: #f59e0b;">⚠️ Please note:</strong> Your property has <strong>not been listed yet</strong>.
-            The listing will be created only after you complete the final submission.
-          </p>
+        <!-- Header with gradient -->
+        <div style="
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 32px 32px 24px;
+          position: relative;
+          overflow: hidden;
+        ">
+          <!-- Animated background pattern -->
+          <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+              radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            opacity: 0.5;
+          "></div>
+          
+          <!-- Icon and Title -->
+          <div style="position: relative; z-index: 1;">
+            <div style="
+              width: 64px;
+              height: 64px;
+              background: rgba(255, 255, 255, 0.2);
+              border-radius: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-bottom: 16px;
+              font-size: 32px;
+              backdrop-filter: blur(10px);
+            ">🚀</div>
+            
+            <h3 style="
+              margin: 0 0 8px 0;
+              color: white;
+              font-size: 1.75rem;
+              font-weight: 700;
+              letter-spacing: -0.5px;
+            ">Property Submission Started!</h3>
+            
+            <p style="
+              margin: 0;
+              color: rgba(255, 255, 255, 0.9);
+              font-size: 0.95rem;
+              line-height: 1.5;
+            ">Your property details have been submitted successfully.</p>
+          </div>
         </div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button type="button" id="proceedToListingBtn" class="btn btn-primary" style="flex: 1; min-width: 150px; padding: 12px 24px; font-size: 1rem;">
-            Proceed to Listing
-          </button>
-          <button type="button" id="editDetailsBtn" class="btn" style="flex: 1; min-width: 150px; padding: 12px 24px; font-size: 1rem; background: var(--muted-bg); color: var(--text); border: 1px solid var(--border);">
-            Edit Details
-          </button>
+
+        <!-- Content -->
+        <div style="padding: 32px;">
+          <!-- Status Badge -->
+          <div style="margin-bottom: 20px;">
+            <span class="status-badge" style="
+              background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+              color: #92400e;
+              border: 1px solid #fbbf24;
+            ">
+              <span style="font-size: 1.1rem;">📋</span>
+              <span>Pending Final Submission</span>
+            </span>
+          </div>
+
+          <!-- Warning Box with modern design -->
+          <div style="
+            margin-bottom: 28px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(251, 191, 36, 0.12) 100%);
+            border-left: 4px solid #f59e0b;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+          ">
+            <div style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 100px;
+              height: 100px;
+              background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+            "></div>
+            
+            <p style="
+              margin: 0;
+              color: var(--text);
+              line-height: 1.7;
+              font-size: 0.95rem;
+              position: relative;
+              z-index: 1;
+            ">
+              <strong style="
+                color: #f59e0b;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 6px;
+              ">
+                <span style="font-size: 1.2rem;">⚠️</span>
+                <span>Important Notice:</span>
+              </strong>
+              Your property has <strong style="color: #92400e;">not been listed yet</strong>.
+              The listing will be created only after you complete the final submission on the next page.
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" id="proceedToListingBtn" class="popup-btn-primary" style="
+              flex: 1;
+              min-width: 150px;
+              padding: 14px 28px;
+              font-size: 1rem;
+              font-weight: 600;
+              border-radius: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            ">
+              <span>Proceed to Listing</span>
+              <span style="font-size: 1.1rem;">→</span>
+            </button>
+            
+            <button type="button" id="editDetailsBtn" class="popup-btn-secondary" style="
+              flex: 1;
+              min-width: 150px;
+              padding: 14px 28px;
+              font-size: 1rem;
+              font-weight: 600;
+              border-radius: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            ">
+              <span style="font-size: 1.1rem;">✏️</span>
+              <span>Edit Details</span>
+            </button>
+          </div>
         </div>
       `;
 
       overlay.appendChild(popup);
       document.body.appendChild(overlay);
 
+      // Add click animation feedback
+      const addClickFeedback = (button) => {
+        button.addEventListener("mousedown", () => {
+          button.style.transform = "scale(0.97)";
+        });
+        button.addEventListener("mouseup", () => {
+          button.style.transform = "";
+        });
+      };
+
       // Button handlers
-      document.getElementById("proceedToListingBtn").addEventListener("click", () => {
-        window.location.href = "/post/checkout.html";
+      const proceedBtn = document.getElementById("proceedToListingBtn");
+      const editBtn = document.getElementById("editDetailsBtn");
+
+      addClickFeedback(proceedBtn);
+      addClickFeedback(editBtn);
+
+      proceedBtn.addEventListener("click", () => {
+        // Add exit animation
+        overlay.style.animation = "overlayFadeIn 0.2s ease-out reverse";
+        popup.style.animation = "popupSlideIn 0.2s ease-out reverse";
+        setTimeout(() => {
+          window.location.href = "/post/checkout.html";
+        }, 200);
       });
 
-      document.getElementById("editDetailsBtn").addEventListener("click", () => {
-        overlay.remove();
-        formMsg.textContent = "You can edit your property details.";
+      editBtn.addEventListener("click", () => {
+        // Add exit animation
+        overlay.style.animation = "overlayFadeIn 0.2s ease-out reverse";
+        popup.style.animation = "popupSlideIn 0.2s ease-out reverse";
         setTimeout(() => {
-          formMsg.textContent = "";
-        }, 3000);
+          overlay.remove();
+          formMsg.textContent = "✏️ You can edit your property details.";
+          setTimeout(() => {
+            formMsg.textContent = "";
+          }, 3000);
+        }, 200);
+      });
+
+      // Close on overlay click (outside popup)
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          editBtn.click();
+        }
       });
     }
 
