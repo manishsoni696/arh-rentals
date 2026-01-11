@@ -8,7 +8,7 @@
   const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
   const CLOUD_DRAFT_KEY = "arh_cloud_draft_prompt_shown"; // Track if cloud draft prompt was shown
   const NOTES_LIMIT = 500;
-  const DASHBOARD_BACKEND = "https://arh-dashboard.manishsoni696.workers.dev";
+  const DASHBOARD_BACKEND = "https://arh-backend.manishsoni696.workers.dev";
 
   // Helper: Get auth token
   const getAuthToken = () => localStorage.getItem("arh_token") || "";
