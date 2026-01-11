@@ -728,28 +728,31 @@
       // Create popup
       const popup = document.createElement("div");
       popup.style.cssText = `
-        background: white;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
         border-radius: 12px;
-        padding: 24px;
-        max-width: 500px;
+        padding: 32px;
+        max-width: 540px;
         width: 90%;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       `;
 
       popup.innerHTML = `
-        <h3 style="margin: 0 0 12px 0; color: var(--primary);">Property Submission Started</h3>
-        <p style="margin: 0 0 8px 0;">
+        <h3 style="margin: 0 0 16px 0; color: var(--text); font-size: 1.5rem;">🚀 Property Submission Started!</h3>
+        <p style="margin: 0 0 12px 0; color: var(--text); line-height: 1.6;">
           Your property details have been submitted successfully.
         </p>
-        <p style="margin: 0 0 16px 0; padding: 12px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
-          <strong>⚠️ Please note:</strong> Your property has <strong>not been listed yet</strong>.
-          The listing will be created only after you complete the final submission.
-        </p>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button type="button" id="proceedToListingBtn" class="btn btn-primary" style="flex: 1; min-width: 150px;">
+        <div style="margin: 0 0 24px 0; padding: 16px; background: rgba(245, 158, 11, 0.15); border-left: 4px solid #f59e0b; border-radius: 6px;">
+          <p style="margin: 0; color: var(--text); line-height: 1.6;">
+            <strong style="color: #f59e0b;">⚠️ Please note:</strong> Your property has <strong>not been listed yet</strong>.
+            The listing will be created only after you complete the final submission.
+          </p>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button type="button" id="proceedToListingBtn" class="btn btn-primary" style="flex: 1; min-width: 150px; padding: 12px 24px; font-size: 1rem;">
             Proceed to Listing
           </button>
-          <button type="button" id="editDetailsBtn" class="btn" style="flex: 1; min-width: 150px;">
+          <button type="button" id="editDetailsBtn" class="btn" style="flex: 1; min-width: 150px; padding: 12px 24px; font-size: 1rem; background: var(--muted-bg); color: var(--text); border: 1px solid var(--border);">
             Edit Details
           </button>
         </div>
