@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS drafts (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
   mobile TEXT UNIQUE NOT NULL,
   draft_json TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
   expires_at INTEGER NOT NULL
 );
@@ -36,7 +37,10 @@ CREATE TABLE IF NOT EXISTS listings (
   available_from TEXT,
   amenities TEXT,
   extra_notes TEXT,
-  photos TEXT NOT NULL,
+  master_interior_photos TEXT NOT NULL, -- JSON array: 2 photos (always public)
+  additional_interior_photos TEXT, -- JSON array: 0-6 photos (locked until deal)
+  exterior_photos TEXT, -- JSON array: 0-2 photos (locked until deal)
+  photos TEXT, -- DEPRECATED: kept for backward compatibility, use photo category columns
   status TEXT DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'deleted')),
   created_at INTEGER NOT NULL,
   expires_at INTEGER NOT NULL,
