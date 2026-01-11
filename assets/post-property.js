@@ -8,7 +8,8 @@
   const DRAFT_KEY = "arh_post_property_draft_v1"; // Local draft
   const CLOUD_DRAFT_KEY = "arh_cloud_draft_prompt_shown"; // Track if cloud draft prompt was shown
   const NOTES_LIMIT = 500;
-  const DASHBOARD_BACKEND = "https://arh-backend.manishsoni696.workers.dev";
+  const BACKEND_URL = "https://arh-backend.manishsoni696.workers.dev"; // Uploads, Listings, Final Submit
+  const DASHBOARD_BACKEND = "https://arh-dashboard.manishsoni696.workers.dev"; // Drafts only
 
   // Helper: Get auth token
   const getAuthToken = () => localStorage.getItem("arh_token") || "";
@@ -543,7 +544,7 @@
           const fileTypes = Array.from(masterFiles).map(f => f.type);
           const fileSizes = Array.from(masterFiles).map(f => f.size);
 
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+          const initRes = await fetch(`${BACKEND_URL}/api/uploads/init`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -588,7 +589,7 @@
           const fileTypes = Array.from(interiorFiles).map(f => f.type);
           const fileSizes = Array.from(interiorFiles).map(f => f.size);
 
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+          const initRes = await fetch(`${BACKEND_URL}/api/uploads/init`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -633,7 +634,7 @@
           const fileTypes = Array.from(exteriorFiles).map(f => f.type);
           const fileSizes = Array.from(exteriorFiles).map(f => f.size);
 
-          const initRes = await fetch(`${DASHBOARD_BACKEND}/api/uploads/init`, {
+          const initRes = await fetch(`${BACKEND_URL}/api/uploads/init`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
