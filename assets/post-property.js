@@ -173,6 +173,12 @@
     };
 
     const renderAmenities = () => {
+      // Safety check: if amenities container doesn't exist, skip rendering
+      if (!amenitiesContainer) {
+        console.warn("Amenities container not found, skipping amenities rendering");
+        return;
+      }
+
       const category = categorySelect?.value;
       const propertyType = propertyTypeSelect?.value;
       amenitiesContainer.innerHTML = "";
