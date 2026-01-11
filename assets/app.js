@@ -230,6 +230,26 @@ window.initHeaderAuthUI = async function () {
   }
 
   const menu = document.querySelector("[data-account-menu]");
+  const loginBtn = document.getElementById("headerLoginBtn");
+
+  // Bind Login Button Event (if not already bound)
+  if (loginBtn && !loginBtn.dataset.bound) {
+    loginBtn.addEventListener("click", () => {
+      if (window.loginModalManager) {
+        window.loginModalManager.show();
+      } else {
+        console.error("LoginModalManager not loaded");
+      }
+    });
+    loginBtn.dataset.bound = "true";
+  }
+
+  // Helper to toggle states
+  function setHeaderState(isLoggedIn) {
+    if (menu) menu.hidden = !isLoggedIn;
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? "none" : "";
+  }
+
   if (!menu) return;
 
   const trigger = menu.querySelector(".account-trigger");
@@ -238,9 +258,9 @@ window.initHeaderAuthUI = async function () {
 
   const token = localStorage.getItem(TOKEN_KEY);
 
-  // 1. If no token, hide everything and return
+  // 1. If no token, show login button, hide menu
   if (!token) {
-    menu.hidden = true;
+    setHeaderState(false);
     if (dropdown) dropdown.hidden = true;
     return;
   }
@@ -254,7 +274,7 @@ window.initHeaderAuthUI = async function () {
     } catch (error) {
       console.error(error);
       clearSession();
-      menu.hidden = true;
+      setHeaderState(false);
       return;
     }
   }
@@ -263,7 +283,8 @@ window.initHeaderAuthUI = async function () {
     localStorage.setItem(SESSION_MOBILE_KEY, mobile);
   }
 
-  // 3. Update UI Text
+  // 3. Update UI Text & Show Menu
+  setHeaderState(true);
   updateHeaderAccountStatus();
 
   // 4. Bind Events (only once)
@@ -272,9 +293,6 @@ window.initHeaderAuthUI = async function () {
     dropdown.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
 
-    // Remove old listener if possible or use a flag. 
-    // Simplified: we'll just overwrite onclick to be safe and simple for this context, 
-    // or use a custom property to check if bound.
     if (!trigger.dataset.bound) {
       trigger.addEventListener("click", (event) => {
         event.preventDefault();
@@ -312,7 +330,7 @@ window.initHeaderAuthUI = async function () {
       // RESET OTP TIMER ON LOGOUT
       if (window.resetOtpTimer) window.resetOtpTimer();
 
-      menu.hidden = true;
+      setHeaderState(false);
       if (dropdown) dropdown.hidden = true;
       if (trigger) trigger.setAttribute("aria-expanded", "false");
 
@@ -517,6 +535,16 @@ function handlePostLogoutUI() {
     resetPostGate();
   }
 }
+
+// [NEW] Listen for global login (e.g. from header modal)
+window.addEventListener("arh:login-success", () => {
+  if (typeof showPostForm === "function") {
+    // If we are on the Post Property page (check by existence of elements)
+    if (document.getElementById("afterLoginBox")) {
+      showPostForm();
+    }
+  }
+});
 
 if (step2El) {
   // Clear PIN and mobile session data on page load/refresh
