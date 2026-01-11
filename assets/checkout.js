@@ -215,10 +215,10 @@
             // Clear pending listing from storage
             sessionStorage.removeItem(PENDING_LISTING_KEY);
 
-            // Show success message and redirect
+            // Show success message and redirect to success page
+            submitMessage.textContent = "✅ Property listed successfully! Redirecting...";
             setTimeout(() => {
-                alert(`🎉 Your property has been listed successfully on ARH Rentals!\n\nListing ID: ${data.listingId}\nPlan: ${data.plan}\nValid for: ${data.validity_days} days`);
-                window.location.href = "/dashboard/";
+                window.location.href = `/post/success.html?id=${data.listingId}&validity=${data.validity_days || 30}`;
             }, 1000);
 
         } catch (error) {

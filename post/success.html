@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://arh-backend.manishsoni696.workers.dev https://arh-dashboard.manishsoni696.workers.dev; font-src 'self';" />
+    <title>Property Listed • ARH Rentals</title>
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <style>
+        .success-hero {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .confetti {
+            font-size: 24px;
+            position: absolute;
+            animation: fall 3s linear forwards;
+        }
+
+        .card-success {
+            border-left: 4px solid var(--success);
+            background: linear-gradient(to right, rgba(40, 167, 69, 0.05), transparent);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--muted);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .plan-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .plan-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    </style>
+</head>
+
+<body class="success-page">
+
+    <header class="site-header">
+        <div class="container">
+            <div class="navbar">
+                <a class="brand" href="/">
+                    <img class="brand-logo" src="../assets/arh-logo.png" alt="ARH Rentals Logo">
+                    <div class="brand-title">
+                        <strong>ARH Rentals</strong>
+                        <span>by Anjani Real Heights</span>
+                    </div>
+                </a>
+                <div class="header-actions">
+                    <!-- Just Home for simplicity on success page -->
+                    <a href="/" class="btn">Home</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="success-hero">
+            <div class="success-icon">🎉</div>
+            <h1 style="margin:0 0 8px">Property Listed Successfully</h1>
+            <p style="color:var(--muted);margin:0">
+                Your property is now live on ARH Rentals
+            </p>
+        </section>
+
+        <div style="max-width: 600px; margin: 0 auto;">
+
+            <!-- Thank You Message -->
+            <section class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <p style="margin:0; text-align: center; line-height: 1.6;">
+                        Thank you for submitting your property.<br>
+                        Your listing has been successfully created and is now visible to tenants on ARH Rentals.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Listing Summary -->
+            <section class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h3 style="margin:0 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px;">📋 Listing
+                        Summary</h3>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Status</span>
+                        <span class="detail-value" style="color: var(--success)">Live</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Listing Type</span>
+                        <span class="detail-value">Free Listing (Startup Offer)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Visibility Duration</span>
+                        <span class="detail-value">30 Days</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Listing ID</span>
+                        <span class="detail-value" id="listingIdDisplay">...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">City</span>
+                        <span class="detail-value">Hisar</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Free Listing Usage -->
+            <section class="card card-success" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h3 style="margin:0 0 12px; color: var(--success)">🎁 Free Listing Usage</h3>
+                    <p style="margin:0 0 12px">✅ Your free listing has been successfully used for this property.</p>
+
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Remaining Free Listings
+                            on this phone number:</div>
+                        <div style="font-size: 18px; font-weight: 600;" id="quotaMessage">➡️ Checking...</div>
+                    </div>
+
+                    <p class="small muted" style="margin-top: 12px;">Free listings are offered as part of our startup
+                        launch program and are limited per phone number.</p>
+                </div>
+            </section>
+
+            <!-- What Happens Next -->
+            <section class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h3 style="margin:0 0 12px">🔍 What Happens Next?</h3>
+                    <ul style="margin:0; padding-left: 20px; line-height: 1.6;">
+                        <li>Your property is now visible to tenants browsing ARH Rentals</li>
+                        <li>Interested tenants may contact you directly</li>
+                        <li>Please independently verify tenants before any agreement</li>
+                    </ul>
+
+                    <div class="notice" style="margin-top: 16px;">
+                        ⚠️ <strong>Important:</strong> ARH Rentals does not verify tenants and does not guarantee
+                        responses, deals, or rental outcomes.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expiry Info -->
+            <section class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h3 style="margin:0 0 12px">⏳ Listing Expiry Information</h3>
+                    <ul style="margin:0; padding-left: 20px; line-height: 1.6;">
+                        <li>This listing will automatically expire after <strong>30 days</strong> (<span
+                                id="expiryDateDisplay">...</span>)</li>
+                        <li>Expired listings are hidden from the portal</li>
+                        <li>You may choose to repost or upgrade with a paid plan later</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Plans -->
+            <section class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <h3 style="margin:0 0 8px">💡 Plans for Future Listings</h3>
+                    <p class="small muted" style="margin:0 0 16px">Paid plans apply only after your free listing limit
+                        is exhausted.</p>
+
+                    <h4 style="margin:0 0 12px; font-size: 16px; color: var(--blue2)">Available Plans (for future use)
+                    </h4>
+
+                    <div class="plan-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong>Basic – ₹199</strong>
+                            <span class="small muted">15 days</span>
+                        </div>
+                        <div class="small muted">Suitable for short-term requirements</div>
+                    </div>
+
+                    <div class="plan-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:var(--warning)">Premium – ₹349 (Most Popular)</strong>
+                            <span class="small muted">30 days</span>
+                        </div>
+                        <div class="small muted">Better visibility and faster responses</div>
+                    </div>
+
+                    <div class="plan-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong>Pro – ₹599</strong>
+                            <span class="small muted">60 days</span>
+                        </div>
+                        <div class="small muted">Maximum exposure for urgent rentals</div>
+                    </div>
+
+                    <p class="small" style="margin-top:16px; text-align:center;">You do not need to select any plan
+                        right now.</p>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section style="margin-bottom: 40px; display: grid; gap: 12px;">
+                <h3 style="margin:0 0 4px">🔗 Quick Actions</h3>
+                <button id="viewListingBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">View
+                    My Listing</button>
+                <a href="/dashboard/" class="btn"
+                    style="width: 100%; justify-content: center; background: var(--card-bg);">Go to Dashboard</a>
+                <a href="/post/" class="btn"
+                    style="width: 100%; justify-content: center; background: var(--card-bg);">Post Another Property</a>
+            </section>
+
+            <!-- Legal Disclaimer -->
+            <section
+                style="margin-bottom: 40px; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.5;">
+                <h4 style="margin:0 0 8px; color: var(--text);">🛡️ Legal Disclaimer</h4>
+                <p style="margin:0">
+                    ARH Rentals (by Anjani Real Heights) is an owner-posted advertisement platform.<br>
+                    We do not act as a broker, mediator, or verifier.<br>
+                    All rental decisions and tenant verification are the sole responsibility of the property owner.
+                </p>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div>© <span id="year"></span> ARH Rentals</div>
+        </div>
+    </footer>
+
+    <script src="../assets/success.js"></script>
+</body>
+
+</html>
