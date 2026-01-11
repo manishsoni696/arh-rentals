@@ -900,13 +900,24 @@
     renderPhotoErrors(exteriorPhotoErrors, []);
 
     const checkAndRestoreCloudDraft = async () => {
-      if (!isLoggedIn()) return;
+      console.log("🔍 [Cloud Draft] Check started");
+
+      if (!isLoggedIn()) {
+        console.log("❌ [Cloud Draft] User not logged in");
+        return;
+      }
+      console.log("✅ [Cloud Draft] User is logged in");
 
       // Check if we already showed prompt in this session
       const promptShown = sessionStorage.getItem(CLOUD_DRAFT_KEY);
-      if (promptShown) return;
+      if (promptShown) {
+        console.log("⏭️ [Cloud Draft] Prompt already shown in this session");
+        return;
+      }
+      console.log("✅ [Cloud Draft] First time checking");
 
       try {
+        console.log("📡 [Cloud Draft] Fetching from backend...");
         const res = await fetch(`${DASHBOARD_BACKEND}/api/drafts/latest`, {
           headers: {
             "Authorization": `Bearer ${getAuthToken()}`
@@ -914,15 +925,23 @@
         });
 
         const data = await res.json();
-        if (!data.success || !data.draft) return;
+        console.log("📦 [Cloud Draft] API response:", data);
+
+        if (!data.success || !data.draft) {
+          console.log("⚠️ [Cloud Draft] No draft found or API failed");
+          return;
+        }
+
+        console.log("✅ [Cloud Draft] Draft found! Showing banner...");
 
         // Mark prompt as shown for this session
         sessionStorage.setItem(CLOUD_DRAFT_KEY, "true");
 
         // Create and show cloud draft banner
         showCloudDraftBanner(data.draft);
+        console.log("🎉 [Cloud Draft] Banner displayed!");
       } catch (error) {
-        console.error("Cloud draft restore error:", error);
+        console.error("❌ [Cloud Draft] Error:", error);
       }
     };
 
