@@ -840,15 +840,15 @@
     const handleSaveDraft = async (event) => {
       event?.stopImmediatePropagation();
 
-      // Always save local draft
       const draftData = getFormData();
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
-      toggleDraftNotice(true);
 
-      // If logged in, also save to cloud
+      // If logged in, only save to cloud (not local)
       if (isLoggedIn()) {
         await handleSaveCloudDraft();
       } else {
+        // If not logged in, save locally
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+        toggleDraftNotice(true);
         formMsg.textContent = "Draft saved locally (login for cloud backup)";
         setTimeout(() => {
           formMsg.textContent = "";
@@ -882,8 +882,10 @@
 
     clearDraftBtn?.addEventListener("click", clearDraft);
 
+    // Only show local draft banner if user is NOT logged in
+    // If logged in, cloud draft banner will handle it
     const existingDraft = localStorage.getItem(DRAFT_KEY);
-    if (existingDraft) {
+    if (existingDraft && !isLoggedIn()) {
       toggleDraftNotice(true);
     }
 
