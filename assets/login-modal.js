@@ -20,7 +20,7 @@ const LOGIN_MODAL_HTML = `
         <div class="form-group">
           <label for="loginMobileInput">Mobile Number</label>
           <div style="display:flex; gap:8px;">
-            <span style="padding:10px; background:#f8fafc; border:1px solid #ddd; border-radius:6px; color:#64748b;">+91</span>
+            <span class="phone-prefix">+91</span>
             <input 
               type="tel" 
               id="loginMobileInput" 
