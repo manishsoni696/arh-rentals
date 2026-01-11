@@ -8,6 +8,7 @@
     content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://arh-backend.manishsoni696.workers.dev https://arh-dashboard.manishsoni696.workers.dev; font-src 'self';" />
   <title>Post Property • ARH Rentals</title>
   <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./post.css" />
 </head>
 
 <body class="post-page">
@@ -135,12 +136,15 @@
         </div>
         <form id="postPropertyForm" class="card" style="margin-top:16px">
           <div class="card-body" style="display:grid;gap:18px">
+            <div class="post-form-intro">
+              Required fields are marked with <span class="required-star">*</span>.
+            </div>
             <section aria-labelledby="personal-title" style="grid-column:1/-1">
               <h3 id="personal-title" style="margin:0">3) Personal Details</h3>
               <div class="grid"
                 style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
                 <label class="field">
-                  <span class="small">Owner Full Name <span style="color:#b42318">*</span></span>
+                  <span class="small">Owner Full Name <span class="required-star">*</span></span>
                   <input class="input" name="owner_name" placeholder="e.g., Rajesh Kumar" required />
                 </label>
                 <label class="field">
@@ -162,7 +166,7 @@
               <div class="grid"
                 style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
                 <label class="field">
-                  <span class="small">Category</span>
+                   <span class="small">Category <span class="required-star">*</span></span>
                   <select name="category" id="categorySelect" class="input" required>
                     <option value="" disabled>Select category</option>
                     <option value="residential" selected>Residential</option>
@@ -170,7 +174,7 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span class="small">Property Type</span>
+                  <span class="small">Property Type <span class="required-star">*</span></span>
                   <select name="property_type" class="input" required>
                     <option value="" disabled selected>Select type</option>
                     <option value="flat">Apartment</option>
@@ -183,11 +187,11 @@
                   <input class="input" name="city" value="Hisar (Phase-1)" readonly aria-readonly="true" />
                 </label>
                 <label class="field">
-                  <span class="small">House / Flat / Plot Number <span style="color:#b42318">*</span></span>
+                  <span class="small">House / Flat / Plot Number <span class="required-star">*</span></span>
                   <input class="input" name="house_number" placeholder="e.g., #123, 2nd Floor" required />
                 </label>
                 <label class="field">
-                  <span class="small">Area / Sector</span>
+                  <span class="small">Area / Sector <span class="required-star">*</span></span>
                   <input class="input" name="area" list="hisarAreas" placeholder="e.g., Sector 9" required />
                   <datalist id="hisarAreas">
                     <option value="Sector 1–4"></option>
@@ -258,7 +262,7 @@
                   </datalist>
                 </label>
                 <label class="field">
-                  <span class="small">Monthly Rent (₹)</span>
+                  <span class="small">Monthly Rent (₹) <span class="required-star">*</span></span>
                   <input class="input" name="rent" type="number" min="0" step="500" placeholder="e.g., 15000"
                     required />
                 </label>
@@ -283,7 +287,7 @@
               <div class="grid"
                 style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
                 <label class="field">
-                  <span class="small">Floor on Rent</span>
+                  <span class="small">Floor on Rent <span class="required-star">*</span></span>
                   <select class="input" name="floor_on_rent" required>
                     <option value="" disabled selected>Select floor</option>
                     <option value="Ground">Ground</option>
@@ -293,7 +297,7 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span class="small">Number of Rooms</span>
+                  <span class="small">Number of Rooms <span class="required-star">*</span></span>
                   <select class="input" name="number_of_rooms" required>
                     <option value="" disabled selected>Select</option>
                     <option value="1">1 Room</option>
@@ -304,7 +308,7 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span class="small">Size</span>
+                  <span class="small">Size <span class="required-star">*</span></span>
                   <div style="display:flex;gap:10px">
                     <input class="input" name="size" type="number" min="0" step="1" placeholder="e.g., 1200" required />
                     <select class="input" name="size_unit" required>
@@ -348,7 +352,9 @@
             </section>
 
             <section aria-labelledby="master-photos-title">
-              <h3 id="master-photos-title" style="margin:0">7) Master Interior Photos (Required - Always Public)</h3>
+              <h3 id="master-photos-title" style="margin:0">
+                7) Master Interior Photos <span class="required-star">*</span> (Always Public)
+              </h3>
               <p class="sub" style="margin:6px 0 10px">
                 Upload exactly 2 master interior photos (bedroom, living room, kitchen, etc.). <br>
                 <strong>👁️ These 2 photos will ALWAYS be publicly visible to everyone.</strong>
@@ -408,7 +414,9 @@
             </section>
 
             <section aria-labelledby="declaration-title">
-              <h3 id="declaration-title" style="margin:0">11) Owner Declaration</h3>
+              <h3 id="declaration-title" style="margin:0">
+                11) Owner Declaration <span class="required-star">*</span>
+              </h3>
               <label class="amenity" style="align-items:flex-start;gap:10px">
                 <input type="checkbox" id="declaration" required />
                 <span>
