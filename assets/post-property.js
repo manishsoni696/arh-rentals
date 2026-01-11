@@ -85,7 +85,10 @@
     const altPhoneInput = form.querySelector("input[name='alternate_phone']");
 
     if (primaryPhoneInput) {
-      const storedMobile = sessionStorage.getItem("arh_mobile") || "Not Verified";
+      const storedMobile =
+        sessionStorage.getItem("arh_mobile") ||
+        localStorage.getItem("arh_session_mobile") ||
+        "Not Verified";
       primaryPhoneInput.value = storedMobile;
     }
     const amenitiesContainer = form.querySelector("#amenitiesContainer");
@@ -417,6 +420,7 @@
       assignValue("input[name='security_deposit']", draft.security_deposit);
       renderFloorOptions();
       assignValue("select[name='floor_on_rent']", draft.floor_on_rent);
+      assignValue("select[name='number_of_rooms']", draft.number_of_rooms);
       assignValue("input[name='size']", draft.size);
       assignValue("select[name='size_unit']", draft.size_unit);
       assignValue("select[name='furnishing']", draft.furnishing);
@@ -1323,6 +1327,13 @@
     // Check for cloud draft after successful login
     // This event is dispatched from app.js after OTP verification success
     window.addEventListener("arh:login-success", () => {
+      if (primaryPhoneInput) {
+        const updatedMobile =
+          sessionStorage.getItem("arh_mobile") ||
+          localStorage.getItem("arh_session_mobile") ||
+          primaryPhoneInput.value;
+        primaryPhoneInput.value = updatedMobile || "";
+      }
       // Small delay to ensure form is visible
       setTimeout(() => {
         checkAndRestoreCloudDraft();
