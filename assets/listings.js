@@ -12,6 +12,204 @@
     const listingWrap = document.getElementById("listingWrap");
     const resultsCount = document.getElementById("resultsCount");
 
+    // Inject Professional Styles
+    function injectStyles() {
+        const styleId = 'listing-pro-styles';
+        if (document.getElementById(styleId)) return;
+
+        const css = `
+        /* Professional Listing Card Styles */
+        .listing-pro-card {
+            background: var(--bg2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 24px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        @media (min-width: 768px) {
+            .listing-pro-card { flex-direction: row; align-items: stretch; }
+        }
+        .listing-pro-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--blue);
+        }
+        
+        /* Image Section */
+        .listing-img-col {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            background: #000;
+        }
+        @media (min-width: 768px) {
+            .listing-img-col { width: 340px; height: auto; min-height: 240px; flex-shrink: 0; }
+        }
+        .listing-img-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .listing-img-wrapper::-webkit-scrollbar { display: none; }
+        .listing-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+        .img-overlay-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+        .img-badge {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .img-badge.negotiable { background: #16a34a; } /* Green */
+        .img-count {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            z-index: 2;
+        }
+
+        /* Content Section */
+        .listing-content-col {
+            flex: 1;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Pricing Header */
+        .listing-pricing-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 20px 40px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .price-item { display: flex; flex-direction: column; }
+        .price-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .price-sub { font-size: 1.1rem; color: var(--text); font-weight: 600; }
+        .price-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+        
+        .divider-v { width: 1px; height: 30px; background: var(--line); display: none; align-self: center; }
+        @media (min-width: 500px) { .divider-v { display: block; } }
+
+        /* Listing Info */
+        .listing-main-info { flex: 1; }
+        .listing-card-title {
+            font-size: 1.1rem; 
+            margin: 0 0 8px 0;
+            color: var(--blue2);
+            font-weight: 600;
+        }
+        .listing-location {
+             display: flex; align-items: center; gap: 6px; 
+             color: var(--muted); font-size: 0.9rem; 
+             margin-bottom: 16px;
+        }
+
+        /* Grid Features */
+        .listing-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        @media (min-width: 900px) {
+            .listing-features { grid-template-columns: repeat(4, 1fr); }
+        }
+        .feat-item { display: flex; align-items: center; gap: 12px; }
+        .feat-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .feat-text { display: flex; flex-direction: column; }
+        .feat-val { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+        .feat-lbl { font-size: 0.75rem; color: var(--muted); }
+
+        /* Actions Footer */
+        .listing-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            gap: 12px;
+        }
+        .btn-owner {
+            background: #e11d48; /* Red/pinkish accent */
+            color: white;
+            border: none;
+            font-weight: 600;
+            flex: 1;
+            max-width: 280px;
+        }
+        .btn-owner:hover { background: #be123c; border-color: transparent; }
+        
+        .btn-icon-outline {
+            width: 44px; height: 44px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center; 
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--muted);
+            font-size: 1.2rem;
+        }
+        .btn-icon-outline:hover {
+            border-color: #e11d48;
+            color: #e11d48;
+            background: rgba(225, 29, 72, 0.1);
+        }
+        `;
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.appendChild(document.createTextNode(css));
+        document.head.appendChild(style);
+    }
+
+    // Call inject styles
+    injectStyles();
+
     // Build query params from filter form
     function buildQueryParams() {
         const params = new URLSearchParams();
@@ -105,86 +303,150 @@
         listingWrap.innerHTML = listings.map(listing => buildListingCard(listing)).join('');
     }
 
-    // Build HTML for a single listing card
+    // Build HTML for a single listing card (Professional Design)
     function buildListingCard(listing) {
         const title = listing.number_of_rooms ?
             `${listing.number_of_rooms} ${listing.property_type}` :
             listing.property_type || 'Property';
 
         const rent = listing.rent ? `₹${listing.rent.toLocaleString('en-IN')}` : '—';
-        const size = listing.size && listing.size_unit ?
-            `${listing.size} ${listing.size_unit}` :
-            '—';
+        const deposit = listing.deposit ? `₹${listing.deposit.toLocaleString('en-IN')}` : '—'; // Assuming deposit field exists, else fallback
+
+        const sizeVal = listing.size || '—';
+        const sizeUnit = listing.size_unit || '';
+
         const furnishing = listing.furnishing || '—';
-        const floor = listing.floor_on_rent || '—';
-        const age = listing.property_age || '—';
+        const bhk = listing.number_of_rooms ? listing.number_of_rooms : '—';
+        const tenantPref = listing.preferred_tenants || 'Any';
+        const availableFrom = listing.available_from ? new Date(listing.available_from).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : 'Ready to Move';
 
-        // Format dates from unix timestamps
-        const createdDate = listing.created_at ?
-            new Date(listing.created_at * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) :
-            '—';
-        const expiryDate = listing.expires_at ?
-            new Date(listing.expires_at * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) :
-            '—';
+        // Photos
+        let photoHTML = '';
+        let photoCount = 0;
+        let firstPhoto = null;
 
-        // Parse master interior photos (always public)
-        let photoGalleryHTML = '';
         try {
-            const masterPhotos = listing.master_interior_photos ?
-                JSON.parse(listing.master_interior_photos) : [];
-
+            const masterPhotos = listing.master_interior_photos ? JSON.parse(listing.master_interior_photos) : [];
             if (Array.isArray(masterPhotos) && masterPhotos.length > 0) {
-                const photoItems = masterPhotos.map((photoKey, index) => {
-                    const photoUrl = `${R2_PUBLIC_URL}/${photoKey}`;
-                    return `
-            <div class="listing-photo" style="min-width: 100%; scroll-snap-align: start;">
-              <img src="${photoUrl}" alt="${title} - Photo ${index + 1}" 
-                   style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;"
-                   onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%236b7280%22 font-family=%22sans-serif%22 font-size=%2216%22%3EPhoto Unavailable%3C/text%3E%3C/svg%3E';">
-            </div>`;
-                }).join('');
+                photoCount = masterPhotos.length;
+                firstPhoto = `${R2_PUBLIC_URL}/${masterPhotos[0]}`;
 
-                photoGalleryHTML = `
-          <div class="listing-photos" style="display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
-            ${photoItems}
-          </div>`;
+                // Create slideshow images
+                const photoSlides = masterPhotos.map((key, idx) => `
+                    <img src="${R2_PUBLIC_URL}/${key}" 
+                         alt="${title} photo ${idx + 1}" 
+                         class="listing-img" 
+                         loading="lazy"
+                         onerror="this.style.display='none'">
+                `).join('');
+
+                photoHTML = `
+                    <div class="listing-img-wrapper" tabindex="0">
+                        ${photoSlides}
+                    </div>
+                `;
+            } else {
+                // Placeholder
+                photoHTML = `
+                <div class="listing-img-wrapper">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%231f2937'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%236b7280'%3ENo Photos%3C/text%3E%3C/svg%3E" class="listing-img" alt="No photos">
+                </div>`;
             }
-        } catch (error) {
-            console.error('Error parsing master photos:', error);
-            // Continue without photos if parsing fails
-        }
+        } catch (e) { console.error(e); }
+
+        // Icons (SVG strings)
+        const icons = {
+            furnish: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>`, // Box fallback
+            bed: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>`, // Home fallback
+            users: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`,
+            key: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>`,
+            heart: `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>`,
+            sofa: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>`
+        };
 
         return `
-    <div class="listing" data-listing-id="${listing.id}" data-rent="${listing.rent || 0}" data-status="active">
-      ${photoGalleryHTML}
-      <div>
-        <h3>${title}</h3>
-        <p>${listing.area || '—'} • Hisar</p>
-        <ul class="listing-meta">
-          <li><span class="label">Property Type:</span> ${listing.property_type || '—'}</li>
-          <li><span class="label">Area:</span> ${listing.area || '—'} (Hisar)</li>
-          <li><span class="label">Posted On:</span> ${createdDate}</li>
-          <li><span class="label">Valid Till:</span> ${expiryDate}</li>
-        </ul>
-        <div class="pills">
-          <span class="pill">${listing.property_type || 'Property'}</span>
-          <span class="pill">${rent}</span>
-          <span class="pill">${size}</span>
-          <span class="pill">${furnishing}</span>
+        <div class="listing-pro-card" data-listing-id="${listing.id}">
+            <!-- Left: Images -->
+            <div class="listing-img-col">
+                <div class="img-overlay-badges">
+                   <span class="img-badge negotiable">₹ Negotiable Rent</span>
+                </div>
+                ${photoHTML}
+                <div class="img-count">
+                    📷 1 / ${photoCount}
+                </div>
+            </div>
+
+            <!-- Right: Content -->
+            <div class="listing-content-col">
+                <!-- Pricing Row -->
+                <div class="listing-pricing-row">
+                    <div class="price-item">
+                        <div class="price-value">${rent}</div>
+                        <div class="price-label">Rent</div>
+                    </div>
+                    <div class="divider-v"></div>
+                    <div class="price-item">
+                        <div class="price-sub">₹0</div> 
+                        <div class="price-label">Deposit</div>
+                    </div>
+                    <div class="divider-v"></div>
+                     <div class="price-item">
+                        <div class="price-sub">${sizeVal} ${sizeUnit}</div>
+                        <div class="price-label">Builtup</div>
+                    </div>
+                </div>
+
+                <!-- Info Info -->
+                <div class="listing-main-info">
+                   <div class="listing-features">
+                        <!-- Furnished -->
+                        <div class="feat-item">
+                            <div class="feat-icon">${icons.sofa}</div>
+                            <div class="feat-text">
+                                <span class="feat-val">${furnishing}</span>
+                                <span class="feat-lbl">Furnishing</span>
+                            </div>
+                        </div>
+                        <!-- BHK -->
+                        <div class="feat-item">
+                            <div class="feat-icon">${icons.bed}</div>
+                            <div class="feat-text">
+                                <span class="feat-val">${bhk}</span>
+                                <span class="feat-lbl">Apartment Type</span>
+                            </div>
+                        </div>
+                         <!-- Tenant -->
+                        <div class="feat-item">
+                            <div class="feat-icon">${icons.users}</div>
+                            <div class="feat-text">
+                                <span class="feat-val">${tenantPref}</span>
+                                <span class="feat-lbl">Preferred Tenants</span>
+                            </div>
+                        </div>
+                         <!-- Available -->
+                        <div class="feat-item">
+                            <div class="feat-icon">${icons.key}</div>
+                            <div class="feat-text">
+                                <span class="feat-val">Ready to Move</span>
+                                <span class="feat-lbl">Available From</span>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+                
+                <div class="listing-location">
+                    <span>📍</span> ${listing.area || 'Hisar'}, near City Center
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="listing-footer">
+                    <button class="btn btn-owner">Get Owner Details</button>
+                    <button class="btn-icon-outline" title="Add to Shortlist">${icons.heart}</button>
+                </div>
+            </div>
         </div>
-      </div>
-      <button class="btn" disabled>Unlock Details</button>
-      <div class="small muted listing-contact">
-        Contact is shared by the owner. ARH Rentals does not mediate or confirm responses.
-      </div>
-      <div class="small muted listing-note">
-        Contact details unlock will be available in a future update.
-      </div>
-      <div class="small muted listing-expiry">
-        Listings automatically become hidden after expiry if not renewed by the owner.
-      </div>
-    </div>
-  `;
+        `;
     }
 
     // Update results count display
