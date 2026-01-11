@@ -92,10 +92,23 @@
       </div>
     </section>
 
-    <!-- Free Listing Eligibility (shown conditionally) -->
-    <section class="card" id="eligibilitySection" style="margin-top:16px;display:none">
+    <!-- Property Summary -->
+    <section class="card" id="propertySummary" style="margin-top:16px;border-left:4px solid var(--blue)">
       <div class="card-body">
-        <h3 style="margin:0">🆓 Free Listing Eligibility</h3>
+        <h3 style="margin:0 0 16px">🏠 Property Summary</h3>
+        <div id="summaryGrid"
+          style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px 16px;font-size:14px">
+          <!-- Populated by JS -->
+          <div class="muted">Loading details...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Free Listing Eligibility (shown conditionally) -->
+    <section class="card" id="eligibilitySection"
+      style="margin-top:16px;display:none;background:rgba(29,161,242,0.08);border:1px solid rgba(29,161,242,0.2)">
+      <div class="card-body">
+        <h3 style="margin:0;color:var(--blue2)">🎉 Your Free Listing Is Ready</h3>
         <p id="eligibilityMessage" style="margin:12px 0 0"></p>
         <div id="eligibilityDetails" class="notice" style="margin-top:12px;display:none">
           <ul style="margin:8px 0;padding-left:20px">
@@ -120,10 +133,9 @@
     <!-- Plans Display (Informational) -->
     <section class="card" id="plansSection" style="margin-top:16px">
       <div class="card-body">
-        <h3 style="margin:0">📊 Available Plans (Applicable after free listing limit)</h3>
+        <h3 style="margin:0">Plans for Future Listings (Optional)</h3>
         <p class="sub" style="margin:8px 0 12px">
-          You do not need to select a plan right now if you are eligible for a free listing.
-          These plans are shown for your information and will apply to future listings or additional visibility.
+          You do not need to choose a plan right now.
         </p>
 
         <div class="grid-3" style="margin-top:16px">
@@ -168,13 +180,14 @@
     <section class="card" id="finalActionSection" style="margin-top:16px">
       <div class="card-body">
         <h3 style="margin:0">✅ Ready to List Your Property?</h3>
-        <p class="notice" style="margin:12px 0">
-          ⚠️ <strong>Disclaimer:</strong> After final submission, this property will be listed on ARH Rentals,
-          and this submission cannot be undone.
+        <p style="margin:12px 0;font-size:15px">
+          You’re just one step away from listing your property on ARH Rentals.
         </p>
-        <button type="button" class="btn btn-primary" id="finalSubmitBtn" style="width:100%;padding:14px">
+        <button type="button" class="btn btn-primary" id="finalSubmitBtn"
+          style="width:100%;padding:14px;font-size:16px;font-weight:600">
           Final Submit & List Property
         </button>
+        <p class="small muted" style="margin-top:10px;text-align:center">This action cannot be undone.</p>
         <div id="submitMessage" class="small" style="margin-top:12px;text-align:center" aria-live="polite"></div>
       </div>
     </section>

@@ -44,8 +44,51 @@
             return;
         }
 
+        // Render property summary
+        renderPropertySummary(pendingData);
+
         // Fetch eligibility
         checkEligibility();
+    }
+
+    function renderPropertySummary(data) {
+        const summaryGrid = document.getElementById("summaryGrid");
+        if (!summaryGrid) return;
+
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        };
+
+        const formatDate = (dateStr) => {
+            if (!dateStr) return "Immediate";
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        };
+
+        const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ') : '';
+
+        const items = [
+            { label: "Property Type", value: capitalize(data.property_type) || "Property" },
+            { label: "Location", value: `${data.area}, ${data.city || 'Hisar'}` },
+            { label: "Rent", value: `${formatCurrency(data.rent)} / month` },
+            { label: "Rooms", value: data.number_of_rooms ? `${data.number_of_rooms} Rooms` : "N/A" },
+            { label: "Furnishing", value: capitalize(data.furnishing) || "Not specified" },
+            { label: "Available From", value: formatDate(data.available_from) }
+        ];
+
+        summaryGrid.innerHTML = items.map(item => `
+            <div>
+                <div style="color:var(--muted);font-size:12px;margin-bottom:4px">${item.label}</div>
+                <div style="font-weight:500;font-size:15px;color:var(--text)">${item.value}</div>
+            </div>
+        `).join("");
+    }
+
+    async function checkEligibility() {
 
         // Handle final submit
         const finalSubmitBtn = document.getElementById("finalSubmitBtn");
