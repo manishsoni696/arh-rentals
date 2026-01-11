@@ -707,9 +707,9 @@
       }
     };
 
-    // Confirmation Popup - Modern Premium Design
+    // Confirmation Popup - ARH Rentals Theme
     function showConfirmationPopup() {
-      // Create overlay with animated gradient background
+      // Create overlay with dark blue gradient (matching site theme)
       const overlay = document.createElement("div");
       overlay.id = "confirmationOverlay";
       overlay.style.cssText = `
@@ -718,8 +718,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-        backdrop-filter: blur(10px);
+        background: linear-gradient(180deg, rgba(11, 15, 20, 0.85) 0%, rgba(9, 18, 27, 0.9) 100%);
+        backdrop-filter: blur(12px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -727,7 +727,7 @@
         animation: overlayFadeIn 0.3s ease-out;
       `;
 
-      // Add keyframes for animations
+      // Add keyframes for animations (ARH Theme)
       if (!document.getElementById("popupAnimations")) {
         const style = document.createElement("style");
         style.id = "popupAnimations";
@@ -739,39 +739,36 @@
           @keyframes popupSlideIn {
             from { 
               opacity: 0;
-              transform: translateY(-30px) scale(0.95);
+              transform: translateY(-20px) scale(0.96);
             }
             to { 
               opacity: 1;
               transform: translateY(0) scale(1);
             }
           }
-          @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-          }
           .popup-btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
+            background: linear-gradient(180deg, rgba(10, 116, 184, 0.95), rgba(10, 116, 184, 0.75));
+            border: 1px solid rgba(10, 116, 184, 0.55);
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(10, 116, 184, 0.3);
           }
           .popup-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.20), 0 6px 20px rgba(10, 116, 184, 0.4);
           }
           .popup-btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: #f5f7fa;
             cursor: pointer;
             transition: all 0.3s ease;
           }
           .popup-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(29, 161, 242, 0.28);
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.10);
             transform: translateY(-1px);
           }
           .status-badge {
@@ -787,30 +784,33 @@
         document.head.appendChild(style);
       }
 
-      // Create popup with glassmorphic design
+      // Create popup with dark theme design (matching site)
       const popup = document.createElement("div");
       popup.style.cssText = `
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+        background: linear-gradient(180deg, rgba(15, 19, 24, 0.98) 0%, rgba(11, 15, 20, 0.95) 100%);
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(102, 126, 234, 0.2);
-        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 18px;
         padding: 0;
         max-width: 560px;
         width: 90%;
         box-shadow: 
-          0 20px 60px rgba(102, 126, 234, 0.3),
-          0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-        animation: popupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          0 20px 60px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        animation: popupSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         overflow: hidden;
       `;
 
       popup.innerHTML = `
-        <!-- Header with gradient -->
+        <!-- Header with blue gradient (ARH Theme) -->
         <div style="
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: 
+            radial-gradient(600px 300px at 50% 0%, rgba(29, 161, 242, 0.25), transparent 70%),
+            linear-gradient(180deg, rgba(10, 116, 184, 0.15), rgba(9, 18, 27, 0.8));
           padding: 32px 32px 24px;
           position: relative;
           overflow: hidden;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         ">
           <!-- Animated background pattern -->
           <div style="
@@ -820,9 +820,9 @@
             right: 0;
             bottom: 0;
             background: 
-              radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            opacity: 0.5;
+              radial-gradient(circle at 25% 40%, rgba(10, 116, 184, 0.12) 0%, transparent 50%),
+              radial-gradient(circle at 75% 60%, rgba(29, 161, 242, 0.08) 0%, transparent 50%);
+            opacity: 0.6;
           "></div>
           
           <!-- Icon and Title -->
@@ -830,7 +830,8 @@
             <div style="
               width: 64px;
               height: 64px;
-              background: rgba(255, 255, 255, 0.2);
+              background: rgba(10, 116, 184, 0.2);
+              border: 1px solid rgba(29, 161, 242, 0.3);
               border-radius: 16px;
               display: flex;
               align-items: center;
@@ -838,11 +839,12 @@
               margin-bottom: 16px;
               font-size: 32px;
               backdrop-filter: blur(10px);
+              box-shadow: 0 8px 20px rgba(10, 116, 184, 0.2);
             ">🚀</div>
             
             <h3 style="
               margin: 0 0 8px 0;
-              color: white;
+              color: #f5f7fa;
               font-size: 1.75rem;
               font-weight: 700;
               letter-spacing: -0.5px;
@@ -850,7 +852,7 @@
             
             <p style="
               margin: 0;
-              color: rgba(255, 255, 255, 0.9);
+              color: #b0b6bc;
               font-size: 0.95rem;
               line-height: 1.5;
             ">Your property details have been submitted successfully.</p>
@@ -859,24 +861,25 @@
 
         <!-- Content -->
         <div style="padding: 32px;">
-          <!-- Status Badge -->
+          <!-- Status Badge (ARH Blue Theme) -->
           <div style="margin-bottom: 20px;">
             <span class="status-badge" style="
-              background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-              color: #92400e;
-              border: 1px solid #fbbf24;
+              background: rgba(29, 161, 242, 0.12);
+              color: #1da1f2;
+              border: 1px solid rgba(29, 161, 242, 0.35);
+              box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.08);
             ">
               <span style="font-size: 1.1rem;">📋</span>
               <span>Pending Final Submission</span>
             </span>
           </div>
 
-          <!-- Warning Box with modern design -->
+          <!-- Warning Box (ARH Theme) -->
           <div style="
             margin-bottom: 28px;
             padding: 20px;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(251, 191, 36, 0.12) 100%);
-            border-left: 4px solid #f59e0b;
+            background: linear-gradient(135deg, rgba(29, 161, 242, 0.08) 0%, rgba(10, 116, 184, 0.12) 100%);
+            border-left: 4px solid #1da1f2;
             border-radius: 12px;
             position: relative;
             overflow: hidden;
@@ -887,7 +890,7 @@
               right: 0;
               width: 100px;
               height: 100px;
-              background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+              background: radial-gradient(circle, rgba(29, 161, 242, 0.15) 0%, transparent 70%);
             "></div>
             
             <p style="
@@ -899,16 +902,16 @@
               z-index: 1;
             ">
               <strong style="
-                color: #f59e0b;
+                color: #1da1f2;
                 display: flex;
                 align-items: center;
                 gap: 6px;
                 margin-bottom: 6px;
               ">
-                <span style="font-size: 1.2rem;">⚠️</span>
+                <span style="font-size: 1.2rem;">ℹ️</span>
                 <span>Important Notice:</span>
               </strong>
-              Your property has <strong style="color: #92400e;">not been listed yet</strong>.
+              Your property has <strong style="color: #66b3ff;">not been listed yet</strong>.
               The listing will be created only after you complete the final submission on the next page.
             </p>
           </div>
