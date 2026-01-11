@@ -366,6 +366,94 @@ async function handleMyListings(request, env) {
 }
 
 // =========================================================================
+// SEARCH LISTINGS (Public - No Auth Required)
+// =========================================================================
+async function handleSearchListings(request, env) {
+    if (!env.DB) {
+        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
+    }
+
+    try {
+        const url = new URL(request.url);
+        const category = url.searchParams.get('category') || '';
+        const propertyType = url.searchParams.get('property_type') || '';
+        const area = url.searchParams.get('area') || '';
+        const rentMin = parseInt(url.searchParams.get('rent_min') || '0');
+        const rentMax = parseInt(url.searchParams.get('rent_max') || '999999999');
+        const furnishing = url.searchParams.get('furnishing') || '';
+        const rooms = url.searchParams.get('rooms') || '';
+        const floor = url.searchParams.get('floor') || '';
+
+        // Build WHERE clauses dynamically
+        const conditions = [
+            "status = 'active'",
+            "deleted_at IS NULL",
+            "expires_at > ?"
+        ];
+        const bindings = [Math.floor(Date.now() / 1000)];
+
+        if (category) {
+            conditions.push("category = ?");
+            bindings.push(category);
+        }
+
+        if (propertyType) {
+            conditions.push("property_type = ?");
+            bindings.push(propertyType);
+        }
+
+        if (area) {
+            conditions.push("area = ?");
+            bindings.push(area);
+        }
+
+        if (rentMin > 0 || rentMax < 999999999) {
+            conditions.push("rent >= ? AND rent <= ?");
+            bindings.push(rentMin, rentMax);
+        }
+
+        if (furnishing) {
+            conditions.push("furnishing = ?");
+            bindings.push(furnishing);
+        }
+
+        if (rooms) {
+            conditions.push("number_of_rooms = ?");
+            bindings.push(rooms);
+        }
+
+        if (floor) {
+            conditions.push("floor_on_rent = ?");
+            bindings.push(floor);
+        }
+
+        const whereClause = conditions.join(' AND ');
+
+        const query = `
+            SELECT id, category, property_type, area, rent, size, size_unit,
+                   furnishing, floor_on_rent, number_of_rooms, property_age,
+                   amenities, master_interior_photos, created_at, expires_at
+            FROM listings
+            WHERE ${whereClause}
+            ORDER BY created_at DESC
+            LIMIT 50
+        `;
+
+        const { results } = await env.DB.prepare(query).bind(...bindings).all();
+
+        return jsonResponse({
+            success: true,
+            listings: results,
+            count: results.length
+        }, 200, request);
+    } catch (error) {
+        console.error("Search listings error:", error);
+        return jsonResponse({ success: false, message: "Failed to search listings" }, 500, request);
+    }
+}
+
+
+// =========================================================================
 // UPLOAD INIT (R2 Pre-signed URLs)
 // =========================================================================
 async function handleUploadInit(request, env) {
@@ -904,6 +992,12 @@ export default {
         if (path === "/api/drafts/delete" && request.method === "POST") {
             return handleDeleteDraft(request, env);
         }
+
+        // ===== PUBLIC LISTINGS =====
+        if (path === "/api/listings/search" && request.method === "GET") {
+            return handleSearchListings(request, env);
+        }
+
 
         // ===== LISTING PLANS ENDPOINTS =====
         if (path === "/api/check-eligibility" && request.method === "GET") {
