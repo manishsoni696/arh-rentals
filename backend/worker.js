@@ -14,6 +14,19 @@ const MAX_TOTAL_PHOTOS = 10;
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 const VALID_TYPES = ["image/jpeg", "image/png"];
 
+// ===== LISTING PLANS =====
+const LAUNCH_PHASE_THRESHOLD = 500; // First 500 total listings
+const LAUNCH_PHASE_FREE_QUOTA = 2; // 2 free listings per user during launch
+const POST_LAUNCH_FREE_QUOTA = 1; // 1 free listing per user after launch
+const PENDING_LISTING_EXPIRY = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+const PLANS = {
+  FREE: { name: 'Free', validity_days: 30, price: 0 },
+  BASIC: { name: 'Basic', validity_days: 15, price: 199 },
+  PREMIUM: { name: 'Premium', validity_days: 30, price: 349 },
+  PRO: { name: 'Pro', validity_days: 60, price: 599 }
+};
+
 // ===== DYNAMIC CORS =====
 function getCorsHeaders(request) {
     const origin = request.headers.get("Origin") || "";
@@ -97,6 +110,234 @@ async function cleanExpiredDrafts(env) {
     if (!env.DB) return;
     const cutoff = Math.floor(Date.now() / 1000) - (DRAFT_EXPIRY_DAYS * 24 * 60 * 60);
     await env.DB.prepare("DELETE FROM drafts WHERE created_at < ?").bind(cutoff).run();
+}
+
+async function getTotalListingsCount(env) {
+    if (!env.DB) return 0;
+    const result = await env.DB.prepare(`
+        SELECT value FROM global_settings WHERE key = 'total_listings_created' LIMIT 1
+    `).first();
+    return result ? parseInt(result.value) : 0;
+}
+
+async function incrementTotalListings(env) {
+    if (!env.DB) return;
+    const now = Math.floor(Date.now() / 1000);
+    await env.DB.prepare(`
+        INSERT INTO global_settings (key, value, updated_at) VALUES ('total_listings_created', '1', ?)
+        ON CONFLICT(key) DO UPDATE SET value = CAST((CAST(value AS INTEGER) + 1) AS TEXT), updated_at = ?
+    `).bind(now, now).run();
+}
+
+async function getUserQuota(env, mobile) {
+    if (!env.DB) return null;
+    const quota = await env.DB.prepare(`
+        SELECT total_free_used FROM user_quotas WHERE mobile = ? LIMIT 1
+    `).bind(mobile).first();
+    return quota ? quota.total_free_used : 0;
+}
+
+async function incrementUserQuota(env, mobile) {
+    if (!env.DB) return;
+    const now = Math.floor(Date.now() / 1000);
+    await env.DB.prepare(`
+        INSERT INTO user_quotas (mobile, total_free_used, created_at, updated_at)
+        VALUES (?, 1, ?, ?)
+        ON CONFLICT(mobile) DO UPDATE SET
+            total_free_used = total_free_used + 1,
+            updated_at = ?
+    `).bind(mobile, now, now, now).run();
+}
+
+// =========================================================================
+// CHECK ELIGIBILITY (Free Listing Quota)
+// =========================================================================
+async function handleCheckEligibility(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+    }
+
+    if (!env.DB) {
+        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
+    }
+
+    try {
+        const totalListings = await getTotalListingsCount(env);
+        const isLaunchPhase = totalListings < LAUNCH_PHASE_THRESHOLD;
+        const maxFreeListings = isLaunchPhase ? LAUNCH_PHASE_FREE_QUOTA : POST_LAUNCH_FREE_QUOTA;
+        
+        const usedFreeListings = await getUserQuota(env, mobile);
+        const remainingFreeListings = Math.max(0, maxFreeListings - usedFreeListings);
+        const hasFreeListing = remainingFreeListings > 0;
+
+        return jsonResponse({
+            success: true,
+            hasFreeListing,
+            remainingFreeListings,
+            maxFreeListings,
+            usedFreeListings,
+            isLaunchPhase,
+            totalListings
+        }, 200, request);
+    } catch (error) {
+        console.error("Check eligibility error:", error);
+        return jsonResponse({ success: false, message: "Failed to check eligibility" }, 500, request);
+    }
+}
+
+// =========================================================================
+// CREATE PENDING LISTING (No DB creation yet)
+// =========================================================================
+async function handleCreatePendingListing(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+    }
+
+    if (!env.DB) {
+        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
+    }
+
+    try {
+        const data = await request.json();
+        const pendingId = generateUUID();
+        const now = Math.floor(Date.now() / 1000);
+        const expiresAt = now + Math.floor(PENDING_LISTING_EXPIRY / 1000);
+
+        // Store pending listing temporarily in a new table (will add to schema)
+        // For now, we'll use sessionStorage on frontend side
+        // Return the pending ID for the frontend to use
+        
+        return jsonResponse({
+            success: true,
+            pendingId,
+            message: "Pending listing created. Proceed to checkout."
+        }, 200, request);
+    } catch (error) {
+        console.error("Create pending listing error:", error);
+        return jsonResponse({ success: false, message: "Failed to create pending listing" }, 500, request);
+    }
+}
+
+// =========================================================================
+// FINAL SUBMIT (Consume quota and create actual listing)
+// =========================================================================
+async function handleFinalSubmit(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+    }
+
+    if (!env.DB) {
+        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
+    }
+
+    try {
+        const data = await request.json();
+        
+        // Check eligibility again (prevent double submission)
+        const totalListings = await getTotalListingsCount(env);
+        const isLaunchPhase = totalListings < LAUNCH_PHASE_THRESHOLD;
+        const maxFreeListings = isLaunchPhase ? LAUNCH_PHASE_FREE_QUOTA : POST_LAUNCH_FREE_QUOTA;
+        const usedFreeListings = await getUserQuota(env, mobile);
+        const remainingFreeListings = Math.max(0, maxFreeListings - usedFreeListings);
+
+        // For now, only allow free listings (paid plan integration TBD)
+        if (remainingFreeListings <= 0) {
+            return jsonResponse({
+                success: false,
+                message: "No free listings remaining. Paid plans coming soon."
+            }, 403, request);
+        }
+
+        // Validate required fields
+        const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'master_interior_photos'];
+        for (const field of required) {
+            if (!data[field]) {
+                return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
+            }
+        }
+
+        // Validate photos (same as handleCreateListing)
+        const masterPhotos = Array.isArray(data.master_interior_photos) ? data.master_interior_photos : [];
+        if (masterPhotos.length !== 2) {
+            return jsonResponse({ success: false, message: `Exactly 2 master photos required` }, 400, request);
+        }
+
+        const additionalPhotos = Array.isArray(data.additional_interior_photos) ? data.additional_interior_photos : [];
+        if (additionalPhotos.length > MAX_ADDITIONAL_INTERIOR) {
+            return jsonResponse({ success: false, message: `Maximum ${MAX_ADDITIONAL_INTERIOR} additional interior photos allowed` }, 400, request);
+        }
+
+        const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
+        if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
+            return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
+        }
+
+        const totalPhotos = masterPhotos.length + additionalPhotos.length + exteriorPhotos.length;
+        if (totalPhotos > MAX_TOTAL_PHOTOS) {
+            return jsonResponse({ success: false, message: `Total photos cannot exceed ${MAX_TOTAL_PHOTOS}` }, 400, request);
+        }
+
+        const now = Math.floor(Date.now() / 1000);
+        const listingId = generateUUID();
+        const expiresAt = now + (PLANS.FREE.validity_days * 24 * 60 * 60);
+
+        // Insert listing
+        const query = `
+            INSERT INTO listings (
+                id, mobile, category, property_type, city, area, rent, security_deposit,
+                floor_on_rent, number_of_rooms, size, size_unit, furnishing, property_age,
+                available_from, amenities, extra_notes, master_interior_photos, additional_interior_photos,
+                exterior_photos, status, created_at, expires_at
+            ) VALUES (
+                ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, 'active', ?21, ?22
+            )
+        `;
+
+        await env.DB.prepare(query).bind(
+            listingId,
+            mobile,
+            data.category,
+            data.property_type,
+            data.city || "Hisar",
+            data.area,
+            parseInt(data.rent),
+            data.security_deposit ? parseInt(data.security_deposit) : null,
+            data.floor_on_rent,
+            data.number_of_rooms,
+            parseInt(data.size),
+            data.size_unit,
+            data.furnishing || null,
+            data.property_age || null,
+            data.available_from || null,
+            data.amenities ? JSON.stringify(data.amenities) : null,
+            data.extra_notes || null,
+            JSON.stringify(masterPhotos),
+            JSON.stringify(additionalPhotos),
+            JSON.stringify(exteriorPhotos),
+            now,
+            expiresAt
+        ).run();
+
+        // Consume free listing quota
+        await incrementUserQuota(env, mobile);
+        
+        // Increment global counter
+        await incrementTotalListings(env);
+
+        return jsonResponse({
+            success: true,
+            listingId,
+            message: "Property listed successfully!",
+            plan: 'FREE',
+            validity_days: PLANS.FREE.validity_days
+        }, 200, request);
+    } catch (error) {
+        console.error("Final submit error:", error);
+        return jsonResponse({ success: false, message: "Listing creation failed" }, 500, request);
+    }
 }
 
 // =========================================================================
@@ -655,6 +896,19 @@ export default {
 
         if (path === "/api/drafts/delete" && request.method === "POST") {
             return handleDeleteDraft(request, env);
+        }
+
+        // ===== LISTING PLANS ENDPOINTS =====
+        if (path === "/api/check-eligibility" && request.method === "GET") {
+            return handleCheckEligibility(request, env);
+        }
+
+        if (path === "/api/create-pending-listing" && request.method === "POST") {
+            return handleCreatePendingListing(request, env);
+        }
+
+        if (path === "/api/final-submit" && request.method === "POST") {
+            return handleFinalSubmit(request, env);
         }
 
         return jsonResponse({ success: false, message: "Not Found" }, 404, request);

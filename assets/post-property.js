@@ -528,7 +528,7 @@
 
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
-      formMsg.textContent = "⏳ Uploading master photos...";
+      formMsg.textContent = "⏳ Uploading photos...";
 
       try {
         const listingId = generateUUID();
@@ -671,11 +671,11 @@
           }
         }
 
-        // Step 4: Create listing
-        formMsg.textContent = "⏳ Creating listing...";
+        // Step 4: Prepare pending listing data (NOT creating listing yet)
+        formMsg.textContent = "⏳ Preparing submission...";
 
         const formData = getFormData();
-        const listingData = {
+        const pendingListingData = {
           ...formData,
           master_interior_photos: masterPhotoKeys,
           additional_interior_photos: additionalInteriorKeys,
@@ -683,28 +683,15 @@
           city: "Hisar"
         };
 
-        const createRes = await fetch(`${DASHBOARD_BACKEND}/api/listings/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${getAuthToken()}`
-          },
-          body: JSON.stringify(listingData)
-        });
+        // Store pending data in sessionStorage
+        sessionStorage.setItem("arh_pending_listing", JSON.stringify(pendingListingData));
 
-        const createData = await createRes.json();
-        if (!createData.success) {
-          throw new Error(createData.message || "Listing creation failed");
-        }
+        // Show confirmation popup
+        showConfirmationPopup();
 
-        // Success!
-        formMsg.textContent = "✅ Listing created successfully!";
-        localStorage.removeItem(DRAFT_KEY); // Clear local draft
-
-        // Redirect to dashboard after 2 seconds
-        setTimeout(() => {
-          window.location.href = "/dashboard/";
-        }, 2000);
+        // Re-enable button
+        if (submitBtn) submitBtn.disabled = false;
+        formMsg.textContent = "";
 
       } catch (error) {
         console.error("Submission error:", error);
@@ -712,6 +699,71 @@
         if (submitBtn) submitBtn.disabled = false;
       }
     };
+
+    // Confirmation Popup
+    function showConfirmationPopup() {
+      // Create overlay
+      const overlay = document.createElement("div");
+      overlay.id = "confirmationOverlay";
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      `;
+
+      // Create popup
+      const popup = document.createElement("div");
+      popup.style.cssText = `
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      `;
+
+      popup.innerHTML = `
+        <h3 style="margin: 0 0 12px 0; color: var(--primary);">Property Submission Started</h3>
+        <p style="margin: 0 0 8px 0;">
+          Your property details have been submitted successfully.
+        </p>
+        <p style="margin: 0 0 16px 0; padding: 12px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+          <strong>⚠️ Please note:</strong> Your property has <strong>not been listed yet</strong>.
+          The listing will be created only after you complete the final submission.
+        </p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" id="proceedToListingBtn" class="btn btn-primary" style="flex: 1; min-width: 150px;">
+            Proceed to Listing
+          </button>
+          <button type="button" id="editDetailsBtn" class="btn" style="flex: 1; min-width: 150px;">
+            Edit Details
+          </button>
+        </div>
+      `;
+
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+
+      // Button handlers
+      document.getElementById("proceedToListingBtn").addEventListener("click", () => {
+        window.location.href = "/post/checkout.html";
+      });
+
+      document.getElementById("editDetailsBtn").addEventListener("click", () => {
+        overlay.remove();
+        formMsg.textContent = "You can edit your property details.";
+        setTimeout(() => {
+          formMsg.textContent = "";
+        }, 3000);
+      });
+    }
 
     const handleCategoryChange = (event) => {
       event.stopImmediatePropagation();
