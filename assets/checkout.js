@@ -49,6 +49,12 @@
 
         // Fetch eligibility
         checkEligibility();
+
+        // Attach event listener for final submit
+        const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+        if (finalSubmitBtn) {
+            finalSubmitBtn.addEventListener("click", handleFinalSubmit);
+        }
     }
 
     function renderPropertySummary(data) {
@@ -86,15 +92,6 @@
                 <div style="font-weight:500;font-size:15px;color:var(--text)">${item.value}</div>
             </div>
         `).join("");
-    }
-
-    async function checkEligibility() {
-
-        // Handle final submit
-        const finalSubmitBtn = document.getElementById("finalSubmitBtn");
-        if (finalSubmitBtn) {
-            finalSubmitBtn.addEventListener("click", handleFinalSubmit);
-        }
     }
 
     async function checkEligibility() {
