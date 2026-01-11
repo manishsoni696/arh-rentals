@@ -5,8 +5,12 @@
 (function () {
   "use strict";
 
+  // Constants (defined locally to avoid conflicts with app.js)
   const DASHBOARD_BACKEND = "https://arh-backend.manishsoni696.workers.dev";
-  // PIN_KEY, TOKEN_KEY, MOBILE_KEY, OTP_LOCK_KEY already defined in app.js
+  const PIN_KEY = "arh_pincode";
+  const TOKEN_KEY = "arh_token";
+  const MOBILE_KEY = "arh_mobile";
+  const OTP_LOCK_KEY = "arh_otp_lock_until";
 
 
   const loginCard = document.getElementById("dashboardLogin");
