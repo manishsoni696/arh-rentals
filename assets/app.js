@@ -110,7 +110,45 @@ function markOtpSentOnce(mobile) {
   localStorage.setItem(`arh_otp_sent_once_${mobile}`, "1");
 }
 
-function updateHeaderAccountStatus() {
+/* ===============================
+   PROFILE API HELPERS
+=============================== */
+const DASHBOARD_API = "https://arh-dashboard.manishsoni696.workers.dev";
+
+async function fetchProfile(token) {
+  try {
+    const res = await fetch(`${DASHBOARD_API}/api/profile/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) return null;
+    return await res.json().catch(() => null);
+  } catch (error) {
+    console.error("Profile fetch error:", error);
+    return null;
+  }
+}
+
+async function checkProfileAndPromptName(token) {
+  const profile = await fetchProfile(token);
+
+  if (profile && (!profile.name || profile.name.trim() === "")) {
+    // Name is missing - show popup
+    if (window.namePopupManager) {
+      window.namePopupManager.show((name) => {
+        // After name is saved, update header
+        if (window.initHeaderAuthUI) {
+          window.initHeaderAuthUI();
+        } else {
+          updateHeaderAccountStatus();
+        }
+      });
+    }
+  }
+
+  return profile;
+}
+
+async function updateHeaderAccountStatus() {
   const menu = document.querySelector("[data-account-menu]");
   if (!menu) return;
   const statusEl = menu.querySelector("[data-account-status]");
@@ -120,13 +158,25 @@ function updateHeaderAccountStatus() {
     menu.hidden = true;
     return;
   }
+
+  // Try to fetch profile for name
+  const profile = await fetchProfile(token);
   const mobile =
+    profile?.phone ||
     localStorage.getItem("arh_session_mobile") ||
     sessionStorage.getItem("arh_mobile") ||
     "";
+
+  const userName = profile?.name?.trim() || "";
   const masked = formatMaskedMobile(mobile);
+
   if (statusEl) {
-    statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+    // Show name if available, otherwise show masked mobile
+    if (userName) {
+      statusEl.textContent = `Logged in as ${userName}`;
+    } else {
+      statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+    }
   }
   if (phoneEl) {
     phoneEl.textContent = masked || "—";
@@ -441,13 +491,13 @@ function showOtpStep() {
   if (otpStepEl) otpStepEl.style.display = "block";
   if (afterLoginBox) afterLoginBox.style.display = "none";
   hideSessionInfo();
-   showPinSection();
+  showPinSection();
 }
 
 function showPostForm() {
   if (afterLoginBox) afterLoginBox.style.display = "block";
   if (otpStepEl) otpStepEl.style.display = "none";
-   hideSessionInfo();
+  hideSessionInfo();
   hidePinSection();
 }
 
@@ -455,7 +505,7 @@ function resetPostGate() {
   if (otpStepEl) otpStepEl.style.display = "none";
   if (afterLoginBox) afterLoginBox.style.display = "none";
   hideSessionInfo();
-   showPinSection();
+  showPinSection();
 }
 
 function handlePostLogoutUI() {
@@ -732,7 +782,11 @@ if (verifyOtpBtn) {
       clearLock(mobile);
       if (window.resetOtpTimer) window.resetOtpTimer();
 
-      setText(msgEl, "✅ Logged in");
+      setText(msgEl, "✅ Logged in successfully.");
+
+      // ✅ CHECK PROFILE AND PROMPT FOR NAME IF MISSING
+      await checkProfileAndPromptName(data.token);
+
       // IMMEDIATELY UPDATE HEADER
       if (window.initHeaderAuthUI) window.initHeaderAuthUI();
       else updateHeaderAccountStatus();

@@ -418,6 +418,88 @@ async function handleDeleteDraft(request, env) {
 }
 
 // =========================================================================
+// PROFILE: Get Profile (/me)
+// =========================================================================
+async function handleGetProfile(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+    }
+
+    if (!env.PROFILES_DB) {
+        return jsonResponse({ success: false, message: "Profile database not configured" }, 500, request);
+    }
+
+    try {
+        const profile = await env.PROFILES_DB.prepare(`
+            SELECT phone, name FROM profiles WHERE phone = ? LIMIT 1
+        `).bind(mobile).first();
+
+        if (!profile) {
+            // Return phone with empty name if no profile exists yet
+            return jsonResponse({ phone: mobile, name: "" }, 200, request);
+        }
+
+        return jsonResponse({ phone: profile.phone, name: profile.name || "" }, 200, request);
+    } catch (error) {
+        console.error("Get profile error:", error);
+        return jsonResponse({ success: false, message: "Failed to fetch profile" }, 500, request);
+    }
+}
+
+// =========================================================================
+// PROFILE: Update Profile Name
+// =========================================================================
+async function handleUpdateProfile(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
+    }
+
+    if (!env.PROFILES_DB) {
+        return jsonResponse({ success: false, message: "Profile database not configured" }, 500, request);
+    }
+
+    try {
+        const body = await request.json();
+        const { name } = body;
+
+        // Validate name
+        if (!name || typeof name !== 'string') {
+            return jsonResponse({ success: false, message: "Name is required" }, 400, request);
+        }
+
+        const trimmedName = name.trim();
+
+        // Validate name length and format
+        if (trimmedName.length < 2 || trimmedName.length > 50) {
+            return jsonResponse({ success: false, message: "Name must be between 2-50 characters" }, 400, request);
+        }
+
+        // Allow letters, spaces, and dots only
+        if (!/^[a-zA-Z.\s]+$/.test(trimmedName)) {
+            return jsonResponse({ success: false, message: "Name can only contain letters, spaces, and dots" }, 400, request);
+        }
+
+        const now = new Date().toISOString();
+
+        // Upsert profile
+        await env.PROFILES_DB.prepare(`
+            INSERT INTO profiles (phone, name, createdAt, updatedAt)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(phone) DO UPDATE SET
+                name = excluded.name,
+                updatedAt = excluded.updatedAt
+        `).bind(mobile, trimmedName, now, now).run();
+
+        return jsonResponse({ ok: true, name: trimmedName }, 200, request);
+    } catch (error) {
+        console.error("Update profile error:", error);
+        return jsonResponse({ success: false, message: "Failed to update profile" }, 500, request);
+    }
+}
+
+// =========================================================================
 // MAIN HANDLER
 // =========================================================================
 export default {
@@ -457,6 +539,15 @@ export default {
 
         if (url.pathname === "/api/drafts/delete" && request.method === "POST") {
             return handleDeleteDraft(request, env);
+        }
+
+        // PROFILE ROUTES
+        if (url.pathname === "/api/profile/me" && request.method === "GET") {
+            return handleGetProfile(request, env);
+        }
+
+        if (url.pathname === "/api/profile/me" && request.method === "PUT") {
+            return handleUpdateProfile(request, env);
         }
 
         return jsonResponse({ success: false, message: "Not found" }, 404, request);
