@@ -1,33 +1,7 @@
-// ARH Rentals Backend Worker (MERGED)
-// Handles: PIN/OTP, Sessions, Dashboard listings, Photo uploads (R2), Cloud drafts (D1)
+// ARH Rentals Dashboard Backend Worker
+// Handles: Dashboard listings, Photo uploads (R2), Cloud drafts (D1)
 
-// ===== TESTING CONFIG =====
-const TESTING_MOBILE = "9306766244";
-const MASTER_OTP = "123123";
-
-// ===== PHOTO LIMITS =====
-const DRAFT_EXPIRY_DAYS = 3;
-const MASTER_PHOTOS_REQUIRED = 2;
-const MAX_ADDITIONAL_INTERIOR = 6;
-const MAX_EXTERIOR_PHOTOS = 2;
-const MAX_TOTAL_PHOTOS = 10;
-const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
-const VALID_TYPES = ["image/jpeg", "image/png"];
-
-// ===== LISTING PLANS =====
-const LAUNCH_PHASE_THRESHOLD = 500; // First 500 total listings
-const LAUNCH_PHASE_FREE_QUOTA = 2; // 2 free listings per user during launch
-const POST_LAUNCH_FREE_QUOTA = 1; // 1 free listing per user after launch
-const PENDING_LISTING_EXPIRY = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-const PLANS = {
-    FREE: { name: 'Free', validity_days: 30, price: 0 },
-    BASIC: { name: 'Basic', validity_days: 15, price: 199 },
-    PREMIUM: { name: 'Premium', validity_days: 30, price: 349 },
-    PRO: { name: 'Pro', validity_days: 60, price: 599 }
-};
-
-// ===== DYNAMIC CORS =====
+// Dynamic CORS based on origin
 function getCorsHeaders(request) {
     const origin = request.headers.get("Origin") || "";
     const allowedOrigins = [
@@ -37,41 +11,41 @@ function getCorsHeaders(request) {
         "http://127.0.0.1:5500"
     ];
 
-    const corsOrigin = allowedOrigins.includes(origin) ? origin : "*";
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
 
     return {
         "Access-Control-Allow-Origin": corsOrigin,
-        "Access-Control-Allow-Methods": "GET,POST,PUT,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
     };
 }
 
-function jsonResponse(data, status = 200, request = null) {
-    const headers = request ? getCorsHeaders(request) : {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+const DRAFT_EXPIRY_DAYS = 3;
+const MAX_PHOTOS = 10;
+const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
+const VALID_TYPES = ["image/jpeg", "image/png"];
+
+function jsonResponse(body, status = 200, request = null) {
+    const corsHeaders = request ? getCorsHeaders(request) : {
+        "Access-Control-Allow-Origin": "https://rent.anjanirealheights.com",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
     };
 
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify(body), {
         status,
-        headers: { "Content-Type": "application/json", ...headers },
+        headers: { "Content-Type": "application/json", ...corsHeaders },
     });
 }
 
-async function safeJson(req) {
-    try {
-        return await req.json();
-    } catch {
-        return null;
-    }
-}
-
 function getToken(request) {
-    const auth = request.headers.get("Authorization") || "";
-    return auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
+    const header = request.headers.get("Authorization") || "";
+    const [type, token] = header.split(" ");
+    if (type !== "Bearer" || !token) return "";
+    return token.trim();
 }
 
+// SHA256 helper for token hashing
 async function sha256(input) {
     const enc = new TextEncoder();
     const buf = enc.encode(String(input));
@@ -82,266 +56,40 @@ async function sha256(input) {
 
 async function resolveMobileFromToken(request, env) {
     const token = getToken(request);
-    if (!token) return null;
+    if (!token || !env.DB) return "";
 
     const tokenHash = await sha256(token);
     const now = Date.now();
+
     const session = await env.DB.prepare(`
-        SELECT phone FROM sessions
-        WHERE token_hash = ?
-          AND expires_at > ?
-        LIMIT 1
-    `).bind(tokenHash, now).first();
+    SELECT phone FROM sessions
+    WHERE token_hash = ?
+      AND expires_at > ?
+    LIMIT 1
+  `).bind(tokenHash, now).first();
 
-    return session ? session.phone : null;
+    if (!session) return "";
+    return session.phone || "";
 }
 
+// Generate UUID v4
 function generateUUID() {
-    return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
-async function cleanExpiredSessions(env) {
-    if (!env.DB) return;
-    const now = Date.now();
-    await env.DB.prepare("DELETE FROM sessions WHERE expires_at < ?").bind(now).run();
-}
-
+// Clean expired drafts
 async function cleanExpiredDrafts(env) {
     if (!env.DB) return;
-    const cutoff = Math.floor(Date.now() / 1000) - (DRAFT_EXPIRY_DAYS * 24 * 60 * 60);
-    await env.DB.prepare("DELETE FROM drafts WHERE created_at < ?").bind(cutoff).run();
-}
-
-async function getTotalListingsCount(env) {
-    if (!env.DB) return 0;
-    const result = await env.DB.prepare(`
-        SELECT value FROM global_settings WHERE key = 'total_listings_created' LIMIT 1
-    `).first();
-    return result ? parseInt(result.value) : 0;
-}
-
-async function incrementTotalListings(env) {
-    if (!env.DB) return;
     const now = Math.floor(Date.now() / 1000);
-    await env.DB.prepare(`
-        INSERT INTO global_settings (key, value, updated_at) VALUES ('total_listings_created', '1', ?)
-        ON CONFLICT(key) DO UPDATE SET value = CAST((CAST(value AS INTEGER) + 1) AS TEXT), updated_at = ?
-    `).bind(now, now).run();
-}
-
-async function getUserQuota(env, mobile) {
-    if (!env.DB) return null;
-    const quota = await env.DB.prepare(`
-        SELECT total_free_used FROM user_quotas WHERE mobile = ? LIMIT 1
-    `).bind(mobile).first();
-    return quota ? quota.total_free_used : 0;
-}
-
-async function incrementUserQuota(env, mobile) {
-    if (!env.DB) return;
-    const now = Math.floor(Date.now() / 1000);
-    await env.DB.prepare(`
-        INSERT INTO user_quotas (mobile, total_free_used, created_at, updated_at)
-        VALUES (?, 1, ?, ?)
-        ON CONFLICT(mobile) DO UPDATE SET
-            total_free_used = total_free_used + 1,
-            updated_at = ?
-    `).bind(mobile, now, now, now).run();
+    await env.DB.prepare("DELETE FROM drafts WHERE expires_at < ?").bind(now).run();
 }
 
 // =========================================================================
-// CHECK ELIGIBILITY (Free Listing Quota)
-// =========================================================================
-async function handleCheckEligibility(request, env) {
-    const mobile = await resolveMobileFromToken(request, env);
-    if (!mobile) {
-        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
-    }
-
-    if (!env.DB) {
-        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
-    }
-
-    try {
-        const totalListings = await getTotalListingsCount(env);
-        const isLaunchPhase = totalListings < LAUNCH_PHASE_THRESHOLD;
-        const maxFreeListings = isLaunchPhase ? LAUNCH_PHASE_FREE_QUOTA : POST_LAUNCH_FREE_QUOTA;
-
-        const usedFreeListings = await getUserQuota(env, mobile);
-        const remainingFreeListings = Math.max(0, maxFreeListings - usedFreeListings);
-        const hasFreeListing = remainingFreeListings > 0;
-
-        return jsonResponse({
-            success: true,
-            hasFreeListing,
-            remainingFreeListings,
-            maxFreeListings,
-            usedFreeListings,
-            isLaunchPhase,
-            totalListings
-        }, 200, request);
-    } catch (error) {
-        console.error("Check eligibility error:", error);
-        return jsonResponse({ success: false, message: "Failed to check eligibility" }, 500, request);
-    }
-}
-
-// =========================================================================
-// CREATE PENDING LISTING (No DB creation yet)
-// =========================================================================
-async function handleCreatePendingListing(request, env) {
-    const mobile = await resolveMobileFromToken(request, env);
-    if (!mobile) {
-        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
-    }
-
-    if (!env.DB) {
-        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
-    }
-
-    try {
-        const data = await request.json();
-        const pendingId = generateUUID();
-        const now = Math.floor(Date.now() / 1000);
-        const expiresAt = now + Math.floor(PENDING_LISTING_EXPIRY / 1000);
-
-        // Store pending listing temporarily in a new table (will add to schema)
-        // For now, we'll use sessionStorage on frontend side
-        // Return the pending ID for the frontend to use
-
-        return jsonResponse({
-            success: true,
-            pendingId,
-            message: "Pending listing created. Proceed to checkout."
-        }, 200, request);
-    } catch (error) {
-        console.error("Create pending listing error:", error);
-        return jsonResponse({ success: false, message: "Failed to create pending listing" }, 500, request);
-    }
-}
-
-// =========================================================================
-// FINAL SUBMIT (Consume quota and create actual listing)
-// =========================================================================
-async function handleFinalSubmit(request, env) {
-    const mobile = await resolveMobileFromToken(request, env);
-    if (!mobile) {
-        return jsonResponse({ success: false, message: "Unauthorized" }, 401, request);
-    }
-
-    if (!env.DB) {
-        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
-    }
-
-    try {
-        const data = await request.json();
-
-        // Check eligibility again (prevent double submission)
-        const totalListings = await getTotalListingsCount(env);
-        const isLaunchPhase = totalListings < LAUNCH_PHASE_THRESHOLD;
-        const maxFreeListings = isLaunchPhase ? LAUNCH_PHASE_FREE_QUOTA : POST_LAUNCH_FREE_QUOTA;
-        const usedFreeListings = await getUserQuota(env, mobile);
-        const remainingFreeListings = Math.max(0, maxFreeListings - usedFreeListings);
-
-        // For now, only allow free listings (paid plan integration TBD)
-        if (remainingFreeListings <= 0) {
-            return jsonResponse({
-                success: false,
-                message: "No free listings remaining. Paid plans coming soon."
-            }, 403, request);
-        }
-
-        // Validate required fields
-        const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'master_interior_photos'];
-        for (const field of required) {
-            if (!data[field]) {
-                return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
-            }
-        }
-
-        // Validate photos (same as handleCreateListing)
-        const masterPhotos = Array.isArray(data.master_interior_photos) ? data.master_interior_photos : [];
-        if (masterPhotos.length !== 2) {
-            return jsonResponse({ success: false, message: `Exactly 2 master photos required` }, 400, request);
-        }
-
-        const additionalPhotos = Array.isArray(data.additional_interior_photos) ? data.additional_interior_photos : [];
-        if (additionalPhotos.length > MAX_ADDITIONAL_INTERIOR) {
-            return jsonResponse({ success: false, message: `Maximum ${MAX_ADDITIONAL_INTERIOR} additional interior photos allowed` }, 400, request);
-        }
-
-        const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
-        if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
-            return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
-        }
-
-        const totalPhotos = masterPhotos.length + additionalPhotos.length + exteriorPhotos.length;
-        if (totalPhotos > MAX_TOTAL_PHOTOS) {
-            return jsonResponse({ success: false, message: `Total photos cannot exceed ${MAX_TOTAL_PHOTOS}` }, 400, request);
-        }
-
-        const now = Math.floor(Date.now() / 1000);
-        const listingId = generateUUID();
-        const expiresAt = now + (PLANS.FREE.validity_days * 24 * 60 * 60);
-
-        // Insert listing
-        const query = `
-            INSERT INTO listings (
-                id, mobile, category, property_type, city, area, rent, security_deposit,
-                floor_on_rent, number_of_rooms, size, size_unit, furnishing, property_age,
-                available_from, amenities, extra_notes, master_interior_photos, additional_interior_photos,
-                exterior_photos, status, created_at, expires_at
-            ) VALUES (
-                ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, 'active', ?21, ?22
-            )
-        `;
-
-        await env.DB.prepare(query).bind(
-            listingId,
-            mobile,
-            data.category,
-            data.property_type,
-            data.city || "Hisar",
-            data.area,
-            parseInt(data.rent),
-            data.security_deposit ? parseInt(data.security_deposit) : null,
-            data.floor_on_rent,
-            data.number_of_rooms,
-            parseInt(data.size),
-            data.size_unit,
-            data.furnishing || null,
-            data.property_age || null,
-            data.available_from || null,
-            data.amenities ? JSON.stringify(data.amenities) : null,
-            data.extra_notes || null,
-            JSON.stringify(masterPhotos),
-            JSON.stringify(additionalPhotos),
-            JSON.stringify(exteriorPhotos),
-            now,
-            expiresAt
-        ).run();
-
-        // Consume free listing quota
-        await incrementUserQuota(env, mobile);
-
-        // Increment global counter
-        await incrementTotalListings(env);
-
-        return jsonResponse({
-            success: true,
-            listingId,
-            message: "Property listed successfully!",
-            plan: 'FREE',
-            validity_days: PLANS.FREE.validity_days
-        }, 200, request);
-    } catch (error) {
-        console.error("Final submit error:", error);
-        return jsonResponse({ success: false, message: "Listing creation failed" }, 500, request);
-    }
-}
-
-// =========================================================================
-// MY LISTINGS
+// EXISTING: My Listings
 // =========================================================================
 async function handleMyListings(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -350,111 +98,22 @@ async function handleMyListings(request, env) {
     }
 
     if (!env.DB) {
-        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
+        return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
     }
 
-    try {
-        const { results } = await env.DB.prepare(`
-            SELECT * FROM listings WHERE mobile = ? ORDER BY created_at DESC
-        `).bind(mobile).all();
+    const query = `
+    SELECT id, title, area, plan, expires_at, status, created_at, deleted_at
+    FROM listings
+    WHERE owner_mobile = ?1 AND deleted_at IS NULL
+    ORDER BY created_at DESC
+  `;
 
-        return jsonResponse({ success: true, listings: results }, 200, request);
-    } catch (error) {
-        console.error("My listings error:", error);
-        return jsonResponse({ success: false, message: "Failed to fetch listings" }, 500, request);
-    }
+    const result = await env.DB.prepare(query).bind(mobile).all();
+    return jsonResponse(result.results || [], 200, request);
 }
 
 // =========================================================================
-// SEARCH LISTINGS (Public - No Auth Required)
-// =========================================================================
-async function handleSearchListings(request, env) {
-    if (!env.DB) {
-        return jsonResponse({ success: false, message: "Database not configured" }, 500, request);
-    }
-
-    try {
-        const url = new URL(request.url);
-        const category = url.searchParams.get('category') || '';
-        const propertyType = url.searchParams.get('property_type') || '';
-        const area = url.searchParams.get('area') || '';
-        const rentMin = parseInt(url.searchParams.get('rent_min') || '0');
-        const rentMax = parseInt(url.searchParams.get('rent_max') || '999999999');
-        const furnishing = url.searchParams.get('furnishing') || '';
-        const rooms = url.searchParams.get('rooms') || '';
-        const floor = url.searchParams.get('floor') || '';
-
-        // Build WHERE clauses dynamically
-        const conditions = [
-            "status = 'active'",
-            "deleted_at IS NULL",
-            "expires_at > ?"
-        ];
-        const bindings = [Math.floor(Date.now() / 1000)];
-
-        if (category) {
-            conditions.push("category = ?");
-            bindings.push(category);
-        }
-
-        if (propertyType) {
-            conditions.push("property_type = ?");
-            bindings.push(propertyType);
-        }
-
-        if (area) {
-            conditions.push("area = ?");
-            bindings.push(area);
-        }
-
-        if (rentMin > 0 || rentMax < 999999999) {
-            conditions.push("rent >= ? AND rent <= ?");
-            bindings.push(rentMin, rentMax);
-        }
-
-        if (furnishing) {
-            conditions.push("furnishing = ?");
-            bindings.push(furnishing);
-        }
-
-        if (rooms) {
-            conditions.push("number_of_rooms = ?");
-            bindings.push(rooms);
-        }
-
-        if (floor) {
-            conditions.push("floor_on_rent = ?");
-            bindings.push(floor);
-        }
-
-        const whereClause = conditions.join(' AND ');
-
-        const query = `
-            SELECT id, category, property_type, area, rent, size, size_unit,
-                   furnishing, floor_on_rent, number_of_rooms, property_age,
-                   amenities, master_interior_photos, created_at, expires_at
-            FROM listings
-            WHERE ${whereClause}
-            ORDER BY created_at DESC
-            LIMIT 50
-        `;
-
-        const { results } = await env.DB.prepare(query).bind(...bindings).all();
-
-        return jsonResponse({
-            success: true,
-            listings: results,
-            count: results.length
-        }, 200, request);
-    } catch (error) {
-        console.error("Search listings error:", error);
-        return jsonResponse({ success: false, message: "Failed to search listings" }, 500, request);
-    }
-}
-
-
-// =========================================================================
-// UPLOAD INIT (R2 Pre-signed URLs)
+// NEW: Upload Init (R2 Pre-signed URLs)
 // =========================================================================
 async function handleUploadInit(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -471,26 +130,12 @@ async function handleUploadInit(request, env) {
         const { listingId, category, fileCount, fileTypes, fileSizes } = body;
 
         // Validate
-        if (!listingId || !category || !Array.isArray(fileTypes) || !Array.isArray(fileSizes)) {
+        if (!listingId || !Array.isArray(fileTypes) || !Array.isArray(fileSizes)) {
             return jsonResponse({ success: false, message: "Invalid request" }, 400, request);
         }
 
-        if (!['master', 'interior', 'exterior'].includes(category)) {
-            return jsonResponse({ success: false, message: "Invalid category" }, 400, request);
-        }
-
-        // Set limits based on category
-        let maxPhotos;
-        if (category === 'master') {
-            maxPhotos = 2;
-        } else if (category === 'interior') {
-            maxPhotos = MAX_ADDITIONAL_INTERIOR;
-        } else {
-            maxPhotos = MAX_EXTERIOR_PHOTOS;
-        }
-
-        if (fileCount > maxPhotos || fileTypes.length > maxPhotos || fileSizes.length > maxPhotos) {
-            return jsonResponse({ success: false, message: `Maximum ${maxPhotos} ${category} photos allowed` }, 400, request);
+        if (fileCount > MAX_PHOTOS || fileTypes.length > MAX_PHOTOS || fileSizes.length > MAX_PHOTOS) {
+            return jsonResponse({ success: false, message: `Maximum ${MAX_PHOTOS} photos allowed` }, 400, request);
         }
 
         // Validate each file
@@ -503,13 +148,15 @@ async function handleUploadInit(request, env) {
             }
         }
 
-        // Generate upload keys with category folder
+        // Generate upload keys and create upload tokens
         const uploads = [];
         for (let i = 0; i < fileCount; i++) {
             const uuid = generateUUID();
             const ext = fileTypes[i] === "image/png" ? "png" : "jpg";
-            const key = `photos/${listingId}/${category}/${uuid}.${ext}`;
+            const key = `photos/${listingId}/${category || 'general'}/${uuid}.${ext}`;
 
+            // For R2, we'll create a token that allows upload to this specific key
+            // Frontend will upload via our worker endpoint
             const uploadToken = await sha256(`${key}-${Date.now()}-${mobile}`);
 
             uploads.push({
@@ -527,45 +174,60 @@ async function handleUploadInit(request, env) {
 }
 
 // =========================================================================
-// R2 UPLOAD HANDLER
+// NEW: R2 Upload Handler (PUT endpoint)
 // =========================================================================
 async function handleR2Upload(request, env) {
+    const mobile = await resolveMobileFromToken(request, env);
+    if (!mobile) {
+        return new Response(JSON.stringify({ success: false, message: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json", ...getCorsHeaders(request) }
+        });
+    }
+
     if (!env.PHOTOS) {
-        return jsonResponse({ success: false, message: "Storage not configured" }, 500, request);
+        return new Response(JSON.stringify({ success: false, message: "Storage not configured" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...getCorsHeaders(request) }
+        });
     }
-
-    const url = new URL(request.url);
-    const key = url.searchParams.get("key");
-    const uploadToken = url.searchParams.get("token");
-
-    if (!key || !uploadToken) {
-        return jsonResponse({ success: false, message: "Missing key or token" }, 400, request);
-    }
-
-    // Note: Upload token validation is implicit - if the token was generated by /init,
-    // it's already tied to the user's session. For additional security, you could
-    // store tokens temporarily and validate them here, but for now we trust the token
-    // was generated by our /init endpoint (which already validates the Bearer token).
-    // The token itself is a hash of key + timestamp + mobile, making it hard to forge.
 
     try {
-        const blob = await request.blob();
+        const url = new URL(request.url);
+        const key = url.searchParams.get("key");
 
-        // Validate file size
-        if (blob.size > MAX_FILE_SIZE) {
-            return jsonResponse({ success: false, message: "File too large (max 1 MB)" }, 400, request);
+        if (!key || !key.startsWith("photos/")) {
+            return new Response(JSON.stringify({ success: false, message: "Invalid key" }), {
+                status: 400,
+                headers: { "Content-Type": "application/json", ...getCorsHeaders(request) }
+            });
         }
 
-        await env.PHOTOS.put(key, blob);
-        return jsonResponse({ success: true, key }, 200, request);
+        // Get the file data from request body
+        const fileData = await request.arrayBuffer();
+
+        // Upload to R2
+        await env.PHOTOS.put(key, fileData, {
+            httpMetadata: {
+                contentType: request.headers.get("Content-Type") || "image/jpeg",
+            },
+        });
+
+        return new Response(JSON.stringify({ success: true, key }), {
+            status: 200,
+            headers: { "Content-Type": "application/json", ...getCorsHeaders(request) }
+        });
     } catch (error) {
         console.error("R2 upload error:", error);
-        return jsonResponse({ success: false, message: "Upload failed" }, 500, request);
+        return new Response(JSON.stringify({ success: false, message: "Upload failed" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...getCorsHeaders(request) }
+        });
     }
 }
 
 // =========================================================================
-// CREATE LISTING
+// NEW: Create Listing
 // =========================================================================
 async function handleCreateListing(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -581,52 +243,39 @@ async function handleCreateListing(request, env) {
         const data = await request.json();
 
         // Validate required fields
-        const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent', 'number_of_rooms', 'size', 'size_unit', 'master_interior_photos'];
+        const required = ['category', 'property_type', 'area', 'rent', 'floor_on_rent'];
         for (const field of required) {
             if (!data[field]) {
                 return jsonResponse({ success: false, message: `Missing ${field}` }, 400, request);
             }
         }
 
-        // Validate master interior photos (required: exactly 2, always public)
+        // Validate photos
         const masterPhotos = Array.isArray(data.master_interior_photos) ? data.master_interior_photos : [];
         if (masterPhotos.length !== 2) {
-            return jsonResponse({ success: false, message: `Exactly 2 master photos required (always public)` }, 400, request);
-        }
-
-        // Validate additional interior photos (optional: 0-6, locked)
-        const additionalPhotos = Array.isArray(data.additional_interior_photos) ? data.additional_interior_photos : [];
-        if (additionalPhotos.length > MAX_ADDITIONAL_INTERIOR) {
-            return jsonResponse({ success: false, message: `Maximum ${MAX_ADDITIONAL_INTERIOR} additional interior photos allowed` }, 400, request);
-        }
-
-        // Validate exterior photos (optional: 0-2, locked)
-        const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
-        if (exteriorPhotos.length > MAX_EXTERIOR_PHOTOS) {
-            return jsonResponse({ success: false, message: `Maximum ${MAX_EXTERIOR_PHOTOS} exterior photos allowed` }, 400, request);
-        }
-
-        // Validate total photo count (max 10)
-        const totalPhotos = masterPhotos.length + additionalPhotos.length + exteriorPhotos.length;
-        if (totalPhotos > MAX_TOTAL_PHOTOS) {
-            return jsonResponse({ success: false, message: `Total photos cannot exceed ${MAX_TOTAL_PHOTOS}. You have ${totalPhotos} photos.` }, 400, request);
+            return jsonResponse({ success: false, message: "Exactly 2 master photos required" }, 400, request);
         }
 
         const now = Math.floor(Date.now() / 1000);
         const listingId = generateUUID();
         const expiresAt = now + (30 * 24 * 60 * 60); // 30 days
 
-        // Insert listing with separate photo arrays
+        // Combine all photos
+        const additionalInterior = Array.isArray(data.additional_interior_photos) ? data.additional_interior_photos : [];
+        const exteriorPhotos = Array.isArray(data.exterior_photos) ? data.exterior_photos : [];
+        const allPhotos = [...masterPhotos, ...additionalInterior, ...exteriorPhotos];
+
+        // Insert listing
         const query = `
-            INSERT INTO listings (
-                id, mobile, category, property_type, city, area, rent, security_deposit,
-                floor_on_rent, number_of_rooms, size, size_unit, furnishing, property_age,
-                available_from, amenities, extra_notes, master_interior_photos, additional_interior_photos, 
-                exterior_photos, status, created_at, expires_at
-            ) VALUES (
-                ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, 'active', ?21, ?22
-            )
-        `;
+      INSERT INTO listings (
+        id, mobile, category, property_type, city, area, rent, security_deposit,
+        floor_on_rent, size, size_unit, furnishing, property_age,
+        available_from, amenities, extra_notes, master_interior_photos, 
+        additional_interior_photos, exterior_photos, status, created_at, expires_at
+      ) VALUES (
+        ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, 'active', ?20, ?21
+      )
+    `;
 
         await env.DB.prepare(query).bind(
             listingId,
@@ -638,16 +287,15 @@ async function handleCreateListing(request, env) {
             parseInt(data.rent),
             data.security_deposit ? parseInt(data.security_deposit) : null,
             data.floor_on_rent,
-            data.number_of_rooms,
-            parseInt(data.size),
-            data.size_unit,
+            data.size ? parseInt(data.size) : null,
+            data.size_unit || null,
             data.furnishing || null,
             data.property_age || null,
             data.available_from || null,
             data.amenities ? JSON.stringify(data.amenities) : null,
             data.extra_notes || null,
             JSON.stringify(masterPhotos),
-            JSON.stringify(additionalPhotos),
+            JSON.stringify(additionalInterior),
             JSON.stringify(exteriorPhotos),
             now,
             expiresAt
@@ -661,7 +309,7 @@ async function handleCreateListing(request, env) {
 }
 
 // =========================================================================
-// SAVE DRAFT
+// NEW: Save Draft (Cloud)
 // =========================================================================
 async function handleSaveDraft(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -674,34 +322,44 @@ async function handleSaveDraft(request, env) {
     }
 
     try {
-        const body = await request.json();
-        const { draft_json } = body;
-
-        if (!draft_json || typeof draft_json !== 'string') {
-            return jsonResponse({ success: false, message: "Invalid draft data" }, 400, request);
+        const { draft_json } = await request.json();
+        if (!draft_json) {
+            return jsonResponse({ success: false, message: "No draft data" }, 400, request);
         }
 
+        // Clean expired drafts first
         await cleanExpiredDrafts(env);
 
         const now = Math.floor(Date.now() / 1000);
+        const expiresAt = now + (DRAFT_EXPIRY_DAYS * 24 * 60 * 60);
 
-        await env.DB.prepare(`
-            INSERT INTO drafts (mobile, draft_json, created_at)
-            VALUES (?, ?, ?)
-            ON CONFLICT(mobile) DO UPDATE SET
-                draft_json = excluded.draft_json,
-                created_at = excluded.created_at
-        `).bind(mobile, draft_json, now).run();
+        // Upsert draft (one per mobile)
+        const query = `
+      INSERT INTO drafts (id, mobile, draft_json, updated_at, expires_at)
+      VALUES (?1, ?2, ?3, ?4, ?5)
+      ON CONFLICT(mobile) DO UPDATE SET
+        draft_json = excluded.draft_json,
+        updated_at = excluded.updated_at,
+        expires_at = excluded.expires_at
+    `;
+
+        await env.DB.prepare(query).bind(
+            generateUUID(),
+            mobile,
+            draft_json,
+            now,
+            expiresAt
+        ).run();
 
         return jsonResponse({ success: true, message: "Draft saved" }, 200, request);
     } catch (error) {
         console.error("Save draft error:", error);
-        return jsonResponse({ success: false, message: "Failed to save draft" }, 500, request);
+        return jsonResponse({ success: false, message: "Draft save failed" }, 500, request);
     }
 }
 
 // =========================================================================
-// GET DRAFT
+// NEW: Get Latest Draft
 // =========================================================================
 async function handleGetDraft(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -714,32 +372,31 @@ async function handleGetDraft(request, env) {
     }
 
     try {
+        // Clean expired drafts first
         await cleanExpiredDrafts(env);
 
-        const cutoff = Math.floor(Date.now() / 1000) - (DRAFT_EXPIRY_DAYS * 24 * 60 * 60);
-        const draft = await env.DB.prepare(`
-            SELECT draft_json, created_at FROM drafts
-            WHERE mobile = ? AND created_at >= ?
-            LIMIT 1
-        `).bind(mobile, cutoff).first();
+        const now = Math.floor(Date.now() / 1000);
+        const query = `
+      SELECT draft_json, expires_at
+      FROM drafts
+      WHERE mobile = ?1 AND expires_at > ?2
+    `;
 
-        if (!draft) {
+        const result = await env.DB.prepare(query).bind(mobile, now).first();
+
+        if (!result) {
             return jsonResponse({ success: true, draft: null }, 200, request);
         }
 
-        return jsonResponse({
-            success: true,
-            draft: draft.draft_json,
-            created_at: draft.created_at
-        }, 200, request);
+        return jsonResponse({ success: true, draft: result.draft_json }, 200, request);
     } catch (error) {
         console.error("Get draft error:", error);
-        return jsonResponse({ success: false, message: "Failed to get draft" }, 500, request);
+        return jsonResponse({ success: false, message: "Draft fetch failed" }, 500, request);
     }
 }
 
 // =========================================================================
-// DELETE DRAFT
+// NEW: Delete Draft
 // =========================================================================
 async function handleDeleteDraft(request, env) {
     const mobile = await resolveMobileFromToken(request, env);
@@ -752,11 +409,11 @@ async function handleDeleteDraft(request, env) {
     }
 
     try {
-        await env.DB.prepare(`DELETE FROM drafts WHERE mobile = ?`).bind(mobile).run();
+        await env.DB.prepare("DELETE FROM drafts WHERE mobile = ?").bind(mobile).run();
         return jsonResponse({ success: true, message: "Draft deleted" }, 200, request);
     } catch (error) {
         console.error("Delete draft error:", error);
-        return jsonResponse({ success: false, message: "Failed to delete draft" }, 500, request);
+        return jsonResponse({ success: false, message: "Draft delete failed" }, 500, request);
     }
 }
 
@@ -770,19 +427,20 @@ async function handleGetProfile(request, env) {
     }
 
     if (!env.PROFILES_DB) {
-        return jsonResponse({ success: false, message: "Profiles DB not configured" }, 500, request);
+        return jsonResponse({ success: false, message: "Profile database not configured" }, 500, request);
     }
 
     try {
-        const profile = await env.PROFILES_DB.prepare(
-            `SELECT phone, name FROM profiles WHERE phone = ?`
-        ).bind(mobile).first();
+        const profile = await env.PROFILES_DB.prepare(`
+            SELECT phone, name FROM profiles WHERE phone = ? LIMIT 1
+        `).bind(mobile).first();
 
-        return jsonResponse({
-            success: true,
-            phone: mobile,
-            name: profile?.name || ""
-        }, 200, request);
+        if (!profile) {
+            // Return phone with empty name if no profile exists yet
+            return jsonResponse({ phone: mobile, name: "" }, 200, request);
+        }
+
+        return jsonResponse({ phone: profile.phone, name: profile.name || "" }, 200, request);
     } catch (error) {
         console.error("Get profile error:", error);
         return jsonResponse({ success: false, message: "Failed to fetch profile" }, 500, request);
@@ -799,46 +457,42 @@ async function handleUpdateProfile(request, env) {
     }
 
     if (!env.PROFILES_DB) {
-        return jsonResponse({ success: false, message: "Profiles DB not configured" }, 500, request);
+        return jsonResponse({ success: false, message: "Profile database not configured" }, 500, request);
     }
 
     try {
         const body = await request.json();
         const { name } = body;
 
-        // Validation
-        if (!name || typeof name !== "string") {
+        // Validate name
+        if (!name || typeof name !== 'string') {
             return jsonResponse({ success: false, message: "Name is required" }, 400, request);
         }
 
         const trimmedName = name.trim();
+
+        // Validate name length and format
         if (trimmedName.length < 2 || trimmedName.length > 50) {
-            return jsonResponse({ success: false, message: "Name must be 2-50 chars" }, 400, request);
+            return jsonResponse({ success: false, message: "Name must be between 2-50 characters" }, 400, request);
         }
 
-        if (!/^[a-zA-Z\s.]+$/.test(trimmedName)) {
-            return jsonResponse({ success: false, message: "Name can only contain letters, spaces, dots" }, 400, request);
+        // Allow letters, spaces, and dots only
+        if (!/^[a-zA-Z.\s]+$/.test(trimmedName)) {
+            return jsonResponse({ success: false, message: "Name can only contain letters, spaces, and dots" }, 400, request);
         }
 
         const now = new Date().toISOString();
 
-        // Check if exists
-        const exists = await env.PROFILES_DB.prepare(
-            `SELECT phone FROM profiles WHERE phone = ?`
-        ).bind(mobile).first();
+        // Upsert profile
+        await env.PROFILES_DB.prepare(`
+            INSERT INTO profiles (phone, name, createdAt, updatedAt)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(phone) DO UPDATE SET
+                name = excluded.name,
+                updatedAt = excluded.updatedAt
+        `).bind(mobile, trimmedName, now, now).run();
 
-        if (exists) {
-            await env.PROFILES_DB.prepare(
-                `UPDATE profiles SET name = ?, updatedAt = ? WHERE phone = ?`
-            ).bind(trimmedName, now, mobile).run();
-        } else {
-            await env.PROFILES_DB.prepare(
-                `INSERT INTO profiles (phone, name, createdAt, updatedAt) VALUES (?, ?, ?, ?)`
-            ).bind(mobile, trimmedName, now, now).run();
-        }
-
-        return jsonResponse({ success: true, name: trimmedName }, 200, request);
-
+        return jsonResponse({ ok: true, name: trimmedName }, 200, request);
     } catch (error) {
         console.error("Update profile error:", error);
         return jsonResponse({ success: false, message: "Failed to update profile" }, 500, request);
@@ -850,262 +504,52 @@ async function handleUpdateProfile(request, env) {
 // =========================================================================
 export default {
     async fetch(request, env) {
-        // OPTIONS preflight
+        const url = new URL(request.url);
+
         if (request.method === "OPTIONS") {
             return new Response(null, { status: 204, headers: getCorsHeaders(request) });
         }
 
-        const url = new URL(request.url);
-        const path = url.pathname;
-
-        // ===== Health =====
-        if (path === "/" || path === "/health") {
-            return jsonResponse({ service: "ARH Rentals Backend", status: "OK" }, 200, request);
-        }
-
-        // ===== Allowed PINs =====
-        const allowedPincodes = ["125001", "125004", "125005", "125033"];
-
-        // ===== PIN CHECK =====
-        if (path === "/check-pincode" && request.method === "GET") {
-            const pincode = (url.searchParams.get("pincode") || "").trim();
-            if (!pincode) return jsonResponse({ success: false, message: "Pincode required" }, 400, request);
-
-            return jsonResponse({ success: true, allowed: allowedPincodes.includes(pincode) }, 200, request);
-        }
-
-        // ===== SEND OTP =====
-        if (path === "/send-otp" && request.method === "POST") {
-            const body = await safeJson(request);
-            if (!body) return jsonResponse({ success: false, message: "Invalid JSON body" }, 400, request);
-
-            const mobile = String(body.mobile || "").trim();
-            const pincode = String(body.pincode || "").trim();
-
-            if (!/^[6-9]\d{9}$/.test(mobile)) {
-                return jsonResponse({ success: false, message: "Invalid mobile number" }, 400, request);
-            }
-            if (!allowedPincodes.includes(pincode)) {
-                return jsonResponse({ success: false, message: "Service not available for this PIN code" }, 403, request);
-            }
-
-            // TESTING BYPASS
-            if (mobile === TESTING_MOBILE) {
-                return jsonResponse({ success: true, message: "OTP sent successfully (testing mode)" }, 200, request);
-            }
-
-            const now = Date.now();
-
-            const recent60 = await env.DB.prepare(`
-                SELECT 1 FROM otps WHERE mobile = ? AND created_at > ? LIMIT 1
-            `).bind(mobile, now - 60 * 1000).first();
-
-            if (recent60) {
-                return jsonResponse({ success: false, message: "Please wait 60 seconds before resending OTP." }, 429, request);
-            }
-
-            const c4h = await env.DB.prepare(`
-                SELECT COUNT(*) as cnt FROM otps WHERE mobile = ? AND created_at > ?
-            `).bind(mobile, now - 4 * 60 * 60 * 1000).first();
-
-            if ((c4h?.cnt || 0) >= 3) {
-                return jsonResponse({ success: false, message: "OTP limit reached. Try again after 4 hours." }, 429, request);
-            }
-
-            const otp = Math.floor(100000 + Math.random() * 900000);
-
-            const message =
-                `Your OTP for ARH Rentals login is ${otp}. ` +
-                `This OTP is valid for 5 minutes. Do not share it with anyone. - Anjani Real Heights`;
-
-            const smsUrl =
-                `${env.SMS_BASE_URL}` +
-                `?ApiKey=${encodeURIComponent(env.SMS_API_KEY)}` +
-                `&Message=${encodeURIComponent(message)}` +
-                `&Contacts=${encodeURIComponent(mobile)}` +
-                `&SenderId=${encodeURIComponent(env.SMS_SERVICE_NAME)}` +
-                `&ServiceName=${encodeURIComponent(env.SMS_MESSAGE_TYPE)}` +
-                `&MessageType=${encodeURIComponent(env.SMS_MESSAGE_TYPE)}` +
-                `&StartTime=` +
-                `&DLTTemplateId=${encodeURIComponent(env.SMS_DLT_TEMPLATE_ID)}`;
-
-            const smsRes = await fetch(smsUrl, { method: "GET" });
-            const smsText = await smsRes.text().catch(() => "");
-
-            if (!smsRes.ok) {
-                return jsonResponse({ success: false, message: "SMS gateway failed", vendor: smsText }, 502, request);
-            }
-
-            const otpHash = await sha256(`${mobile}:${otp}`);
-            await env.DB.prepare(`
-                INSERT INTO otps (mobile, otp_hash, expires_at, created_at, tries)
-                VALUES (?, ?, ?, ?, 0)
-            `).bind(mobile, otpHash, now + 5 * 60 * 1000, now).run();
-
-            return jsonResponse({ success: true, message: "OTP sent successfully" }, 200, request);
-        }
-
-        // ===== VERIFY OTP =====
-        if (path === "/verify-otp" && request.method === "POST") {
-            const body = await safeJson(request);
-            if (!body) return jsonResponse({ success: false, message: "Invalid JSON body" }, 400, request);
-
-            const mobile = String(body.mobile || "").trim();
-            const otp = String(body.otp || "").trim().replace(/\D/g, "");
-
-            if (!/^[6-9]\d{9}$/.test(mobile)) {
-                return jsonResponse({ success: false, message: "Invalid mobile number" }, 400, request);
-            }
-            if (!/^\d{4,6}$/.test(otp)) {
-                return jsonResponse({ success: false, message: "OTP required" }, 400, request);
-            }
-
-            // TESTING BYPASS
-            if (mobile === TESTING_MOBILE && otp === MASTER_OTP) {
-                await env.DB.prepare(`INSERT OR IGNORE INTO users (phone) VALUES (?)`).bind(mobile).run();
-                await cleanExpiredSessions(env);
-
-                const token = crypto.randomUUID();
-                const tokenHash = await sha256(token);
-                const now = Date.now();
-                const expiresAt = now + 2 * 60 * 60 * 1000;
-
-                await env.DB.prepare(`
-                    INSERT INTO sessions (token_hash, phone, created_at, expires_at)
-                    VALUES (?, ?, ?, ?)
-                `).bind(tokenHash, mobile, now, expiresAt).run();
-
-                return jsonResponse({ success: true, token, message: "Login successful (testing mode)" }, 200, request);
-            }
-
-            const now = Date.now();
-            const MAX_TRIES = 5;
-
-            const active = await env.DB.prepare(`
-                SELECT otp_hash, expires_at, tries, created_at FROM otps
-                WHERE mobile = ? AND expires_at > ?
-                ORDER BY created_at DESC LIMIT 1
-            `).bind(mobile, now).first();
-
-            if (!active) {
-                return jsonResponse({ success: false, message: "Invalid or expired OTP" }, 400, request);
-            }
-
-            if ((active.tries || 0) >= MAX_TRIES) {
-                return jsonResponse({ success: false, message: "Too many wrong attempts. Please request a new OTP." }, 429, request);
-            }
-
-            const otpHash = await sha256(`${mobile}:${otp}`);
-
-            const match = await env.DB.prepare(`
-                SELECT 1 FROM otps WHERE mobile = ? AND otp_hash = ? AND expires_at > ? AND tries < ? LIMIT 1
-            `).bind(mobile, otpHash, now, MAX_TRIES).first();
-
-            if (!match) {
-                await env.DB.prepare(`
-                    UPDATE otps SET tries = COALESCE(tries, 0) + 1
-                    WHERE mobile = ? AND expires_at > ? AND otp_hash = ?
-                `).bind(mobile, now, active.otp_hash).run();
-
-                const after = (active.tries || 0) + 1;
-                if (after >= MAX_TRIES) {
-                    return jsonResponse({ success: false, message: "Too many wrong attempts. Please request a new OTP." }, 429, request);
-                }
-
-                return jsonResponse({ success: false, message: "Invalid or expired OTP" }, 400, request);
-            }
-
-            await env.DB.prepare(`DELETE FROM otps WHERE mobile = ? AND expires_at > ?`).bind(mobile, now).run();
-
-            await env.DB.prepare(`INSERT OR IGNORE INTO users (phone) VALUES (?)`).bind(mobile).run();
-            await cleanExpiredSessions(env);
-
-            const token = crypto.randomUUID();
-            const tokenHash = await sha256(token);
-            const expiresAt = now + (2 * 60 * 60 * 1000);
-
-            await env.DB.prepare(`
-                INSERT INTO sessions (token_hash, phone, created_at, expires_at)
-                VALUES (?, ?, ?, ?)
-            `).bind(tokenHash, mobile, now, expiresAt).run();
-
-            return jsonResponse({ success: true, verified: true, token }, 200, request);
-        }
-
-        // ===== /me =====
-        if (path === "/me" && request.method === "GET") {
-            const token = getToken(request);
-            if (!token) return jsonResponse({ success: false, message: "Missing token" }, 401, request);
-
-            const tokenHash = await sha256(token);
-            const now = Date.now();
-            const s = await env.DB.prepare(`
-                SELECT phone, created_at, expires_at FROM sessions
-                WHERE token_hash = ? AND expires_at > ? LIMIT 1
-            `).bind(tokenHash, now).first();
-
-            if (!s) return jsonResponse({ success: false, message: "Invalid session" }, 401, request);
-
-            return jsonResponse({ success: true, phone: s.phone, created_at: s.created_at }, 200, request);
-        }
-
-        // ===== NEW ENDPOINTS =====
-        if (path === "/api/listings/my" && request.method === "GET") {
+        // EXISTING ROUTE
+        if (url.pathname === "/my-listings" && request.method === "GET") {
             return handleMyListings(request, env);
         }
 
-        if (path === "/api/uploads/init" && request.method === "POST") {
+        // NEW ROUTES
+        if (url.pathname === "/api/uploads/init" && request.method === "POST") {
             return handleUploadInit(request, env);
         }
 
-        if (path === "/api/uploads/put" && request.method === "PUT") {
+        // R2 Upload endpoint - supports both /put and /r2 for compatibility
+        if ((url.pathname === "/api/uploads/put" || url.pathname === "/api/uploads/r2") && request.method === "PUT") {
             return handleR2Upload(request, env);
         }
 
-        if (path === "/api/listings/create" && request.method === "POST") {
+        if (url.pathname === "/api/listings/create" && request.method === "POST") {
             return handleCreateListing(request, env);
         }
 
-        if (path === "/api/drafts/save" && request.method === "POST") {
+        if (url.pathname === "/api/drafts/save" && request.method === "POST") {
             return handleSaveDraft(request, env);
         }
 
-        if (path === "/api/drafts/get" && request.method === "GET") {
+        if (url.pathname === "/api/drafts/latest" && request.method === "GET") {
             return handleGetDraft(request, env);
         }
 
-        if (path === "/api/drafts/delete" && request.method === "POST") {
+        if (url.pathname === "/api/drafts/delete" && request.method === "POST") {
             return handleDeleteDraft(request, env);
         }
 
-        // ===== PUBLIC LISTINGS =====
-        if (path === "/api/listings/search" && request.method === "GET") {
-            return handleSearchListings(request, env);
-        }
-
-
-        // ===== LISTING PLANS ENDPOINTS =====
-        if (path === "/api/check-eligibility" && request.method === "GET") {
-            return handleCheckEligibility(request, env);
-        }
-
-        if (path === "/api/create-pending-listing" && request.method === "POST") {
-            return handleCreatePendingListing(request, env);
-        }
-
-        if (path === "/api/final-submit" && request.method === "POST") {
-            return handleFinalSubmit(request, env);
-        }
-
-        // ===== PROFILE ENDPOINTS (Merged) =====
-        if (path === "/api/profile/me" && request.method === "GET") {
+        // PROFILE ROUTES
+        if (url.pathname === "/api/profile/me" && request.method === "GET") {
             return handleGetProfile(request, env);
         }
 
-        if (path === "/api/profile/me" && request.method === "PUT") {
+        if (url.pathname === "/api/profile/me" && request.method === "PUT") {
             return handleUpdateProfile(request, env);
         }
 
-        return jsonResponse({ success: false, message: "Not Found" }, 404, request);
+        return jsonResponse({ success: false, message: "Not found" }, 404, request);
     },
 };
