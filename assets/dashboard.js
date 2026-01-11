@@ -158,22 +158,31 @@ function renderListings(listings) {
     if (listing.deleted_at) return;
     const card = document.createElement("div");
     card.className = "dashboard-card";
-    const title = listing.title || "Untitled listing";
-    const area = resolveArea(listing);
-    const plan = resolvePlan(listing);
-    const expiry = formatDate(listing.expires_at);
+
+    // Build title from property details
+    const propertyType = listing.property_type || "Property";
+    const rooms = listing.number_of_rooms || "";
+    const title = rooms ? `${rooms} ${propertyType}` : propertyType;
+
+    const area = listing.area || "—";
+    const rent = listing.rent ? `₹${listing.rent.toLocaleString('en-IN')}/month` : "—";
     const status = computeStatusLabel(listing);
+
+    // Format dates from unix timestamps
+    const createdDate = listing.created_at ? new Date(listing.created_at * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : "—";
+    const expiryDate = listing.expires_at ? new Date(listing.expires_at * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : "—";
+
     card.innerHTML = `
       <div class="dashboard-card-head">
         <div>
           <h4>${title}</h4>
-          <p class="small">Area/Sector: ${area}</p>
+          <p class="small">📍 ${area} • ${rent}</p>
         </div>
         <span class="status-pill">${status}</span>
       </div>
       <div class="dashboard-card-meta">
-        <span>Plan: ${plan}</span>
-        <span>Expiry: ${expiry}</span>
+        <span>Posted: ${createdDate}</span>
+        <span>Expires: ${expiryDate}</span>
       </div>
     `;
     listEl.appendChild(card);
@@ -197,13 +206,16 @@ async function loadListings(token) {
   setText(statusEl, "Loading listings...");
   if (emptyEl) emptyEl.style.display = "none";
   try {
-    const res = await fetch(`${DASHBOARD_BACKEND}/my-listings`, {
+    const res = await fetch(`${DASHBOARD_BACKEND}/api/listings/my`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("Listing fetch failed");
-    const data = await res.json().catch(() => []);
+    const data = await res.json().catch(() => ({ success: false, listings: [] }));
     setText(statusEl, "");
-    renderListings(Array.isArray(data) ? data : []);
+
+    // Handle both response formats
+    const listings = data.success ? data.listings : (Array.isArray(data) ? data : []);
+    renderListings(listings);
   } catch (error) {
     console.error(error);
     setText(statusEl, "Unable to load listings. Please try again.");
