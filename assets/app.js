@@ -167,16 +167,10 @@ async function updateHeaderAccountStatus() {
     sessionStorage.getItem("arh_mobile") ||
     "";
 
-  const userName = profile?.name?.trim() || "";
   const masked = formatMaskedMobile(mobile);
 
   if (statusEl) {
-    // Show name if available, otherwise show masked mobile
-    if (userName) {
-      statusEl.textContent = `Logged in as ${userName}`;
-    } else {
-      statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
-    }
+     statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
   }
   if (phoneEl) {
     phoneEl.textContent = masked || "—";
