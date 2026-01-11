@@ -71,9 +71,23 @@
     const categorySelect = form.querySelector("#categorySelect");
     const propertyTypeSelect = form.querySelector("select[name='property_type']");
     const areaInput = form.querySelector("input[name='area']");
+    const houseNumberInput = form.querySelector("input[name='house_number']");
+    const landmarkInput = form.querySelector("input[name='landmark']");
+    const streetInput = form.querySelector("input[name='street_name']");
     const rentInput = form.querySelector("input[name='rent']");
+    const securityDepositInput = form.querySelector("input[name='security_deposit']");
     const floorSelect = form.querySelector("select[name='floor_on_rent']");
     const declarationCheckbox = form.querySelector("#declaration");
+
+    // Personal Details
+    const ownerNameInput = form.querySelector("input[name='owner_name']");
+    const primaryPhoneInput = form.querySelector("#primaryPhone");
+    const altPhoneInput = form.querySelector("input[name='alternate_phone']");
+
+    if (primaryPhoneInput) {
+      const storedMobile = sessionStorage.getItem("arh_mobile") || "Not Verified";
+      primaryPhoneInput.value = storedMobile;
+    }
     const amenitiesContainer = form.querySelector("#amenitiesContainer");
 
     // Master interior photos (2 required, always public)
@@ -369,6 +383,13 @@
       values.declaration = declarationCheckbox?.checked || false;
       // Hard-lock city to Hisar (Phase-1 scope)
       values.city = "Hisar";
+
+      // Explicitly include disabled/readonly fields if needed, or rely on them being in form.entries (disabled inputs are NOT in entries)
+      // Since primaryPhone is readonly (but not disabled? just readonly), it should be in entries if name is set.
+      // Wait, I didn't give primaryPhone a name in HTML, just id="primaryPhone".
+      // Let's add it manually.
+      values.primary_phone = document.getElementById("primaryPhone")?.value || "";
+
       return values;
     };
 
@@ -384,6 +405,13 @@
       assignValue("#categorySelect", draft.category);
       renderPropertyTypes();
       assignValue("select[name='property_type']", draft.property_type);
+
+      assignValue("input[name='owner_name']", draft.owner_name);
+      assignValue("input[name='alternate_phone']", draft.alternate_phone);
+      assignValue("input[name='house_number']", draft.house_number);
+      assignValue("input[name='landmark']", draft.landmark);
+      assignValue("input[name='street_name']", draft.street_name);
+
       assignValue("input[name='area']", draft.area);
       assignValue("input[name='rent']", draft.rent);
       assignValue("input[name='security_deposit']", draft.security_deposit);
@@ -452,7 +480,9 @@
       };
 
       ensure(categorySelect?.value, "Select a category.", categorySelect);
+      ensure(ownerNameInput?.value?.trim(), "Enter owner full name.", ownerNameInput);
       ensure(propertyTypeSelect?.value, "Select a property type.", propertyTypeSelect);
+      ensure(houseNumberInput?.value?.trim(), "Enter house / flat number.", houseNumberInput);
       ensure(areaInput?.value?.trim(), "Enter the area/sector.", areaInput);
       ensure(rentInput?.value?.trim(), "Enter the monthly rent.", rentInput);
       if (rentInput?.value) {
