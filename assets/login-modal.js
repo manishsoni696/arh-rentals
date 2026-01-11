@@ -255,6 +255,7 @@ class LoginModalManager {
             window.dispatchEvent(new Event("arh:login-success"));
 
             this.hide();
+           this.showToast("Logged in successfully.");
 
         } catch (err) {
             this.showError('loginOtpError', err.message);
@@ -262,6 +263,30 @@ class LoginModalManager {
             btn.disabled = false;
             btn.textContent = originalText;
         }
+    }
+   showToast(message) {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #27ae60;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.3s';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 }
 
