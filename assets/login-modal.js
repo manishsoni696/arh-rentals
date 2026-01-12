@@ -4,61 +4,60 @@
 ========================================================= */
 
 const LOGIN_MODAL_HTML = `
-<div id="loginModalOverlay" class="modal-overlay" style="display:none;">
-  <div class="modal-dialog" style="max-width: 380px;">
-    <div class="modal-header">
-      <h3>Login</h3>
-      <button id="loginModalClose" type="button" class="modal-close-btn">&times;</button>
+<div id="loginModalOverlay" class="login-modal-overlay" style="display:none;">
+  <div class="login-modal-dialog">
+    <div class="login-modal-header">
+      <h3>Login to Your Account</h3>
+      <button id="loginModalClose" type="button" class="login-modal-close">&times;</button>
     </div>
-    <div class="modal-body">
-      <p class="muted" style="margin-bottom: 20px; font-size: 14px;">
+    <div class="login-modal-body">
+      <p class="login-modal-subtitle">
         Login to manage your listings and post verification.
       </p>
-      
+
       <!-- STEP 1: MOBILE -->
       <div id="loginStepMobile">
-        <div class="form-group">
+        <div class="login-form-group">
           <label for="loginMobileInput">Mobile Number</label>
-          <div style="display:flex; gap:8px;">
-            <span class="phone-prefix">+91</span>
-            <input 
-              type="tel" 
-              id="loginMobileInput" 
-              class="form-control" 
+          <div class="login-phone-input">
+            <span class="login-phone-prefix">+91</span>
+            <input
+              type="tel"
+              id="loginMobileInput"
+              class="login-input"
               placeholder="9876543210"
               maxlength="10"
               pattern="[0-9]*"
               inputmode="numeric"
             />
           </div>
-          <span id="loginMobileError" class="error-msg" style="display:none;"></span>
+          <span id="loginMobileError" class="login-error-msg"></span>
         </div>
-        <button id="loginSendOtpBtn" class="btn btn-primary" style="width:100%; margin-top:16px;">Send OTP</button>
+        <button id="loginSendOtpBtn" class="login-btn login-btn-primary">Send OTP</button>
       </div>
 
       <!-- STEP 2: OTP -->
       <div id="loginStepOtp" style="display:none;">
-        <div class="form-group">
+        <div class="login-form-group">
           <label for="loginOtpInput">Enter OTP</label>
-          <input 
-            type="text" 
-            id="loginOtpInput" 
-            class="form-control" 
+          <input
+            type="text"
+            id="loginOtpInput"
+            class="login-input login-otp-input"
             placeholder="XXXXXX"
             maxlength="6"
             pattern="[0-9]*"
             inputmode="numeric"
-            style="letter-spacing: 4px; text-align: center; font-size: 18px;"
           />
-          <span id="loginOtpError" class="error-msg" style="display:none;"></span>
+          <span id="loginOtpError" class="login-error-msg"></span>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:13px;">
-          <button id="loginResendBtn" type="button" class="btn-link" disabled>Resend in <span id="loginTimer">30</span>s</button>
-          <button id="loginChangeMobileBtn" type="button" class="btn-link" style="color:#64748b;">Change Number</button>
+        <div class="login-otp-actions">
+          <button id="loginResendBtn" type="button" class="login-link-btn" disabled>Resend in <span id="loginTimer">30</span>s</button>
+          <button id="loginChangeMobileBtn" type="button" class="login-link-btn">Change Number</button>
         </div>
-        <button id="loginVerifyBtn" class="btn btn-primary" style="width:100%; margin-top:16px;">Verify & Login</button>
+        <button id="loginVerifyBtn" class="login-btn login-btn-primary">Verify & Login</button>
       </div>
-      
+
     </div>
   </div>
 </div>
