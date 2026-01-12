@@ -131,26 +131,49 @@ async function fetchProfile(token) {
 async function checkProfileAndPromptName(token) {
   const profile = await fetchProfile(token);
 
+  console.log("Profile check:", profile); // Debug log
+
   if (profile && (!profile.name || profile.name.trim() === "")) {
     // Name is missing - show popup
+    console.log("Name is missing, showing popup"); // Debug log
     if (window.namePopupManager) {
       window.namePopupManager.show((name) => {
         // After name is saved, update header
+        console.log("Name saved, updating header"); // Debug log
         if (window.initHeaderAuthUI) {
           window.initHeaderAuthUI();
         } else {
           updateHeaderAccountStatus();
         }
       });
+    } else {
+      console.error("namePopupManager not found!"); // Debug log
     }
+  } else {
+    console.log("Profile has name:", profile?.name); // Debug log
   }
 
   return profile;
 }
 
+// Global function to manually test name popup
+window.testNamePopup = function() {
+  if (window.namePopupManager) {
+    window.namePopupManager.show((name) => {
+      console.log("Name entered:", name);
+      updateHeaderAccountStatus();
+    });
+  } else {
+    console.error("namePopupManager not available");
+  }
+};
+
 async function updateHeaderAccountStatus() {
   const menu = document.querySelector("[data-account-menu]");
-  if (!menu) return;
+  if (!menu) {
+    console.log("Menu element not found"); // Debug
+    return;
+  }
   const statusEl = menu.querySelector("[data-account-status]");
   const phoneEl = menu.querySelector("[data-account-phone]");
   const token = localStorage.getItem("arh_token");
@@ -170,12 +193,16 @@ async function updateHeaderAccountStatus() {
 
   const masked = formatMaskedMobile(mobile);
 
+  console.log("Header update - userName:", userName, "masked:", masked); // Debug
+
   // Display name if available, otherwise show masked mobile
   if (statusEl) {
     if (userName) {
       statusEl.textContent = `Logged in as ${userName}`;
+      console.log("Set header to:", `Logged in as ${userName}`); // Debug
     } else {
       statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+      console.log("Set header to:", masked ? `Logged in: ${masked}` : "Logged in"); // Debug
     }
   }
   if (phoneEl) {
