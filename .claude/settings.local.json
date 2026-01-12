@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nImplement professional name capture system after login\n\n- Redesigned name popup modal with modern gradient design\n- Added smooth animations and better visual hierarchy\n- Updated header to display user name instead of phone number\n- Integrated name capture flow after successful OTP verification\n- Added name-popup.js to all pages for consistent UX\n- Enhanced styling with gradient text effects and professional layout\n- Header now shows \"Logged in as [Name]\" when name is available\n- Fallback to masked phone number if name is not set\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
+    ]
+  }
+}
