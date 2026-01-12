@@ -161,6 +161,7 @@ async function updateHeaderAccountStatus() {
 
   // Try to fetch profile for name
   const profile = await fetchProfile(token);
+  const userName = profile?.name?.trim() || "";
   const mobile =
     profile?.phone ||
     localStorage.getItem("arh_session_mobile") ||
@@ -169,8 +170,13 @@ async function updateHeaderAccountStatus() {
 
   const masked = formatMaskedMobile(mobile);
 
+  // Display name if available, otherwise show masked mobile
   if (statusEl) {
-     statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+    if (userName) {
+      statusEl.textContent = `Logged in as ${userName}`;
+    } else {
+      statusEl.textContent = masked ? `Logged in: ${masked}` : "Logged in";
+    }
   }
   if (phoneEl) {
     phoneEl.textContent = masked || "—";

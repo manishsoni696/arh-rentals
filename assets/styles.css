@@ -2083,4 +2083,211 @@ button.account-link {
   .login-link-btn {
     text-align: center;
   }
+}
+
+/* ============ Name Popup Modal ============ */
+.name-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.80);
+  backdrop-filter: blur(10px);
+  z-index: 100001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.name-popup-dialog {
+  background: linear-gradient(180deg, rgba(17, 26, 36, .98), rgba(11, 15, 20, .98));
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 20px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .70);
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+}
+
+/* Decorative gradient top border */
+.name-popup-dialog::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #0a74b8, #1da1f2, #0a74b8);
+  opacity: 0.9;
+}
+
+.name-popup-header {
+  padding: 32px 28px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .03);
+  text-align: center;
+}
+
+.name-popup-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text);
+  background: linear-gradient(135deg, #f5f7fa, #b0b6bc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.name-popup-body {
+  padding: 32px 28px 36px;
+}
+
+.name-popup-subtitle {
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, .70);
+  text-align: center;
+}
+
+.name-form-group {
+  margin-bottom: 24px;
+}
+
+.name-form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .88);
+  letter-spacing: 0.15px;
+}
+
+.required-star {
+  color: #ff6b6b;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.name-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(7, 10, 14, .70);
+  color: var(--text);
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.name-input::placeholder {
+  color: rgba(255, 255, 255, .35);
+}
+
+.name-input:focus {
+  outline: none;
+  border-color: rgba(29, 161, 242, .70);
+  box-shadow: 0 0 0 4px rgba(29, 161, 242, .20);
+  background: rgba(7, 10, 14, .90);
+}
+
+.name-error-msg {
+  display: block;
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: #ff6b6b;
+  min-height: 20px;
+  font-weight: 500;
+}
+
+.name-error-msg:empty {
+  display: none;
+}
+
+.name-btn {
+  width: 100%;
+  height: 54px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .05);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, .08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .30);
+}
+
+.name-btn-primary {
+  background: linear-gradient(135deg, rgba(29, 161, 242, .98), rgba(10, 116, 184, .92));
+  border-color: rgba(29, 161, 242, .50);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 10px 28px rgba(10, 116, 184, .35);
+  letter-spacing: 0.3px;
+}
+
+.name-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(29, 161, 242, 1), rgba(10, 116, 184, .98));
+  box-shadow: 0 0 0 4px rgba(29, 161, 242, .28), 0 12px 32px rgba(10, 116, 184, .45);
+  transform: translateY(-3px);
+}
+
+.name-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .name-popup-dialog {
+    max-width: 100%;
+    border-radius: 18px;
+  }
+
+  .name-popup-header {
+    padding: 28px 24px 20px;
+  }
+
+  .name-popup-header h3 {
+    font-size: 22px;
+  }
+
+  .name-popup-body {
+    padding: 28px 24px 32px;
+  }
+
+  .name-popup-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .name-input {
+    height: 50px;
+    font-size: 15px;
+  }
+
+  .name-btn {
+    height: 52px;
+    font-size: 15px;
+  }
 }/

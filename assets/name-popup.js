@@ -4,31 +4,29 @@
 ========================================================= */
 
 const NAME_POPUP_HTML = `
-<div id="namePopupOverlay" class="modal-overlay" style="display:none;">
-  <div class="modal-dialog" style="max-width: 420px;">
-    <div class="modal-header">
-      <h3>Enter your name</h3>
+<div id="namePopupOverlay" class="name-popup-overlay" style="display:none;">
+  <div class="name-popup-dialog">
+    <div class="name-popup-header">
+      <h3>Welcome! What's your name?</h3>
     </div>
-    <div class="modal-body">
-      <p class="muted" style="margin-bottom: 16px;">
-        This name will appear in your header and while posting property.
+    <div class="name-popup-body">
+      <p class="name-popup-subtitle">
+        Your name will be displayed in the header and when you post properties.
       </p>
-      <div class="form-group">
-        <label for="namePopupInput">Full Name <span style="color:#e74c3c;">*</span></label>
-        <input 
-          type="text" 
-          id="namePopupInput" 
-          class="form-control" 
+      <div class="name-form-group">
+        <label for="namePopupInput">Full Name <span class="required-star">*</span></label>
+        <input
+          type="text"
+          id="namePopupInput"
+          class="name-input"
           placeholder="Enter your full name"
           required
           minlength="2"
           maxlength="50"
         />
-        <span id="namePopupError" class="error-msg" style="display:none; color:#e74c3c; margin-top:4px;"></span>
+        <span id="namePopupError" class="name-error-msg"></span>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button id="namePopupSaveBtn" class="btn btn-primary">Save</button>
+      <button id="namePopupSaveBtn" class="name-btn name-btn-primary">Save & Continue</button>
     </div>
   </div>
 </div>
