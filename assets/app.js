@@ -130,14 +130,22 @@ async function fetchProfile(token) {
 
 async function checkProfileAndPromptName(token) {
   const profile = await fetchProfile(token);
+  const localName = localStorage.getItem("arh_user_name");
 
   console.log("Profile check:", profile); // Debug log
+  console.log("Local name:", localName); // Debug log
 
-  if (profile && (!profile.name || profile.name.trim() === "")) {
+  // Check if we need to show name popup
+  const needsName = (!profile || !profile.name || profile.name.trim() === "") && !localName;
+
+  if (needsName) {
     // Name is missing - show popup
     console.log("Name is missing, showing popup"); // Debug log
     if (window.namePopupManager) {
       window.namePopupManager.show((name) => {
+        // Store name locally as backup
+        localStorage.setItem("arh_user_name", name);
+
         // After name is saved, update header
         console.log("Name saved, updating header"); // Debug log
         if (window.initHeaderAuthUI) {
@@ -150,7 +158,11 @@ async function checkProfileAndPromptName(token) {
       console.error("namePopupManager not found!"); // Debug log
     }
   } else {
-    console.log("Profile has name:", profile?.name); // Debug log
+    console.log("Profile has name:", profile?.name || localName); // Debug log
+    // Sync local name with profile name if profile exists
+    if (profile?.name) {
+      localStorage.setItem("arh_user_name", profile.name);
+    }
   }
 
   return profile;
@@ -184,7 +196,10 @@ async function updateHeaderAccountStatus() {
 
   // Try to fetch profile for name
   const profile = await fetchProfile(token);
-  const userName = profile?.name?.trim() || "";
+
+  // Get name from profile OR fallback to localStorage
+  const userName = profile?.name?.trim() || localStorage.getItem("arh_user_name") || "";
+
   const mobile =
     profile?.phone ||
     localStorage.getItem("arh_session_mobile") ||
